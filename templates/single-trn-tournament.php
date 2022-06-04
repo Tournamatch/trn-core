@@ -185,7 +185,7 @@ if ( $register_conditions['can_unregister'] ) {
 	wp_enqueue_script( 'tournament-unregister' );
 }
 
-wp_register_script( 'tournament', plugins_url( '../js/single-trn-tournament.js', __FILE__ ), array( 'tournamatch' ), '4.0.0', true );
+wp_register_script( 'tournament', plugins_url( '../dist/js/single-trn-tournament.js', __FILE__ ), array( 'tournamatch' ), '4.0.0', true );
 wp_enqueue_script( 'tournament' );
 
 trn_get_footer();

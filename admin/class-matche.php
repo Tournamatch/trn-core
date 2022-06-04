@@ -20,7 +20,8 @@ defined( 'ABSPATH' ) || exit;
  * @package Tournamatch
  * @author  Tournamatch <support@tournamatch.com>
  */
-class Match {
+class Matche {
+
 	/**
 	 * Initializes the ladder admin components.
 	 *
@@ -784,4 +785,4 @@ class Match {
 	}
 }
 
-new Match();
+new Matche();

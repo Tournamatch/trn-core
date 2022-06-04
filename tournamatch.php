@@ -72,7 +72,7 @@ require_once __TRNPATH . 'includes/rest/class-game.php';
 require_once __TRNPATH . 'includes/rest/class-game-image.php';
 require_once __TRNPATH . 'includes/rest/class-ladder.php';
 require_once __TRNPATH . 'includes/rest/class-ladder-competitor.php';
-require_once __TRNPATH . 'includes/rest/class-match.php';
+require_once __TRNPATH . 'includes/rest/class-matche.php';
 require_once __TRNPATH . 'includes/rest/class-match-dispute.php';
 require_once __TRNPATH . 'includes/rest/class-team.php';
 require_once __TRNPATH . 'includes/rest/class-team-invitation.php';
@@ -113,7 +113,7 @@ require_once __TRNPATH . 'includes/rules/class-must-promote-before-leaving.php';
 require_once __TRNPATH . 'includes/rules/class-unique-player-name.php';
 require_once __TRNPATH . 'includes/rules/class-password-must-match.php';
 
-require_once __TRNPATH . 'includes/services/class-match.php';
+require_once __TRNPATH . 'includes/services/class-matche.php';
 
 require_once __TRNPATH . 'includes/shortcodes/class-shortcodes.php';
 require_once __TRNPATH . 'includes/shortcodes/class-challenge-shortcodes.php';
@@ -143,7 +143,7 @@ require __TRNPATH . 'admin' . DIRECTORY_SEPARATOR . 'class-admin.php';
 require __TRNPATH . 'admin' . DIRECTORY_SEPARATOR . 'class-game.php';
 require __TRNPATH . 'admin' . DIRECTORY_SEPARATOR . 'class-tournament.php';
 require __TRNPATH . 'admin' . DIRECTORY_SEPARATOR . 'class-ladder.php';
-require __TRNPATH . 'admin' . DIRECTORY_SEPARATOR . 'class-match.php';
+require __TRNPATH . 'admin' . DIRECTORY_SEPARATOR . 'class-matche.php';
 
 if ( ! function_exists( 'trn_get_default_options' ) ) {
 	/**

@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
  * @package    Tournamatch
  * @author     Tournamatch <support@tournamatch.com>
  */
-class Match extends Controller {
+class Matche extends Controller {
 
 	/**
 	 * Sets up our handler to register our endpoints.
@@ -1087,4 +1087,4 @@ WHERE  `m`.`match_status` != %s",
 	}
 }
 
-new Match();
+new Matche();

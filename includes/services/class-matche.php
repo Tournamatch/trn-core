@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  * @package    Tournamatch
  * @author     Tournamatch <support@tournamatch.com>
  */
-class Match {
+class Matche {
 
 	/**
 	 * Reports a match with the given result.
