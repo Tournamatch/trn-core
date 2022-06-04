@@ -1,0 +1,50 @@
+/* Item widget wrappers */
+#trn .item-wrapper {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+#trn .item-thumbnail {
+  float: left;
+}
+#trn .item-thumbnail img {
+  height: 100px;
+  width: 100px;
+}
+#trn .item-info {
+  margin-left: 110px;
+}
+#trn .item-info > ul {
+  margin-top: 16px;
+  margin-bottom: 0;
+  text-align: center;
+}
+#trn .item-title {
+  font-size: 1.5em;
+  display: block;
+}
+#trn .item-meta {
+  display: block;
+}
+#games .item-info span:nth-child(2) {
+  padding-bottom: 21px;
+}
+#tournaments .item-info ul {
+  margin-top: 0;
+}
+
+@media screen and (max-width: 500px) {
+  #trn .item-thumbnail {
+    width: 100%
+  }
+  #trn .item-thumbnail img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #trn .item-info {
+    margin-left: 0;
+    clear: both;
+    width: 100%;
+  }
+}

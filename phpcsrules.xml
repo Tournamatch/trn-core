@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="TournamatchRuleSet">
+    <description>Coding standard for Tournamatch project.</description>
+
+    <!-- Include the WordPress standard -->
+    <rule ref="WordPress"/>
+
+    <!-- Exclude some rules -->
+    <rule ref="WordPress.DB.DirectDatabaseQuery.NoCaching">
+        <exclude name="WordPress.DB.DirectDatabaseQuery.NoCaching"/>
+    </rule>
+    <rule ref="WordPress.DB.DirectDatabaseQuery.DirectQuery">
+        <exclude name="WordPress.DB.DirectDatabaseQuery.DirectQuery"/>
+    </rule>
+
+</ruleset>

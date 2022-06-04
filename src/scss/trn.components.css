@@ -1,0 +1,113 @@
+
+#trn s {
+    text-decoration: none;
+}
+
+
+/* Brackets */
+#trn table.brackets, #trn table.brackets table{
+    border: 0;
+    padding: 0;
+    border-spacing: 0;
+    color: #fff;
+    width: unset;
+}
+#trn table.brackets td, #trn table.brackets th {
+    padding: 0;
+    border: none;
+}
+#trn table.brackets td {
+    line-height: 28px;
+}
+#trn table.brackets td.bracket-spot {
+    background-color: #000;
+    vertical-align: middle;
+    width: 140px;
+    min-width: 140px;
+    padding-left: 2px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+#trn .bracket-top, #trn .bracket-bottom, #trn .bracket-line, #trn .bracket-tee, #trn .bracket-double-line {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+    background: transparent left top no-repeat;
+    background-size: cover;
+}
+#trn .bracket-top {background-image: url('../images/brackets/ctop.gif')}
+#trn .bracket-bottom {background-image: url('../images/brackets/cbot.gif')}
+#trn .bracket-line {background-image: url('../images/brackets/line.gif')}
+#trn .bracket-tee{background-image: url('../images/brackets/tlin.gif')}
+#trn .bracket-double-line {background-image: url('../images/brackets/dblline.gif')}
+
+#trn .bracket-spot > a {
+    float: left;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 75%;
+}
+#trn .bracket-spot > i {
+    padding-left: 5px;
+}
+
+#trn .bracket-dropdown {
+    position: relative;
+    display: inline-block;
+    float: right;
+    top: 2px;
+    right: 2px;
+}
+
+#trn .bracket-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 2px;
+    min-width: 200px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+    z-index: 1;
+    left: -40px;
+    top: 10px;
+}
+
+#trn .bracket-dropdown-content a {
+    display: block;
+    padding: 1px 3px;
+    text-decoration: none;
+    color: #000;
+}
+
+#trn .bracket-dropdown-content a:hover {
+    background-color: #efefef;
+}
+
+#trn .bracket-dropdown:hover .bracket-dropdown-content {
+    display: block;
+}
+
+#trn .bracket-round-header {
+    color: #212529;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.03);;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+}
+
+
+#trn .bracket-spot .seed {
+    float: left;
+    padding-right: 5px;
+}
+
+
+
+
+#trn .ladder-data {
+    margin-top: 16px;
+}
+

@@ -1,0 +1,232 @@
+.tournamatch-brackets {
+  overflow-x: auto;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.tournamatch-progress {
+  height: 3px;
+  background-color: #ff4200;
+}
+
+.tournamatch-round-header-container {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.tournamatch-round-header {
+  background-color: #547abe;
+  border-radius: 5px;
+  padding: 0 5px 0 5px;
+  width: 198px;
+  display: inline-block;
+  margin: 1px;
+}
+
+.tournamatch-round-body-container {
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.tournamatch-round-body {
+  width: 200px;
+  display: inline-block;
+}
+
+.tournamatch-match {
+  display: flex;
+  position: relative;
+}
+
+.tournamatch-match-body {
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  flex-grow: 1;
+  margin-right: 32px;
+}
+
+.tournamatch-competitor {
+  display: block;
+  padding: 0 3px 0 3px;
+  border-radius: 0 0 5px 5px;
+}
+
+.tournamatch-competitor:first-child {
+  border-radius: 5px 5px 0 0;
+}
+
+.tournamatch-competitor-highlight {
+  background-color: #6b6b6b;
+}
+
+.tournamatch-brackets {
+  .match-half {
+    display: block;
+  }
+
+  .top-half {
+    width: 32px;
+    height: calc((100% / 2) + 1px);
+    background-image: url("../images/brackets/top.gif");
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: top;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .bottom-half {
+    width: 32px;
+    height: calc((100% / 2) + 1px);
+    background-image: url("../images/brackets/bottom.gif");
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .winners-line {
+    width: 32px;
+    height: 100%;
+    margin-left: -32px;
+    background-image: url("../images/brackets/winners.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+  }
+
+  .more-details {
+    color: #ff4200;
+    cursor: pointer;
+    opacity: .5;
+    position: absolute;
+  }
+
+  .top-half > .dropdown > .more-details {
+    top: -25px;
+  }
+
+  .winners-line > .dropdown > .more-details {
+    top: -17px;
+    left: -22px;
+  }
+
+  .more-details:hover {
+    -webkit-animation: fadeInFromNone 0.5s ease-out forwards;
+    -moz-animation: fadeInFromNone 0.5s ease-out forwards;
+    -o-animation: fadeInFromNone 0.5s ease-out forwards;
+    animation: fadeInFromNone 0.5s ease-out forwards;
+  }
+
+  @-webkit-keyframes fadeInFromNone {
+    0% {
+      opacity: 0.5;
+    }
+    1% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @-moz-keyframes fadeInFromNone {
+    0% {
+      opacity: 0.5;
+    }
+    1% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @-o-keyframes fadeInFromNone {
+    0% {
+      opacity: 0.5;
+    }
+    1% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInFromNone {
+    0% {
+      opacity: 0.5;
+    }
+    1% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+    right: -30px;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    left: 20px;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .top-half > .dropdown > .dropdown-content {
+    top: -25px;
+  }
+
+  .winners-line > .dropdown > .dropdown-content {
+    left: -3px;
+    top: -25px;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .vertical-line {
+    width: 32px;
+    height: 100%;
+    margin: auto;
+    background-image: url("../images/brackets/line.gif");
+    background-repeat: no-repeat;
+    margin-right: 0;
+  }
+
+  .horizontal-line {
+    width: 32px;
+    height: 100%;
+    margin-left: -32px;
+    background-image: url("../images/brackets/tlin.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+  }
+}

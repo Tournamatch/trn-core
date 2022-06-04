@@ -1,0 +1,8 @@
+/.idea/
+/node_modules/
+/bundled/
+/dist/
+tournamatch.dev.php
+fix.bat
+sniff.bat
+i18n.bat

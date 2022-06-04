@@ -1,0 +1,17 @@
+dl.trn-online-statistics-widget-list {
+    display: inline-block;
+}
+.trn-online-statistics-widget-list {
+    dt, dd {
+        display: block;
+        margin-bottom: 0;
+    }
+    dt {
+        float: left;
+        clear: both;
+    }
+    dd {
+        float: left;
+        padding-left: 5px;
+    }
+}

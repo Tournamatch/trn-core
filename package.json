@@ -1,0 +1,32 @@
+{
+  "name": "tournamatch",
+  "version": "4.0.0",
+  "description": "A ladder and tournament plugin for eSports, physical sports, boardgames, and other online gaming leagues.",
+  "scripts": {
+    "start": "gulp",
+    "build": "gulp build --prod"
+  },
+  "author": "Tournamatch",
+  "license": "GPLv2",
+  "homepage": "https://www.tournamatch.com",
+  "devDependencies": {
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "@babel/register": "^7.12.13",
+    "autoprefixer": "^9.0.0",
+    "babel-loader": "^8.2.2",
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-if": "^3.0.0",
+    "gulp-imagemin": "^7.0.0",
+    "gulp-postcss": "^9.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-wp-pot": "^2.5.0",
+    "gulp-zip": "^5.1.0",
+    "vinyl-named": "^1.1.0",
+    "webpack-stream": "^6.0.0",
+    "yargs": "^16.2.0"
+  }
+}

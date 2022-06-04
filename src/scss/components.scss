@@ -1,0 +1,550 @@
+@import './core.scss';
+@import './item-wrapper.scss';
+@import './navigation-tabs.scss';
+@import './auto-complete.scss';
+
+#trn .section { margin: 10px; }
+
+#trn .mb-xs {  margin-bottom: 10px;  }
+#trn .mb-sm {  margin-bottom: 20px;  }
+#trn .mb-md {  margin-bottom: 40px;  }
+#trn .mb-lg {  margin-bottom: 80px;  }
+#trn .mb-xl {  margin-bottom: 160px;  }
+
+#trn .mt-xs {  margin-top: 10px;  }
+#trn .mt-sm {  margin-top: 20px;  }
+#trn .mt-md {  margin-top: 40px;  }
+#trn .mt-lg {  margin-top: 80px;  }
+#trn .mt-xl {  margin-top: 160px;  }
+
+#trn {
+  .tournamatch-profile {
+    display: flex;
+    flex-wrap: wrap;
+
+    .tournamatch-profile-details, .tournamatch-profile-avatar  {
+      width: 50%;
+    }
+  }
+}
+
+#trn .profile-picture {
+  max-height: 300px;
+  max-width: 700px;
+}
+@media screen and (max-width: 600px) {
+  #trn .profile-picture {
+    max-height: 215px;
+    max-width: 500px;
+  }
+}
+
+#trn .match-avatar {
+  max-height: 96px;
+  max-width: 96px;
+}
+
+#trn .game-thumbnail {
+  width: 100px;
+  height: 100px;
+  border-radius: 4px;
+  border: 0;
+}
+
+#trn .ladder-active-last-7 { }
+#trn .ladder-active-last-14 { color: #FFFF00 !important;}
+#trn .ladder-active-last-21 { color: #FF0000 !important;}
+#trn .ladder-inactive { color: #FF0000 !important;}
+
+#trn .clearfix {
+  clear: both;
+}
+
+#trn form .col-sm-1 {
+  width: 300px;
+}
+
+@media screen and (max-width: 600px) {
+  #trn #trn-team-roster-table tr {
+    display: inline-block;
+    width: 0;
+    min-width: 100%;
+    border: 1px solid #dee2e6;
+  }
+  #trn #trn-team-roster-table td, #trn #trn-team-roster-table th {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+  }
+  #trn #trn-team-roster-table .trn-team-roster-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    max-width: 100%;
+  }
+  #trn #trn-team-roster-table .trn-team-roster-title {
+    float: left;
+    clear: both;
+  }
+  #trn #trn-team-roster-table .trn-team-roster-options {
+    float: right;
+  }
+  #trn #trn-team-roster-table .trn-team-roster-wins,
+  #trn #trn-team-roster-table .trn-team-roster-losses,
+  #trn #trn-team-roster-table .trn-team-roster-draws,
+  #trn #trn-team-roster-table .trn-team-roster-contact,
+  #trn #trn-team-roster-table .trn-team-roster-joined {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-match-history-table tr {
+    display: inline-block;
+    width: 0;
+    min-width: 100%;
+    border: 1px solid #dee2e6;
+  }
+  #trn .trn-match-history-table td, #trn .trn-match-history-table th {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+  }
+  #trn .trn-match-history-table .trn-match-history-event {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    max-width: 50%;
+    width: 50%;;
+  }
+  #trn .trn-match-history-table .trn-match-history-name {
+    float: right;
+    max-width: 50%;
+    width: 50%;;
+  }
+  #trn .trn-match-history-table .trn-match-history-result {
+    float: left;
+    clear: both;
+  }
+  #trn .trn-match-history-table .trn-match-history-date,
+  #trn .trn-match-history-table .trn-match-history-details {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 145px;
+  }
+
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-joined,
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-win-percent,
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-streak,
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-last,
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-team-name,
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-rank,
+  #trn .trn-ladder-competitions-table .trn-ladder-competitions-table-idle {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 900px) and (min-width: 751px) {
+  #trn .trn-ladder-standings-table td, #trn .trn-ladder-standings-table th {
+    display: none;
+  }
+
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-name,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-rating,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-wins,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-losses,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-draws,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-streak,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-win-percent,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-challenge {
+    display: table-cell;
+  }
+}
+@media screen and (max-width: 750px) and (min-width: 601px) {
+  #trn .trn-ladder-standings-table td, #trn .trn-ladder-standings-table th {
+    display: none;
+  }
+
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-name,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-rating,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-wins,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-losses,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-draws,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-challenge {
+    display: table-cell;
+  }
+}
+@media screen and (max-width: 600px) {
+  #trn .trn-ladder-standings-table td, #trn .trn-ladder-standings-table th {
+    display: none;
+  }
+
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-name,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-rating,
+  #trn .trn-ladder-standings-table .trn-ladder-standings-table-challenge {
+    display: table-cell;
+  }
+}
+
+#trn .trn-ladder-standings-table .trn-ladder-standings-table-name {
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-ladder-matches-table td, #trn .trn-ladder-matches-table th {
+    display: none;
+  }
+
+  #trn .trn-ladder-matches-table .trn-ladder-matches-table-result,
+  #trn .trn-ladder-matches-table .trn-ladder-matches-table-link {
+    display: table-cell;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-tournament-matches-table td, #trn .trn-tournament-matches-table th {
+    display: none;
+  }
+
+  #trn .trn-tournament-matches-table .trn-tournament-matches-table-competitors,
+    /*#trn .trn-tournament-matches-table .trn-tournament-matches-table-result,*/
+    /*#trn .trn-tournament-matches-table .trn-tournament-matches-table-date,*/
+  #trn .trn-tournament-matches-table .trn-tournament-matches-table-link {
+    display: table-cell;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-challenges-table tr {
+    display: inline-block;
+    width: 0;
+    min-width: 100%;
+    border: 1px solid #dee2e6;
+  }
+
+  #trn .trn-challenges-table td, #trn .trn-challenges-table thead th {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+  }
+
+  #trn .trn-challenges-table .trn-challenges-table-challenger,
+  #trn .trn-challenges-table .trn-challenges-table-status {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    max-width: 50%;
+    width: 50%;
+  }
+
+
+  #trn .trn-challenges-table .trn-challenges-table-challengee,
+  #trn .trn-challenges-table .trn-challenges-table-actions {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: right;
+    max-width: 50%;
+    width: 50%;
+  }
+
+  #trn .trn-challenges-table .trn-challenges-table-ladder,
+  #trn .trn-challenges-table .trn-challenges-table-match-time {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-matches-table tr {
+    display: inline-block;
+    width: 0;
+    min-width: 100%;
+    border: 1px solid #dee2e6;
+  }
+
+  #trn .trn-matches-table td, #trn .trn-matches-table thead th {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+  }
+
+  #trn .trn-matches-table .trn-matches-table-event {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    max-width: 30%;
+    width: 30%;
+  }
+
+  #trn .trn-matches-table .trn-matches-table-result {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    clear: both;
+  }
+
+
+  #trn .trn-matches-table .trn-matches-table-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: right;
+    max-width: 30%;
+    width: 30%;
+  }
+
+  #trn .trn-matches-table td.trn-matches-table-event,
+  #trn .trn-matches-table td.trn-matches-table-name {
+    max-width: 40%;
+    width: 40%;
+  }
+
+  #trn .trn-matches-table .trn-matches-table-date,
+  #trn .trn-matches-table .trn-matches-table-admin,
+  #trn .trn-matches-table .trn-matches-table-actions {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 750px) and (min-width: 601px) {
+  #trn .trn-players-table td, #trn .trn-players-table th {
+    display: none;
+  }
+
+  #trn .trn-players-table .trn-players-table-name,
+  #trn .trn-players-table .trn-players-table-joined,
+  #trn .trn-players-table .trn-players-table-contact {
+    display: table-cell;
+  }
+}
+@media screen and (max-width: 600px) {
+  #trn .trn-players-table td, #trn .trn-players-table th {
+    display: none;
+  }
+
+  #trn .trn-players-table .trn-players-table-name,
+  #trn .trn-players-table .trn-players-table-joined {
+    display: table-cell;
+  }
+}
+
+@media screen and (max-width: 900px) and (min-width: 751px) {
+  #trn .trn-teams-table td, #trn .trn-teams-table th {
+    display: none;
+  }
+
+  #trn .trn-teams-table .trn-teams-table-name,
+  #trn .trn-teams-table .trn-teams-table-created,
+  #trn .trn-teams-table .trn-teams-table-members,
+  #trn .trn-teams-table .trn-teams-table-contact {
+    display: table-cell;
+  }
+}
+@media screen and (max-width: 750px) and (min-width: 601px) {
+  #trn .trn-teams-table td, #trn .trn-teams-table th {
+    display: none;
+  }
+
+  #trn .trn-teams-table .trn-teams-table-name,
+  #trn .trn-teams-table .trn-teams-table-created,
+  #trn .trn-teams-table .trn-teams-table-members {
+    display: table-cell;
+  }
+}
+@media screen and (max-width: 600px) {
+  #trn .trn-teams-table td, #trn .trn-teams-table th {
+    display: none;
+  }
+
+  #trn .trn-teams-table .trn-teams-table-name,
+  #trn .trn-teams-table .trn-teams-table-members {
+    display: table-cell;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-confirm-results-table tr {
+    display: inline-block;
+    width: 0;
+    min-width: 100%;
+    border: 1px solid #dee2e6;
+  }
+
+  #trn .trn-confirm-results-table td, #trn .trn-confirm-results-table th {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+  }
+
+  #trn .trn-confirm-results-table .trn-confirm-results-table-event {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    max-width: 50%;
+    width: 50%;
+  }
+
+  #trn .trn-confirm-results-table .trn-confirm-results-table-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: right;
+    max-width: 50%;
+    width: 50%;
+  }
+
+  #trn .trn-confirm-results-table .trn-confirm-results-table-result,
+  #trn .trn-confirm-results-table .trn-confirm-results-table-media,
+  #trn .trn-confirm-results-table .trn-confirm-results-table-action {
+    float: left;
+    clear: both;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  #trn .trn-confirm-results-table .trn-confirm-results-table-action {
+    text-align: center;
+  }
+
+  #trn .trn-confirm-results-table th.trn-confirm-results-table-media,
+  #trn .trn-confirm-results-table th.trn-confirm-results-table-action {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-report-results-table tr {
+    display: inline-block;
+    width: 0;
+    min-width: 100%;
+    border: 1px solid #dee2e6;
+  }
+
+  #trn .trn-report-results-table td, #trn .trn-report-results-table th {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+  }
+
+  #trn .trn-report-results-table .trn-report-results-table-event {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    max-width: 50%;
+    width: 50%;
+  }
+
+  #trn .trn-report-results-table .trn-report-results-table-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: right;
+    max-width: 50%;
+    width: 50%;
+  }
+
+  #trn .trn-report-results-table .trn-report-results-table-result,
+  #trn .trn-report-results-table .trn-report-results-table-media,
+  #trn .trn-report-results-table .trn-report-results-table-action {
+    float: left;
+    clear: both;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  #trn .trn-report-results-table .trn-report-results-table-action {
+    text-align: center;
+  }
+
+  #trn .trn-report-results-table th.trn-report-results-table-media,
+  #trn .trn-report-results-table th.trn-report-results-table-action {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-scheduled-matches-table tr {
+    display: inline-block;
+    width: 0;
+    min-width: 100%;
+    border: 1px solid #dee2e6;
+  }
+
+  #trn .trn-scheduled-matches-table td, #trn .trn-scheduled-matches-table th {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+  }
+
+  #trn .trn-scheduled-matches-table .trn-scheduled-matches-table-event {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    max-width: 50%;
+    width: 50%;
+  }
+
+  #trn .trn-scheduled-matches-table .trn-scheduled-matches-table-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: right;
+    max-width: 50%;
+    width: 50%;
+  }
+
+  #trn .trn-scheduled-matches-table .trn-scheduled-matches-table-competitors,
+  #trn .trn-scheduled-matches-table .trn-scheduled-matches-table-date,
+  #trn .trn-scheduled-matches-table .trn-scheduled-matches-table-action {
+    float: left;
+    clear: both;
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+  }
+
+  #trn .trn-scheduled-matches-table th.trn-scheduled-matches-table-action {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-player-team-table .trn-player-team-table-rank,
+  #trn .trn-player-team-table .trn-player-team-table-joined {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #trn .trn-my-competitions-table .trn-my-competitions-table-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 145px;
+  }
+
+  #trn .trn-my-competitions-table .trn-my-competitions-table-event,
+  #trn .trn-my-competitions-table .trn-my-competitions-table-game,
+  #trn .trn-my-competitions-table .trn-my-competitions-table-action {
+    display: none;
+  }
+}
+
+#trn .trn-accept-team-request-link, #trn .trn-decline-team-request-link, #trn .trn-delete-team-invitations-link {
+  cursor: pointer;
+}

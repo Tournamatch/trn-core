@@ -1,0 +1,32 @@
+/* Tournamatch native tabs. Bootstrap 4 dependent (color to depict active)*/
+#trn .tournamatch-nav {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+#trn li.tournamatch-nav-item {
+  list-style: none;
+}
+#trn .tournamatch-nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25em;
+}
+#trn .tournamatch-nav-link:hover,
+#trn .tournamatch-nav-link:focus {
+  text-decoration: none;
+}
+#trn .tournamatch-nav-link.tournamatch-nav-active {
+  color: #fff;
+  background-color: #007bff;
+}
+#trn .tournamatch-tab-pane {
+  display: none;
+}
+#trn .tournamatch-tab-pane.tournamatch-tab-active {
+  display: block;
+}
