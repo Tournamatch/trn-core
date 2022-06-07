@@ -152,11 +152,11 @@ msgstr ""
 msgid "When a player or team (competitor) leaves a ladder, the standings data associated with this competitor is also erased. A competitor could use this ability to leave a ladder and rejoin to reset his or her rating or points."
 msgstr ""
 
-#: admin/class-admin.php:358, admin/class-admin.php:400, admin/class-admin.php:449, admin/class-admin.php:494, admin/class-game.php:266, admin/class-game.php:382, admin/class-match.php:299, templates/single-trn-ladder-competitor-edit.php:99, templates/single-trn-player-edit.php:107, templates/single-trn-team-edit.php:94
+#: admin/class-admin.php:358, admin/class-admin.php:400, admin/class-admin.php:449, admin/class-admin.php:494, admin/class-game.php:266, admin/class-game.php:382, admin/class-matche.php:300, templates/single-trn-ladder-competitor-edit.php:99, templates/single-trn-player-edit.php:107, templates/single-trn-team-edit.php:94
 msgid "Save"
 msgstr ""
 
-#: admin/class-admin.php:360, admin/class-admin.php:402, admin/class-admin.php:451, admin/class-admin.php:496, admin/class-match.php:300
+#: admin/class-admin.php:360, admin/class-admin.php:402, admin/class-admin.php:451, admin/class-admin.php:496, admin/class-matche.php:301
 msgid "Cancel"
 msgstr ""
 
@@ -348,7 +348,7 @@ msgstr ""
 #. translators: %s: Search query.
 #. translators: %s: Search query.
 #. translators: %s: Search query.
-#: admin/class-game.php:338, admin/class-ladder.php:149, admin/class-match.php:561, admin/class-match.php:607, admin/class-tournament.php:170
+#: admin/class-game.php:338, admin/class-ladder.php:149, admin/class-matche.php:562, admin/class-matche.php:608, admin/class-tournament.php:170
 msgid "Search results for: %s"
 msgstr ""
 
@@ -530,104 +530,104 @@ msgstr ""
 msgid "The ladder has been updated."
 msgstr ""
 
-#: admin/class-match.php:56, admin/class-match.php:57, admin/class-match.php:65, admin/class-match.php:66, templates/archive-trn-match.php:19, templates/single-trn-ladder.php:73, templates/single-trn-ladder.php:136, templates/single-trn-tournament.php:83
+#: admin/class-matche.php:57, admin/class-matche.php:58, admin/class-matche.php:66, admin/class-matche.php:67, templates/archive-trn-match.php:19, templates/single-trn-ladder.php:73, templates/single-trn-ladder.php:136, templates/single-trn-tournament.php:83
 msgid "Matches"
 msgstr ""
 
-#: admin/class-match.php:207, admin/class-match.php:769, includes/services/class-match.php:72
+#: admin/class-matche.php:208, admin/class-matche.php:770, includes/services/class-matche.php:72
 msgid "Admin confirmed"
 msgstr ""
 
-#: admin/class-match.php:260, admin/class-match.php:282
+#: admin/class-matche.php:261, admin/class-matche.php:283
 msgid "Result:"
 msgstr ""
 
-#: admin/class-match.php:264, admin/class-match.php:307
+#: admin/class-matche.php:265, admin/class-matche.php:308
 msgid "Won"
 msgstr ""
 
-#: admin/class-match.php:265, admin/class-match.php:308
+#: admin/class-matche.php:266, admin/class-matche.php:309
 msgid "Lost"
 msgstr ""
 
-#: admin/class-match.php:267, admin/class-match.php:309, templates/single-trn-match-confirm.php:63, templates/single-trn-match.php:110
+#: admin/class-matche.php:268, admin/class-matche.php:310, templates/single-trn-match-confirm.php:63, templates/single-trn-match.php:110
 msgid "Draw"
 msgstr ""
 
-#: admin/class-match.php:274, admin/class-match.php:291
+#: admin/class-matche.php:275, admin/class-matche.php:292
 msgid "Comment:"
 msgstr ""
 
-#: admin/class-match.php:299, admin/class-match.php:419, templates/archive-trn-ladder.php:67, templates/archive-trn-tournament.php:88, templates/page-trn-report-dashboard.php:223, templates/partials/scheduled-matches-table.php:43, templates/single-trn-ladder.php:86, templates/single-trn-match.php:160, templates/single-trn-player-dashboard.php:158, templates/single-trn-tournament.php:90, tournamatch.php:1344, tournamatch.php:2503
+#: admin/class-matche.php:300, admin/class-matche.php:420, templates/archive-trn-ladder.php:67, templates/archive-trn-tournament.php:88, templates/page-trn-report-dashboard.php:223, templates/partials/scheduled-matches-table.php:43, templates/single-trn-ladder.php:86, templates/single-trn-match.php:160, templates/single-trn-player-dashboard.php:158, templates/single-trn-tournament.php:90, tournamatch.php:1344, tournamatch.php:2503
 msgid "Report"
 msgstr ""
 
-#: admin/class-match.php:336, admin/class-match.php:381, admin/class-match.php:550
+#: admin/class-matche.php:337, admin/class-matche.php:382, admin/class-matche.php:551
 msgid "Ladder Matches"
 msgstr ""
 
-#: admin/class-match.php:343, templates/page-trn-report-dashboard.php:215
+#: admin/class-matche.php:344, templates/page-trn-report-dashboard.php:215
 msgid "Select Ladder"
 msgstr ""
 
-#: admin/class-match.php:351
+#: admin/class-matche.php:352
 msgid "Select the ladder for which to report a new match result."
 msgstr ""
 
-#: admin/class-match.php:389
+#: admin/class-matche.php:390
 msgid "First Competitor"
 msgstr ""
 
-#: admin/class-match.php:401
+#: admin/class-matche.php:402
 msgid "Second Competitor"
 msgstr ""
 
-#: admin/class-match.php:426
+#: admin/class-matche.php:427
 msgid "First Competitor and Second Competitor must be unique."
 msgstr ""
 
-#: admin/class-match.php:462
+#: admin/class-matche.php:463
 msgid "Admin Reported"
 msgstr ""
 
-#: admin/class-match.php:463
+#: admin/class-matche.php:464
 msgid "Admin Confirmed"
 msgstr ""
 
-#: admin/class-match.php:475, admin/class-match.php:523
+#: admin/class-matche.php:476, admin/class-matche.php:524
 msgid "Manage Matches"
 msgstr ""
 
-#: admin/class-match.php:476
+#: admin/class-matche.php:477
 msgid "Report Result"
 msgstr ""
 
-#: admin/class-match.php:525
+#: admin/class-matche.php:526
 msgid "Edit Result"
 msgstr ""
 
 #. translators: HTML <strong> and </strong> tags.
-#: admin/class-match.php:529
+#: admin/class-matche.php:530
 msgid "%1$s Note: %2$s Editing a match result will not change the points/rating on a ladder."
 msgstr ""
 
-#: admin/class-match.php:530
+#: admin/class-matche.php:531
 msgid "The wins/losses/ties and result of this match will update, but you must edit the ladder to change a competitor's points or rating."
 msgstr ""
 
-#: admin/class-match.php:552, includes/classes/class-tournamatch-ladder-list-table.php:251
+#: admin/class-matche.php:553, includes/classes/class-tournamatch-ladder-list-table.php:251
 msgid "Report Match"
 msgstr ""
 
-#: admin/class-match.php:571
+#: admin/class-matche.php:572
 msgid "Search Ladder Matches"
 msgstr ""
 
-#: admin/class-match.php:597
+#: admin/class-matche.php:598
 msgid "Tournament Matches"
 msgstr ""
 
-#: admin/class-match.php:617
+#: admin/class-matche.php:618
 msgid "Search Tournament Matches"
 msgstr ""
 
@@ -1188,7 +1188,7 @@ msgstr ""
 msgid "Players are allowed to sign up."
 msgstr ""
 
-#: includes/rest/class-challenge-builder.php:81, includes/rest/class-challenge.php:143, includes/rest/class-ladder-competitor.php:177, includes/rest/class-ladder.php:113, includes/rest/class-ladder.php:263, includes/rest/class-ladder.php:283, includes/rest/class-match.php:277, includes/rest/class-match.php:304
+#: includes/rest/class-challenge-builder.php:81, includes/rest/class-challenge.php:143, includes/rest/class-ladder-competitor.php:177, includes/rest/class-ladder.php:113, includes/rest/class-ladder.php:263, includes/rest/class-ladder.php:283, includes/rest/class-matche.php:277, includes/rest/class-matche.php:304
 msgid "Ladder does not exist."
 msgstr ""
 
@@ -1472,107 +1472,107 @@ msgstr ""
 msgid "The match has been disputed."
 msgstr ""
 
-#: includes/rest/class-match.php:373, includes/rest/class-match.php:593
+#: includes/rest/class-matche.php:373, includes/rest/class-matche.php:593
 msgid "a draw"
 msgstr ""
 
-#: includes/rest/class-match.php:371, includes/rest/class-match.php:591
+#: includes/rest/class-matche.php:371, includes/rest/class-matche.php:591
 msgid "you won"
 msgstr ""
 
-#: includes/rest/class-match.php:369, includes/rest/class-match.php:589
+#: includes/rest/class-matche.php:369, includes/rest/class-matche.php:589
 msgid "you lost"
 msgstr ""
 
-#: includes/rest/class-match.php:400, includes/rest/class-match.php:600
+#: includes/rest/class-matche.php:400, includes/rest/class-matche.php:600
 msgid "Confirm Ladder Result"
 msgstr ""
 
-#: includes/rest/class-match.php:429, includes/rest/class-match.php:482
+#: includes/rest/class-matche.php:429, includes/rest/class-matche.php:482
 msgid "Match does not exist."
 msgstr ""
 
-#: includes/rest/class-match.php:605
+#: includes/rest/class-matche.php:605
 msgid "Confirm Tournament Result"
 msgstr ""
 
-#: includes/rest/class-match.php:738
+#: includes/rest/class-matche.php:738
 msgid "The match was deleted."
 msgstr ""
 
-#: includes/rest/class-match.php:951
+#: includes/rest/class-matche.php:951
 msgid "The id for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:957
+#: includes/rest/class-matche.php:957
 msgid "The id for the competition."
 msgstr ""
 
-#: includes/rest/class-match.php:963, includes/rest/class-tournament-competitor.php:369, includes/rest/class-tournament-registration.php:462
+#: includes/rest/class-matche.php:963, includes/rest/class-tournament-competitor.php:369, includes/rest/class-tournament-registration.php:462
 msgid "The type of competitor registering."
 msgstr ""
 
-#: includes/rest/class-match.php:970
+#: includes/rest/class-matche.php:970
 msgid "Tournament bracket spot for the match. Unused for ladder matches."
 msgstr ""
 
-#: includes/rest/class-match.php:975
+#: includes/rest/class-matche.php:975
 msgid "Competitor one id for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:981
+#: includes/rest/class-matche.php:981
 msgid "Competitor one type for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:987
+#: includes/rest/class-matche.php:987
 msgid "Competitor one ip address for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:993
+#: includes/rest/class-matche.php:993
 msgid "Competitor one result for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1000
+#: includes/rest/class-matche.php:1000
 msgid "Competitor one comment for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1006
+#: includes/rest/class-matche.php:1006
 msgid "Competitor two id for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1012
+#: includes/rest/class-matche.php:1012
 msgid "Competitor two type for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1018
+#: includes/rest/class-matche.php:1018
 msgid "Competitor two ip address for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1024
+#: includes/rest/class-matche.php:1024
 msgid "Competitor two result for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1030
+#: includes/rest/class-matche.php:1030
 msgid "Competitor two comment for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1036
+#: includes/rest/class-matche.php:1036
 msgid "Date and time for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1041
+#: includes/rest/class-matche.php:1041
 msgid "Date and time for the match, as it exists in the database."
 msgstr ""
 
-#: includes/rest/class-match.php:1047
+#: includes/rest/class-matche.php:1047
 msgid "Date and time for the object, transformed for display."
 msgstr ""
 
-#: includes/rest/class-match.php:1055
+#: includes/rest/class-matche.php:1055
 msgid "Current status for the match."
 msgstr ""
 
-#: includes/rest/class-match.php:1069
+#: includes/rest/class-matche.php:1069
 msgid "Match result."
 msgstr ""
 

@@ -95,7 +95,7 @@ ORDER BY points DESC LIMIT %d",
 		echo '<ul class="trn-ladder-top-competitor-widget">';
 		foreach ( $competitors as $competitor ) {
 			echo '<li class="trn-ladder-top-competitor-widget-competitor">';
-			echo ' <img src="' . esc_url( plugins_url( 'tournamatch' ) . '/images/flags/' . esc_html( $competitor['flag'] ) ) . '" title="' . esc_html( $competitor['flag'] ) . '" border="0">';
+			echo ' <img src="' . esc_url( plugins_url( 'tournamatch' ) . '/dist/images/flags/' . esc_html( $competitor['flag'] ) ) . '" title="' . esc_html( $competitor['flag'] ) . '" border="0">';
 			echo ' <a href="' . esc_url( trn_route( $competitor['route'], array( $competitor['slug'] => $competitor['competitor_id'] ) ) ) . '">' . esc_html( $competitor['name'] ) . '</a>';
 			echo ' <span class="trn-ladder-top-competitor-widget-points">' . intval( $competitor['points'] ) . '</span>';
 			echo '</li>';
