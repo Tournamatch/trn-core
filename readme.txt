@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.0
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -41,6 +41,9 @@ You should add links to your menu for the following pages (replace example.com w
 - example.com/tournaments
 
 == Changelog ==
+
+= 4.0.1 =
+* Fixed broken flag, blank avatar, and blank game thumbnail path.
 
 = 4.0 =
 * The initial release to WordPress.org.
