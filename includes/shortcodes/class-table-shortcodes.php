@@ -565,7 +565,7 @@ class Table_Shortcodes {
 			'can_challenge'   => is_user_logged_in() && ( 'enabled' === $row['direct_challenges'] ),
 			'current_user_id' => get_current_user_id(),
 			'is_admin'        => current_user_can( 'manage_tournamatch' ),
-			'flag_path'       => plugins_url( 'tournamatch' ) . '/images/flags/',
+			'flag_path'       => plugins_url( 'tournamatch' ) . '/dist/images/flags/',
 			'challenge_url'   => site_url( 'challenges/create?ladder_id=' . $ladder->ladder_id . '&challengee_id=' ),
 			'can_promote'     => false,
 		);
@@ -1079,7 +1079,7 @@ class Table_Shortcodes {
 			'uses_draws'      => ( '1' === $options['uses_draws'] ),
 			'ranks'           => $ranks,
 			'can_edit_roster' => $can_edit_roster,
-			'flag_directory'  => plugins_url( 'tournamatch' ) . '/images/flags/',
+			'flag_directory'  => plugins_url( 'tournamatch' ) . '/dist/images/flags/',
 		);
 
 		wp_register_script( 'trn-team-roster-table', plugins_url( '../../dist/js/team-roster-table.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '3.27.0', true );
