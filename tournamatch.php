@@ -1437,7 +1437,7 @@ if ( ! function_exists( 'trn_get_flag_list' ) ) {
 	 */
 	function trn_get_flag_list() {
 		$flags  = array();
-		$handle = opendir( __TRNPATH . '/images/flags/' );
+		$handle = opendir( __TRNPATH . '/dist/images/flags/' );
 		if ( $handle ) {
 			$file = readdir( $handle );
 			while ( $file ) {

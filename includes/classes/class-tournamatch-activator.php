@@ -69,8 +69,8 @@ class Tournamatch_Activator {
 			}
 		}
 		$files = array(
-			__TRNPATH . 'images/avatars/blank.gif' => $upload_dir . '/images/avatars/blank.gif',
-			__TRNPATH . 'images/games/blank.gif'   => $upload_dir . '/images/games/blank.gif',
+			__TRNPATH . 'dist/images/avatars/blank.gif' => $upload_dir . '/images/avatars/blank.gif',
+			__TRNPATH . 'dist/images/games/blank.gif'   => $upload_dir . '/images/games/blank.gif',
 		);
 		foreach ( $files as $source => $destination ) {
 			if ( is_file( $source ) && ! is_file( $destination ) ) {
