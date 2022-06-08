@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.0
-Stable tag: 4.0.1
+Stable tag: 4.0.2
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -11,6 +11,8 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 A ladder and tournament plugin for eSports, physical sports, board games, and other online gaming leagues.
 
 == Description ==
+
+**Important**: Do not upgrade from version 3.x to 4.x of this plugin at this time. This is a major version change, and you should reach out to support@tournamatch.com to upgrade from 3.x to 4.0.
 
 Use this plugin to create tournaments and ladders (leader boards) on your website. Ladders track points, wins, losses, [optionally] draws, games played, win streak, and win percent. Tournaments support single elimination head-to-head competitions. It includes match challenges, player profiles, team profiles, ladder and tournament rule pages, match lists, and a player dashboard for managing everything.
 
@@ -41,6 +43,10 @@ You should add links to your menu for the following pages (replace example.com w
 - example.com/tournaments
 
 == Changelog ==
+
+= 4.0.2 =
+* Fixed a PHP 8 compatibility issue with class Match.
+* Fixed a bug that could cause a PHP warning in trn_route.
 
 = 4.0.1 =
 * Fixed broken flag, blank avatar, and blank game thumbnail path.

@@ -11,7 +11,7 @@
  * Plugin Name: Tournamatch
  * Plugin URI: https://www.tournamatch.com/
  * Description: Ladder and tournament plugin for eSports and online gaming leagues.
- * Version: 4.0.1
+ * Version: 4.0.2
  * Author: Tournamatch
  * Author URI: https://www.tournamatch.com
  * Text Domain: tournamatch
@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.0.1' );
+define( 'TOURNAMATCH_VERSION', '4.0.2' );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -1751,7 +1751,7 @@ if ( ! function_exists( 'trn_route' ) ) {
 			$url = str_replace( array_keys( $to_replace ), array_values( $to_replace ), $url );
 		}
 
-		if ( 0 < count( $remaining_parameters ) ) {
+		if ( is_array( $remaining_parameters ) && ( 0 < count( $remaining_parameters ) ) ) {
 			array_walk(
 				$remaining_parameters,
 				function ( &$value, $key ) {
@@ -2159,7 +2159,7 @@ add_action(
 			echo '<p>' . esc_html__( 'The given match is not valid.', 'tournamatch' ) . '</p>';
 		} else {
 			if ( 'reported' === $match->match_status ) {
-				$service = new Tournamatch\Services\Match();
+				$service = new Tournamatch\Services\Matche();
 				$service->confirm(
 					array(
 						'id'      => $match->match_id,

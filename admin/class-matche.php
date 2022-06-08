@@ -201,7 +201,7 @@ class Matche {
 
 		$match_id = $wpdb->insert_id;
 
-		$service = new \Tournamatch\Services\Match();
+		$service = new \Tournamatch\Services\Matche();
 		$service->confirm(
 			array(
 				'id'      => $match_id,
@@ -763,7 +763,7 @@ class Matche {
 
 				$match = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_matches` WHERE `match_id` = %d", $match_id ), ARRAY_A );
 
-				$service = new \Tournamatch\Services\Match();
+				$service = new \Tournamatch\Services\Matche();
 				$service->confirm(
 					array(
 						'id'      => $match_id,
