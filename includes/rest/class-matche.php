@@ -867,7 +867,7 @@ WHERE  `m`.`match_status` != %s",
 		if ( rest_is_field_included( 'match_date', $fields ) ) {
 			$data['match_date'] = array(
 				'raw'      => $match->match_date,
-				'rendered' => ( '0000-00-00 00:00:00' === $match->match_date ) ? '&nbsp;' : date( get_option( 'date_format' ), strtotime( $match->match_date ) ),
+				'rendered' => ( '0000-00-00 00:00:00' === $match->match_date ) ? '&nbsp;' : date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match->match_date ) ) ),
 			);
 		}
 

@@ -97,7 +97,7 @@ trn_get_header();
 			<dt class="col-sm-6"><?php esc_html_e( 'Status', 'tournamatch' ); ?>: </dt>
 			<dd class="col-sm-6" id="trn_match_status"><?php echo esc_html( ucwords( $match['match_status'] ) ); ?></dd>
 			<dt class="col-sm-6"><?php esc_html_e( 'Date', 'tournamatch' ); ?>: </dt>
-			<dd class="col-sm-6"><?php echo ( ( '0000-00-00 00:00:00' === $match['match_date'] ) ? '&nbsp;' : esc_html( date( get_option( 'date_format' ), strtotime( $match['match_date'] ) ) ) ); ?></dd>
+			<dd class="col-sm-6"><?php echo ( ( '0000-00-00 00:00:00' === $match['match_date'] ) ? '&nbsp;' : esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match['match_date'] ) ) ) ) ); ?></dd>
 		</dl>
 	</div>
 </div>

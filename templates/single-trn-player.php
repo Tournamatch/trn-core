@@ -58,7 +58,7 @@ $social_links = implode( ' ', $social_links );
 		<h1 class="text-center"><?php echo esc_html( $player->name ); ?></h1>
 		<dl>
 			<dt><?php esc_html_e( 'Joined Date', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo esc_html( date( get_option( 'date_format' ), strtotime( get_user_by( 'id', $user_id )->data->user_registered ) ) ); ?></dd>
+			<dd><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( get_user_by( 'id', $user_id )->data->user_registered ) ) ) ); ?></dd>
 			<dt><?php esc_html_e( 'Location', 'tournamatch' ); ?>:</dt>
 			<dd><?php echo esc_html( $player->location ); ?></dd>
 			<?php foreach ( $player_fields as $field_id => $field_data ) : ?>

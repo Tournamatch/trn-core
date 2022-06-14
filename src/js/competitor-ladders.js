@@ -54,13 +54,7 @@ import { trn } from './tournamatch.js';
                 name: 'position',
                 className: 'trn-ladder-competitions-table-position',
                 render: function (data, type, row) {
-                    if ('points' === row._embedded.ladder[0].mode) {
-                        return `${row.rank}${trn.ordinal_suffix(row.rank)} (${row.points})`;
-                    } else if ('ratings' === row._embedded.ladder[0].mode) {
-                        return `${row.rank}${trn.ordinal_suffix(row.rank)} (${row.rating})`;
-                    } else {
-                        return `${row.position}${trn.ordinal_suffix(row.position)}`;
-                    }
+                    return `${row.rank}${trn.ordinal_suffix(row.rank)} (${row.points})`;
                 },
             },
             {

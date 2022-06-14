@@ -300,7 +300,7 @@ class Tournament {
 						endif;
 						?>
 						<input id="start_date_field" name="start_date_field" type="datetime-local" value="<?php echo esc_html( $start_date ); ?>">
-						<input id="start_date" name="start_date" type="hidden" value="<?php echo esc_html( $tournament->start_date ); ?>">
+						<input id="start_date" name="start_date" type="hidden" value="<?php echo esc_html( $start_date ); ?>">
 					</td>
 				</tr>
 			</table>

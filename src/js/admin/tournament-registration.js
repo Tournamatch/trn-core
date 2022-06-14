@@ -76,9 +76,16 @@ import { trn } from './../tournamatch.js';
                     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                     xhr.setRequestHeader('X-WP-Nonce', options.rest_nonce);
                     xhr.onload = function () {
-                        console.log(JSON.parse(xhr.response)[0]['user_id']);
+                        console.log(xhr.response);
                         if (xhr.status === 200) {
-                            resolve(JSON.parse(xhr.response)[0]['user_id']);
+                            const players = JSON.parse(xhr.response);
+
+                            if (players.length > 0) {
+                                resolve(players[0]['user_id']);
+                                document.getElementById('trn-tournament-register-response').innerHTML = ``;
+                            } else {
+                                document.getElementById('trn-tournament-register-response').innerHTML = `<p class="notice notice-error"><strong>${options.language.failure}:</strong> ${options.language.no_competitor}</p>`;
+                            }
                         } else {
                             reject();
                         }
@@ -155,9 +162,16 @@ import { trn } from './../tournamatch.js';
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.setRequestHeader('X-WP-Nonce', options.rest_nonce);
                 xhr.onload = function () {
-                    console.log(JSON.parse(xhr.response)[0]['user_id']);
+                    console.log(xhr.response);
                     if (xhr.status === 200) {
-                        resolve(JSON.parse(xhr.response)[0]['user_id']);
+                        const players = JSON.parse(xhr.response);
+
+                        if (players.length > 0) {
+                            resolve(players[0]['user_id']);
+                            document.getElementById('trn-tournament-register-response').innerHTML = ``;
+                        } else {
+                            document.getElementById('trn-tournament-register-response').innerHTML = `<p class="notice notice-error"><strong>${options.language.failure}:</strong> ${options.language.no_competitor}</p>`;
+                        }
                     } else {
                         reject();
                     }

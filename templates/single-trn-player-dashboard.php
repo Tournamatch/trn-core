@@ -104,7 +104,7 @@ trn_get_header();
 									<a href="<?php echo esc_url( trn_route( $challenge->competitor_slug, array( $challenge->competitor_slug_argument => $challenge->challengee_id ) ) ); ?>"><?php echo esc_html( $challenge->challengee_name ); ?></a>
 								<?php endif; ?>
 							</td>
-							<td class="trn-challenges-table-match-time"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $challenge->match_time ) ) ); ?></td>
+							<td class="trn-challenges-table-match-time"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $challenge->match_time ) ) ) ); ?></td>
 							<td class="trn-challenges-table-status"><?php echo esc_html( ucwords( $challenge->accepted_state ) ); ?></td>
 							<td class="trn-challenges-table-action">
 								<div class="pull-right">

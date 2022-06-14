@@ -64,7 +64,7 @@ trn_get_header();
 						<td class="trn-confirm-results-table-result">
 							<?php
 
-							$match_date = date( get_option( 'date_format' ), strtotime( $match->match_date ) );
+							$match_date = date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match->match_date ) ) );
 
 							$opponent = ( 0 < strlen( $match->one_result ) ) ? 'one_competitor_name' : 'two_competitor_name';
 
@@ -132,7 +132,7 @@ trn_get_header();
 					<td class="trn-report-results-table-result">
 						<?php
 
-						$match_date = date( get_option( 'date_format' ), strtotime( $match->match_date ) );
+						$match_date = date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match->match_date ) ) );
 
 						$opponent = ( 0 < strlen( $match->one_result ) ) ? 'two_competitor_name' : 'one_competitor_name';
 

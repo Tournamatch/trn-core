@@ -399,7 +399,7 @@ class Team extends Controller {
 		if ( rest_is_field_included( 'joined_date', $fields ) ) {
 			$data['joined_date'] = array(
 				'raw'      => $team->joined_date,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $team->joined_date ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ),
 			);
 		}
 

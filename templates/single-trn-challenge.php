@@ -39,7 +39,7 @@ trn_get_header();
 	<dt><?php esc_html_e( 'Ladder', 'tournamatch' ); ?>:</dt>
 	<dd><?php echo esc_html( $challenge->ladder_name ); ?></dd>
 	<dt><?php esc_html_e( 'Match Time', 'tournamatch' ); ?>:</dt>
-	<dd><?php echo esc_html( date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $challenge->match_time ) ) ); ?></dd>
+	<dd><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $challenge->match_time ) ) ) ); ?></dd>
 	<dt><?php esc_html_e( 'Challenger', 'tournamatch' ); ?>:</dt>
 	<dd id="trn-challenge-challenger">
 		<?php

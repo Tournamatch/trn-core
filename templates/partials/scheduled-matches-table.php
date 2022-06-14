@@ -37,7 +37,7 @@ $scheduled_matches = isset( $args['scheduled_matches'] ) ? $args['scheduled_matc
 				<a href="<?php trn_esc_route_e( $scheduled_match->route_name, array( $scheduled_match->route_var => $scheduled_match->two_competitor_id ) ); ?>"><?php echo esc_html( $scheduled_match->two_name ); ?></a>
 			</td>
 			<td class="trn-scheduled-matches-table-date">
-				<?php echo esc_html( date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $scheduled_match->match_date ) ) ); ?>
+				<?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $scheduled_match->match_date ) ) ) ); ?>
 			</td>
 			<td class="trn-scheduled-matches-table-action">
 				<a class="btn btn-sm btn-primary" href="<?php trn_esc_route_e( 'matches.single.report', array( 'id' => $scheduled_match->match_id ) ); ?>"><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>

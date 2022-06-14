@@ -659,7 +659,7 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 		if ( rest_is_field_included( 'match_time', $fields ) ) {
 			$data['match_time'] = array(
 				'raw'      => $challenge->match_time,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $challenge->match_time ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $challenge->match_time ) ) ),
 			);
 		}
 
@@ -670,7 +670,7 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 		if ( rest_is_field_included( 'accepted_at', $fields ) ) {
 			$data['accepted_at'] = array(
 				'raw'      => $challenge->accepted_at,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $challenge->accepted_at ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $challenge->accepted_at ) ) ),
 			);
 		}
 
@@ -681,7 +681,7 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 		if ( rest_is_field_included( 'expires_at', $fields ) ) {
 			$data['expires_at'] = array(
 				'raw'      => $challenge->expires_at,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $challenge->expires_at ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $challenge->expires_at ) ) ),
 			);
 		}
 

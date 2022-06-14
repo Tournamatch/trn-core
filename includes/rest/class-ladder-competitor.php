@@ -190,7 +190,23 @@ class Ladder_Competitor extends Controller {
 
 		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_ladders_entries` (`ladder_entry_id`, `ladder_id`, `competitor_id`, `competitor_type`, `joined_date`) VALUES (NULL, %d, %d, %s, UTC_TIMESTAMP())", $request['ladder_id'], $request['competitor_id'], $request['competitor_type'] ) );
 
-		$competitor = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders_entries` WHERE `ladder_entry_id` = %d", $wpdb->insert_id ) );
+		$competitor = $wpdb->get_row(
+			$wpdb->prepare(
+				"
+SELECT 
+  `le1`.*,
+  (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`) AS `games_played`, 
+  CASE 
+    WHEN (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`) = 0 THEN '0.000' 
+    ELSE FORMAT((`le1`.`wins` / (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`)), 3) 
+    END AS `win_percent`, 
+  (UNIX_TIMESTAMP() - `time`) AS `idle_unix_timestamp`,
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
+FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
+WHERE `le1`.`ladder_entry_id` = %d",
+				$wpdb->insert_id
+			)
+		);
 
 		$request->set_param( 'context', 'edit' );
 
@@ -403,7 +419,23 @@ WHERE 1 = 1 ";
 			$wpdb->update( $wpdb->prefix . 'trn_ladders_entries', $data, array( 'ladder_entry_id' => $ladder_entry_id ) );
 		}
 
-		$competitor = $wpdb->get_row( $wpdb->prepare( "SELECT *, (UNIX_TIMESTAMP() - `time`) AS `idle_unix_timestamp` FROM 	`{$wpdb->prefix}trn_ladders_entries` WHERE `ladder_entry_id` = %d", $ladder_entry_id ) );
+		$competitor = $wpdb->get_row(
+			$wpdb->prepare(
+				"
+SELECT 
+  `le1`.*,
+  (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`) AS `games_played`, 
+  CASE 
+    WHEN (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`) = 0 THEN '0.000' 
+    ELSE FORMAT((`le1`.`wins` / (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`)), 3) 
+    END AS `win_percent`, 
+  (UNIX_TIMESTAMP() - `time`) AS `idle_unix_timestamp`,
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
+FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
+WHERE `le1`.`ladder_entry_id` = %d",
+				$ladder_entry_id
+			)
+		);
 
 		$request->set_param( 'context', 'edit' );
 
@@ -521,12 +553,16 @@ WHERE 1 = 1 ";
 		if ( rest_is_field_included( 'joined_date', $fields ) ) {
 			$data['joined_date'] = array(
 				'raw'      => $competitor->joined_date,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $competitor->joined_date ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $competitor->joined_date ) ) ),
 			);
 		}
 
 		if ( rest_is_field_included( 'points', $fields ) ) {
 			$data['points'] = (int) $competitor->points;
+		}
+
+		if ( rest_is_field_included( 'rank', $fields ) ) {
+			$data['rank'] = (int) $competitor->rank;
 		}
 
 		if ( rest_is_field_included( 'games_played', $fields ) && isset( $competitor->games_played ) ) {
@@ -682,6 +718,12 @@ WHERE 1 = 1 ";
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'default'     => 0,
+			),
+			'rank'            => array(
+				'description' => esc_html__( 'The numeric rank for the ladder competitor.', 'tournamatch' ),
+				'type'        => 'integer',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 			),
 			'wins'            => array(
 				'description' => esc_html__( 'The number of wins for the ladder competitor.', 'tournamatch' ),

@@ -303,7 +303,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: admin/class-game.php:190, admin/class-game.php:300, admin/class-game.php:428, admin/class-ladder.php:418, admin/class-tournament.php:371, admin/tournament-registrations.php:142, admin/tournament-registrations.php:144, includes/shortcodes/class-shortcodes.php:336, includes/shortcodes/class-shortcodes.php:386, includes/shortcodes/class-table-shortcodes.php:115, includes/shortcodes/class-table-shortcodes.php:203, includes/shortcodes/class-table-shortcodes.php:276, includes/shortcodes/class-table-shortcodes.php:352, includes/shortcodes/class-table-shortcodes.php:437, includes/shortcodes/class-table-shortcodes.php:554, includes/shortcodes/class-table-shortcodes.php:657, templates/page-trn-report-dashboard.php:34, templates/page-trn-report-dashboard.php:42, templates/single-trn-challenge-create.php:89, templates/single-trn-challenge.php:90, templates/single-trn-ladder-competitor-edit.php:111, templates/single-trn-ladder-join.php:98, templates/single-trn-player-edit.php:121, templates/single-trn-team-edit.php:108, templates/single-trn-team.php:87, templates/single-trn-tournament-register.php:95, templates/single-trn-tournament.php:178
+#: admin/class-game.php:190, admin/class-game.php:300, admin/class-game.php:428, admin/class-ladder.php:418, admin/class-tournament.php:371, admin/tournament-registrations.php:142, admin/tournament-registrations.php:145, includes/shortcodes/class-shortcodes.php:336, includes/shortcodes/class-shortcodes.php:386, includes/shortcodes/class-table-shortcodes.php:115, includes/shortcodes/class-table-shortcodes.php:203, includes/shortcodes/class-table-shortcodes.php:276, includes/shortcodes/class-table-shortcodes.php:352, includes/shortcodes/class-table-shortcodes.php:437, includes/shortcodes/class-table-shortcodes.php:554, includes/shortcodes/class-table-shortcodes.php:657, templates/page-trn-report-dashboard.php:34, templates/page-trn-report-dashboard.php:42, templates/single-trn-challenge-create.php:89, templates/single-trn-challenge.php:90, templates/single-trn-ladder-competitor-edit.php:111, templates/single-trn-ladder-join.php:98, templates/single-trn-player-edit.php:121, templates/single-trn-team-edit.php:108, templates/single-trn-team.php:87, templates/single-trn-tournament-register.php:95, templates/single-trn-tournament.php:178
 msgid "Success"
 msgstr ""
 
@@ -776,11 +776,15 @@ msgstr ""
 msgid "Competitor was added to the tournament."
 msgstr ""
 
-#: admin/tournament-registrations.php:145
-msgid "Competitors remaining in the Email Addresses input could not be found. Competitors on the right have been registered."
+#: admin/tournament-registrations.php:144
+msgid "Competitor was not found."
 msgstr ""
 
 #: admin/tournament-registrations.php:146
+msgid "Competitors remaining in the Email Addresses input could not be found. Competitors on the right have been registered."
+msgstr ""
+
+#: admin/tournament-registrations.php:147
 msgid "No existing teams"
 msgstr ""
 
@@ -1328,87 +1332,91 @@ msgstr ""
 msgid "The image thumbnail for the game."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:375
+#: includes/rest/class-ladder-competitor.php:391
 msgid "Ladder competitor does not exist."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:445
+#: includes/rest/class-ladder-competitor.php:477
 msgid "The ladder competitor was promoted."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:478
+#: includes/rest/class-ladder-competitor.php:510
 msgid "The ladder competitor was removed."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:637
+#: includes/rest/class-ladder-competitor.php:673
 msgid "The id for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:643
+#: includes/rest/class-ladder-competitor.php:679
 msgid "The ladder id for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:649
+#: includes/rest/class-ladder-competitor.php:685
 msgid "The competitor id for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:655
+#: includes/rest/class-ladder-competitor.php:691
 msgid "The competitor type for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:662
+#: includes/rest/class-ladder-competitor.php:698
 msgid "The datetime the ladder competitor joined the ladder."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:667
+#: includes/rest/class-ladder-competitor.php:703
 msgid "The datetime the ladder competitor joined the ladder, as it exists in the database."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:673
+#: includes/rest/class-ladder-competitor.php:709
 msgid "The datetime the ladder competitor joined the ladder, transformed for display."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:681
+#: includes/rest/class-ladder-competitor.php:717
 msgid "The number of points earned according to Points ranking for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:687
-msgid "The number of wins for the ladder competitor."
-msgstr ""
-
-#: includes/rest/class-ladder-competitor.php:693
-msgid "The number of losses for the ladder competitor."
-msgstr ""
-
-#: includes/rest/class-ladder-competitor.php:699
-msgid "The number of draws for the ladder competitor."
-msgstr ""
-
-#: includes/rest/class-ladder-competitor.php:705
-msgid "The total number of games played for the ladder competitor."
-msgstr ""
-
-#: includes/rest/class-ladder-competitor.php:711
-msgid "The win percentage for the ladder competitor."
-msgstr ""
-
-#: includes/rest/class-ladder-competitor.php:717
-msgid "The number of consecutive wins for the ladder competitor."
-msgstr ""
-
 #: includes/rest/class-ladder-competitor.php:723
-msgid "The most number of consecutive wins ever for the ladder competitor."
+msgid "The numeric rank for the ladder competitor."
 msgstr ""
 
 #: includes/rest/class-ladder-competitor.php:729
-msgid "The the worst number of consecutive losses ever for the ladder competitor."
+msgid "The number of wins for the ladder competitor."
 msgstr ""
 
 #: includes/rest/class-ladder-competitor.php:735
-msgid "The total number of days since the last match for the ladder competitor."
+msgid "The number of losses for the ladder competitor."
 msgstr ""
 
 #: includes/rest/class-ladder-competitor.php:741
+msgid "The number of draws for the ladder competitor."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:747
+msgid "The total number of games played for the ladder competitor."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:753
+msgid "The win percentage for the ladder competitor."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:759
+msgid "The number of consecutive wins for the ladder competitor."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:765
+msgid "The most number of consecutive wins ever for the ladder competitor."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:771
+msgid "The the worst number of consecutive losses ever for the ladder competitor."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:777
+msgid "The total number of days since the last match for the ladder competitor."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:783
 msgid "The match id of the last match for the ladder competitor."
 msgstr ""
 

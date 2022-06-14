@@ -469,7 +469,7 @@ WHERE `tm`.`team_id` = %d
 		if ( rest_is_field_included( 'joined_date', $fields ) ) {
 			$data['joined_date'] = array(
 				'raw'      => $team_member->joined_date,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $team_member->joined_date ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team_member->joined_date ) ) ),
 			);
 		}
 

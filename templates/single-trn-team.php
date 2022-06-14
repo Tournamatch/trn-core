@@ -56,7 +56,7 @@ $social_links = implode( ' ', $social_links );
 			<dt><?php esc_html_e( 'Owner', 'tournamatch' ); ?>:</dt>
 			<dd id="trn-team-owner"><?php echo esc_html( $team_owner->name ); ?></dd>
 			<dt><?php esc_html_e( 'Joined Date', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo esc_html( date( get_option( 'date_format' ), strtotime( $team->joined_date ) ) ); ?></dd>
+			<dd><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ) ); ?></dd>
 			<?php foreach ( $team_fields as $field_id => $field_data ) : ?>
 				<dt><?php echo esc_html( $field_data['display_name'] ); ?>:</dt>
 				<dd><?php echo esc_html( get_post_meta( $team->post_id, $field_id, true ) ); ?></dd>

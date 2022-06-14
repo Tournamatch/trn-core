@@ -141,6 +141,7 @@ $options = [
 		'failure'         => esc_html__( 'Error', 'tournamatch' ),
 		'success'         => esc_html__( 'Success', 'tournamatch' ),
 		'success_message' => esc_html__( 'Competitor was added to the tournament.', 'tournamatch' ),
+		'no_competitor'   => esc_html__( 'Competitor was not found.', 'tournamatch' ),
 		'result'          => esc_html__( 'Success', 'tournamatch' ),
 		'result_message'  => esc_html__( 'Competitors remaining in the Email Addresses input could not be found. Competitors on the right have been registered.', 'tournamatch' ),
 		'zero_teams'      => esc_html__( 'No existing teams', 'tournamatch' ),

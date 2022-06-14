@@ -284,7 +284,7 @@ WHERE 1 = 1 ";
 		if ( rest_is_field_included( 'joined_date', $fields ) ) {
 			$data['joined_date'] = array(
 				'raw'      => $tournament_competitor->joined_date,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $tournament_competitor->joined_date ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $tournament_competitor->joined_date ) ) ),
 			);
 		}
 

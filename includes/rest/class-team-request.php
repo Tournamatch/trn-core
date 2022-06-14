@@ -435,7 +435,7 @@ class Team_Request extends Controller {
 		if ( rest_is_field_included( 'requested_at', $fields ) ) {
 			$data['requested_at'] = array(
 				'raw'      => $team_request->requested_at,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $team_request->requested_at ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team_request->requested_at ) ) ),
 			);
 		}
 

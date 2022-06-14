@@ -463,7 +463,7 @@ class Team_Invitation extends Controller {
 		if ( rest_is_field_included( 'invited_at', $fields ) ) {
 			$data['invited_at'] = array(
 				'raw'      => $team_invitation->invited_at,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $team_invitation->invited_at ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team_invitation->invited_at ) ) ),
 			);
 		}
 

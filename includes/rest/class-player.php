@@ -477,7 +477,7 @@ WHERE `user_id` = %d
 			$joined_date         = get_user_by( 'id', $player->user_id )->data->user_registered;
 			$data['joined_date'] = array(
 				'raw'      => $joined_date,
-				'rendered' => date( get_option( 'date_format' ), strtotime( $joined_date ) ),
+				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $joined_date ) ) ),
 			);
 		}
 
