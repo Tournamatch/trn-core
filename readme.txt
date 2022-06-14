@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.0
-Stable tag: 4.0.2
+Stable tag: 4.0.3
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -43,6 +43,13 @@ You should add links to your menu for the following pages (replace example.com w
 - example.com/tournaments
 
 == Changelog ==
+
+= 4.0.3 =
+* Fixed date localization.
+* Fixed a bug cause observed when registering for a ladder. It looks like it is successful and correctly redirects to the ladder standings now.
+* Fixed the competitor rank displayed on player and team profiles. It no longer displays as undefinedth.
+* Removed a PHP debug notice on the new tournaments screen.
+* Added a competitor not found message for backend tournament registration when the entered text is not a registered user.
 
 = 4.0.2 =
 * Fixed a PHP 8 compatibility issue with class Match.
