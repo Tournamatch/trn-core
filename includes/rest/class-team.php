@@ -254,8 +254,6 @@ class Team extends Controller {
 		$team_tag  = $params['tag'];
 		$user_id   = isset( $params['user_id'] ) ? $params['user_id'] : get_current_user_id();
 
-		// Verify authorization.
-
 		$rules = array(
 			new Team_Name_Required( $team_name ),
 			new Unique_Team_Name( $team_name ),
@@ -370,75 +368,6 @@ class Team extends Controller {
 		return rest_ensure_response( $team );
 	}
 
-
-	/**
-	 * Prepares a single team item for response.
-	 *
-	 * @since 3.21.0
-	 *
-	 * @param Object           $team Team object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $team, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'team_id', $fields ) ) {
-			$data['team_id'] = (int) $team->team_id;
-		}
-
-		if ( rest_is_field_included( 'name', $fields ) ) {
-			$data['name'] = $team->name;
-		}
-
-		if ( rest_is_field_included( 'joined_date', $fields ) ) {
-			$data['joined_date'] = array(
-				'raw'      => $team->joined_date,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'avatar', $fields ) ) {
-			$data['avatar'] = $team->avatar;
-		}
-
-		if ( rest_is_field_included( 'flag', $fields ) ) {
-			$data['flag'] = $team->flag;
-		}
-
-		if ( rest_is_field_included( 'wins', $fields ) ) {
-			$data['wins'] = (int) $team->wins;
-		}
-
-		if ( rest_is_field_included( 'losses', $fields ) ) {
-			$data['losses'] = (int) $team->losses;
-		}
-
-		if ( rest_is_field_included( 'draws', $fields ) ) {
-			$data['draws'] = (int) $team->draws;
-		}
-
-		if ( rest_is_field_included( 'members', $fields ) ) {
-			$data['members'] = (int) $team->members;
-		}
-
-		if ( rest_is_field_included( 'link', $fields ) ) {
-			$data['link'] = trn_route( 'teams.single', array( 'id' => $team->team_id ) );
-		}
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $team );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
 	/**
 	 * Prepares links for the request.
 	 *
@@ -502,6 +431,7 @@ class Team extends Controller {
 			'joined_date' => array(
 				'description' => esc_html__( 'The datetime the team was created.', 'tournamatch' ),
 				'type'        => 'object',
+				'trn-subtype' => 'datetime',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'properties'  => array(
 					'raw'      => array(
@@ -547,6 +477,10 @@ class Team extends Controller {
 			'link'        => array(
 				'description' => esc_html__( 'URL to the team.' ),
 				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $team ) {
+					return trn_route( 'teams.single', array( 'id' => $team->team_id ) );
+				},
 				'format'      => 'uri',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,

@@ -438,66 +438,6 @@ WHERE `tm`.`team_id` = %d
 	}
 
 	/**
-	 * Prepares a single team-member item for response.
-	 *
-	 * @since 3.19.0
-	 *
-	 * @param Object           $team_member    Team member object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $team_member, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'team_member_id', $fields ) ) {
-			$data['team_member_id'] = (int) $team_member->team_member_id;
-		}
-
-		if ( rest_is_field_included( 'team_id', $fields ) ) {
-			$data['team_id'] = (int) $team_member->team_id;
-		}
-
-		if ( rest_is_field_included( 'user_id', $fields ) ) {
-			$data['user_id'] = (int) $team_member->user_id;
-		}
-
-		if ( rest_is_field_included( 'joined_date', $fields ) ) {
-			$data['joined_date'] = array(
-				'raw'      => $team_member->joined_date,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team_member->joined_date ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'team_rank_id', $fields ) ) {
-			$data['team_rank_id'] = (int) $team_member->team_rank_id;
-		}
-
-		if ( rest_is_field_included( 'wins', $fields ) ) {
-			$data['wins'] = (int) $team_member->wins;
-		}
-
-		if ( rest_is_field_included( 'losses', $fields ) ) {
-			$data['losses'] = (int) $team_member->losses;
-		}
-
-		if ( rest_is_field_included( 'draws', $fields ) ) {
-			$data['draws'] = (int) $team_member->draws;
-		}
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $team_member );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
-	/**
 	 * Prepares links for the request.
 	 *
 	 * @since 3.25.0
@@ -574,6 +514,7 @@ WHERE `tm`.`team_id` = %d
 				'joined_date'    => array(
 					'description' => esc_html__( 'The datetime the player joined the team for the team member.', 'tournamatch' ),
 					'type'        => 'object',
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(

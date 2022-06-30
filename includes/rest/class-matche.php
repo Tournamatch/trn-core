@@ -788,110 +788,6 @@ WHERE  `m`.`match_status` != %s",
 	}
 
 	/**
-	 * Prepares a single match item for response.
-	 *
-	 * @since 3.19.0
-	 *
-	 * @param Object           $match Match object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $match, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'match_id', $fields ) ) {
-			$data['match_id'] = (int) $match->match_id;
-		}
-
-		if ( rest_is_field_included( 'competition_id', $fields ) ) {
-			$data['competition_id'] = (int) $match->competition_id;
-		}
-
-		if ( rest_is_field_included( 'competition_type', $fields ) ) {
-			$data['competition_type'] = $match->competition_type;
-		}
-
-		if ( rest_is_field_included( 'spot', $fields ) ) {
-			$data['spot'] = (int) $match->spot;
-		}
-
-		if ( rest_is_field_included( 'one_competitor_id', $fields ) ) {
-			$data['one_competitor_id'] = (int) $match->one_competitor_id;
-		}
-
-		if ( rest_is_field_included( 'one_competitor_type', $fields ) ) {
-			$data['one_competitor_type'] = $match->one_competitor_type;
-		}
-
-		if ( current_user_can( 'manage_tournamatch' ) ) {
-			if ( rest_is_field_included( 'one_ip', $fields ) ) {
-				$data['one_ip'] = $match->one_ip;
-			}
-		}
-
-		if ( rest_is_field_included( 'one_result', $fields ) ) {
-			$data['one_result'] = $match->one_result;
-		}
-
-		if ( rest_is_field_included( 'one_comment', $fields ) ) {
-			$data['one_comment'] = $match->one_comment;
-		}
-
-		if ( rest_is_field_included( 'two_competitor_id', $fields ) ) {
-			$data['two_competitor_id'] = (int) $match->two_competitor_id;
-		}
-
-		if ( rest_is_field_included( 'two_competitor_type', $fields ) ) {
-			$data['two_competitor_type'] = $match->two_competitor_type;
-		}
-
-		if ( current_user_can( 'manage_tournamatch' ) ) {
-			if ( rest_is_field_included( 'two_ip', $fields ) ) {
-				$data['two_ip'] = $match->two_ip;
-			}
-		}
-
-		if ( rest_is_field_included( 'two_result', $fields ) ) {
-			$data['two_result'] = $match->two_result;
-		}
-
-		if ( rest_is_field_included( 'two_comment', $fields ) ) {
-			$data['two_comment'] = $match->two_comment;
-		}
-
-		if ( rest_is_field_included( 'match_date', $fields ) ) {
-			$data['match_date'] = array(
-				'raw'      => $match->match_date,
-				'rendered' => ( '0000-00-00 00:00:00' === $match->match_date ) ? '&nbsp;' : date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match->match_date ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'match_status', $fields ) ) {
-			$data['match_status'] = $match->match_status;
-		}
-
-		if ( rest_is_field_included( 'match_result', $fields ) ) {
-			$data['match_result'] = get_match_result_text( $match );
-		}
-
-		if ( rest_is_field_included( 'link', $fields ) ) {
-			$data['link'] = trn_route( 'matches.single', array( 'id' => $match->match_id ) );
-		}
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $match );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
-	/**
 	 * Prepares links for the request.
 	 *
 	 * @since 3.21.0
@@ -942,11 +838,7 @@ WHERE  `m`.`match_status` != %s",
 			return $this->add_additional_fields_schema( $this->schema );
 		}
 
-		$schema = array(
-			'$schema'    => 'http://json-schema.org/draft-04/schema#',
-			'title'      => 'match',
-			'type'       => 'object',
-			'properties' => array(
+		$properties = array(
 				'match_id'            => array(
 					'description' => esc_html__( 'The id for the match.', 'tournamatch' ),
 					'type'        => 'integer',
@@ -983,12 +875,6 @@ WHERE  `m`.`match_status` != %s",
 					'enum'        => array( 'players', 'teams' ),
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),
-				'one_ip'              => array(
-					'description' => esc_html__( 'Competitor one ip address for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => '',
-				),
 				'one_result'          => array(
 					'description' => esc_html__( 'Competitor one result for the match.', 'tournamatch' ),
 					'type'        => 'string',
@@ -1014,12 +900,6 @@ WHERE  `m`.`match_status` != %s",
 					'enum'        => array( 'players', 'teams' ),
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),
-				'two_ip'              => array(
-					'description' => esc_html__( 'Competitor two ip address for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => '',
-				),
 				'two_result'          => array(
 					'description' => esc_html__( 'Competitor two result for the match.', 'tournamatch' ),
 					'type'        => 'string',
@@ -1035,6 +915,13 @@ WHERE  `m`.`match_status` != %s",
 				'match_date'          => array(
 					'description' => esc_html__( 'Date and time for the match.', 'tournamatch' ),
 					'type'        => 'object',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $match ) {
+						return array(
+							'raw'      => $match->match_date,
+							'rendered' => ( '0000-00-00 00:00:00' === $match->match_date ) ? '&nbsp;' : date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match->match_date ) ) ),
+						);
+					},
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(
@@ -1068,17 +955,54 @@ WHERE  `m`.`match_status` != %s",
 				'match_result'        => array(
 					'description' => esc_html__( 'Match result.', 'tournamatch' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $match ) {
+						return get_match_result_text( $match );
+					},
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'default'     => '',
 				),
 				'link'                => array(
 					'description' => esc_html__( 'URL to the match.' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $match ) {
+						return trn_route( 'matches.single', array( 'id' => $match->match_id ) );
+					},
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
-			),
+			);
+
+		if ( current_user_can( 'manage_tournamatch' ) ) {
+			$one_ip = array(
+				'one_ip' => array(
+					'description' => esc_html__( 'Competitor one ip address for the match.', 'tournamatch' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => '',
+				)
+			);
+			$properties = trn_array_insert( $properties, 'one_competitor_type', 'one_ip', $one_ip );
+
+			$two_ip = array(
+				'two_ip' => array(
+					'description' => esc_html__( 'Competitor two ip address for the match.', 'tournamatch' ),
+					'type'        => 'string',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => '',
+				)
+			);
+			$properties = trn_array_insert( $properties, 'two_competitor_type', 'two_ip', $two_ip );
+		}
+
+
+		$schema = array(
+			'$schema'    => 'http://json-schema.org/draft-04/schema#',
+			'title'      => 'match',
+			'type'       => 'object',
+			'properties' => $properties
 		);
 
 		$this->schema = $schema;

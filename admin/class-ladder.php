@@ -251,6 +251,169 @@ class Ladder {
 		global $wpdb;
 
 		$current_games = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}trn_games`" );
+		$game_options  = array_map(
+			function( $game ) {
+				return array(
+					'value'   => intval( $game->game_id ),
+					'content' => $game->name,
+				);
+			},
+			$current_games
+		);
+
+		$sections = array(
+			array(
+				'id'      => 'general',
+				'content' => __( 'General Ladder Info', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'name',
+						'label'       => __( 'Name', 'tournamatch' ),
+						'required'    => true,
+						'type'        => 'text',
+						'description' => __( 'The name displayed to users for the ladder.', 'tournamatch' ),
+						'value'       => isset( $ladder->name ) ? $ladder->name : '',
+					),
+					array(
+						'id'          => 'game_id',
+						'label'       => __( 'Game', 'tournamatch' ),
+						'type'        => 'select',
+						'description' => __( 'Choose corresponding game (e.g. Madden, AoE, etc.)', 'tournamatch' ),
+						'value'       => isset( $ladder->game_id ) ? intval( $ladder->game_id ) : 0,
+						'options'     => $game_options,
+					),
+					array(
+						'id'          => 'win_points',
+						'label'       => __( 'Win', 'tournamatch' ),
+						'type'        => 'number',
+						'value'       => isset( $ladder->win_points ) ? intval( $ladder->win_points ) : 3,
+					),
+					array(
+						'id'          => 'loss_points',
+						'label'       => __( 'Loss', 'tournamatch' ),
+						'type'        => 'number',
+						'value'       => isset( $ladder->loss_points ) ? intval( $ladder->loss_points ) : 1,
+					),
+					array(
+						'id'          => 'draw_points',
+						'label'       => __( 'Draw', 'tournamatch' ),
+						'description' => __( 'Points awarded for wins, losses and draws.', 'tournamatch' ),
+						'type'        => 'number',
+						'value'       => isset( $ladder->draw_points ) ? intval( $ladder->draw_points ) : 2,
+					),
+				),
+			),
+			array(
+				'id'      => 'match',
+				'content' => __( 'Match Settings', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'competitor_type',
+						'label'       => __( 'Competition', 'tournamatch' ),
+						'type'        => 'select',
+						'description' => __( 'Player vs player or team vs team.', 'tournamatch' ),
+						'value'       => isset( $ladder->competitor_type ) ? $ladder->competitor_type : 'players',
+						'disabled'    => ( 'update' === $form_state ) && ( $participants > 0 ),
+						'options'     => array(
+							array(
+								'value'   => 'players',
+								'content' => __( 'Singles', 'tournamatch' ),
+							),
+							array(
+								'value'   => 'teams',
+								'content' => __( 'Teams', 'tournamatch' ),
+							),
+						),
+					),
+					array(
+						'id'          => 'team_size',
+						'label'       => __( 'Players per Team', 'tournamatch' ),
+						'type'        => 'number',
+						'description' => __( 'Number of players per team.', 'tournamatch' ),
+						'value'       => isset( $ladder->team_size ) ? intval( $ladder->team_size ) : 2,
+					),
+				),
+			),
+			array(
+				'id'      => 'challenge',
+				'content' => __( 'Challenge Settings', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'direct_challenges',
+						'label'       => __( 'Direct Challenges', 'tournamatch' ),
+						'type'        => 'select',
+						'description' => __( 'Enable or disable direct challenges (challenger directly to challengee).', 'tournamatch' ),
+						'value'       => isset( $ladder->direct_challenges ) ? $ladder->direct_challenges : 'enabled',
+						'options'     => array(
+							array(
+								'value'   => 'enabled',
+								'content' => __( 'Enabled', 'tournamatch' ),
+							),
+							array(
+								'value'   => 'disabled',
+								'content' => __( 'Disabled', 'tournamatch' ),
+							),
+						),
+					),
+				),
+			),
+			array(
+				'id'      => 'other',
+				'content' => __( 'Other Settings', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'rules',
+						'label'       => __( 'Rules', 'tournamatch' ),
+						'description' => __( 'The rules for the ladder. HTML is allowed.', 'tournamatch' ),
+						'type'        => 'textarea',
+						'value'       => isset( $ladder->rules ) ? $ladder->rules : '',
+					),
+					array(
+						'id'          => 'visibility',
+						'label'       => __( 'Visibility', 'tournamatch' ),
+						'description' => __( 'Toggle display of this ladder outside Admin.', 'tournamatch' ),
+						'type'        => 'select',
+						'value'       => isset( $ladder->visibility ) ? $ladder->visibility : 'visible',
+						'options'     => array(
+							array(
+								'value'   => 'visible',
+								'content' => __( 'Visible', 'tournamatch' ),
+							),
+							array(
+								'value'   => 'hidden',
+								'content' => __( 'Hidden', 'tournamatch' ),
+							),
+						),
+					),
+					array(
+						'id'          => 'active',
+						'label'       => __( 'Active', 'tournamatch' ),
+						'description' => __( 'Toggle activity such as reporting, confirming, joining, etc.', 'tournamatch' ),
+						'type'        => 'select',
+						'value'       => isset( $ladder->active ) ? $ladder->active : 'active',
+						'options'     => array(
+							array(
+								'value'   => 'active',
+								'content' => __( 'Active', 'tournamatch' ),
+							),
+							array(
+								'value'   => 'inactive',
+								'content' => __( 'Inactive', 'tournamatch' ),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$form = array(
+			'id'       => 'trn-ladder-form',
+			'sections' => $sections,
+			'submit'   => array(
+				'id'      => 'create-ladder-button',
+				'content' => ( 'create' === $form_state ) ? __( 'Create Ladder', 'tournamatch' ) : __( 'Save Changes', 'tournamatch' ),
+			),
+		);
 
 		?>
 		<style type="text/css">
@@ -263,152 +426,10 @@ class Ladder {
 				}
 			}
 		</style>
-		<form id="trn-ladder-form" action="#" method="post" enctype="multipart/form-data" >
-			<h2 class="title"><?php esc_html_e( 'General Ladder Info', 'tournamatch' ); ?></h2>
-			<div id="trn-admin-manage-ladder-response"></div>
-			<table class="form-table" role="presentation">
-				<tr class="form-field form-required">
-					<th scope="row">
-						<label for="name"><?php esc_html_e( 'Name', 'tournamatch' ); ?> <span class="description"><?php esc_html_e( '(required)', 'tournamatch' ); ?></span></label>
-					</th>
-					<td>
-						<input type="text" id="name" name="name" value="<?php echo isset( $ladder->name ) ? esc_html( $ladder->name ) : ''; ?>" required/>
-						<p class="description"><?php esc_html_e( 'The name displayed to users for the ladder.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-				<tr class="form-field">
-					<th scope="row">
-						<label for="game_id"><?php esc_html_e( 'Game', 'tournamatch' ); ?>:</label>
-					</th>
-					<td>
-						<?php if ( count( $current_games ) > 0 ) : ?>
-							<select name='game_id' id='game_id'>
-								<option value='0' <?php echo ( isset( $ladder->game_id ) && ( '0' === $ladder->game_id ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'None', 'tournamatch' ); ?></option>
-								<?php foreach ( $current_games as $game ) : ?>
-									<option value="<?php echo intval( $game->game_id ); ?>" <?php echo ( isset( $ladder->game_id ) && ( $ladder->game_id === $game->game_id ) ) ? 'selected' : ''; ?>><?php echo esc_html( $game->name ); ?></option>
-								<?php endforeach; ?>
-							</select>
-							<p class="description"><?php esc_html_e( 'Choose corresponding game (e.g. Madden, AoE, etc.)', 'tournamatch' ); ?></p>
-						<?php else : ?>
-							<?php /* translators: Opening and closing anchor tags. */ ?>
-							<p><?php esc_html_e( 'There are no Game Types made.', 'tournamatch' ); ?> <?php echo sprintf( esc_html__( 'Click %1$s here %2$s if you want to create one or you may proceed without one.', 'tournamatch' ), "<a href='" . esc_url( trn_route( 'admin.games' ) ) . "'>", '</a>' ); ?> *</p>
-							<input type='hidden' id="game_id" name='game_id' value='0'>
-						<?php endif; ?>
-					</td>
-				</tr>
-				<tr class="form-field trn-points-form-group">
-					<th scope="row">
-						<label for="win_points"><?php esc_html_e( 'Win', 'tournamatch' ); ?>:</label>
-					</th>
-					<td>
-						<input type="number" id="win_points" name="win_points" value="<?php echo isset( $ladder->win_points ) ? intval( $ladder->win_points ) : '3'; ?>">
-					</td>
-				</tr>
-				<tr class="form-field trn-points-form-group">
-					<th scope="row">
-						<label for="loss_points"><?php esc_html_e( 'Loss', 'tournamatch' ); ?>:</label>
-					</th>
-					<td>
-						<input type="number" id="loss_points" name="loss_points" value="<?php echo isset( $ladder->loss_points ) ? intval( $ladder->loss_points ) : '1'; ?>">
-					</td>
-				</tr>
-				<tr class="form-field trn-points-form-group">
-					<th scope="row">
-						<label for="draw_points"><?php esc_html_e( 'Tie', 'tournamatch' ); ?>:</label>
-					</th>
-					<td>
-						<input type="number" id="draw_points" name="draw_points" value="<?php echo isset( $ladder->draw_points ) ? intval( $ladder->draw_points ) : '2'; ?>">
-						<p class="description"><?php esc_html_e( 'Points awarded for wins, losses and draws.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			<h2 class="title"><?php esc_html_e( 'Match Settings', 'tournamatch' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<tr class="form-field">
-					<th scope="row">
-						<label for="competitor_type"><?php esc_html_e( 'Competition', 'tournamatch' ); ?>:</label>
-					</th>
-					<td>
-						<select id="competitor_type" name="competitor_type" class="form-control" <?php echo ( ( 'update' === $form_state ) && ( $participants > 0 ) ) ? 'disabled' : ''; ?>>
-							<option value="players" <?php echo ( isset( $ladder->competitor_type ) && ( 'players' === $ladder->competitor_type ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Singles', 'tournamatch' ); ?></option>
-							<option value="teams" <?php echo ( isset( $ladder->competitor_type ) && ( 'teams' === $ladder->competitor_type ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Teams', 'tournamatch' ); ?></option>
-						</select>
-						<p class="description"><?php esc_html_e( 'Player vs player or team vs team.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-				<tr class="form-field" id="team_size_group">
-					<th scope="row">
-						<label for="team_size"><?php esc_html_e( 'Players per Team', 'tournamatch' ); ?>:</label>
-					</th>
-					<td>
-						<input type='number' id='team_size' name='team_size' value="<?php echo isset( $ladder->team_size ) ? intval( $ladder->team_size ) : 2; ?>">
-						<p class="description"><?php esc_html_e( 'Number of players per team.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			<h2 class="title"><?php esc_html_e( 'Challenge Settings', 'tournamatch' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<?php if ( ! get_option( 'tournamatch_options' )['open_play_enabled'] ) : ?>
-					<div class="notice notice-warning">
-						<?php /* translators: Opening and closing HTML anchor tags. */ ?>
-						<p><?php printf( esc_html__( '%1$s Attention! %2$s Open play is disabled. At least one of the below must be enabled or competitors won\'t be able to report any results.', 'tournamatch' ), '<strong>', '</strong>' ); ?></p>
-					</div>
-				<?php endif; ?>
-				<tr class="form-field">
-					<th scope="row">
-						<label for="direct_challenges"><?php esc_html_e( 'Direct Challenges:', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<select id="direct_challenges" name="direct_challenges">
-							<option value='enabled'  <?php echo ( isset( $ladder->direct_challenges ) && ( 'enabled' === $ladder->direct_challenges ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Enabled', 'tournamatch' ); ?></option>
-							<option value='disabled' <?php echo ( isset( $ladder->direct_challenges ) && ( 'disabled' === $ladder->direct_challenges ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Disabled', 'tournamatch' ); ?></option>
-						</select>
-						<p class="description"><?php esc_html_e( 'Enable or disable direct challenges (challenger directly to challengee).', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			<h2 class="title"><?php esc_html_e( 'Descriptions and Rules', 'tournamatch' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<tr class="form-field">
-					<th scope="row">
-						<label for="rules"><?php esc_html_e( 'Rules', 'tournamatch' ); ?>:</label>
-					</th>
-					<td>
-						<textarea id='rules' name='rules' rows="10"><?php echo isset( $ladder->rules ) ? wp_kses_post( stripslashes( $ladder->rules ) ) : ''; ?></textarea>
-						<p class="description"><?php esc_html_e( 'The rules for the tournament. HTML is allowed.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-				<tr class="form-field">
-					<th scope="row">
-						<label for="visibility"><?php esc_html_e( 'Visibility:', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<select id="visibility" name="visibility">
-							<option value='visible' <?php echo ( isset( $ladder->visibility ) && ( 'visible' === $ladder->visibility ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Visible', 'tournamatch' ); ?></option>
-							<option value='hidden' <?php echo ( isset( $ladder->visibility ) && ( 'hidden' === $ladder->visibility ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Hidden', 'tournamatch' ); ?></option>
-						</select>
-						<p class="description"><?php esc_html_e( 'Toggle display of this ladder outside Admin.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-				<tr class="form-field">
-					<th scope="row">
-						<label for="status"><?php esc_html_e( 'Active:', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<select id="status" name="status">
-							<option value='active' <?php echo ( isset( $ladder->status ) && ( 'active' === $ladder->status ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Yes', 'tournamatch' ); ?></option>
-							<option value='inactive' <?php echo ( isset( $ladder->status ) && ( 'inactive' === $ladder->status ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'No', 'tournamatch' ); ?></option>
-						</select>
-						<p class="description"><?php esc_html_e( 'Toggle activity such as reporting, confirming, joining, etc.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			<p class="submit">
-				<input type='submit' id='create-ladder-button' value='<?php echo ( ( 'create' === $form_state ) ? esc_html__( 'Create Ladder', 'tournamatch' ) : esc_html__( 'Save Ladder', 'tournamatch' ) ); ?>' class="button button-primary">
-			</p>
-		</form>
-
+		<div id="trn-admin-manage-ladder-response"></div>
 		<?php
+
+		trn_admin_form( $form, $ladder );
 
 		$options = array(
 			'api_url'    => isset( $ladder ) ? site_url( "wp-json/tournamatch/v1/ladders/{$ladder->ladder_id}" ) : site_url( 'wp-json/tournamatch/v1/ladders/' ),

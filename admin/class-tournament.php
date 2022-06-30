@@ -221,9 +221,136 @@ class Tournament {
 	private function form( $tournament = null, $participants = [], $form_state = 'create' ) {
 		global $wpdb;
 
-		$current_games = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}trn_games`" );
 		$has_started   = ( isset( $tournament ) && ( 'in_progress' === $tournament->status ) );
+		$current_games = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}trn_games`" );
+		$game_options  = array_map(
+			function( $game ) {
+					return array(
+						'value'   => intval( $game->game_id ),
+						'content' => $game->name,
+					);
+			},
+			$current_games
+		);
 
+		$sections = array(
+			array(
+				'id'      => 'general',
+				'content' => __( 'General Tournament Info', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'name',
+						'label'       => __( 'Name', 'tournamatch' ),
+						'required'    => true,
+						'type'        => 'text',
+						'description' => __( 'The name displayed to users for the tournament.', 'tournamatch' ),
+						'value'       => isset( $tournament->name ) ? $tournament->name : '',
+					),
+					array(
+						'id'          => 'game_id',
+						'label'       => __( 'Game', 'tournamatch' ),
+						'type'        => 'select',
+						'description' => __( 'Choose corresponding game (e.g. Madden, AoE, etc.)', 'tournamatch' ),
+						'value'       => isset( $tournament->game_id ) ? intval( $tournament->game_id ) : 0,
+						'options'     => $game_options,
+					),
+					array(
+						'id'          => 'bracket_size',
+						'label'       => __( 'Bracket Size', 'tournamatch' ),
+						'type'        => 'select',
+						'description' => __( 'Select the number of competitors for the tournament.', 'tournamatch' ),
+						'disabled'    => ( ! in_array( $tournament->status, array( 'created', 'open' ), true ) ),
+						'value'       => isset( $tournament->bracket_size ) ? intval( $tournament->bracket_size ) : 4,
+						'options'     => array( 4, 8, 16, 32, 64, 128, 256 ),
+					),
+				),
+			),
+			array(
+				'id'      => 'datetime',
+				'content' => __( 'Date and Time Settings', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'start_date',
+						'label'       => __( 'Start Date and Time', 'tournamatch' ),
+						'description' => __( 'The date and time the tournament is scheduled to start.', 'tournamatch' ),
+						'type'        => 'datetime-local',
+						'required'    => true,
+						'value'       => isset( $tournament->start_date ) ? $tournament->start_date : '',
+						'disabled'    => ( ! in_array( $tournament->status, array( 'created', 'open' ), true ) ),
+					),
+				),
+			),
+			array(
+				'id'      => 'match',
+				'content' => __( 'Match Settings', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'competitor_type',
+						'label'       => __( 'Competition', 'tournamatch' ),
+						'type'        => 'select',
+						'description' => __( 'Player vs player or team vs team.', 'tournamatch' ),
+						'value'       => isset( $tournament->competitor_type ) ? $tournament->competitor_type : 'players',
+						'disabled'    => ( 'update' === $form_state ) && ( $participants > 0 ),
+						'options'     => array(
+							array(
+								'value'   => 'players',
+								'content' => __( 'Singles', 'tournamatch' ),
+							),
+							array(
+								'value'   => 'teams',
+								'content' => __( 'Teams', 'tournamatch' ),
+							),
+						),
+					),
+					array(
+						'id'          => 'team_size',
+						'label'       => __( 'Players per Team', 'tournamatch' ),
+						'type'        => 'number',
+						'description' => __( 'Number of players per team.', 'tournamatch' ),
+						'value'       => isset( $tournament->team_size ) ? intval( $tournament->team_size ) : 2,
+					),
+				),
+			),
+			array(
+				'id'      => 'other',
+				'content' => __( 'Other Settings', 'tournamatch' ),
+				'fields'  => array(
+					array(
+						'id'          => 'rules',
+						'label'       => __( 'Rules', 'tournamatch' ),
+						'description' => __( 'The rules for the tournament. HTML is allowed.', 'tournamatch' ),
+						'type'        => 'textarea',
+						'value'       => isset( $tournament->rules ) ? $tournament->rules : '',
+					),
+					array(
+						'id'          => 'visibility',
+						'label'       => __( 'Visibility', 'tournamatch' ),
+						'description' => __( 'Toggle display of this tournament outside Admin.', 'tournamatch' ),
+						'type'        => 'select',
+						'value'       => isset( $tournament->visibility ) ? $tournament->visibility : 'visible',
+						'options'     => array(
+							array(
+								'value'   => 'visible',
+								'content' => __( 'Visible', 'tournamatch' ),
+							),
+							array(
+								'value'   => 'hidden',
+								'content' => __( 'Hidden', 'tournamatch' ),
+							),
+						),
+					),
+				),
+			),
+		);
+
+		$form = array(
+			'id'       => 'trn_tournament_form',
+			'sections' => $sections,
+			'submit'   => array(
+				'id'      => 'trn-save-button',
+				'content' => ( 'create' === $form_state ) ? __( 'Create Tournament', 'tournamatch' ) : __( 'Save Changes', 'tournamatch' ),
+			),
+		);
 		?>
 		<style type="text/css">
 			#trn_tournament_form .form-field input, #trn_tournament_form .form-field select {
@@ -236,128 +363,9 @@ class Tournament {
 			}
 		</style>
 		<div id="trn-admin-manage-tournament-response"></div>
-		<form action="#" method="post" id="trn_tournament_form">
-			<h2 class="title"><?php esc_html_e( 'General Tournament Info', 'tournamatch' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<tr class="form-field form-required">
-					<th scope="row">
-						<label for="name"><?php esc_html_e( 'Name', 'tournamatch' ); ?> <span class="description"><?php esc_html_e( '(required)', 'tournamatch' ); ?></span></label>
-					</th>
-					<td>
-						<input name="name" type="text" id="name" value="<?php echo isset( $tournament->name ) ? esc_html( $tournament->name ) : ''; ?>" required/>
-						<p class="description"><?php esc_html_e( 'The name displayed to users for the tournament.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-				<tr class="form-field">
-					<th scope="row">
-						<label for="game_id"><?php esc_html_e( 'Game', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<?php if ( count( $current_games ) > 0 ) : ?>
-							<select name="game_id" id="game_id">
-								<option value="0" <?php echo ( isset( $tournament->game_id ) && ( intval( $tournament->game_id ) === 0 ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'None', 'tournamatch' ); ?></option>
-								<?php foreach ( $current_games as $game ) : ?>
-									<option value="<?php echo intval( $game->game_id ); ?>" <?php echo ( isset( $tournament->game_id ) && ( intval( $tournament->game_id ) === intval( $game->game_id ) ) ) ? 'selected' : ''; ?>><?php echo esc_html( $game->name ); ?></option>
-								<?php endforeach; ?>
-							</select>
-							<p class="description"><?php esc_html_e( 'Choose corresponding game (e.g. Madden, AoE, etc.)', 'tournamatch' ); ?></p>
-						<?php else : ?>
-							<?php /* translators: Opening and closing anchor tags. */ ?>
-							<p><?php esc_html_e( 'No games exist.', 'tournamatch' ); ?> <?php echo sprintf( esc_html__( 'Click %1$shere%2$s if you want to create one or you may proceed without one.', 'tournamatch' ), "<a href='" . esc_url( trn_route( 'admin.games' ) ) . "'>", '</a>' ); ?>*</p>
-							<input type="hidden" id="game_id" name="game_id" value="0">
-						<?php endif; ?>
-					</td>
-				</tr>
-				<tr class="form-field">
-					<th scope="row">
-						<label for="bracket_size"><?php esc_html_e( 'Bracket Size', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<?php $sizes = array( 4, 8, 16, 32, 64, 128, 256 ); ?>
-						<select id="bracket_size" name="bracket_size">
-							<?php foreach ( $sizes as $size ) : ?>
-								<option value="<?php echo intval( $size ); ?>" <?php echo ( isset( $tournament->bracket_size ) && ( intval( $tournament->bracket_size ) === $size ) ) ? 'selected' : ''; ?>><?php echo intval( $size ); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<p class="description"><?php esc_html_e( 'Enter number of competitors for the tournament.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			<h2 class="title"><?php esc_html_e( 'Date and Time Settings', 'tournamatch' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<tr class="form-field required">
-					<th scope="row">
-						<label for="start_date_field"><?php esc_html_e( 'Start Date and Time', 'tournamatch' ); ?> <span class="description"><?php esc_html_e( '(required)', 'tournamatch' ); ?></span></label>
-					</th>
-					<td>
-						<?php
-						if ( isset( $tournament->start_date ) ) :
-							$start_date = new \DateTime( $tournament->start_date . 'Z' );
-							$start_date->setTimezone( new \DateTimeZone( wp_timezone_string() ) );
-							$start_date = $start_date->format( 'Y-m-d\TH:i' );
-						else :
-							$start_date = '';
-						endif;
-						?>
-						<input id="start_date_field" name="start_date_field" type="datetime-local" value="<?php echo esc_html( $start_date ); ?>">
-						<input id="start_date" name="start_date" type="hidden" value="<?php echo esc_html( $start_date ); ?>">
-					</td>
-				</tr>
-			</table>
-			<h2 class="title"><?php esc_html_e( 'Match Settings', 'tournamatch' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<tr class="form-field">
-					<th scope="row">
-						<label for="competitor_type"><?php esc_html_e( 'Competition', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<select id="competitor_type" name="competitor_type" <?php echo ( ( 'update' === $form_state ) && ( $participants > 0 ) ) ? 'disabled' : ''; ?>>
-							<option value="players" <?php echo ( isset( $tournament->competitor_type ) && ( 'players' === $tournament->competitor_type ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Singles', 'tournamatch' ); ?></option>
-							<option value="teams" <?php echo ( isset( $tournament->competitor_type ) && ( 'teams' === $tournament->competitor_type ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Teams', 'tournamatch' ); ?></option>
-						</select>
-						<p class="description"><?php esc_html_e( 'Player vs player or team vs team.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-				<tr class="form-field" id="team_size_group">
-					<th scope="row">
-						<label for="team_size"><?php esc_html_e( 'Players per Team', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<input type="number" id="team_size" name="team_size" value="<?php echo isset( $tournament->team_size ) ? intval( $tournament->team_size ) : 2; ?>">
-						<p class="description"><?php esc_html_e( 'Number of players per team.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-			</table>
-			<h2 class="title"><?php esc_html_e( 'Descriptions and Rules', 'tournamatch' ); ?></h2>
-			<table class="form-table" role="presentation">
-				<tr class="form-field">
-					<th scope="row">
-						<label for="rules"><?php esc_html_e( 'Rules', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<textarea id='rules' name='rules' rows="10"><?php echo isset( $tournament->rules ) ? wp_kses_post( stripslashes( $tournament->rules ) ) : ''; ?></textarea>
-						<p class="description"><?php esc_html_e( 'The rules for the tournament. HTML is allowed.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-				<tr class="form-field">
-					<th scope="row">
-						<label for="visibility"><?php esc_html_e( 'Visibility:', 'tournamatch' ); ?></label>
-					</th>
-					<td>
-						<select id="visibility" name="visibility">
-							<option value='visible' <?php echo ( isset( $tournament->visibility ) && ( 'visible' === $tournament->visibility ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Visible', 'tournamatch' ); ?></option>
-							<option value='hidden' <?php echo ( isset( $tournament->visibility ) && ( 'hidden' === $tournament->visibility ) ) ? 'selected' : ''; ?>><?php esc_html_e( 'Hidden', 'tournamatch' ); ?></option>
-						</select>
-						<p class="description"><?php esc_html_e( 'Toggle display of this tournament outside Admin.', 'tournamatch' ); ?></p>
-					</td>
-				</tr>
-			</table>
-
-			<p class="submit">
-				<input type='submit' id='trn-save-button' value='<?php echo ( ( 'create' === $form_state ) ? esc_html__( 'Create Tournament', 'tournamatch' ) : esc_html__( 'Save Changes', 'tournamatch' ) ); ?>' class="button button-primary">
-			</p>
-		</form>
 		<?php
+
+		trn_admin_form( $form, $tournament );
 
 		$tournament_id = isset( $tournament ) ? $tournament->tournament_id : 0;
 

@@ -243,7 +243,7 @@ class Tournamatch_Tournament_List_Table extends WP_List_Table {
 		$nonce = wp_create_nonce( 'tournamatch-bulk-tournaments' );
 
 		if ( in_array( $item->status, array( 'created', 'open' ), true ) ) {
-			$actions[] = sprintf(
+			$actions['registration'] = sprintf(
 				'<a href="%s">%s</a>',
 				trn_route(
 					'admin.tournaments.registration',
@@ -254,7 +254,7 @@ class Tournamatch_Tournament_List_Table extends WP_List_Table {
 				),
 				esc_html__( 'Registration', 'tournamatch' )
 			);
-			$actions[] = sprintf(
+			$actions['start']        = sprintf(
 				'<a href="%s">%s</a>',
 				trn_route(
 					'admin.tournaments.start',

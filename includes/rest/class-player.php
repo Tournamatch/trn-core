@@ -458,7 +458,7 @@ WHERE `user_id` = %d
 	 *
 	 * @return \WP_REST_Response Response object.
 	 */
-	public function prepare_item_for_response( $player, $request ) {
+	public function oprepare_item_for_response( $player, $request ) {
 
 		$fields = $this->get_fields_for_response( $request );
 
@@ -553,15 +553,27 @@ WHERE `user_id` = %d
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 			),
-			'display_name' => array(
+			'name' => array(
 				'description' => esc_html__( 'The display name for the player.', 'tournamatch' ),
 				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $player ) {
+					return $player->display_name;
+				},
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'required'    => true,
 			),
 			'joined_date'  => array(
 				'description' => esc_html__( 'The date the player registered on the website.', 'tournamatch' ),
 				'type'        => 'object',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $player ) {
+					$joined_date         = get_user_by( 'id', $player->user_id )->data->user_registered;
+					return array(
+						'raw'      => $joined_date,
+						'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $joined_date ) ) ),
+					);
+				},
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 				'properties'  => array(
@@ -623,6 +635,10 @@ WHERE `user_id` = %d
 			'link'         => array(
 				'description' => esc_html__( 'URL to the player.' ),
 				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $player ) {
+					return trn_route( 'players.single', array( 'id' => $player->user_id ) );
+				},
 				'format'      => 'uri',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,

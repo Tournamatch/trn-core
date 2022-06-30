@@ -56,96 +56,101 @@ trn_get_header();
 			</h3>
 		</div>
 	</div>
+<?php
 
-			<ul id="tournamatch-ladder-views" class="tournamatch-nav">
-				<li role="presentation" class="tournamatch-nav-item">
-					<a class="tournamatch-nav-link" href="#standings" data-target="standings">
-						<?php esc_html_e( 'Standings', 'tournamatch' ); ?>
-					</a>
-				</li>
-				<li role="presentation" class="tournamatch-nav-item">
-					<a class="tournamatch-nav-link" href="#rules" data-target="rules">
-						<?php esc_html_e( 'Rules', 'tournamatch' ); ?>
-					</a>
-				</li>
-				<li role="presentation" class="tournamatch-nav-item">
-					<a class="tournamatch-nav-link" href="#matches" data-target="matches">
-						<?php esc_html_e( 'Matches', 'tournamatch' ); ?>
-					</a>
-				</li>
-				<?php if ( $can_join ) : ?>
-					<li role="presentation" class="tournamatch-nav-item">
-						<a class="tournamatch-nav-link" href="<?php trn_esc_route_e( 'ladders.single.join', array( 'id' => $ladder->ladder_id ) ); ?>">
-							<?php esc_html_e( 'Join', 'tournamatch' ); ?>
-						</a>
-					</li>
-				<?php endif; ?>
-				<?php if ( $can_report ) : ?>
-					<li role="presentation" class="tournamatch-nav-item">
-						<a class="tournamatch-nav-link" href="<?php trn_esc_route_e( 'matches.single.create', [ 'ladder_id' => $ladder->ladder_id ] ); ?>">
-							<?php esc_html_e( 'Report', 'tournamatch' ); ?>
-						</a>
-					</li>
-				<?php endif; ?>
-				<?php if ( ( $can_report ) && ( 'enabled' === $ladder->direct_challenges ) ) : ?>
-					<li role="presentation" class="tournamatch-nav-item">
-						<a class="tournamatch-nav-link" href="<?php trn_esc_route_e( 'challenges.single.create', array( 'ladder_id' => $ladder->ladder_id ) ); ?>">
-							<?php esc_html_e( 'Challenge', 'tournamatch' ); ?>
-						</a>
-					</li>
-				<?php endif; ?>
-				<?php if ( $can_leave ) : ?>
-					<li role="presentation" class="tournamatch-nav-item">
-						<a class="tournamatch-nav-link trn-confirm-action-link trn-leave-ladder-link"
+$views = array(
+	'standings'    => array(
+		'heading' => __( 'Standings', 'tournamatch' ),
+		'content' => function( $ladder ) {
+			if ( 'active' !== $ladder->status ) {
+				echo '<p>' . esc_html__( 'This ladder is no longer active.', 'tournamatch' ) . '</p>';
+			} else {
+				echo do_shortcode( '[trn-ladder-standings-list-table ladder_id="' . intval( $ladder->ladder_id ) . '"]' );
+			}
+		},
+	),
+	'rules'      => array(
+		'heading' => __( 'Rules', 'tournamatch' ),
+		'content' => function( $ladder ) {
+			if ( strlen( $ladder->rules ) > 0 ) {
+				echo wp_kses_post( stripslashes( $ladder->rules ) );
+			} else {
+				echo '<p class="text-center">';
+				esc_html_e( 'No rules to display.', 'tournamatch' );
+				echo '</p>';
+			}
+		},
+	),
+	'matches'    => array(
+		'heading' => __( 'Matches', 'tournamatch' ),
+		'content' => function( $ladder ) {
+			if ( 'active' !== $ladder->status ) {
+				echo '<p>' . esc_html__( 'This ladder is no longer active.', 'tournamatch' ) . '</p>';
+			} else {
+				echo do_shortcode( '[trn-ladder-matches-list-table ladder_id="' . intval( $ladder->ladder_id ) . '"]' );
+			}
+		},
+	),
+);
+
+if ( $can_join ) {
+	$views = array_merge(
+		$views,
+		array(
+			'join' => array(
+				'heading' => __( 'Join', 'tournamatch' ),
+				'href'    => trn_route( 'ladders.single.join', array( 'id' => $ladder->ladder_id ) ),
+			),
+		)
+	);
+}
+
+if ( $can_join ) {
+	$views = array_merge(
+		$views,
+		array(
+			'report' => array(
+				'heading' => __( 'Report', 'tournamatch' ),
+				'href'    => trn_route( 'matches.single.create', array( 'ladder_id' => $ladder->ladder_id ) ),
+			),
+		)
+	);
+}
+
+if ( ( $can_report ) && ( 'enabled' === $ladder->direct_challenges ) ) {
+	$views = array_merge(
+		$views,
+		array(
+			'challenge' => array(
+				'heading' => __( 'Challenge', 'tournamatch' ),
+				'href'    => trn_route( 'challenges.single.create', array( 'ladder_id' => $ladder->ladder_id ) ),
+			),
+		)
+	);
+}
+
+if ( $can_leave ) {
+	$views = array_merge(
+		$views,
+		array(
+			'leave' => array(
+				'heading' => function( $ladder ) use ( $competitor ) {
+					?>
+					<a class="tournamatch-nav-link trn-confirm-action-link trn-leave-ladder-link"
 							id="trn-leave-ladder-link"
 							href="#leave"
 							data-competitor-id="<?php echo intval( $competitor->ladder_entry_id ); ?>"
 							data-confirm-title="<?php esc_html_e( 'Leave Ladder', 'tournamatch' ); ?>"
 							data-confirm-message="<?php esc_html_e( 'Are you sure you want to leave this ladder?', 'tournamatch' ); ?>"
-						>
-							<?php esc_html_e( 'Leave', 'tournamatch' ); ?>
-						</a>
-					</li>
-				<?php endif; ?>
-			</ul>
+					>
+						<?php esc_html_e( 'Leave', 'tournamatch' ); ?>
+					</a>
+					<?php
+				},
+			),
+		)
+	);
 
-			<div class="tournamatch-tab-content">
-				<div id="standings" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="standings-tab">
-					<h4 class="text-center"><?php esc_html_e( 'Standings', 'tournamatch' ); ?></h4>
-					<?php
-					if ( 'active' !== $ladder->status ) {
-						echo '<p>' . esc_html__( 'This ladder is no longer active.', 'tournamatch' ) . '</p>';
-					} else {
-						echo do_shortcode( '[trn-ladder-standings-list-table ladder_id="' . intval( $ladder_id ) . '"]' );
-					}
-					?>
-				</div>
-				<div id="rules" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="rules-tab">
-					<h4 class="text-center"><?php esc_html_e( 'Rules', 'tournamatch' ); ?></h4>
-					<?php
-					if ( strlen( $ladder->rules ) > 0 ) :
-						echo wp_kses_post( stripslashes( $ladder->rules ) );
-					else :
-						?>
-						<div class="text-center">
-							<?php esc_html_e( 'No rules to display.', 'tournamatch' ); ?>
-						</div>
-					<?php endif; ?>
-				</div>
-				<div id="matches" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="matches-tab">
-					<h4 class="text-center"><?php esc_html_e( 'Matches', 'tournamatch' ); ?></h4>
-					<?php
-					if ( 'active' !== $ladder->status ) {
-						echo '<p>' . esc_html__( 'This ladder is no longer active.', 'tournamatch' ) . '</p>';
-					} else {
-						echo do_shortcode( '[trn-ladder-matches-list-table ladder_id="' . intval( $ladder_id ) . '"]' );
-					}
-					?>
-				</div>
-			</div>
-<?php
-
-if ( $can_leave ) {
 	$options = array(
 		'api_url'    => site_url( 'wp-json/tournamatch/v1/' ),
 		'rest_nonce' => wp_create_nonce( 'wp_rest' ),
@@ -167,8 +172,9 @@ if ( $can_leave ) {
 	wp_enqueue_script( 'leave-ladder' );
 }
 
-wp_register_script( 'trn-single-trn-ladder', plugins_url( '../dist/js/single-trn-ladder.js', __FILE__ ), array( 'tournamatch' ), '4.0.0', true );
-wp_enqueue_script( 'trn-single-trn-ladder' );
+$views = apply_filters( 'trn_single_ladder_views', $views, $ladder );
+
+trn_single_template_tab_views( $views, $ladder );
 
 trn_get_footer();
 

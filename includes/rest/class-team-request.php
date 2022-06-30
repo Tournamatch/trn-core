@@ -404,50 +404,6 @@ class Team_Request extends Controller {
 	}
 
 	/**
-	 * Prepares a single team-request item for response.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param Object           $team_request    Team request object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $team_request, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'team_member_request_id', $fields ) ) {
-			$data['team_member_request_id'] = (int) $team_request->team_member_request_id;
-		}
-
-		if ( rest_is_field_included( 'team_id', $fields ) ) {
-			$data['team_id'] = (int) $team_request->team_id;
-		}
-
-		if ( rest_is_field_included( 'user_id', $fields ) ) {
-			$data['user_id'] = (int) $team_request->user_id;
-		}
-
-		if ( rest_is_field_included( 'requested_at', $fields ) ) {
-			$data['requested_at'] = array(
-				'raw'      => $team_request->requested_at,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team_request->requested_at ) ) ),
-			);
-		}
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $team_request );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
-	/**
 	 * Prepares links for the request.
 	 *
 	 * @since 4.0.0
@@ -516,6 +472,7 @@ class Team_Request extends Controller {
 				'requested_at'           => array(
 					'description' => esc_html__( 'The datetime the team request was created for the team request.', 'tournamatch' ),
 					'type'        => 'object',
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(

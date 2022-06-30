@@ -20,8 +20,6 @@ import { trn } from './tournamatch.js';
         const deleteTeamButton = document.getElementById('trn-delete-team-button');
         const editTeamButton = document.getElementById('trn-edit-team-button');
 
-        trn.tabs(document.getElementById('tournamatch-team-views'));
-
         function canJoin(userId, members) {
             let isMember = false;
             if ((members !== null) && (members.length > 0)) {

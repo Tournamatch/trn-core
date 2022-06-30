@@ -327,42 +327,6 @@ class Game extends Controller {
 	}
 
 	/**
-	 * Prepares a single game item for response.
-	 *
-	 * @since 3.18.0
-	 *
-	 * @param Object           $game    Game object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $game, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'game_id', $fields ) ) {
-			$data['game_id'] = (int) $game->game_id;
-		}
-
-		if ( rest_is_field_included( 'name', $fields ) ) {
-			$data['name'] = $game->name;
-		}
-
-		if ( rest_is_field_included( 'platform', $fields ) ) {
-			$data['platform'] = $game->platform;
-		}
-
-		if ( rest_is_field_included( 'thumbnail', $fields ) ) {
-			$data['thumbnail'] = $game->thumbnail;
-		}
-
-		return rest_ensure_response( $data );
-	}
-
-	/**
 	 * Retrieves the games schema, conforming to JSON Schema.
 	 *
 	 * @since 3.18.0

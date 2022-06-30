@@ -249,54 +249,6 @@ WHERE 1 = 1 ";
 	}
 
 	/**
-	 * Prepares a single tournament competitor item for response.
-	 *
-	 * @since 3.25.0
-	 *
-	 * @param Object           $tournament_competitor Tournament competitor object.
-	 * @param \WP_REST_Request $request                 Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $tournament_competitor, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'tournament_entry_id', $fields ) ) {
-			$data['tournament_entry_id'] = (int) $tournament_competitor->tournament_entry_id;
-		}
-
-		if ( rest_is_field_included( 'tournament_id', $fields ) ) {
-			$data['tournament_id'] = (int) $tournament_competitor->tournament_id;
-		}
-
-		if ( rest_is_field_included( 'competitor_id', $fields ) ) {
-			$data['competitor_id'] = (int) $tournament_competitor->competitor_id;
-		}
-
-		if ( rest_is_field_included( 'competitor_type', $fields ) ) {
-			$data['competitor_type'] = $tournament_competitor->competitor_type;
-		}
-
-		if ( rest_is_field_included( 'joined_date', $fields ) ) {
-			$data['joined_date'] = array(
-				'raw'      => $tournament_competitor->joined_date,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $tournament_competitor->joined_date ) ) ),
-			);
-		}
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $tournament_competitor );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
-	/**
 	 * Prepares links for the request.
 	 *
 	 * @since 3.25.0
@@ -375,6 +327,7 @@ WHERE 1 = 1 ";
 				'joined_date'         => array(
 					'description' => esc_html__( 'The datetime the tournament competitor registered for the tournament.', 'tournamatch' ),
 					'type'        => 'object',
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(

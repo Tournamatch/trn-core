@@ -151,20 +151,9 @@ class Tournament extends Controller {
 	public function create_item( $request ) {
 		global $wpdb;
 
-		$data = array(
-			'name'            => $request->get_param( 'name' ),
-			'game_id'         => $request->get_param( 'game_id' ),
-			'start_date'      => $request->get_param( 'start_date' ),
-			'competitor_type' => $request->get_param( 'competitor_type' ),
-			'team_size'       => $request->get_param( 'team_size' ),
-			'bracket_size'    => $request->get_param( 'bracket_size' ),
-			'games'           => 0,
-			'rules'           => $request->get_param( 'rules' ),
-			'visibility'      => $request->get_param( 'visibility' ),
-			'status'          => $request->get_param( 'status' ),
-		);
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
 
-		$wpdb->insert( $wpdb->prefix . 'trn_tournaments', $data );
+		$wpdb->insert( $wpdb->prefix . 'trn_tournaments', $prepared_post );
 
 		$insert_id = $wpdb->insert_id;
 
@@ -218,52 +207,27 @@ class Tournament extends Controller {
 		}
 
 		// Verify business rules.
+		$rules = array();
 		if ( ! in_array( $tournament->status, array( 'created', 'open' ), true ) ) {
-			$this->verify_business_rules(
-				array(
-					new Cannot_Change_Tournament_Field( 'start_date', $tournament->start_date, $request['start_date'] ),
-					new Cannot_Change_Tournament_Field( 'bracket_size', $tournament->bracket_size, $request['bracket_size'] ),
-				)
-			);
+			if ( isset( $request['start_date' ] ) ) {
+				$rules[] = new Cannot_Change_Tournament_Field( 'start_date', $tournament->start_date, $request['start_date'] );
+			}
+			if ( isset( $request['bracket_size' ] ) ) {
+				$rules[] = new Cannot_Change_Tournament_Field( 'bracket_size', $tournament->bracket_size, $request['bracket_size'] );
+			}
 		}
 
-		$schema = $this->get_item_schema();
-
-		$data = array();
-
-		if ( ! empty( $schema['properties']['name'] ) && isset( $request['name'] ) ) {
-			$data['name'] = $request['name'];
-		}
-		if ( ! empty( $schema['properties']['game_id'] ) && isset( $request['game_id'] ) ) {
-			$data['game_id'] = $request['game_id'];
-		}
-		if ( ! empty( $schema['properties']['start_date'] ) && isset( $request['start_date'] ) ) {
-			$data['start_date'] = $request['start_date'];
-		}
-		if ( ! empty( $schema['properties']['competitor_type'] ) && isset( $request['competitor_type'] ) ) {
-			$data['competitor_type'] = $request['competitor_type'];
-		}
-		if ( ! empty( $schema['properties']['team_size'] ) && isset( $request['team_size'] ) ) {
-			$data['team_size'] = $request['team_size'];
-		}
-		if ( ! empty( $schema['properties']['bracket_size'] ) && isset( $request['bracket_size'] ) ) {
-			$data['bracket_size'] = $request['bracket_size'];
-		}
-		if ( ! empty( $schema['properties']['starting_size'] ) && isset( $request['starting_size'] ) ) {
-			$data['starting_size'] = $request['starting_size'];
-		}
-		if ( ! empty( $schema['properties']['rules'] ) && isset( $request['rules'] ) ) {
-			$data['rules'] = $request['rules'];
-		}
-		if ( ! empty( $schema['properties']['visibility'] ) && isset( $request['visibility'] ) ) {
-			$data['visibility'] = $request['visibility'];
-		}
-		if ( ! empty( $schema['properties']['status'] ) && isset( $request['status'] ) ) {
-			$data['status'] = $request['status'];
+		if ( 0 < count( $rules ) ) {
+			$this->verify_business_rules( $rules );
 		}
 
-		if ( 0 < count( $data ) ) {
-			$wpdb->update( $wpdb->prefix . 'trn_tournaments', $data, array( 'tournament_id' => $request['id'] ) );
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
+
+		// Protect over posting.
+		unset( $prepared_post['status'] );
+
+		if ( 0 < count( $prepared_post ) ) {
+			$wpdb->update( $wpdb->prefix . 'trn_tournaments', $prepared_post, array( 'tournament_id' => $request['id'] ) );
 		}
 
 		$tournament = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments` WHERE `tournament_id` = %d", $tournament->tournament_id ) );
@@ -348,81 +312,6 @@ class Tournament extends Controller {
 
 		return $response;
 	}
-
-	/**
-	 * Prepares a single tournament item for response.
-	 *
-	 * @since 3.19.0
-	 *
-	 * @param Object           $tournament    Tournament object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $tournament, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'tournament_id', $fields ) ) {
-			$data['tournament_id'] = (int) $tournament->tournament_id;
-		}
-
-		if ( rest_is_field_included( 'name', $fields ) ) {
-			$data['name'] = $tournament->name;
-		}
-
-		if ( rest_is_field_included( 'game_id', $fields ) ) {
-			$data['game_id'] = (int) $tournament->game_id;
-		}
-
-		if ( rest_is_field_included( 'start_date', $fields ) ) {
-			$data['start_date'] = $tournament->start_date;
-		}
-
-		if ( rest_is_field_included( 'competitor_type', $fields ) ) {
-			$data['competitor_type'] = $tournament->competitor_type;
-		}
-
-		if ( rest_is_field_included( 'team_size', $fields ) ) {
-			$data['team_size'] = (int) $tournament->team_size;
-		}
-
-		if ( rest_is_field_included( 'bracket_size', $fields ) ) {
-			$data['bracket_size'] = (int) $tournament->bracket_size;
-		}
-
-		if ( rest_is_field_included( 'started_size', $fields ) ) {
-			$data['started_size'] = (int) $tournament->started_size;
-		}
-
-		if ( rest_is_field_included( 'rules', $fields ) ) {
-			$data['rules'] = $tournament->rules;
-		}
-
-		if ( rest_is_field_included( 'visibility', $fields ) ) {
-			$data['visibility'] = ( 'visible' === $tournament->visibility ) ? 'visible' : 'hidden';
-		}
-
-		if ( rest_is_field_included( 'status', $fields ) ) {
-			$data['status'] = $tournament->status;
-		}
-
-		if ( rest_is_field_included( 'link', $fields ) ) {
-			$data['link'] = trn_route( 'tournaments.single', array( 'id' => $tournament->tournament_id ) );
-		}
-
-		// Wrap the data in a response object.
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $tournament );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
 
 	/**
 	 * Prepares links for the request.
@@ -548,6 +437,10 @@ class Tournament extends Controller {
 				'link'            => array(
 					'description' => esc_html__( 'URL to the tournament.' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $tournament ) {
+						return trn_route( 'tournaments.single', array( 'id' => $tournament->tournament_id ) );
+					},
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,

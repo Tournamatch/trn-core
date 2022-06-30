@@ -82,41 +82,45 @@ $social_links = implode( ' ', $social_links );
 	</div>
 </div>
 
-<ul id="tournamatch-player-views" class="tournamatch-nav mt-md" role="tablist">
-	<li class="tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link tournamatch-nav-active" href="#teams" role="tab" aria-controls="teams" aria-selected="true" data-target="teams"><span><?php esc_html_e( 'Teams', 'tournamatch' ); ?></span></a></li>
-	<li class="tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#ladders" role="tab" aria-controls="ladders" aria-selected="false" data-target="ladders"><span><?php esc_html_e( 'Ladders', 'tournamatch' ); ?></span></a></li>
-	<li class="tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#tournaments" role="tab" aria-controls="tournaments" aria-selected="false" data-target="tournaments"><span><?php esc_html_e( 'Tournaments', 'tournamatch' ); ?></span></a></li>
-	<li class="tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#matches" role="tab" aria-controls="matches" aria-selected="false" data-target="matches"><span><?php esc_html_e( 'Match History', 'tournamatch' ); ?></span></a></li>
-	<li class="tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#about" role="tab" aria-controls="about" aria-selected="false" data-target="about"><span><?php esc_html_e( 'About', 'tournamatch' ); ?></span></a></li>
-</ul>
-
-<div class="tournamatch-tab-content">
-	<div id="teams" class="tournamatch-tab-pane tournamatch-tab-active" role="tabpanel" aria-labelledby="teams-tab" >
-		<h4 class="text-center"><?php esc_html_e( 'Teams', 'tournamatch' ); ?></h4>
-		<?php echo do_shortcode( '[trn-player-teams-list-table player_id="' . intval( $user_id ) . '"]' ); ?>
-	</div>
-	<div id="ladders" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="ladders-tab">
-		<h4 class="text-center"><?php esc_html_e( 'Ladders', 'tournamatch' ); ?></h4>
-		<?php echo do_shortcode( '[trn-competitor-ladders-list-table competitor_type="players" competitor_id="' . intval( $user_id ) . '"]' ); ?>
-	</div>
-	<div id="tournaments" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="tournaments-tab">
-		<h4 class="text-center"><?php esc_html_e( 'Tournaments', 'tournamatch' ); ?></h4>
-		<?php echo do_shortcode( '[trn-competitor-tournaments-list-table competitor_type="players" competitor_id="' . intval( $user_id ) . '"]' ); ?>
-	</div>
-	<div id="matches" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="matches-tab">
-		<h4 class="text-center"><?php esc_html_e( 'Match History', 'tournamatch' ); ?></h4>
-		<?php echo do_shortcode( '[trn-competitor-match-list-table competitor_type="players" competitor_id="' . intval( $user_id ) . '"]' ); ?>
-	</div>
-	<div id="about" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="about-tab">
-		<h4 class="text-center"><?php esc_html_e( 'About', 'tournamatch' ); ?></h4>
-		<h4><?php echo wp_kses_post( $player->profile ); ?></h4>
-	</div>
-</div>
 <?php
 
-trn_get_footer();
+$views = array(
+	'teams'       => array(
+		'heading' => __( 'Teams', 'tournamatch' ),
+		'content' => function( $player ) {
+			echo do_shortcode( '[trn-player-teams-list-table player_id="' . intval( $player->user_id ) . '"]' );
+		},
+	),
+	'ladders'     => array(
+		'heading' => __( 'Ladders', 'tournamatch' ),
+		'content' => function( $player ) {
+			echo do_shortcode( '[trn-competitor-ladders-list-table competitor_type="players" competitor_id="' . intval( $player->user_id ) . '"]' );
+		},
+	),
+	'tournaments' => array(
+		'heading' => __( 'Tournaments', 'tournamatch' ),
+		'content' => function( $player ) {
+			echo do_shortcode( '[trn-competitor-tournaments-list-table competitor_type="players" competitor_id="' . intval( $player->user_id ) . '"]' );
+		},
+	),
+	'matches'     => array(
+		'heading' => __( 'Match History', 'tournamatch' ),
+		'content' => function( $player ) {
+			echo do_shortcode( '[trn-competitor-match-list-table competitor_type="players" competitor_id="' . intval( $player->user_id ) . '"]' );
+		},
+	),
+	'about'       => array(
+		'heading' => __( 'About', 'tournamatch' ),
+		'content' => function( $player ) {
+			echo wp_kses_post( $player->profile );
+		},
+	),
+);
 
-wp_register_script( 'player-profile', plugins_url( '../dist/js/player-profile.js', __FILE__ ), array( 'tournamatch' ), '3.25.0', true );
-wp_enqueue_script( 'player-profile' );
+$views = apply_filters( 'trn_single_player_views', $views, $player );
+
+trn_single_template_tab_views( $views, $player );
+
+trn_get_footer();
 
 get_footer();
