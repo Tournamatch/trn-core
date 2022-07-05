@@ -295,6 +295,16 @@ class Tournamatch_Ladder_List_Table extends WP_List_Table {
 					),
 					esc_html__( 'Delete', 'tournamatch' )
 				),
+				'view' => sprintf(
+					'<a href="%s">%s</a>',
+					trn_route(
+						'ladders.single',
+						array(
+							'id' => $item->ladder_id
+						)
+					),
+					esc_html__( 'View', 'tournamatch' )
+				),
 			)
 		);
 

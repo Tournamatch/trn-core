@@ -219,7 +219,7 @@ CREATE TABLE `{$wpdb->prefix}trn_teams_members` (
   `wins` int(10) unsigned NOT NULL DEFAULT '0',
   `losses` int(10) unsigned NOT NULL DEFAULT '0',
   `draws` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`team_mmber_id`)
+  PRIMARY KEY (`team_member_id`)
 );
 
 CREATE TABLE `{$wpdb->prefix}trn_teams_members_invitations` (
@@ -277,7 +277,7 @@ CREATE TABLE `{$wpdb->prefix}trn_tournaments_entries` (
   `joined_date` datetime NOT NULL,
   `seed` int(10) unsigned NULL,
   PRIMARY KEY (`tournament_entry_id`),
-  KEY `one_competitor_id` (`tournament_id`)
+  KEY `tournament_id` (`tournament_id`)
 );
 ";
 	}

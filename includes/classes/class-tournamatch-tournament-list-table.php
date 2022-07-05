@@ -334,6 +334,16 @@ class Tournamatch_Tournament_List_Table extends WP_List_Table {
 					),
 					esc_html__( 'Delete', 'tournamatch' )
 				),
+				'view' => sprintf(
+					'<a href="%s">%s</a>',
+					trn_route(
+						'tournaments.single',
+						array(
+							'id' => $item->tournament_id
+						)
+					),
+					esc_html__( 'View', 'tournamatch' )
+				),
 			)
 		);
 
