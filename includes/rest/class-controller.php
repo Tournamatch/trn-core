@@ -100,12 +100,12 @@ class Controller extends WP_REST_Controller {
 	 */
 	protected function get_field_for_response( $data_context, $field, $field_type ) {
 		switch ( $field_type ) {
-			case 'datetime' :
+			case 'datetime':
 				return array(
 					'raw'      => $data_context->$field,
 					'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $data_context->$field ) ) ),
 				);
-			case 'boolean' :
+			case 'boolean':
 				return (bool) $data_context->$field;
 			case 'integer':
 				return (int) $data_context->$field;

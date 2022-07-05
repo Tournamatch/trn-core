@@ -780,7 +780,7 @@ WHERE `le1`.`ladder_entry_id` = %d",
 				'trn-subtype' => 'callable',
 				'trn-get'     => function( $competitor ) {
 					if ( 0 < strlen( $competitor->time ) ) {
-						$date_time_1       = new \DateTime( '@0' );
+						$date_time_1 = new \DateTime( '@0' );
 						$date_time_2       = new \DateTime( '@' . $competitor->idle_unix_timestamp );
 
 						return (int) $date_time_1->diff( $date_time_2 )->format( '%a' );

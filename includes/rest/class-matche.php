@@ -839,170 +839,169 @@ WHERE  `m`.`match_status` != %s",
 		}
 
 		$properties = array(
-				'match_id'            => array(
-					'description' => esc_html__( 'The id for the match.', 'tournamatch' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'readonly'    => true,
-				),
-				'competition_id'      => array(
-					'description' => esc_html__( 'The id for the competition.', 'tournamatch' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'required'    => true,
-				),
-				'competition_type'    => array(
-					'description' => esc_html__( 'The type of competitor registering.', 'tournamatch' ),
-					'type'        => 'string',
-					'enum'        => array( 'ladders', 'tournaments' ),
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'required'    => true,
-				),
-				'spot'                => array(
-					'description' => esc_html__( 'Tournament bracket spot for the match. Unused for ladder matches.', 'tournamatch' ),
-					'type'        => array( 'integer', 'null' ),
-					'context'     => array( 'view', 'edit', 'embed' ),
-				),
-				'one_competitor_id'   => array(
-					'description' => esc_html__( 'Competitor one id for the match.', 'tournamatch' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'required'    => true,
-				),
-				'one_competitor_type' => array(
-					'description' => esc_html__( 'Competitor one type for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'enum'        => array( 'players', 'teams' ),
-					'context'     => array( 'view', 'edit', 'embed' ),
-				),
-				'one_result'          => array(
-					'description' => esc_html__( 'Competitor one result for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'enum'        => array( 'won', 'lost', 'draw' ),
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'required'    => true,
-				),
-				'one_comment'         => array(
-					'description' => esc_html__( 'Competitor one comment for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => '',
-				),
-				'two_competitor_id'   => array(
-					'description' => esc_html__( 'Competitor two id for the match.', 'tournamatch' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'required'    => true,
-				),
-				'two_competitor_type' => array(
-					'description' => esc_html__( 'Competitor two type for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'enum'        => array( 'players', 'teams' ),
-					'context'     => array( 'view', 'edit', 'embed' ),
-				),
-				'two_result'          => array(
-					'description' => esc_html__( 'Competitor two result for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => '',
-				),
-				'two_comment'         => array(
-					'description' => esc_html__( 'Competitor two comment for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => '',
-				),
-				'match_date'          => array(
-					'description' => esc_html__( 'Date and time for the match.', 'tournamatch' ),
-					'type'        => 'object',
-					'trn-subtype' => 'callable',
-					'trn-get'     => function( $match ) {
-						return array(
-							'raw'      => $match->match_date,
-							'rendered' => ( '0000-00-00 00:00:00' === $match->match_date ) ? '&nbsp;' : date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match->match_date ) ) ),
-						);
-					},
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'properties'  => array(
-						'raw'      => array(
-							'description' => esc_html__( 'Date and time for the match, as it exists in the database.', 'tournamatch' ),
-							'type'        => 'string',
-							'format'      => 'date-time',
-							'context'     => array( 'view', 'edit', 'embed' ),
-						),
-						'rendered' => array(
-							'description' => esc_html__( 'Date and time for the object, transformed for display.', 'tournamatch' ),
-							'type'        => 'string',
-							'context'     => array( 'view', 'edit', 'embed' ),
-							'readonly'    => true,
-						),
+			'match_id'            => array(
+				'description' => esc_html__( 'The id for the match.', 'tournamatch' ),
+				'type'        => 'integer',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
+			),
+			'competition_id'      => array(
+				'description' => esc_html__( 'The id for the competition.', 'tournamatch' ),
+				'type'        => 'integer',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'required'    => true,
+			),
+			'competition_type'    => array(
+				'description' => esc_html__( 'The type of competitor registering.', 'tournamatch' ),
+				'type'        => 'string',
+				'enum'        => array( 'ladders', 'tournaments' ),
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'required'    => true,
+			),
+			'spot'                => array(
+				'description' => esc_html__( 'Tournament bracket spot for the match. Unused for ladder matches.', 'tournamatch' ),
+				'type'        => array( 'integer', 'null' ),
+				'context'     => array( 'view', 'edit', 'embed' ),
+			),
+			'one_competitor_id'   => array(
+				'description' => esc_html__( 'Competitor one id for the match.', 'tournamatch' ),
+				'type'        => 'integer',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'required'    => true,
+			),
+			'one_competitor_type' => array(
+				'description' => esc_html__( 'Competitor one type for the match.', 'tournamatch' ),
+				'type'        => 'string',
+				'enum'        => array( 'players', 'teams' ),
+				'context'     => array( 'view', 'edit', 'embed' ),
+			),
+			'one_result'          => array(
+				'description' => esc_html__( 'Competitor one result for the match.', 'tournamatch' ),
+				'type'        => 'string',
+				'enum'        => array( 'won', 'lost', 'draw' ),
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'required'    => true,
+			),
+			'one_comment'         => array(
+				'description' => esc_html__( 'Competitor one comment for the match.', 'tournamatch' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'default'     => '',
+			),
+			'two_competitor_id'   => array(
+				'description' => esc_html__( 'Competitor two id for the match.', 'tournamatch' ),
+				'type'        => 'integer',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'required'    => true,
+			),
+			'two_competitor_type' => array(
+				'description' => esc_html__( 'Competitor two type for the match.', 'tournamatch' ),
+				'type'        => 'string',
+				'enum'        => array( 'players', 'teams' ),
+				'context'     => array( 'view', 'edit', 'embed' ),
+			),
+			'two_result'          => array(
+				'description' => esc_html__( 'Competitor two result for the match.', 'tournamatch' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'default'     => '',
+			),
+			'two_comment'         => array(
+				'description' => esc_html__( 'Competitor two comment for the match.', 'tournamatch' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'default'     => '',
+			),
+			'match_date'          => array(
+				'description' => esc_html__( 'Date and time for the match.', 'tournamatch' ),
+				'type'        => 'object',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $match ) {
+					return array(
+						'raw'      => $match->match_date,
+						'rendered' => ( '0000-00-00 00:00:00' === $match->match_date ) ? '&nbsp;' : date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match->match_date ) ) ),
+					);
+				},
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'properties'  => array(
+					'raw'      => array(
+						'description' => esc_html__( 'Date and time for the match, as it exists in the database.', 'tournamatch' ),
+						'type'        => 'string',
+						'format'      => 'date-time',
+						'context'     => array( 'view', 'edit', 'embed' ),
+					),
+					'rendered' => array(
+						'description' => esc_html__( 'Date and time for the object, transformed for display.', 'tournamatch' ),
+						'type'        => 'string',
+						'context'     => array( 'view', 'edit', 'embed' ),
+						'readonly'    => true,
 					),
 				),
-				'match_status'        => array(
-					'description' => esc_html__( 'Current status for the match.', 'tournamatch' ),
-					'type'        => 'string',
-					'enum'        => array(
-						'scheduled',
-						'reported',
-						'confirmed',
-						'disputed',
-						'tournament_bye',
-						'undetermined',
-					),
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => 'scheduled',
+			),
+			'match_status'        => array(
+				'description' => esc_html__( 'Current status for the match.', 'tournamatch' ),
+				'type'        => 'string',
+				'enum'        => array(
+					'scheduled',
+					'reported',
+					'confirmed',
+					'disputed',
+					'tournament_bye',
+					'undetermined',
 				),
-				'match_result'        => array(
-					'description' => esc_html__( 'Match result.', 'tournamatch' ),
-					'type'        => 'string',
-					'trn-subtype' => 'callable',
-					'trn-get'     => function( $match ) {
-						return get_match_result_text( $match );
-					},
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => '',
-				),
-				'link'                => array(
-					'description' => esc_html__( 'URL to the match.' ),
-					'type'        => 'string',
-					'trn-subtype' => 'callable',
-					'trn-get'     => function( $match ) {
-						return trn_route( 'matches.single', array( 'id' => $match->match_id ) );
-					},
-					'format'      => 'uri',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'readonly'    => true,
-				),
-			);
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'default'     => 'scheduled',
+			),
+			'match_result'        => array(
+				'description' => esc_html__( 'Match result.', 'tournamatch' ),
+				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $match ) {
+					return get_match_result_text( $match );
+				},
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'default'     => '',
+			),
+			'link'                => array(
+				'description' => esc_html__( 'URL to the match.' ),
+				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $match ) {
+					return trn_route( 'matches.single', array( 'id' => $match->match_id ) );
+				},
+				'format'      => 'uri',
+				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
+			),
+		);
 
 		if ( current_user_can( 'manage_tournamatch' ) ) {
-			$one_ip = array(
+			$one_ip     = array(
 				'one_ip' => array(
 					'description' => esc_html__( 'Competitor one ip address for the match.', 'tournamatch' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'default'     => '',
-				)
+				),
 			);
 			$properties = trn_array_insert( $properties, 'one_competitor_type', 'one_ip', $one_ip );
 
-			$two_ip = array(
+			$two_ip     = array(
 				'two_ip' => array(
 					'description' => esc_html__( 'Competitor two ip address for the match.', 'tournamatch' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'default'     => '',
-				)
+				),
 			);
 			$properties = trn_array_insert( $properties, 'two_competitor_type', 'two_ip', $two_ip );
 		}
-
 
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
 			'title'      => 'match',
 			'type'       => 'object',
-			'properties' => $properties
+			'properties' => $properties,
 		);
 
 		$this->schema = $schema;

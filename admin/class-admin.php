@@ -99,42 +99,42 @@ class Admin {
 		$version = TOURNAMATCH_VERSION;
 
 		$shortcuts = array(
-			'challenges' => array(
+			'challenges'        => array(
 				'content' => __( 'Challenges', 'tournamatch' ),
 				'link'    => trn_route( 'challenges.archive' ),
 			),
-			'games' => array(
+			'games'             => array(
 				'content' => __( 'Games', 'tournamatch' ),
 				'link'    => trn_route( 'games.archive' ),
 			),
-			'players' => array(
+			'players'           => array(
 				'content' => __( 'Players', 'tournamatch' ),
 				'link'    => trn_route( 'players.archive' ),
 			),
-			'teams' => array(
+			'teams'             => array(
 				'content' => __( 'Teams', 'tournamatch' ),
 				'link'    => trn_route( 'teams.archive' ),
 			),
-			'matches' => array(
+			'matches'           => array(
 				'content' => __( 'Matches', 'tournamatch' ),
 				'link'    => trn_route( 'matches.archive' ),
 			),
-			'ladders' => array(
+			'ladders'           => array(
 				'content' => __( 'Ladders', 'tournamatch' ),
 				'link'    => trn_route( 'ladders.archive' ),
 			),
-			'tournaments' => array(
+			'tournaments'       => array(
 				'content' => __( 'Tournaments', 'tournamatch' ),
 				'link'    => trn_route( 'tournaments.archive' ),
 			),
-			'user-dashboard' => array(
+			'user-dashboard'    => array(
 				'content' => __( 'User Dashboard', 'tournamatch' ),
 				'link'    => trn_route( 'players.single.dashboard' ),
 			),
 			'results-dashboard' => array(
 				'content' => __( 'Results Dashboard', 'tournamatch' ),
 				'link'    => trn_route( 'report.page' ),
-			)
+			),
 		);
 		?>
 		<div class="wrap">
@@ -157,7 +157,7 @@ class Admin {
 			<h2><?php esc_html_e( 'Shortcuts', 'tournamatch' ); ?></h2>
 			<p><?php esc_html_e( 'You should consider adding links to the following front end (user-facing) pages.', 'tournamatch' ); ?></p>
 			<ul>
-				<?php foreach( $shortcuts as $shortcut ): ?>
+				<?php foreach ( $shortcuts as $shortcut ) : ?>
 				<li><?php echo esc_html( $shortcut['content'] ); ?> (<a href="<?php echo esc_url( $shortcut['link'] ); ?>"><?php echo esc_url( $shortcut['link'] ); ?></a>) </li>
 				<?php endforeach; ?>
 			</ul>

@@ -209,10 +209,10 @@ class Tournament extends Controller {
 		// Verify business rules.
 		$rules = array();
 		if ( ! in_array( $tournament->status, array( 'created', 'open' ), true ) ) {
-			if ( isset( $request['start_date' ] ) ) {
+			if ( isset( $request['start_date'] ) ) {
 				$rules[] = new Cannot_Change_Tournament_Field( 'start_date', $tournament->start_date, $request['start_date'] );
 			}
-			if ( isset( $request['bracket_size' ] ) ) {
+			if ( isset( $request['bracket_size'] ) ) {
 				$rules[] = new Cannot_Change_Tournament_Field( 'bracket_size', $tournament->bracket_size, $request['bracket_size'] );
 			}
 		}

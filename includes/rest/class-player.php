@@ -547,13 +547,13 @@ WHERE `user_id` = %d
 		}
 
 		$properties = array(
-			'user_id'      => array(
+			'user_id'     => array(
 				'description' => esc_html__( 'The user id for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 			),
-			'name' => array(
+			'name'        => array(
 				'description' => esc_html__( 'The display name for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'trn-subtype' => 'callable',
@@ -563,12 +563,12 @@ WHERE `user_id` = %d
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'required'    => true,
 			),
-			'joined_date'  => array(
+			'joined_date' => array(
 				'description' => esc_html__( 'The date the player registered on the website.', 'tournamatch' ),
 				'type'        => 'object',
 				'trn-subtype' => 'callable',
 				'trn-get'     => function( $player ) {
-					$joined_date         = get_user_by( 'id', $player->user_id )->data->user_registered;
+					$joined_date = get_user_by( 'id', $player->user_id )->data->user_registered;
 					return array(
 						'raw'      => $joined_date,
 						'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $joined_date ) ) ),
@@ -591,48 +591,48 @@ WHERE `user_id` = %d
 					),
 				),
 			),
-			'location'     => array(
+			'location'    => array(
 				'description' => esc_html__( 'The location for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'flag'         => array(
+			'flag'        => array(
 				'description' => esc_html__( 'The country flag for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'wins'         => array(
+			'wins'        => array(
 				'description' => esc_html__( 'The number of individual wins for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'losses'       => array(
+			'losses'      => array(
 				'description' => esc_html__( 'The number of individual losses for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'draws'        => array(
+			'draws'       => array(
 				'description' => esc_html__( 'The number of individual draws for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'profile'      => array(
+			'profile'     => array(
 				'description' => esc_html__( 'The long text bio for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'avatar'       => array(
+			'avatar'      => array(
 				'description' => esc_html__( 'The avatar for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'teams'        => array(
+			'teams'       => array(
 				'description' => esc_html__( 'The number of teams the player is a member of.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 			),
-			'link'         => array(
+			'link'        => array(
 				'description' => esc_html__( 'URL to the player.' ),
 				'type'        => 'string',
 				'trn-subtype' => 'callable',

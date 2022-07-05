@@ -59,7 +59,7 @@ trn_get_header();
 <?php
 
 $views = array(
-	'standings'    => array(
+	'standings' => array(
 		'heading' => __( 'Standings', 'tournamatch' ),
 		'content' => function( $ladder ) {
 			if ( 'active' !== $ladder->status ) {
@@ -69,7 +69,7 @@ $views = array(
 			}
 		},
 	),
-	'rules'      => array(
+	'rules'     => array(
 		'heading' => __( 'Rules', 'tournamatch' ),
 		'content' => function( $ladder ) {
 			if ( strlen( $ladder->rules ) > 0 ) {
@@ -81,7 +81,7 @@ $views = array(
 			}
 		},
 	),
-	'matches'    => array(
+	'matches'   => array(
 		'heading' => __( 'Matches', 'tournamatch' ),
 		'content' => function( $ladder ) {
 			if ( 'active' !== $ladder->status ) {
