@@ -201,7 +201,7 @@ SELECT
     ELSE FORMAT((`le1`.`wins` / (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`)), 3) 
     END AS `win_percent`, 
   (UNIX_TIMESTAMP() - `time`) AS `idle_unix_timestamp`,
-  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `le1`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
 WHERE `le1`.`ladder_entry_id` = %d",
 				$wpdb->insert_id
@@ -279,7 +279,7 @@ SELECT
     WHEN 'players' THEN `p`.`display_name`
     ELSE `t`.`name`
     END AS `name`,
-  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`     
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `le1`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`     
 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
   LEFT JOIN `{$wpdb->prefix}trn_ladders` AS `l` ON `l`.`ladder_id` = `le1`.`ladder_id`
   LEFT JOIN `{$wpdb->prefix}trn_players_profiles` AS `p` ON `le1`.`competitor_id` = `p`.`user_id` AND `le1`.`competitor_type` = 'players'
@@ -430,7 +430,7 @@ SELECT
     ELSE FORMAT((`le1`.`wins` / (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`)), 3) 
     END AS `win_percent`, 
   (UNIX_TIMESTAMP() - `time`) AS `idle_unix_timestamp`,
-  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `le1`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
 WHERE `le1`.`ladder_entry_id` = %d",
 				$ladder_entry_id
