@@ -386,11 +386,11 @@ class Ladder {
 						),
 					),
 					array(
-						'id'          => 'active',
-						'label'       => __( 'Active', 'tournamatch' ),
+						'id'          => 'status',
+						'label'       => __( 'Status', 'tournamatch' ),
 						'description' => __( 'Toggle activity such as reporting, confirming, joining, etc.', 'tournamatch' ),
 						'type'        => 'select',
-						'value'       => isset( $ladder->active ) ? $ladder->active : 'active',
+						'value'       => isset( $ladder->status ) ? $ladder->status : 'status',
 						'options'     => array(
 							array(
 								'value'   => 'active',
