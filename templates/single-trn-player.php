@@ -117,6 +117,20 @@ $views = array(
 	),
 );
 
+/**
+ * Filters an array of views for the single player template page.
+ *
+ * @since 4.1.0
+ *
+ * @param array $views {
+ *          An associative array of tabbed views.
+ *
+ *          @param string|callable $heading The content or callable content of the header tab.
+ *          @param string $href The url of the header tab.
+ *          @param string|callable $content The content or callable content of the tabbed page.
+ *      }
+ * @param stdClass $player The data context item we are rendering a page for.
+ */
 $views = apply_filters( 'trn_single_player_views', $views, $player );
 
 trn_single_template_tab_views( $views, $player );

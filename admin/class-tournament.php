@@ -276,7 +276,7 @@ class Tournament {
 						'type'        => 'datetime-local',
 						'required'    => true,
 						'value'       => isset( $tournament->start_date ) ? $tournament->start_date : '',
-						'disabled'    => isset( $tournament->status ) &&( ! in_array( $tournament->status, array( 'created', 'open' ), true ) ),
+						'disabled'    => isset( $tournament->status ) && ( ! in_array( $tournament->status, array( 'created', 'open' ), true ) ),
 					),
 				),
 			),

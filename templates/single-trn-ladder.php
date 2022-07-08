@@ -172,6 +172,20 @@ if ( $can_leave ) {
 	wp_enqueue_script( 'leave-ladder' );
 }
 
+/**
+ * Filters an array of views for the single ladder template page.
+ *
+ * @since 4.1.0
+ *
+ * @param array $views {
+ *          An associative array of tabbed views.
+ *
+ *          @param string|callable $heading The content or callable content of the header tab.
+ *          @param string $href The url of the header tab.
+ *          @param string|callable $content The content or callable content of the tabbed page.
+ *      }
+ * @param stdClass $ladder The data context item we are rendering a page for.
+ */
 $views = apply_filters( 'trn_single_ladder_views', $views, $ladder );
 
 trn_single_template_tab_views( $views, $ladder );
