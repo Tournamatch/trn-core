@@ -2983,3 +2983,58 @@ if ( ! function_exists( 'trn_single_template_tab_views' ) ) {
 		<?php
 	}
 }
+
+add_action( 'plugins_loaded', 'trn_update_db_check' );
+if ( ! function_exists( 'trn_update_db_check' ) ) {
+	/**
+	 * Determines if the database needs to be upgraded.
+	 *
+	 * @since 4.1.0
+	 */
+	function trn_update_db_check() {
+		$options         = get_option( 'tournamatch_options', null );
+		$current_version = isset( $options['version'] ) ? $options['version'] : '4.0.0';
+
+		if ( TOURNAMATCH_VERSION !== $current_version ) {
+			trn_upgrade_sql( $current_version );
+		}
+
+		$options            = get_option( 'tournamatch_options', null );
+		$options['version'] = TOURNAMATCH_VERSION;
+		update_option( 'tournamatch_options', $options );
+	}
+}
+
+if ( ! function_exists( 'trn_upgrade_sql' ) ) {
+	/**
+	 * Performs a database update for Tournamatch.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string|null $version The current version.
+	 */
+	function trn_upgrade_sql( $version = null ) {
+		global $wpdb;
+
+		if ( empty( $version ) ) {
+			return;
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		if ( version_compare( $version, '4.1.0', '<' ) ) {
+			$sql_fix = "CREATE TABLE `{$wpdb->prefix}trn_teams_members` (
+  `team_member_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `team_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `joined_date` datetime NOT NULL,
+  `team_rank_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `wins` int(10) unsigned NOT NULL DEFAULT '0',
+  `losses` int(10) unsigned NOT NULL DEFAULT '0',
+  `draws` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`team_member_id`)
+);";
+			dbDelta( $sql_fix, true );
+		}
+	}
+}
