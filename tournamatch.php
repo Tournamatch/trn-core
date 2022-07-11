@@ -1382,7 +1382,13 @@ if ( ! function_exists( 'scheduled_matches_table' ) ) {
 						<a href="<?php trn_esc_route_e( $scheduled_match->route_name, array( $scheduled_match->route_var => $scheduled_match->two_competitor_id ) ); ?>"><?php echo esc_html( $scheduled_match->two_name ); ?></a>
 					</td>
 					<td class="trn-scheduled-matches-table-date">
-						<?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $scheduled_match->match_date ) ) ) ); ?>
+						<?php
+						if ( '0000-00-00 00:00:00' !== $scheduled_match->match_date ) {
+							echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $scheduled_match->match_date ) ) ) );
+						} else {
+							echo '&nbsp;';
+						}
+						?>
 					</td>
 					<td class="trn-scheduled-matches-table-action">
 						<a class="btn btn-sm btn-primary"
