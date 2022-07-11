@@ -23,7 +23,7 @@ if ( is_null( $tournament ) ) {
 	exit;
 }
 
-$my_tournaments      = trn_get_user_tournaments( get_current_user_id() );
+$my_tournaments      = array_column( trn_get_user_tournaments( get_current_user_id() ), 'tournament_id' );
 $register_conditions = trn_get_tournament_register_conditions( $tournament->tournament_id, get_current_user_id() );
 $competitors         = trn_get_tournament_competitors( $tournament_id );
 $registered          = trn_get_registered_competitors( $tournament_id );
@@ -155,7 +155,7 @@ if ( in_array( $tournament->status, [ 'in_progress', 'complete' ], true ) ) {
 	);
 }
 
-if ( ( 'in_progress' === $tournament->status ) && in_array( (int) $tournament->tournament_id, $my_tournaments, true ) ) {
+if ( ( 'in_progress' === $tournament->status ) && in_array( $tournament->tournament_id, $my_tournaments, true ) ) {
 	$views = array_merge(
 		$views,
 		array(
