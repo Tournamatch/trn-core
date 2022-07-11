@@ -105,7 +105,7 @@ if ( $can_join ) {
 	);
 }
 
-if ( $can_join ) {
+if ( $can_report ) {
 	$views = array_merge(
 		$views,
 		array(
