@@ -368,7 +368,7 @@ if ( ! function_exists( 'trn_get_user_ladders_with_challenges' ) ) {
                   WHERE `l`.`status` = %s 
                     AND `l`.`visibility` = %s 
                     AND `l`.`direct_challenges` = %s
-                    AND `l`.`competitor_type` = 3
+                    AND `l`.`competitor_type` = 'teams'
                     AND `tm`.`user_id` = %d
                     AND `tm`.`team_rank_id` = %d
                 ",
