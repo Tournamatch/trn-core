@@ -72,7 +72,7 @@ export const scripts = () => {
 };
 
 export const pot = () => {
-    return src("**/*.php")
+    return src(["**/*.php", "!bundled{,/**}"])
         .pipe(
             wpPot({
                 domain: "tournamatch",
