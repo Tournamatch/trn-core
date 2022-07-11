@@ -57,9 +57,6 @@ trn_get_header();
 
 					</div>
 					<ul class="list-unstyled text-center" style="float: right">
-						<li class="list-ite" style="margin-bottom: 10px"><a
-									href="<?php trn_esc_route_e( 'ladders.single', array( 'id' => intval( $ladder->ladder_id ) ) ); ?>"
-									class="btn btn-sm btn-primary"><?php esc_html_e( 'Info', 'tournamatch' ); ?></a></li>
 						<?php if ( 'active' === $ladder->status ) : ?>
 							<?php if ( in_array( (string) $ladder->ladder_id, $my_ladders, true ) ) : ?>
 								<li class="list-inline-ite" style="margin-bottom: 10px"><a
