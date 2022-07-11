@@ -17,9 +17,10 @@ import { trn } from './tournamatch.js';
         const challengeButton = document.getElementById('trn-challenge-button');
         const matchTimeInput = document.getElementById('match_time');
         const challengerField = document.getElementById('trn-challenge-form-challenger');
-        const challengeeSelect = document.getElementById('trn-challenge-form-challengee');
+        const challengeeField = document.getElementById('trn-challenge-form-challengee');
         const challengerGroup = document.getElementById('trn-challenge-form-challenger-group');
         const challengeeGroup = document.getElementById('trn-challenge-form-challengee-group');
+        const matchTimeGroup = document.getElementById('trn-challenge-form-match-time-group');
         const challengeForm = document.getElementById('trn-create-challenge-form');
         let ladderId = options.ladder_id;
         let challengeeId = options.challengee_id;
@@ -55,8 +56,15 @@ import { trn } from './tournamatch.js';
             renderChallengerField(challengeBuilder.challenger);
             challengeeGroup.classList.remove('d-none');
             challengerGroup.classList.remove('d-none');
-            challengeButton.removeAttribute('disabled');
-            matchTimeInput.removeAttribute('disabled');
+            if ( 0 < challengeBuilder.competitors.length) {
+                matchTimeGroup.classList.remove('d-none');
+                challengeButton.classList.remove('d-none');
+                challengeButton.removeAttribute('disabled');
+                matchTimeInput.removeAttribute('disabled');
+            } else {
+                matchTimeGroup.classList.add('d-none');
+                challengeButton.classList.add('d-none');
+            }
             ladderId = challengeBuilder.ladder_id;
         }
 
@@ -86,19 +94,35 @@ import { trn } from './tournamatch.js';
         }
 
         function renderChallengeeList(challengees) {
-            const length = challengeeSelect.length;
-            for (let i = length - 1; i >= 0; i--) {
-                challengeeSelect.remove(i);
-            }
-            challengees.forEach((challengee) => {
-                const opt = document.createElement('option');
-                opt.value = challengee.competitor_id;
-                opt.innerHTML = challengee.competitor_name;
-                if (challengee.competitor_id === challengeeId) {
-                    opt.setAttribute('selected', true);
+            if (0 === challengees.length) {
+                const p = document.createElement('p');
+                p.innerText = options.language.no_competitors_exist;
+                p.classList.add('form-control-static');
+                while (challengeeField.firstChild) {challengeeField.removeChild(challengeeField.firstChild); }
+                challengeeField.appendChild(p);
+            } else {
+                const challengeeSelect = document.createElement('select');
+                challengees.forEach((challengee) => {
+                    const opt = document.createElement('option');
+                    opt.value = challengee.competitor_id;
+                    opt.innerHTML = challengee.competitor_name;
+                    if (challengee.competitor_id === challengeeId) {
+                        opt.setAttribute('selected', true);
+                    }
+                    challengeeSelect.appendChild(opt);
+                });
+                while (challengeeField.firstChild) {challengeeField.removeChild(challengeeField.firstChild); }
+                challengeeField.appendChild(challengeeSelect);
+                challengeeSelect.addEventListener('change', function(event) {
+                    challengeeField.setAttribute('data-competitor-id', event.target.value);
+                });
+                console.log(challengeeId);
+                if ('0' !== challengeeId) {
+                    challengeeField.setAttribute('data-competitor-id', challengeeId);
+                } else {
+                    challengeeField.setAttribute('data-competitor-id', challengees[0].competitor_id);
                 }
-                challengeeSelect.appendChild(opt);
-            });
+            }
         }
 
         // if there is no ladder set, respond to changes in the ladder drop down.
@@ -134,7 +158,7 @@ import { trn } from './tournamatch.js';
             xhr.send($.param({
                 ladder_id: ladderId,
                 challenger_id: challengerField.getAttribute('data-competitor-id'),
-                challengee_id: challengeeSelect.value,
+                challengee_id: challengeeField.getAttribute('data-competitor-id'),
                 match_time: matchTimeInput.value,
             }));
         });

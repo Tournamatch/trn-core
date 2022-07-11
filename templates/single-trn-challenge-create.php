@@ -37,44 +37,47 @@ trn_get_header();
 
 ?>
 	<h1 class="mb-4"><?php esc_html_e( 'Create Challenge', 'tournamatch' ); ?></h1>
-	<form id="trn-create-challenge-form" class="form-horizontal" action="#" method="post">
-		<div class="form-group">
-			<label class="col-sm-3 control-label" for="ladder_id"><?php esc_html_e( 'Ladder', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-4">
-				<?php if ( isset( $ladder ) ) : ?>
-					<p class="form-control-static"><?php echo esc_html( $ladder->name ); ?></p>
-				<?php else : ?>
-					<select id="ladder_id" name="ladder_id" class="form-control">
-						<?php foreach ( $ladders as $ladder_option ) : ?>
-							<option value="<?php echo intval( $ladder_option->id ); ?>"><?php echo esc_html( $ladder_option->name ); ?></option>
-						<?php endforeach; ?>
-					</select>
-				<?php endif; ?>
+	<?php if ( 0 < count( $ladders ) ) : ?>
+		<form id="trn-create-challenge-form" class="form-horizontal" action="#" method="post">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="ladder_id"><?php esc_html_e( 'Ladder', 'tournamatch' ); ?>:</label>
+				<div class="col-sm-4">
+					<?php if ( isset( $ladder ) ) : ?>
+						<p class="form-control-static"><?php echo esc_html( $ladder->name ); ?></p>
+					<?php else : ?>
+						<select id="ladder_id" name="ladder_id" class="form-control">
+							<?php foreach ( $ladders as $ladder_option ) : ?>
+								<option value="<?php echo intval( $ladder_option->id ); ?>"><?php echo esc_html( $ladder_option->name ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					<?php endif; ?>
+				</div>
 			</div>
-		</div>
-		<div class="form-group d-none" id="trn-challenge-form-challenger-group">
-			<label for="trn-challenge-form-challenger" class="col-sm-3 control-label"><?php esc_html_e( 'Challenger', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-4" id="trn-challenge-form-challenger">
+			<div class="form-group d-none" id="trn-challenge-form-challenger-group">
+				<label for="trn-challenge-form-challenger" class="col-sm-3 control-label"><?php esc_html_e( 'Challenger', 'tournamatch' ); ?>:</label>
+				<div class="col-sm-4" id="trn-challenge-form-challenger">
+				</div>
 			</div>
-		</div>
-		<div class="form-group d-none" id="trn-challenge-form-challengee-group">
-			<label for="trn-challenge-form-challengee" class="col-sm-3 control-label"><?php esc_html_e( 'Challengee', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-4">
-				<select id="trn-challenge-form-challengee" name="challengee" class="form-control"></select>
+			<div class="form-group d-none" id="trn-challenge-form-challengee-group">
+				<label for="trn-challenge-form-challengee" class="col-sm-3 control-label"><?php esc_html_e( 'Challengee', 'tournamatch' ); ?>:</label>
+				<div class="col-sm-4" id="trn-challenge-form-challengee">
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<label for="match_time"class="col-sm-3 control-label"><?php esc_html_e( 'Match Time', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-4">
-				<input id="match_time" name="match_time" type='datetime-local' required class="form-control" autocomplete="off" disabled>
+			<div class="form-group d-none" id="trn-challenge-form-match-time-group">
+				<label for="match_time"class="col-sm-3 control-label"><?php esc_html_e( 'Match Time', 'tournamatch' ); ?>:</label>
+				<div class="col-sm-4">
+					<input id="match_time" name="match_time" type='datetime-local' required class="form-control" autocomplete="off" disabled>
+				</div>
 			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-9">
-				<input type="submit" class="btn btn-primary" id="trn-challenge-button" value="<?php esc_html_e( 'Challenge', 'tournamatch' ); ?>">
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-9">
+					<input type="submit" class="btn btn-primary" id="trn-challenge-button" value="<?php esc_html_e( 'Challenge', 'tournamatch' ); ?>">
+				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	<?php else : ?>
+		<p><?php esc_html_e( 'You are not participating on any ladders with challenges enabled.', 'tournamatch' ); ?></p>
+	<?php endif; ?>
 
 <?php
 $options = array(
@@ -85,8 +88,9 @@ $options = array(
 	'ladders'       => $ladders,
 	'ladder'        => $ladder,
 	'language'      => array(
-		'failure' => esc_html__( 'Error', 'tournamatch' ),
-		'success' => esc_html__( 'Success', 'tournamatch' ),
+		'failure'              => esc_html__( 'Error', 'tournamatch' ),
+		'success'              => esc_html__( 'Success', 'tournamatch' ),
+		'no_competitors_exist' => esc_html__( 'No competitors exist to challenge.', 'tournamatch' ),
 	),
 );
 

@@ -2940,7 +2940,7 @@ if ( ! function_exists( 'trn_single_template_tab_views' ) ) {
 				<li class="tournamatch-nav-item" role="presentation" >
 					<?php
 
-					if ( isset( $view['heading'] ) && is_object( $view['heading'] ) && ($view['heading'] instanceof \Closure) ) {
+					if ( isset( $view['heading'] ) && is_object( $view['heading'] ) && ( $view['heading'] instanceof \Closure ) ) {
 						call_user_func( $view['heading'], $data_context );
 					} else {
 						echo '<a class="tournamatch-nav-link" href="';
@@ -2971,7 +2971,7 @@ if ( ! function_exists( 'trn_single_template_tab_views' ) ) {
 				<div id="<?php echo esc_attr( $view_id ); ?>" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="<?php echo esc_attr( $view_id ); ?>-tab">
 					<?php
 
-					if ( isset( $view['content'] ) && is_object( $view['content'] ) && ($view['content'] instanceof \Closure) ) {
+					if ( isset( $view['content'] ) && is_object( $view['content'] ) && ( $view['content'] instanceof \Closure ) ) {
 						call_user_func( $view['content'], $data_context );
 					}
 
