@@ -116,7 +116,6 @@ import { trn } from './tournamatch.js';
                 challengeeSelect.addEventListener('change', function(event) {
                     challengeeField.setAttribute('data-competitor-id', event.target.value);
                 });
-                console.log(challengeeId);
                 if ('0' !== challengeeId) {
                     challengeeField.setAttribute('data-competitor-id', challengeeId);
                 } else {
