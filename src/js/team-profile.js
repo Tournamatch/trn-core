@@ -38,7 +38,7 @@ import { trn } from './tournamatch.js';
                 members.forEach((member) => {
                     if (member.user_id === userId) {
                         isMember = true;
-                        if (member.rank_id === 1) {
+                        if (member.team_rank_id === 1) {
                             isOwner = true;
                         }
                     }
@@ -62,7 +62,7 @@ import { trn } from './tournamatch.js';
             let isOwner = false;
             if ((members !== null) && (members.length > 0)) {
                 members.forEach((member) => {
-                    isOwner = ((member.user_id === userId) && (member.rank_id === 1)) || isOwner;
+                    isOwner = ((member.user_id === userId) && (member.team_rank_id === 1)) || isOwner;
                 });
             }
             return isOwner;
