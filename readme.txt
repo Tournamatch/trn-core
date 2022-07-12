@@ -45,16 +45,17 @@ You should add links to your menu for the following pages (replace example.com w
 == Screenshots ==
 
 1. A ladder standings page showing 8 competitors, total points, games played, wins, losses, draws, win percent, streak, and days idle. Draw match results can be disabled in settings. There are also two icons in the Action column for editing a competitor's standing and removing a competitor.
-2. An 8 competitor tournament. You can advance competitors through the brackets by viewing the brackets while authenticated as an admin. Hover the cursor over the gear icon to see the match dropdown menu.
+2. An 8 competitor tournament. You can advance competitors through the brackets by viewing the brackets while authenticated as an admin. Hover the cursor over the gear icon to see the match drop down menu.
 3. A team roster page for team owners to manage who is on their team. Owners can send invites or directly invite other users, and users can also request to join a team.  
 4. The WordPress backend **All Tournaments** list. Here you can find actions for **Registration** (for manually registering competitors), **Start**, **Reset**, **Finish**, **Edit**, and **Clone**.
-5. The WordPress backend tournament matchs screen. You can manually advance competitors in the tournament, confirm reported matches, or clear match disputes. Users can also report their own matches which the opposite competitors can then confirm. 
+5. The WordPress backend tournament matches screen. You can manually advance competitors in the tournament, confirm reported matches, or clear match disputes. Users can also report their own matches which the opposite competitors can then confirm.
 6. The WordPress backend **Create new ladder** form. You can choose how many points to reward for wins, losses, and draws.
-7. The WordPress backend **Manage Games** page. You can upload game thumnails, create new games, edit existing games, and delete games on this page.
+7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
 
 = 4.1.0 =
+* **Fixed a critical bug in 4.0.x that caused the players list and new teams to fail.**
 * Added a list of page shortcuts to the WordPress Backend -> Tournamatch page.
 * Updated the single player, single team, single tournament, and single ladder template pages to dynamically aggregate tabbed views.
 * Added four new filters for single page template views.
