@@ -80,23 +80,26 @@ trn_get_header();
 	<?php endif; ?>
 
 <?php
-$options = array(
-	'api_url'       => site_url( 'wp-json/tournamatch/v1/' ),
-	'rest_nonce'    => wp_create_nonce( 'wp_rest' ),
-	'ladder_id'     => $ladder_id,
-	'challengee_id' => $challengee_id,
-	'ladders'       => $ladders,
-	'ladder'        => $ladder,
-	'language'      => array(
-		'failure'              => esc_html__( 'Error', 'tournamatch' ),
-		'success'              => esc_html__( 'Success', 'tournamatch' ),
-		'no_competitors_exist' => esc_html__( 'No competitors exist to challenge.', 'tournamatch' ),
-	),
-);
 
-wp_register_script( 'trn-create-challenge', plugins_url( '../dist/js/create-challenge-form.js', __FILE__ ), array( 'tournamatch' ), '3.20.0', true );
-wp_localize_script( 'trn-create-challenge', 'trn_create_challenge_form_options', $options );
-wp_enqueue_script( 'trn-create-challenge' );
+if ( 0 < count( $ladders ) ) {
+	$options = array(
+		'api_url'       => site_url( 'wp-json/tournamatch/v1/' ),
+		'rest_nonce'    => wp_create_nonce( 'wp_rest' ),
+		'ladder_id'     => $ladder_id,
+		'challengee_id' => $challengee_id,
+		'ladders'       => $ladders,
+		'ladder'        => $ladder,
+		'language'      => array(
+			'failure'              => esc_html__( 'Error', 'tournamatch' ),
+			'success'              => esc_html__( 'Success', 'tournamatch' ),
+			'no_competitors_exist' => esc_html__( 'No competitors exist to challenge.', 'tournamatch' ),
+		),
+	);
+
+	wp_register_script( 'trn-create-challenge', plugins_url( '../dist/js/create-challenge-form.js', __FILE__ ), array( 'tournamatch' ), '3.20.0', true );
+	wp_localize_script( 'trn-create-challenge', 'trn_create_challenge_form_options', $options );
+	wp_enqueue_script( 'trn-create-challenge' );
+}
 
 trn_get_footer();
 

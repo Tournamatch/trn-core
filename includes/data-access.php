@@ -317,15 +317,11 @@ if ( ! function_exists( 'trn_get_challenge' ) ) {
               IF(`pce`.`display_name` IS NULL, `tce`.`name`, `pce`.`display_name`) AS `challengee_name` 
             FROM `{$wpdb->prefix}trn_challenges` AS `c` 
               LEFT JOIN `{$wpdb->prefix}trn_ladders` AS `l` ON `l`.`ladder_id` = `c`.`ladder_id` 
-              LEFT JOIN `{$wpdb->prefix}trn_players_profiles` AS `pcr` ON `pcr`.`user_id` = `c`.`challenger_id` AND `l`.`competitor_type` = %d 
-              LEFT JOIN `{$wpdb->prefix}trn_players_profiles` AS `pce` ON `pce`.`user_id` = `c`.`challengee_id` AND `l`.`competitor_type` = %d 
-              LEFT JOIN `{$wpdb->prefix}trn_teams` AS `tcr` ON `tcr`.`team_id` = `c`.`challenger_id` AND `l`.`competitor_type` = %d 
-              LEFT JOIN `{$wpdb->prefix}trn_teams` AS `tce` ON `tce`.`team_id` = `c`.`challengee_id` AND `l`.`competitor_type` = %d 
+              LEFT JOIN `{$wpdb->prefix}trn_players_profiles` AS `pcr` ON `pcr`.`user_id` = `c`.`challenger_id` AND `l`.`competitor_type` = 'players' 
+              LEFT JOIN `{$wpdb->prefix}trn_players_profiles` AS `pce` ON `pce`.`user_id` = `c`.`challengee_id` AND `l`.`competitor_type` = 'players' 
+              LEFT JOIN `{$wpdb->prefix}trn_teams` AS `tcr` ON `tcr`.`team_id` = `c`.`challenger_id` AND `l`.`competitor_type` = 'teams' 
+              LEFT JOIN `{$wpdb->prefix}trn_teams` AS `tce` ON `tce`.`team_id` = `c`.`challengee_id` AND `l`.`competitor_type` = 'teams' 
             WHERE `c`.`challenge_id` = %d",
-				1,
-				1,
-				3,
-				3,
 				$challenge_id
 			)
 		);
