@@ -73,6 +73,7 @@ You should add links to your menu for the following pages (replace example.com w
 - Fixed an issue preventing non-admins from editing their own user profiles.
 - Fixed an issue when attempting to create a challenge with no supported ladders or no competitors.
 - Fixed occurrences of null dates for scheduled matches and the backend match list table.
+- Fixed an issue causing the challenger and challengee team name to be blank for team challenges.
 - Reporting an unscheduled new match from the results dashboard works as expected.
 * Removed commented out code.
 * Removed several unused classes and assets.
