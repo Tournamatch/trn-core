@@ -67,6 +67,13 @@ You should add links to your menu for the following pages (replace example.com w
 * Fixed an incorrectly named primary key on the team members table.
 * Fixed an incorrectly named key on the tournaments entries table.
 * Fixed a broken link to the competitor flag on the newest members widget.
+- Removed missing goals and delta fields from edit ladder competitor page.
+- Removed redundant info button on ladder archive page.
+- Fixed an issue preventing teams from creating challenges.
+- Fixed an issue preventing non-admins from editing their own user profiles.
+- Fixed an issue when attempting to create a challenge with no supported ladders or no competitors.
+- Fixed occurrences of null dates for scheduled matches and the backend match list table.
+- Reporting an unscheduled new match from the results dashboard works as expected.
 * Removed commented out code.
 * Removed several unused classes and assets.
 
