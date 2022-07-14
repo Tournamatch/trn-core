@@ -23,11 +23,11 @@ get_header();
 
 trn_get_header();
 
-$team_owner  = trn_get_team_owner( $team_id );
-$team_fields = apply_filters( 'trn_team_fields', array() );
-$user_id     = get_current_user_id();
+$team_owner = trn_get_team_owner( $team_id );
+// $team_fields = apply_filters( 'trn_team_fields', array() );
+$user_id = get_current_user_id();
 
-$social_fields = apply_filters( 'trn_team_icon_fields', array() );
+// $social_fields = apply_filters( 'trn_team_icon_fields', array() );
 
 $team_links = array();
 if ( 0 !== $user_id ) {
@@ -38,16 +38,47 @@ if ( 0 !== $user_id ) {
 	$team_links[] = '<button class="btn btn-sm btn-secondary" id="trn-join-team-button" style="display:none" data-team-id="' . intval( $team_id ) . '" data-user-id="' . get_current_user_id() . '">' . esc_html__( 'Join Team', 'tournamatch' ) . '</button>';
 }
 
-$social_links = array();
-foreach ( $social_fields as $social_icon => $social_icon_data ) {
-	if ( 0 < strlen( get_post_meta( $team->post_id, $social_icon, true ) ) ) {
-		$social_links[] = '<a href="' . esc_html( get_post_meta( $team->post_id, $social_icon, true ) ) . '"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-	}
-}
-if ( 0 === count( $social_links ) ) {
-	$social_links[] = '<em>' . esc_html__( 'No contacts to display.', 'tournamatch' ) . '</em>';
-}
-$social_links = implode( ' ', $social_links );
+// $social_links = array();
+// foreach ( $social_fields as $social_icon => $social_icon_data ) {
+// if ( 0 < strlen( get_post_meta( $team->post_id, $social_icon, true ) ) ) {
+// $social_links[] = '<a href="' . esc_html( get_post_meta( $team->post_id, $social_icon, true ) ) . '"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
+// }
+// }
+// if ( 0 === count( $social_links ) ) {
+// $social_links[] = '<em>' . esc_html__( 'No contacts to display.', 'tournamatch' ) . '</em>';
+// }
+// $social_links = implode( ' ', $social_links );
+
+$description_list = array(
+	'owner'         => array(
+		'term'        => array(
+			'text' => __( 'Owner', 'tournamatch' ),
+			'id'   => 'trn-team-owner',
+		),
+		'description' => $team_owner->name,
+	),
+	'joined_date'   => array(
+		'term'        => __( 'Joined Date', 'tournamatch' ),
+		'description' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ),
+	),
+	'members'       => array(
+		'term'        => __( 'Members', 'tournamatch' ),
+		'description' => array(
+			'text' => function( $team ) {
+				echo '<em>' . esc_html__( 'Loading team members...', 'tournamatch' ) . '</em>';
+			},
+			'id'   => 'trn-team-members-list',
+		),
+	),
+	'career_record' => array(
+		'term'        => __( 'Career Record', 'tournamatch' ),
+		'description' => function( $team ) {
+			echo do_shortcode( '[trn-career-record competitor_type="teams" competitor_id="' . intval( $team->team_id ) . '"]' );
+		},
+	),
+);
+
+$description_list = apply_filters( 'trn_single_team_description_list', $description_list, $team );
 
 ?>
 <div class="tournamatch-profile">
@@ -55,24 +86,25 @@ $social_links = implode( ' ', $social_links );
 		<h1 class="text-center mb-4">
 			<?php echo esc_html( $team->name ); ?>
 		</h1>
-		<dl>
-			<dt><?php esc_html_e( 'Owner', 'tournamatch' ); ?>:</dt>
-			<dd id="trn-team-owner"><?php echo esc_html( $team_owner->name ); ?></dd>
-			<dt><?php esc_html_e( 'Joined Date', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ) ); ?></dd>
-			<?php foreach ( $team_fields as $field_id => $field_data ) : ?>
-				<dt><?php echo esc_html( $field_data['display_name'] ); ?>:</dt>
-				<dd><?php echo esc_html( get_post_meta( $team->post_id, $field_id, true ) ); ?></dd>
-			<?php endforeach; ?>
-			<dt><?php esc_html_e( 'Members', 'tournamatch' ); ?>:</dt>
-			<dd id="trn-team-members-list">
-				<em><?php esc_html_e( 'Loading team members...', 'tournamatch' ); ?></em>
-			</dd>
-			<dt><?php esc_html_e( 'Contact', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo wp_kses_post( $social_links ); ?></dd>
-			<dt><?php esc_html_e( 'Career Record', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo do_shortcode( '[trn-career-record competitor_type="teams" competitor_id="' . intval( $team_id ) . '"]' ); ?></dd>
-		</dl>
+		<?php trn_single_template_description_list( $description_list, $team ); ?>
+<!--		<dl>-->
+<!--			<dt>--><?php // esc_html_e( 'Owner', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd id="trn-team-owner">--><?php // echo esc_html( $team_owner->name ); ?><!--</dd>-->
+<!--			<dt>--><?php // esc_html_e( 'Joined Date', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd>--><?php // echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ) ); ?><!--</dd>-->
+<!--			--><?php // foreach ( $team_fields as $field_id => $field_data ) : ?>
+<!--				<dt>--><?php // echo esc_html( $field_data['display_name'] ); ?><!--:</dt>-->
+<!--				<dd>--><?php // echo esc_html( get_post_meta( $team->post_id, $field_id, true ) ); ?><!--</dd>-->
+<!--			--><?php // endforeach; ?>
+<!--			<dt>--><?php // esc_html_e( 'Members', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd id="trn-team-members-list">-->
+<!--				<em>--><?php // esc_html_e( 'Loading team members...', 'tournamatch' ); ?><!--</em>-->
+<!--			</dd>-->
+<!--			<dt>--><?php // esc_html_e( 'Contact', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd>--><?php // echo wp_kses_post( $social_links ); ?><!--</dd>-->
+<!--			<dt>--><?php // esc_html_e( 'Career Record', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd>--><?php // echo do_shortcode( '[trn-career-record competitor_type="teams" competitor_id="' . intval( $team_id ) . '"]' ); ?><!--</dd>-->
+<!--		</dl>-->
 		<div id="trn-leave-team-response"></div>
 		<div id="trn-join-team-response"></div>
 		<?php

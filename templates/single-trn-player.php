@@ -34,42 +34,62 @@ if ( is_user_logged_in() ) {
 	}
 }
 
-$player_fields = apply_filters( 'trn_player_fields', array() );
-$icon_fields   = apply_filters( 'trn_player_icon_fields', array() );
+// $player_fields = apply_filters( 'trn_player_fields', array() );
+// $icon_fields   = apply_filters( 'trn_player_icon_fields', array() );
+//
+// $social_links = array();
+// foreach ( $icon_fields as $social_icon => $social_icon_data ) {
+// if ( 0 < strlen( get_user_meta( $user_id, "trn_$social_icon", true ) ) ) {
+// $social_links[] = '<a href="' . esc_html( get_user_meta( $user_id, "trn_$social_icon", true ) ) . '"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
+// }
+// }
+//
+// if ( intval( trn_get_option( 'display_user_email' ) ) === 1 ) {
+// $social_links[] = '<a href="mailto:' . esc_html( get_userdata( $user_id )->user_email ) . '"><i class="fa fa-envelope"></i></a>';
+// }
+//
+// if ( 0 === count( $social_links ) ) {
+// $social_links[] = '<em>' . esc_html__( 'No contacts to display.', 'tournamatch' ) . '</em>';
+// }
+// $social_links = implode( ' ', $social_links );
 
-$social_links = array();
-foreach ( $icon_fields as $social_icon => $social_icon_data ) {
-	if ( 0 < strlen( get_user_meta( $user_id, "trn_$social_icon", true ) ) ) {
-		$social_links[] = '<a href="' . esc_html( get_user_meta( $user_id, "trn_$social_icon", true ) ) . '"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-	}
-}
+$description_list = array(
+	'joined_date'   => array(
+		'term'        => __( 'Joined Date', 'tournamatch' ),
+		'description' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( get_user_by( 'id', $user_id )->data->user_registered ) ) ),
+	),
+	'location'      => array(
+		'term'        => __( 'Location', 'tournamatch' ),
+		'description' => $player->location,
+	),
+	'career_record' => array(
+		'term'        => __( 'Career Record', 'tournamatch' ),
+		'description' => function( $player ) {
+			echo do_shortcode( '[trn-career-record competitor_type="players" competitor_id="' . intval( $player->user_id ) . '"]' );
+		},
+	),
+);
 
-if ( intval( trn_get_option( 'display_user_email' ) ) === 1 ) {
-	$social_links[] = '<a href="mailto:' . esc_html( get_userdata( $user_id )->user_email ) . '"><i class="fa fa-envelope"></i></a>';
-}
-
-if ( 0 === count( $social_links ) ) {
-	$social_links[] = '<em>' . esc_html__( 'No contacts to display.', 'tournamatch' ) . '</em>';
-}
-$social_links = implode( ' ', $social_links );
+$description_list = apply_filters( 'trn_single_player_description_list', $description_list, $player );
 ?>
 <div class="tournamatch-profile">
 	<div class="tournamatch-profile-details">
 		<h1 class="text-center"><?php echo esc_html( $player->name ); ?></h1>
-		<dl>
-			<dt><?php esc_html_e( 'Joined Date', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( get_user_by( 'id', $user_id )->data->user_registered ) ) ) ); ?></dd>
-			<dt><?php esc_html_e( 'Location', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo esc_html( $player->location ); ?></dd>
-			<?php foreach ( $player_fields as $field_id => $field_data ) : ?>
-				<dt><?php echo esc_html( $field_data['display_name'] ); ?>:</dt>
-				<dd><?php echo esc_html( get_user_meta( $user_id, "trn_$field_id", true ) ); ?></dd>
-			<?php endforeach; ?>
-			<dt><?php esc_html_e( 'Contact', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo wp_kses_post( $social_links ); ?></dd>
-			<dt><?php esc_html_e( 'Career Record', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo do_shortcode( '[trn-career-record competitor_type="players" competitor_id="' . intval( $user_id ) . '"]' ); ?></dd>
-		</dl>
+		<?php trn_single_template_description_list( $description_list, $player ); ?>
+<!--		<dl>-->
+<!--			<dt>--><?php // esc_html_e( 'Joined Date', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd>--><?php // echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( get_user_by( 'id', $user_id )->data->user_registered ) ) ) ); ?><!--</dd>-->
+<!--			<dt>--><?php // esc_html_e( 'Location', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd>--><?php // echo esc_html( $player->location ); ?><!--</dd>-->
+<!--			--><?php // foreach ( $player_fields as $field_id => $field_data ) : ?>
+<!--				<dt>--><?php // echo esc_html( $field_data['display_name'] ); ?><!--:</dt>-->
+<!--				<dd>--><?php // echo esc_html( get_user_meta( $user_id, "trn_$field_id", true ) ); ?><!--</dd>-->
+<!--			--><?php // endforeach; ?>
+<!--			<dt>--><?php // esc_html_e( 'Contact', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd>--><?php // echo wp_kses_post( $social_links ); ?><!--</dd>-->
+<!--			<dt>--><?php // esc_html_e( 'Career Record', 'tournamatch' ); ?><!--:</dt>-->
+<!--			<dd>--><?php // echo do_shortcode( '[trn-career-record competitor_type="players" competitor_id="' . intval( $user_id ) . '"]' ); ?><!--</dd>-->
+<!--		</dl>-->
 		<?php if ( 0 < count( $secondary_links ) ) : ?>
 			<div id="trn-send-invite-response"></div>
 			<div class="text-center">

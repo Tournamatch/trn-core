@@ -64,7 +64,6 @@ class Table_Shortcodes {
 		$html .= '<th class="trn-teams-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-teams-table-created">' . esc_html__( 'Created', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-teams-table-members">' . esc_html__( 'Members', 'tournamatch' ) . '</th>';
-		$html .= '<th class="trn-teams-table-contact">' . esc_html__( 'Contacts', 'tournamatch' ) . '</th>';
 
 		if ( current_user_can( 'manage_tournamatch' ) ) {
 			$html .= '<th class="trn-teams-table-admin">' . esc_html__( 'Admin', 'tournamatch' ) . '</th>';
@@ -74,13 +73,6 @@ class Table_Shortcodes {
 		$html .= '</thead>';
 		$html .= '<tbody></tbody>';
 		$html .= '</table>';
-
-		$social_fields = apply_filters( 'trn_team_icon_fields', array() );
-
-		$social_links = array();
-		foreach ( $social_fields as $social_icon => $social_icon_data ) {
-			$social_links[ $social_icon ] = '<a href="{0}"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-		}
 
 		$table_language = array(
 			'sEmptyTable'     => esc_html__( 'No teams to display.', 'tournamatch' ),
@@ -118,7 +110,6 @@ class Table_Shortcodes {
 				'delete_confirm' => esc_html__( 'Are you sure you want to delete team &quot;{0}&quot;?', 'tournamatch' ),
 			),
 			'user_capability' => current_user_can( 'manage_tournamatch' ),
-			'social_links'    => $social_links,
 		);
 
 		wp_register_script( 'trn-teams-list-table', plugins_url( '../../dist/js/teams.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '3.21.1', true );
@@ -148,7 +139,6 @@ class Table_Shortcodes {
 		$html .= '<th class="trn-players-table-joined">' . esc_html__( 'Joined', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-players-table-location">' . esc_html__( 'Location', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-players-table-teams">' . esc_html__( 'Teams', 'tournamatch' ) . '</th>';
-		$html .= '<th class="trn-players-table-contact">' . esc_html__( 'Contacts', 'tournamatch' ) . '</th>';
 
 		if ( current_user_can( 'manage_tournamatch' ) ) {
 			$html .= '<th class="trn-players-table-admin">' . esc_html__( 'Admin', 'tournamatch' ) . '</th>';
@@ -158,17 +148,6 @@ class Table_Shortcodes {
 		$html .= '</thead>';
 		$html .= '<tbody></tbody>';
 		$html .= '</table>';
-
-		$icon_fields = apply_filters( 'trn_player_icon_fields', array() );
-
-		$social_links = array();
-		foreach ( $icon_fields as $social_icon => $social_icon_data ) {
-			$social_links[ 'trn_' . $social_icon ] = '<a href="{0}"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-		}
-
-		if ( intval( trn_get_option( 'display_user_email' ) ) === 1 ) {
-			$social_links['user_email'] = '<a href="mailto:{0}"><i class="fa fa-envelope"></i></a>';
-		}
 
 		$table_language = array(
 			'sEmptyTable'     => esc_html__( 'No data available in table', 'tournamatch' ),
@@ -204,7 +183,6 @@ class Table_Shortcodes {
 				'edit_player' => esc_html__( 'Edit Player', 'tournamatch' ),
 			),
 			'user_capability' => current_user_can( 'manage_tournamatch' ),
-			'social_links'    => $social_links,
 		);
 
 		wp_register_script( 'players', plugins_url( '../../dist/js/players.js', __FILE__ ), array( 'jquery', 'tournamatch', 'datatables' ), '3.21.1', true );

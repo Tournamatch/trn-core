@@ -84,7 +84,24 @@ class Controller extends WP_REST_Controller {
 			}
 		}
 
-		return $prepared_post;
+		/**
+		 * Filters a a post before it is inserted or updated via the REST API.
+		 *
+		 * The dynamic portion of the hook name, `$schema['title']`, refers to the Tournamatch item type.
+		 *
+		 * Possible hook names include:
+		 *
+		 *  - `rest_pre_insert_players`
+		 *  - `rest_pre_insert_teams`
+		 *  - `rest_pre_insert_matches`
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param \stdClass        $prepared_post An object representing a single post prepared
+		 *                                        for inserting or updating the database.
+		 * @param \WP_REST_Request $request       Request object.
+		 */
+		return apply_filters( "rest_pre_insert_{$schema['title']}", $prepared_post, $request );
 	}
 
 	/**

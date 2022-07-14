@@ -1478,6 +1478,28 @@ if ( ! function_exists( 'rest_is_field_included' ) ) {
 	}
 }
 
+if ( ! function_exists( 'trn_get_flag_options' ) ) {
+	/**
+	 * Retrieves an array of select drop down flag options.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return array Select drop down options.
+	 */
+	function trn_get_flag_options() {
+		$flag_options = array();
+
+		foreach ( trn_get_flag_list() as $flag => $flag_title ) {
+			$flag_options[] = array(
+				'value'   => $flag,
+				'content' => $flag_title,
+			);
+		}
+
+		return $flag_options;
+	}
+}
+
 if ( ! function_exists( 'trn_get_flag_list' ) ) {
 	/**
 	 * Retrieves the list of supported flags.
@@ -2698,6 +2720,249 @@ if ( ! function_exists( 'trn_array_insert' ) ) {
 	}
 }
 
+if ( ! function_exists( 'trn_array_merge_after_key' ) ) {
+	/**
+	 * Merges an array into another array after a given key.
+	 *
+	 * @since 4.2.0
+	 *
+	 * https://stackoverflow.com/a/25878227
+	 *
+	 * @param array  $array The target array to manipulate.
+	 * @param string $search_key The key in the target array to find.
+	 * @param array  $insert_array The array to insert.
+	 * @param bool   $insert_after_founded_key Indicates whether to insert before or after the found key.
+	 * @param bool   $append_if_not_found Indicates whether to add the new item to the end of the key was not found.
+	 *
+	 * @return array
+	 */
+	function trn_array_merge_after_key( $array, $search_key, $insert_array, $insert_after_founded_key = true, $append_if_not_found = false ) {
+		$new_array = array();
+
+		foreach ( $array as $key => $value ) {
+			if ( $key === $search_key && ! $insert_after_founded_key ) {
+				$new_array = array_merge( $new_array, $insert_array );
+			}
+
+			$new_array[ $key ] = $value;
+
+			if ( $key === $search_key && $insert_after_founded_key ) {
+				$new_array = array_merge( $new_array, $insert_array );
+			}
+		}
+
+		if ( $append_if_not_found && count( $array ) === count( $new_array ) ) {
+			$new_array = array_merge( $new_array, $insert_array );
+		}
+
+		return $new_array;
+	}
+}
+
+if ( ! function_exists( 'trn_user_form' ) ) {
+	/**
+	 * Displays a Tournamatch user-facing form in the WordPress front end.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $form Array of form attributes and meta data.
+	 * @param mixed $context The data context this form targets.
+	 */
+	function trn_user_form( $form, $context ) {
+		$attributes = isset( $form['attributes'] ) ? $form['attributes'] : array();
+
+		$form_id = isset( $attributes['id'] ) ? $attributes['id'] : '';
+		$action  = isset( $attributes['action'] ) ? $attributes['action'] : '#';
+		$method  = isset( $attributes['method'] ) ? $attributes['method'] : 'post';
+
+		$fields = isset( $form['fields'] ) ? $form['fields'] : array();
+
+		/**
+		 * Filters an array of fields for a given form.
+		 *
+		 * The dynamic portion of the hook name, `$form_id`, refers to the user form's HTML id.
+		 *
+		 * Possible hook names include:
+		 *
+		 *  - `trn_trn_tournament_form_general_fields`
+		 *  - `trn_trn_tournament_form_other_fields`
+		 *  - `trn_trn_ladder_form_challenge_fields`
+		 *
+		 * @since 4.2.0
+		 *
+		 * @param stdClass $fields An array of field items to display.
+		 * @param stdClass $context The data context item we are rendering a form for.
+		 */
+		$fields = apply_filters( "trn_{$form_id}_fields", $fields, $context );
+		?>
+		<form action="<?php echo esc_url( $action ); ?>" method="<?php echo esc_attr( $method ); ?>" id="<?php echo esc_attr( $form_id ); ?>"
+		<?php
+		$remaining_attributes = array_diff( $attributes, array( 'action', 'method', 'id' ) );
+		foreach ( $remaining_attributes as $name => $value ) {
+			echo ' ' . esc_html( $name ) . '="' . esc_attr( $value ) . '"';
+		}
+		?>
+		>
+			<?php
+			foreach ( $fields as $field ) {
+				$id          = isset( $field['id'] ) ? $field['id'] : '';
+				$label       = isset( $field['label'] ) ? $field['label'] : $field['label'];
+				$name        = isset( $field['name'] ) ? $field['name'] : $id;
+				$type        = isset( $field['type'] ) ? $field['type'] : 'text';
+				$required    = isset( $field['required'] ) ? $field['required'] : false;
+				$disabled    = isset( $field['disabled'] ) ? $field['disabled'] : false;
+				$value       = isset( $field['value'] ) ? $field['value'] : '';
+				$description = isset( $field['description'] ) ? $field['description'] : null;
+				?>
+				<div class="form-group row">
+					<label for="<?php echo esc_attr( $id ); ?>" class="control-label col-sm-3"><?php echo esc_html( $label ); ?></label>
+						<?php
+
+						switch ( $type ) {
+							case 'select':
+								echo '<div class="col-sm-4">';
+
+								$options = isset( $field['options'] ) ? $field['options'] : array();
+								$options = is_array( $options ) ? $options : array();
+								$options = array_map(
+									function( $option ) {
+											$default_option = array(
+												'content' => $option,
+												'value'   => $option,
+											);
+
+										if ( is_array( $option ) ) {
+											return array_merge( $default_option, $option );
+										} else {
+											return $default_option;
+										}
+									},
+									$options
+								);
+
+								/**
+								 * Filters an array of options for a select drop down.
+								 *
+								 * The dynamic portion of the hook name, `$form_id`, refers to the client form's HTML id.
+								 * The dynamic portion of the hook name, `$id`, refers to the client form input's HTML id.
+								 *
+								 * Possible hook names include:
+								 *
+								 *  - `trn_trn_tournament_form_game_id_options`
+								 *  - `trn_trn_tournament_form_initial_seeding_options`
+								 *  - `trn_trn_ladder_form_ranking_method_options`
+								 *
+								 * @since 4.1.0
+								 *
+								 * @param stdClass $options An array of 'content' 'value' items to display.
+								 * @param stdClass $context The data context item we are rendering a form for.
+								 */
+								$options = apply_filters( "trn_{$form_id}_{$id}_options", $options, $context );
+
+								if ( 0 < count( $options ) ) {
+									echo '<select class="form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"';
+									if ( $required ) {
+										echo ' required';
+									}
+									if ( $disabled ) {
+										echo ' disabled';
+									}
+									echo '>';
+									foreach ( $options as $option ) {
+										$option_value   = isset( $option['value'] ) ? $option['value'] : '';
+										$option_content = isset( $option['content'] ) ? $option['content'] : '';
+										echo '<option value="' . esc_attr( $option_value ) . '"';
+										if ( $value === $option_value ) {
+											echo ' selected';
+										}
+										echo '>' . esc_html( $option_content ) . '</option>';
+									}
+
+									echo '</select>';
+								} else {
+									echo '<p>' . esc_html__( 'No items exist.', 'tournamatch' ) . '</p>';
+								}
+								break;
+							case 'thumbnail':
+								echo '<div class="col-sm-9">';
+								echo '<input class="form-control-file" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="file" value="' . intval( $value ) . '"';
+								if ( $required ) {
+									echo ' required';
+								}
+								if ( $disabled ) {
+									echo ' disabled';
+								}
+								echo '/>';
+								break;
+							case 'textarea':
+								echo '<div class="col-sm-6">';
+								echo '<textarea class="form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="10"';
+								if ( $required ) {
+									echo ' required';
+								}
+								if ( $disabled ) {
+									echo ' disabled';
+								}
+								echo '>' . esc_textarea( $value ) . '</textarea>';
+								break;
+
+							case 'number':
+								echo '<div class="col-sm-4">';
+								echo '<input class="form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="number" value="' . intval( $value ) . '"';
+								if ( $required ) {
+									echo ' required';
+								}
+								if ( $disabled ) {
+									echo ' disabled';
+								}
+								echo '/>';
+								break;
+
+							case 'text':
+							default:
+								echo '<div class="col-sm-4">';
+								echo '<input class="form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="text" value="' . esc_attr( $value ) . '"';
+								if ( $required ) {
+									echo ' required';
+								}
+								if ( $disabled ) {
+									echo ' disabled';
+								}
+								if ( isset( $field['maxlength'] ) && ( 0 < intval( $field['maxlength'] ) ) ) {
+									echo ' maxlength="' . intval( $field['maxlength'] ) . '"';
+								}
+								echo '/>';
+								break;
+						}
+
+						if ( ! is_null( $description ) ) {
+							echo '<small class="form-text text-muted">' . esc_html( $description ) . '</small>';
+						}
+
+						if ( 'thumbnail' === $type ) {
+							if ( isset( $field['thumbnail'] ) && ( $field['thumbnail'] instanceof \Closure ) ) {
+								call_user_func( $field['thumbnail'], $context );
+							}
+						}
+						?>
+					</div>
+				</div>
+				<?php
+			}
+
+			$submit_id      = isset( $form['submit']['id'] ) ? $form['submit']['id'] : '';
+			$submit_content = isset( $form['submit']['content'] ) ? $form['submit']['content'] : __( 'Submit', 'tournamatch' );
+			?>
+			<div class="form-group row">
+				<div class="offset-sm-3 col-sm-4">
+					<input id="<?php echo esc_attr( $submit_id ); ?>" class="btn btn-primary" type="submit" value="<?php echo esc_attr( $submit_content ); ?>">
+				</div>
+			</div>
+		</form>
+		<?php
+	}
+}
+
 if ( ! function_exists( 'trn_admin_form' ) ) {
 	/**
 	 * Displays an Tournamatch form in the WordPress backend.
@@ -2926,6 +3191,77 @@ if ( ! function_exists( 'trn_admin_form' ) ) {
 				<input type="submit" id="<?php echo esc_attr( $submit_id ); ?>" value="<?php echo esc_attr( $submit_content ); ?>" class="button button-primary">
 			</p>
 		</form>
+		<?php
+	}
+}
+
+if ( ! function_exists( 'trn_single_template_description_list' ) ) {
+	/**
+	 * Renders a description list.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param array $list Array of description list items.
+	 * @param mixed $data_context Data context to bind each term to.
+	 */
+	function trn_single_template_description_list( $list, $data_context ) {
+		?>
+		<dl>
+			<?php foreach ( $list as $id => $item ) : ?>
+				<?php
+
+				if ( isset( $item['term'] ) && is_object( $item['term'] ) && ( $item['term'] instanceof \Closure ) ) {
+					echo '<dt>';
+					call_user_func( $item['term'], $data_context );
+					echo '</dt>';
+				} elseif ( isset( $item['term'] ) && is_array( $item['term'] ) ) {
+					$text = isset( $item['term']['text'] ) ? $item['term']['text'] : '';
+					unset( $item['term']['text'] );
+
+					echo '<dt';
+					foreach ( $item['term'] as $attribute => $value ) {
+						echo ' ' . esc_html( $attribute ) . '="' . esc_attr( $value ) . '"';
+					}
+					echo '>';
+
+					if ( is_object( $text ) && ( $text instanceof \Closure ) ) {
+						call_user_func( $text, $data_context );
+					} else {
+						echo esc_html( $text );
+					}
+
+					echo '</dt>';
+				} else {
+					echo '<dt>' . esc_html( $item['term'] ) . '</dt>';
+				}
+
+				if ( isset( $item['description'] ) && is_object( $item['description'] ) && ( $item['description'] instanceof \Closure ) ) {
+					echo '<dd>';
+					call_user_func( $item['description'], $data_context );
+					echo '</dd>';
+				} elseif ( isset( $item['description'] ) && is_array( $item['description'] ) ) {
+					$text = isset( $item['description']['text'] ) ? $item['description']['text'] : '';
+					unset( $item['description']['text'] );
+
+					echo '<dd';
+					foreach ( $item['description'] as $attribute => $value ) {
+						echo ' ' . esc_html( $attribute ) . '="' . esc_attr( $value ) . '"';
+					}
+					echo '>';
+
+					if ( is_object( $text ) && ( $text instanceof \Closure ) ) {
+						call_user_func( $text, $data_context );
+					} else {
+						echo esc_html( $text );
+					}
+
+					echo '</dd>';
+				} else {
+					echo '<dd>' . esc_html( $item['description'] ) . '</dd>';
+				}
+				?>
+			<?php endforeach; ?>
+		</dl>
 		<?php
 	}
 }
