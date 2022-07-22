@@ -2,8 +2,8 @@
 Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
-Tested up to: 6.0.0
-Stable tag: 4.1.0
+Tested up to: 6.0.1
+Stable tag: 4.2.0
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,13 +12,13 @@ A ladder and tournament plugin for eSports, physical sports, board games, and ot
 
 == Description ==
 
-**Important**: Do not upgrade from version 3.x to 4.x of this plugin at this time. This is a major version change, and you should reach out to support@tournamatch.com to upgrade from 3.x to 4.0.
+**Important**: If you are upgrading from version 3.x, please read this page prior to proceeding.
 
 Use this plugin to create tournaments and ladders (leader boards) on your website. Ladders track points, wins, losses, [optionally] draws, games played, win streak, and win percent. Tournaments support single elimination head-to-head competitions. It includes match challenges, player profiles, team profiles, ladder and tournament rule pages, match lists, and a player dashboard for managing everything.
 
 This plugin is for active gaming communities! Registered users can create their own teams, join other teams, accept or decline join requests, drop team members, and send email or user team invitations; users can send match challenges; users or admins report, confirm, or dispute match results; ladders and tournaments will update automatically when match results are confirmed.
 
-**Important**: This plugin is designed to work with BootStrap themes and will not look good without BootStrap. Template files are included in the plugin. You should consider copying those template files to a child theme. Block themes **are not** supported at this time.   
+This plugin includes many pages and shortcodes with user-facing components. You should expect to restyle those using the WordPress Backend -> Appearance, Customize -> Additional CSS page.
 
 Need support or have a feature request? Please reach out to us here on the WordPress.org forums, on Twitter at [@tournamatch](https://twitter.com/Tournamatch), on Facebook at [Tournamatch](https://www.facebook.com/tournamatch), or visit our website at [www.tournamatch.com](https://www.tournamatch.com).
 
@@ -53,6 +53,12 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.2.0 =
+* Refactored all styles to be prefixed with 'trn-'. If you previously styled Tournamatch with additional CSS, you should prefix your CSS with 'trn-'. Tournamatch no longer depends on Bootstrap and should look consistent from theme to theme.
+* Added support for upgrading from 3.x to 4.x.
+* Added support for dynamic player and team fields.
+* Fixed several occurrences of PHP warning messages for missing options fields.
 
 = 4.1.0 =
 * **Fixed a critical bug in 4.0.x that caused the players list and new teams to fail.**
