@@ -3454,10 +3454,16 @@ if ( ! function_exists( 'trn_upgrade_sql' ) ) {
 	}
 }
 
-add_action( 'tournamatch_after_header', function() {
-	echo '<div class="trn-page"><div class="trn-container">';
-});
+add_action(
+	'tournamatch_after_header',
+	function() {
+		echo '<div class="trn-page"><div class="trn-container">';
+	}
+);
 
-add_action( 'tournamatch_before_footer', function() {
-	echo '</div></div>';
-});
+add_action(
+	'tournamatch_before_footer',
+	function() {
+		echo '</div></div>';
+	}
+);
