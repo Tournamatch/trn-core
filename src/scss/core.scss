@@ -1,45 +1,42 @@
-#trn {
+.trn-page {
+  @include reset();
+  width: 100%;
+  background-color: transparent;
+}
+
+#trn,
+.trn-container {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
+
 @media (min-width: 576px) {
-  #trn {
+  #trn,
+  .trn-container  {
     max-width: 540px;
   }
 }
+
 @media (min-width: 768px) {
-  #trn {
+  #trn,
+  .trn-container  {
     max-width: 720px;
   }
 }
+
 @media (min-width: 992px) {
-  #trn {
+  #trn,
+  .trn-container  {
     max-width: 960px;
   }
 }
+
 @media (min-width: 1200px) {
-  #trn {
+  #trn,
+  .trn-container  {
     max-width: 1140px;
-  }
-}
-
-#trn {
-  li.nav-item, ul.list-unstyled li, ul.list-inline li {
-    list-style: none;
-  }
-
-  .float-right {
-    float: right !important;
-  }
-
-  .float-left {
-    float: left !important;
-  }
-
-  .text-center {
-    text-align: center !important;
   }
 }

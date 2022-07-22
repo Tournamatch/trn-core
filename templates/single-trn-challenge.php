@@ -65,7 +65,7 @@ trn_get_header();
 </dl>
 <div id="trn-challenge-success-response"></div>
 <div id="trn-challenge-failure-response"></div>
-<div class="text-center">
+<div class="trn-text-center">
 	<?php
 	if ( trn_can_accept_challenge( get_current_user_id(), $challenge->challenge_id ) ) {
 		echo do_shortcode( '[trn-accept-challenge-button id="' . intval( $challenge->challenge_id ) . '"]' );

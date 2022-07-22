@@ -26,9 +26,9 @@ import { trn } from './tournamatch.js';
                     let response = JSON.parse(xhr.response);
                     console.log(response);
                     if (xhr.status === 200) {
-                        document.getElementById('trn-send-invite-response').innerHTML = `<div class="alert alert-success"><strong>${options.language.success}</strong>! ${response.message}</div>`;
+                        document.getElementById('trn-send-invite-response').innerHTML = `<div class="trn-alert trn-alert-success"><strong>${options.language.success}</strong>! ${response.message}</div>`;
                     } else {
-                        document.getElementById('trn-send-invite-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                        document.getElementById('trn-send-invite-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                     }
                 };
 

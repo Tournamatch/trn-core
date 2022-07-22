@@ -1,0 +1,142 @@
+.trn-modal-open {
+  overflow: hidden;
+}
+
+.trn-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  display: none;
+  overflow: hidden;
+  // Prevent Chrome on Windows from adding a focus outline. For details, see
+  // https://github.com/twbs/bootstrap/pull/10951.
+  outline: 0;
+  // We deliberately don't use `-webkit-overflow-scrolling: touch;` due to a
+  // gnarly iOS Safari bug: https://bugs.webkit.org/show_bug.cgi?id=158342
+  // See also https://github.com/twbs/bootstrap/issues/17695
+
+  .trn-modal-open & {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+.trn-modal-dialog {
+  position: relative;
+  width: auto;
+  margin: .5rem;
+  // allow clicks to pass through for custom click handling to close modal
+  pointer-events: none;
+
+  // When fading in the modal, animate it to slide down
+  .trn-modal.fade & {
+    transition: transform .3s ease-out;
+    transform: translate(0, -25%);
+  }
+  .trn-modal.show & {
+    transform: translate(0, 0);
+  }
+}
+
+.trn-modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - (.5rem * 2));
+}
+
+.trn-modal-dialog-centered::before {
+  display: block;
+  height: calc(100vh - (0.5rem * 2));
+  content: "";
+}
+
+.trn-modal-content {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  pointer-events: auto;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+}
+
+.trn-modal-header {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+}
+
+.trn-modal-header .close {
+  padding: 1rem;
+  margin: -1rem -1rem -1rem auto;
+}
+
+.trn-modal-title {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+.trn-modal-body {
+  position: relative;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.trn-modal-footer {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  padding: 1rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.trn-modal-footer > :not(:first-child) {
+  margin-left: .25rem;
+}
+
+.trn-modal-footer > :not(:last-child) {
+  margin-right: .25rem;
+}
+
+.trn-modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+@media (min-width: 576px) {
+  .trn-modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+  }
+  .trn-modal-dialog-centered {
+    min-height: calc(100% - (1.75rem * 2));
+  }
+  .trn-modal-dialog-centered::before {
+    height: calc(100vh - (1.75rem * 2));
+  }
+  .trn-modal-sm {
+    max-width: 300px;
+  }
+}

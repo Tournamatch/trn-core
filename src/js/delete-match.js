@@ -30,7 +30,7 @@ import { trn } from './tournamatch.js';
                         $.event('match').dispatchEvent(new Event('deleted'));
                     } else {
                         let response = JSON.parse(xhr.response);
-                        document.getElementById('trn-delete-match-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                        document.getElementById('trn-delete-match-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                     }
                 };
 

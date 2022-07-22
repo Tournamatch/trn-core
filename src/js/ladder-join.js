@@ -26,13 +26,13 @@ import { trn } from './tournamatch.js';
                 xhr.setRequestHeader('X-WP-Nonce', options.rest_nonce);
                 xhr.onload = function () {
                     if (xhr.status === 204) {
-                        document.getElementById('trn-ladder-join-response').innerHTML = `<div class="alert alert-success"><strong>${options.language.success}</strong>: ${options.language.petition}</div>`;
+                        document.getElementById('trn-ladder-join-response').innerHTML = `<div class="trn-alert trn-alert-success"><strong>${options.language.success}</strong>: ${options.language.petition}</div>`;
                         form.remove();
                     } else if (xhr.status === 201) {
                         window.location.href = options.redirect_link;
                     } else {
                         const response = JSON.parse(xhr.response);
-                        document.getElementById('trn-ladder-join-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                        document.getElementById('trn-ladder-join-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                     }
                 };
 

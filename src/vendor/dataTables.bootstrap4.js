@@ -46,9 +46,9 @@
     /* Set the defaults for DataTables initialisation */
     $.extend( true, DataTable.defaults, {
         dom:
-        "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        "<'trn-row'<'trn-col-sm-12 trn-col-md-6'l><'trn-col-sm-12 trn-col-md-6'f>>" +
+        "<'trn-row'<'trn-col-sm-12'tr>>" +
+        "<'trn-row'<'trn-col-sm-12 trn-col-md-5'i><'trn-col-sm-12 trn-col-md-7'p>>",
         renderer: 'bootstrap'
     } );
 
@@ -56,10 +56,10 @@
     /* Default class modification */
     $.extend( DataTable.ext.classes, {
         sWrapper:      "dataTables_wrapper dt-bootstrap4",
-        sFilterInput:  "form-control form-control-sm",
-        sLengthSelect: "custom-select custom-select-sm form-control form-control-sm",
-        sProcessing:   "dataTables_processing card",
-        sPageButton:   "paginate_button page-item"
+        sFilterInput:  "trn-form-control trn-form-control-sm",
+        sLengthSelect: "trn-custom-select trn-custom-select-sm trn-form-control trn-form-control-sm",
+        sProcessing:   "dataTables_processing trn-card",
+        sPageButton:   "paginate_button trn-page-item"
     } );
 
 
@@ -75,7 +75,7 @@
             var i, ien, node, button;
             var clickHandler = function ( e ) {
                 e.preventDefault();
-                if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
+                if ( !$(e.currentTarget).hasClass('trn-disabled') && api.page() != e.data.action ) {
                     api.page( e.data.action ).draw( 'page' );
                 }
             };
@@ -93,37 +93,37 @@
                     switch ( button ) {
                         case 'ellipsis':
                             btnDisplay = '&#x2026;';
-                            btnClass = 'disabled';
+                            btnClass = 'trn-disabled';
                             break;
 
                         case 'first':
                             btnDisplay = lang.sFirst;
                             btnClass = button + (page > 0 ?
-                                    '' : ' disabled');
+                                    '' : ' trn-disabled');
                             break;
 
                         case 'previous':
                             btnDisplay = lang.sPrevious;
                             btnClass = button + (page > 0 ?
-                                    '' : ' disabled');
+                                    '' : ' trn-disabled');
                             break;
 
                         case 'next':
                             btnDisplay = lang.sNext;
                             btnClass = button + (page < pages-1 ?
-                                    '' : ' disabled');
+                                    '' : ' trn-disabled');
                             break;
 
                         case 'last':
                             btnDisplay = lang.sLast;
                             btnClass = button + (page < pages-1 ?
-                                    '' : ' disabled');
+                                    '' : ' trn-disabled');
                             break;
 
                         default:
                             btnDisplay = button + 1;
                             btnClass = page === button ?
-                                'active' : '';
+                                'trn-active' : '';
                             break;
                     }
 
@@ -140,7 +140,7 @@
                                     'aria-label': aria[ button ],
                                     'data-dt-idx': counter,
                                     'tabindex': settings.iTabIndex,
-                                    'class': 'page-link'
+                                    'class': 'trn-page-link'
                                 } )
                                     .html( btnDisplay )
                             )
@@ -170,7 +170,7 @@
         catch (e) {}
 
         attach(
-            $(host).empty().html('<ul class="pagination"/>').children('ul'),
+            $(host).empty().html('<ul class="trn-pagination"/>').children('ul'),
             buttons
         );
 

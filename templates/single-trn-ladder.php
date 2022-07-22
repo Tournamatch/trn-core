@@ -46,11 +46,11 @@ get_header();
 trn_get_header();
 
 ?>
-	<div class="row mb-sm">
-		<div class="col-sm-2 col-xs-4 text-center">
-			<img class="game-thumbnail" src="<?php echo esc_url( $game_avatar_source ); ?>" alt="">
+	<div class="trn-row trn-mb-sm">
+		<div class="trn-col-sm-2 trn-col-xs-4 trn-text-center">
+			<img class="trn-game-thumbnail" src="<?php echo esc_url( $game_avatar_source ); ?>" alt="">
 		</div>
-		<div class="col-sm-4 col-xs-8">
+		<div class="trn-col-sm-4 trn-col-xs-8">
 			<h3 id="trn-ladder-title"><?php echo esc_html( $ladder->name ); ?><br>
 				<small><?php echo esc_html( $ladder->game_name ); ?></small>
 			</h3>
@@ -75,7 +75,7 @@ $views = array(
 			if ( strlen( $ladder->rules ) > 0 ) {
 				echo wp_kses_post( stripslashes( $ladder->rules ) );
 			} else {
-				echo '<p class="text-center">';
+				echo '<p class="trn-text-center">';
 				esc_html_e( 'No rules to display.', 'tournamatch' );
 				echo '</p>';
 			}

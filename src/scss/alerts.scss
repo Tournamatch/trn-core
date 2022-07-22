@@ -1,0 +1,53 @@
+.trn {
+  &-alert {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+
+    &-link {
+      font-weight: 700;
+    }
+
+    &-success {
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+
+      & .trn-alert-link {
+        color: #002752;
+      }
+    }
+
+    &-info {
+      color: #0c5460;
+      background-color: #d1ecf1;
+      border-color: #bee5eb;
+
+      & .trn-alert-link {
+        color: #062c33;
+      }
+    }
+
+    &-warning {
+      color: #856404;
+      background-color: #fff3cd;
+      border-color: #ffeeba;
+
+      & .trn-alert-link {
+        color: #533f03;
+      }
+    }
+
+    &-danger {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+
+      & .trn-alert-link {
+        color: #491217;
+      }
+    }
+  }
+}

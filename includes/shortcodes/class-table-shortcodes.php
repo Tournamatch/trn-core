@@ -58,7 +58,7 @@ class Table_Shortcodes {
 	public function teams_list_table( $atts = [], $content = null, $tag = '' ) {
 
 		$html  = '<div id="trn-delete-team-response"></div>';
-		$html .= '<table class="table table-striped" id="trn-teams-table">';
+		$html .= '<table class="trn-table trn-table-striped" id="trn-teams-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-teams-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
@@ -132,7 +132,7 @@ class Table_Shortcodes {
 	 */
 	public function players_list_table( $atts = [], $content = null, $tag = '' ) {
 
-		$html  = '<table class="table table-striped trn-players-table" id="trn_players_list_table">';
+		$html  = '<table class="trn-table trn-table-striped trn-players-table" id="trn_players_list_table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-players-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
@@ -207,7 +207,7 @@ class Table_Shortcodes {
 	public function challenges_list_table( $atts = [], $content = null, $tag = '' ) {
 
 		$html  = '<div id="trn-delete-challenge-response"></div>';
-		$html .= '<table class="table table-striped trn-challenges-table" id="trn-challenge-list-table">';
+		$html .= '<table class="trn-table trn-table-striped trn-challenges-table" id="trn-challenge-list-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-challenges-table-ladder">' . esc_html__( 'Ladder', 'tournamatch' ) . '</th>';
@@ -282,7 +282,7 @@ class Table_Shortcodes {
 	 */
 	public function matches_list_table( $atts = [], $content = null, $tag = '' ) {
 
-		$html  = '<table class="table table-striped trn-matches-table" id="match-list-table" style="width:100%">';
+		$html  = '<table class="trn-table trn-table-striped trn-matches-table" id="match-list-table" style="width:100%">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-matches-table-event">' . esc_html__( 'Event', 'tournamatch' ) . '</th>';
@@ -369,7 +369,7 @@ class Table_Shortcodes {
 
 		$lid = intval( $atts['ladder_id'] );
 
-		$html  = '<table class="table table-striped trn-ladder-matches-table" id="trn-ladder-matches-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-ladder-matches-table" id="trn-ladder-matches-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-ladder-matches-table-result">' . esc_html__( 'Result', 'tournamatch' ) . '</th>';
@@ -474,7 +474,7 @@ class Table_Shortcodes {
 
 		$html  = '<div id="trn-remove-competitor-response"></div>';
 		$html .= '<div id="trn-promote-competitor-response"></div>';
-		$html .= '<table class="table table-striped trn-ladder-standings-table" id="ladder-standings-table">';
+		$html .= '<table class="trn-table trn-table-striped trn-ladder-standings-table" id="ladder-standings-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-ladder-standings-table-number"></th>';
@@ -587,7 +587,7 @@ class Table_Shortcodes {
 
 		$tournament_id = intval( $atts['tournament_id'] );
 
-		$html  = '<table class="table table-striped trn-tournament-matches-table" id="trn-tournament-matches-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-tournament-matches-table" id="trn-tournament-matches-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-tournament-matches-table-competitors">' . esc_html__( 'Competitors', 'tournamatch' ) . '</th>';
@@ -676,7 +676,7 @@ class Table_Shortcodes {
 
 		$options = get_option( 'tournamatch_options' );
 
-		$html  = '<table class="table table-striped trn-ladder-competitions-table" id="trn-ladder-competitions-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-ladder-competitions-table" id="trn-ladder-competitions-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-ladder-competitions-table-name">' . esc_html__( 'Ladder', 'tournamatch' ) . '</th>';
@@ -767,7 +767,7 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$html  = '<table class="table table-striped trn-tournament-competitions-table" id="trn-tournament-competitions-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-tournament-competitions-table" id="trn-tournament-competitions-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-tournament-competitions-table-name">' . esc_html__( 'Tournament', 'tournamatch' ) . '</th>';
@@ -843,7 +843,7 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$html  = '<table class="table table-striped trn-player-team-table" id="trn-player-teams-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-player-team-table" id="trn-player-teams-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-player-team-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
@@ -920,7 +920,7 @@ class Table_Shortcodes {
 		if ( ( 0 === $competitor_id ) || ( ! in_array( $competitor_type, array( 'players', 'teams' ), true ) ) ) {
 			return '';
 		}
-		$html  = '<table class="table table-striped trn-match-history-table" id="trn-competitor-match-list-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-match-history-table" id="trn-competitor-match-list-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-match-history-event">' . esc_html__( 'Event', 'tournamatch' ) . '</th>';
@@ -1002,7 +1002,7 @@ class Table_Shortcodes {
 		$options = get_option( 'tournamatch_options' );
 
 		$html  = '<div id="trn-team-roster-response"></div>';
-		$html .= '<table class="table table-striped trn-team-roster-table" id="trn-team-roster-table">';
+		$html .= '<table class="trn-table trn-table-striped trn-team-roster-table" id="trn-team-roster-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-team-roster-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';

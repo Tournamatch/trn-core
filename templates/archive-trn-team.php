@@ -16,16 +16,15 @@ get_header();
 trn_get_header();
 
 ?>
-	<h1 class="mb-4">
+	<h1 class="trn-mb-4">
 		<?php esc_html_e( 'Teams', 'tournamatch' ); ?>
 		<?php if ( is_user_logged_in() ) : ?>
-			<div class="float-right">
-				<a class="btn btn-primary"
-						href="<?php trn_esc_route_e( 'teams.single.create' ); ?>"><?php esc_html_e( 'Create Team', 'tournamatch' ); ?></a>
+			<div class="trn-float-right">
+				<a class="trn-button" href="<?php trn_esc_route_e( 'teams.single.create' ); ?>"><?php esc_html_e( 'Create Team', 'tournamatch' ); ?></a>
 			</div>
 		<?php endif; ?>
 	</h1>
-	<div class="clearfix"></div>
+	<div class="trn-clearfix"></div>
 
 <?php
 

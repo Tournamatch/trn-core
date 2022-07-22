@@ -29,7 +29,7 @@ if ( '1' === trn_get_option( 'one_team_per_player' ) ) {
 }
 
 ?>
-	<h1 class="mb-4"><?php esc_html_e( 'Create Team', 'touranmatch' ); ?></h1>
+	<h1 class="trn-mb-4"><?php esc_html_e( 'Create Team', 'touranmatch' ); ?></h1>
 <?php
 
 if ( ! $can_create ) :
@@ -37,23 +37,23 @@ if ( ! $can_create ) :
 	<p><?php esc_html_e( 'You may not create another team until you leave your current team.', 'tournamatch' ); ?></p>
 <?php else : ?>
 	<form class="form-horizontal needs-validation" id="trn-create-team-form" novalidate>
-		<div class="form-group">
-			<label for="trn-team-name" class="col-sm-3 control-label"><?php esc_html_e( 'Team Name', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-3">
-				<input type="text" id="trn-team-name" name="trn-team-name" class="form-control" maxlength="25" required>
+		<div class="trn-form-group">
+			<label for="trn-team-name" class="trn-col-sm-3"><?php esc_html_e( 'Team Name', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-3">
+				<input type="text" id="trn-team-name" name="trn-team-name" class="trn-form-control" maxlength="25" required>
 				<div class="invalid-feedback" id="trn-team-name-error"><?php esc_html_e( 'Team name is required.', 'tournamatch' ); ?></div>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="trn-team-tag" class="col-sm-3 control-label"><?php esc_html_e( 'Team Tag', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-3">
-				<input type="text" id="trn-team-tag" name="trn-team-tag" class="form-control" maxlength="5" required>
+		<div class="trn-form-group">
+			<label for="trn-team-tag" class="trn-col-sm-3"><?php esc_html_e( 'Team Tag', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-3">
+				<input type="text" id="trn-team-tag" name="trn-team-tag" class="trn-form-control" maxlength="5" required>
 				<div class="invalid-feedback" id="trn-team-tag-error"><?php esc_html_e( 'Team tag is required.', 'tournamatch' ); ?></div>
 			</div>
 		</div>
-		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-6">
-				<button type="submit" class="btn btn-primary" id="trn-create-team-button"><?php esc_html_e( 'Create Team', 'tournamatch' ); ?></button>
+		<div class="trn-form-group">
+			<div class="trn-col-sm-offset-3 trn-col-sm-6">
+				<button type="submit" class="trn-button" id="trn-create-team-button"><?php esc_html_e( 'Create Team', 'tournamatch' ); ?></button>
 			</div>
 		</div>
 	</form>

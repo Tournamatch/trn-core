@@ -35,7 +35,7 @@ get_header();
 trn_get_header();
 
 ?>
-<h1 class="mb-4"><?php esc_html_e( 'Join Ladder', 'tournamatch' ); ?></h1>
+<h1 class="trn-mb-4"><?php esc_html_e( 'Join Ladder', 'tournamatch' ); ?></h1>
 <?php if ( ! $can_join ) : ?>
 	<div class="alert alert-info">
 		<?php esc_html_e( 'You are already participating on this ladder.', 'tournamatch' ); ?>
@@ -43,26 +43,26 @@ trn_get_header();
 <?php else : ?>
 	<div id="trn-ladder-join-response"></div>
 	<form id="trn-ladder-join-form" class="form-horizontal" action="#" method="post">
-		<div class="form-group">
-			<label class="col-sm-3 control-label" for="ladder_id"><?php esc_html_e( 'Ladder', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-4">
-				<p class="form-control-static"><?php echo esc_html( $ladder->name ); ?></p>
+		<div class="trn-form-group">
+			<label class="trn-col-sm-3" for="ladder_id"><?php esc_html_e( 'Ladder', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-4">
+				<p class="trn-form-control-static"><?php echo esc_html( $ladder->name ); ?></p>
 				<input type="hidden" name="ladder_id" id="ladder_id" value="<?php echo intval( $ladder->ladder_id ); ?>">
 			</div>
 		</div>
 		<?php if ( 'teams' === $ladder->competitor_type ) : ?>
-			<div class="form-group">
-				<label class="col-sm-3 control-label" for="competitor_id"><?php esc_html_e( 'Team', 'tournamatch' ); ?>:</label>
+			<div class="trn-form-group">
+				<label class="trn-col-sm-3" for="competitor_id"><?php esc_html_e( 'Team', 'tournamatch' ); ?>:</label>
 				<?php if ( 0 < count( $teams ) ) : ?>
-				<div class="col-sm-4">
-					<select id="competitor_id" name="competitor_id" class="form-control">
+				<div class="trn-col-sm-4">
+					<select id="competitor_id" name="competitor_id" class="trn-form-control">
 						<?php foreach ( $teams as $team ) : ?>
 							<option value="<?php echo intval( $team->team_id ); ?>"><?php echo esc_html( $team->name ); ?></option>
 						<?php endforeach; ?>
 					</select>
 					</div>
 				<?php else : ?>
-				<div class="col-sm-12">
+				<div class="trn-col-sm-12">
 					<?php /* translators: Opening and closing anchor tags. */ ?>
 					<p><?php esc_html_e( 'This is a teams ladder and you do not currently own any teams.', 'tournamatch' ); ?> <?php printf( esc_html__( 'You may create one %1$shere%2$s.', 'tournamatch' ), '<a href="' . esc_url( trn_route( 'teams.single.create' ) ) . '">', '</a>' ); ?></p>
 				</div>
@@ -70,20 +70,20 @@ trn_get_header();
 			</div>
 		<?php endif; ?>
 		<?php if ( 0 < strlen( $ladder->rules ) ) : ?>
-			<div class="form-group">
-				<label for="rules" class="col-sm-3 control-label"><?php esc_html_e( 'Rules', 'tournamatch' ); ?>:</label>
-				<div class="col-sm-6">
+			<div class="trn-form-group">
+				<label for="rules" class="trn-col-sm-3"><?php esc_html_e( 'Rules', 'tournamatch' ); ?>:</label>
+				<div class="trn-col-sm-6">
 					<p><?php echo wp_kses_post( $ladder->rules ); ?></p>
 				</div>
 			</div>
 		<?php endif; ?>
-		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-9">
+		<div class="trn-form-group">
+			<div class="trn-col-sm-offset-3 trn-col-sm-9">
 				<?php if ( 'players' === $ladder->competitor_type ) : ?>
 					<input type="hidden" name="competitor_id" id="competitor_id" value="<?php echo intval( get_current_user_id() ); ?>">
 				<?php endif; ?>
 				<input type="hidden" name="competitor_type" id="competitor_type" value="<?php echo esc_html( $competitor_type ); ?>">
-				<input type="submit" class="btn btn-primary" id="trn-join-button" value="<?php esc_html_e( 'Join', 'tournamatch' ); ?>" <?php echo ( isset( $teams ) && ( 0 === count( $teams ) ) ) ? 'disabled' : ''; ?>>
+				<input type="submit" class="trn-button" id="trn-join-button" value="<?php esc_html_e( 'Join', 'tournamatch' ); ?>" <?php echo ( isset( $teams ) && ( 0 === count( $teams ) ) ) ? 'disabled' : ''; ?>>
 			</div>
 		</div>
 	</form>

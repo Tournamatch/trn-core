@@ -31,7 +31,7 @@ import { trn } from './tournamatch.js';
                         window.location.reload();
                     } else {
                         let response = JSON.parse(xhr.response);
-                        document.getElementById('trn-delete-team-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                        document.getElementById('trn-delete-team-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                     }
                 };
 

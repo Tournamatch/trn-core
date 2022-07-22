@@ -1,0 +1,19 @@
+$white:    #fff !default;
+$black:    #000 !default;
+
+$primary:  #5279bd !default;
+$success:  #28a745 !default;
+$info:     #17a2b8 !default;
+$warning:  #ffc107 !default;
+$danger:   #dc3545 !default;
+
+$spacer: 1rem !default
+$spacers: () !default;
+$spacers: map-merge((
+        0: 0,
+        1: ($spacer * .25),
+        2: ($spacer * .5),
+        3: $spacer,
+        4: ($spacer * 1.5),
+        5: ($spacer * 3)
+), $spacers);

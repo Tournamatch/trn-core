@@ -26,9 +26,9 @@ import { trn } from './tournamatch.js';
             xhr.onload = function () {
                 console.log(xhr);
                 if (xhr.status === 200) {
-                    document.getElementById('trn-update-response').innerHTML = `<div class="alert alert-success"><strong>${options.language.success}!</strong> ${options.language.success_message}</div>`;
+                    document.getElementById('trn-update-response').innerHTML = `<div class="trn-alert trn-alert-success"><strong>${options.language.success}!</strong> ${options.language.success_message}</div>`;
                 } else {
-                    document.getElementById('trn-update-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}:</strong> ${options.language.failure_message}</div>`;
+                    document.getElementById('trn-update-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}:</strong> ${options.language.failure_message}</div>`;
                 }
             };
 

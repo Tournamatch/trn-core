@@ -31,11 +31,11 @@ $user_id = get_current_user_id();
 
 $team_links = array();
 if ( 0 !== $user_id ) {
-	$team_links[] = '<a class="btn btn-sm btn-secondary" id="trn-edit-team-button" style="display:none" href="' . trn_route( 'teams.single.edit', array( 'id' => $team_id ) ) . '">' . esc_html__( 'Edit Team', 'tournamatch' ) . '</a>';
+	$team_links[] = '<a class="trn-button trn-button-sm trn-button-secondary" id="trn-edit-team-button" style="display:none" href="' . trn_route( 'teams.single.edit', array( 'id' => $team_id ) ) . '">' . esc_html__( 'Edit Team', 'tournamatch' ) . '</a>';
 
-	$team_links[] = '<button class="btn btn-sm btn-danger" id="trn-delete-team-button" style="display:none">' . esc_html__( 'Delete Team', 'tournamatch' ) . '</button>';
-	$team_links[] = '<button class="btn btn-sm btn-secondary" id="trn-leave-team-button" style="display:none">' . esc_html__( 'Leave Team', 'tournamatch' ) . '</button>';
-	$team_links[] = '<button class="btn btn-sm btn-secondary" id="trn-join-team-button" style="display:none" data-team-id="' . intval( $team_id ) . '" data-user-id="' . get_current_user_id() . '">' . esc_html__( 'Join Team', 'tournamatch' ) . '</button>';
+	$team_links[] = '<button class="trn-button trn-button-sm trn-button-danger" id="trn-delete-team-button" style="display:none">' . esc_html__( 'Delete Team', 'tournamatch' ) . '</button>';
+	$team_links[] = '<button class="trn-button trn-button-sm trn-button-secondary" id="trn-leave-team-button" style="display:none">' . esc_html__( 'Leave Team', 'tournamatch' ) . '</button>';
+	$team_links[] = '<button class="trn-button trn-button-sm trn-button-secondary" id="trn-join-team-button" style="display:none" data-team-id="' . intval( $team_id ) . '" data-user-id="' . get_current_user_id() . '">' . esc_html__( 'Join Team', 'tournamatch' ) . '</button>';
 }
 
 // $social_links = array();
@@ -81,30 +81,12 @@ $description_list = array(
 $description_list = apply_filters( 'trn_single_team_description_list', $description_list, $team );
 
 ?>
-<div class="tournamatch-profile">
-	<div class="tournamatch-profile-details">
-		<h1 class="text-center mb-4">
+<div class="trn-profile">
+	<div class="trn-profile-details">
+		<h1 class="trn-text-center trn-mb-4">
 			<?php echo esc_html( $team->name ); ?>
 		</h1>
 		<?php trn_single_template_description_list( $description_list, $team ); ?>
-<!--		<dl>-->
-<!--			<dt>--><?php // esc_html_e( 'Owner', 'tournamatch' ); ?><!--:</dt>-->
-<!--			<dd id="trn-team-owner">--><?php // echo esc_html( $team_owner->name ); ?><!--</dd>-->
-<!--			<dt>--><?php // esc_html_e( 'Joined Date', 'tournamatch' ); ?><!--:</dt>-->
-<!--			<dd>--><?php // echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ) ); ?><!--</dd>-->
-<!--			--><?php // foreach ( $team_fields as $field_id => $field_data ) : ?>
-<!--				<dt>--><?php // echo esc_html( $field_data['display_name'] ); ?><!--:</dt>-->
-<!--				<dd>--><?php // echo esc_html( get_post_meta( $team->post_id, $field_id, true ) ); ?><!--</dd>-->
-<!--			--><?php // endforeach; ?>
-<!--			<dt>--><?php // esc_html_e( 'Members', 'tournamatch' ); ?><!--:</dt>-->
-<!--			<dd id="trn-team-members-list">-->
-<!--				<em>--><?php // esc_html_e( 'Loading team members...', 'tournamatch' ); ?><!--</em>-->
-<!--			</dd>-->
-<!--			<dt>--><?php // esc_html_e( 'Contact', 'tournamatch' ); ?><!--:</dt>-->
-<!--			<dd>--><?php // echo wp_kses_post( $social_links ); ?><!--</dd>-->
-<!--			<dt>--><?php // esc_html_e( 'Career Record', 'tournamatch' ); ?><!--:</dt>-->
-<!--			<dd>--><?php // echo do_shortcode( '[trn-career-record competitor_type="teams" competitor_id="' . intval( $team_id ) . '"]' ); ?><!--</dd>-->
-<!--		</dl>-->
 		<div id="trn-leave-team-response"></div>
 		<div id="trn-join-team-response"></div>
 		<?php
@@ -133,12 +115,12 @@ $description_list = apply_filters( 'trn_single_team_description_list', $descript
 
 		if ( 0 < count( $team_links ) ) :
 			?>
-			<div class="text-center">
+			<div class="trn-text-center">
 				<?php echo wp_kses_post( implode( ' &nbsp; ', $team_links ) ); ?><br>
 			</div>
 		<?php endif; ?>
 	</div>
-	<div class="tournamatch-profile-avatar">
+	<div class="trn-profile-avatar">
 		<?php trn_display_avatar( $team->team_id, 'teams', $team->avatar ); ?>
 	</div>
 </div>
@@ -155,29 +137,29 @@ $views = array(
 
 			if ( current_user_can( 'manage_tournamatch' ) ) {
 				?>
-				<div class="float-right">
+				<div class="trn-float-right">
 					<form autocomplete="off" class="form-inline" id="trn-add-player-form">
 						<label for="trn-add-player-input" class="sr-only"><?php esc_html_e( 'Player Name', 'tournamatch' ); ?>:</label>
-						<div class="autocomplete mr-sm-2">
-							<input type="text" id="trn-add-player-input" class="form-control" placeholder="<?php esc_html_e( 'Player name', 'tournamatch' ); ?>" required>
+						<div class="trn-auto-complete mr-sm-2">
+							<input type="text" id="trn-add-player-input" class="trn-form-control" placeholder="<?php esc_html_e( 'Player name', 'tournamatch' ); ?>" required>
 						</div>
-						<button id="trn-add-player-button" class="btn btn-primary"><?php esc_html_e( 'Add Player', 'tournamatch' ); ?></button>
+						<button id="trn-add-player-button" class="trn-button"><?php esc_html_e( 'Add Player', 'tournamatch' ); ?></button>
 					</form>
 				</div>
-				<div class="clearfix mb-3"></div>
+				<div class="trn-clearfix trn-mb-3"></div>
 				<?php
 			}
 
 			if ( intval( $team_owner->id ) === $user_id ) {
 				?>
-				<div class="row">
-					<div class="col-md-6" id="invite-panel">
+				<div class="trn-row">
+					<div class="trn-col-md-6" id="invite-panel">
 						<?php echo do_shortcode( '[trn-email-team-invitation-form team_id="' . intval( $team_id ) . '"]' ); ?>
 					</div>
-					<div class="col-md-3" id="invitations-panel">
+					<div class="trn-col-md-3" id="invitations-panel">
 						<?php echo do_shortcode( '[trn-team-invitations-list team_id="' . intval( $team_id ) . '"]' ); ?>
 					</div>
-					<div class="col-md-3" id="requests-panel">
+					<div class="trn-col-md-3" id="requests-panel">
 						<?php echo do_shortcode( '[trn-team-requests-list team_id="' . intval( $team_id ) . '"]' ); ?>
 					</div>
 				</div>

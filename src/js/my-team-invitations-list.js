@@ -31,7 +31,7 @@ import { trn } from './tournamatch.js';
                     $.event('my-team-invitations').dispatchEvent(new Event('changed'));
                 } else {
                     console.log(xhr.response);
-                    document.getElementById('trn-my-team-invitations-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
+                    document.getElementById('trn-my-team-invitations-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
                 }
             };
 
@@ -111,22 +111,22 @@ import { trn } from './tournamatch.js';
                     let invitations = JSON.parse(xhr.response);
 
                     if ( invitations !== null && invitations.length > 0 ) {
-                        content += `<ul class="list-unstyled" id="trn-my-team-invitations-list">`;
+                        content += `<ul class="trn-list-unstyled" id="trn-my-team-invitations-list">`;
 
                         Array.prototype.forEach.call(invitations, function(invitation) {
-                            content += `<li class="text-center" id="trn-join-team-invitation-${invitation.team_member_invitation_id}">`;
+                            content += `<li class="trn-text-center" id="trn-join-team-invitation-${invitation.team_member_invitation_id}">`;
                             content += `<a href="${invitation._embedded.team[0].link}">${invitation._embedded.team[0].name}</a> `;
-                            content += `<a class="trn-accept-team-invitation-link" data-invitation-id="${invitation.team_member_invitation_id}"><i class="fa fa-check text-success"></i></a> `;
-                            content += `<a class="trn-decline-team-invitation-link" data-invitation-id="${invitation.team_member_invitation_id}"><i class="fa fa-times text-danger"></i></a>`;
+                            content += `<a class="trn-accept-team-invitation-link" data-invitation-id="${invitation.team_member_invitation_id}"><i class="fa fa-check trn-text-success"></i></a> `;
+                            content += `<a class="trn-decline-team-invitation-link" data-invitation-id="${invitation.team_member_invitation_id}"><i class="fa fa-times trn-text-danger"></i></a>`;
                             content += `</li>`;
                         });
 
                         content += `</ul>`;
                     } else {
-                        content += `<p class="text-center">${options.language.zero_invitations}</p>`;
+                        content += `<p class="trn-text-center">${options.language.zero_invitations}</p>`;
                     }
                 } else {
-                    content += `<p class="text-center">${options.language.error}</p>`;
+                    content += `<p class="trn-text-center">${options.language.error}</p>`;
                 }
 
                 removeListeners();

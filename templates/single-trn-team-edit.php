@@ -87,7 +87,7 @@ get_header();
 trn_get_header();
 
 ?>
-	<h1 class="mb-4"><?php esc_html_e( 'Edit Team Profile', 'tournamatch' ); ?></h1>
+	<h1 class="trn-mb-4"><?php esc_html_e( 'Edit Team Profile', 'tournamatch' ); ?></h1>
 	<?php trn_user_form( $form, $team ); ?>
 	<div id="trn-update-response"></div>
 <?php

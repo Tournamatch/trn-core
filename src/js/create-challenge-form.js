@@ -73,7 +73,7 @@ import { trn } from './tournamatch.js';
                 challengerField.setAttribute('data-competitor-id', challenger[0].competitor_id);
                 const p = document.createElement('p');
                 p.innerText = challenger[0].competitor_name;
-                p.classList.add('form-control-static');
+                p.classList.add('trn-form-control-static');
                 while (challengerField.firstChild) {challengerField.removeChild(challengerField.firstChild); }
                 challengerField.appendChild(p);
             } else {
@@ -97,7 +97,7 @@ import { trn } from './tournamatch.js';
             if (0 === challengees.length) {
                 const p = document.createElement('p');
                 p.innerText = options.language.no_competitors_exist;
-                p.classList.add('form-control-static');
+                p.classList.add('trn-form-control-static');
                 while (challengeeField.firstChild) {challengeeField.removeChild(challengeeField.firstChild); }
                 challengeeField.appendChild(p);
             } else {

@@ -28,7 +28,7 @@ import { trn } from './tournamatch.js';
                 $.event('team-members').dispatchEvent(new CustomEvent('changed'));
             } else {
                 let response = JSON.parse(xhr.response);
-                document.getElementById('trn-delete-team-member-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                document.getElementById('trn-delete-team-member-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
             }
         };
 
@@ -45,7 +45,7 @@ import { trn } from './tournamatch.js';
                 $.event('team-members').dispatchEvent(new CustomEvent('changed'));
             } else {
                 let response = JSON.parse(xhr.response);
-                document.getElementById('trn-team-roster-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                document.getElementById('trn-team-roster-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
             }
         };
 
@@ -103,7 +103,7 @@ import { trn } from './tournamatch.js';
                 className: 'trn-team-roster-title',
                 render: function (data, type, row) {
                     if ((options.can_edit_roster) && (row._embedded.rank[0].weight != '1')) {
-                        let html = `<select class="form-control form-control-sm trn-change-rank-dropdown" data-current-rank-id="${row.team_rank_id}" data-team-member-id="${row.team_member_id}" >`;
+                        let html = `<select class="trn-form-control trn-form-control-sm trn-change-rank-dropdown" data-current-rank-id="${row.team_rank_id}" data-team-member-id="${row.team_member_id}" >`;
 
                         Array.prototype.forEach.call(options.ranks, (rank) => {
                             if (rank.team_rank_id == row.team_rank_id) {
@@ -172,7 +172,7 @@ import { trn } from './tournamatch.js';
                 className: 'trn-team-roster-options',
                 render: function(data, type, row) {
                     if ((options.can_edit_roster) && (row._embedded.rank[0].weight != '1')) {
-                        return `<a class="trn-drop-player-action btn btn-sm btn-secondary trn-confirm-action-link" data-team-member-id="${row.team_member_id}" data-confirm-title="${options.language.drop_team_member}" data-confirm-message="${options.language.drop_confirm.format(row._embedded.player[0].name)}" href="#">${options.language.drop_player}</a>`;
+                        return `<a class="trn-drop-player-action trn-button trn-button-sm trn-button-secondary trn-confirm-action-link" data-team-member-id="${row.team_member_id}" data-confirm-title="${options.language.drop_team_member}" data-confirm-message="${options.language.drop_confirm.format(row._embedded.player[0].name)}" href="#">${options.language.drop_player}</a>`;
                     } else {
                         return '';
                     }
