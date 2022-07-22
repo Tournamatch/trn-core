@@ -1023,8 +1023,6 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 		wp_enqueue_style( 'trn_font_awesome_css' );
 
 		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '3.0.0' );
-		// This is the one.
-		//wp_add_inline_style( 'trn_components_css', "html { --PrimaryButtonBackground: #0F0; }" );
 		wp_enqueue_style( 'trn_components_css' );
 
 		wp_register_style( 'datatables', plugins_url( '/dist/css/trn.datatable.bootstrap4.css', __FILE__ ), array(), '1.10.19' );
@@ -3325,11 +3323,96 @@ if ( ! function_exists( 'trn_update_db_check' ) ) {
 
 		if ( TOURNAMATCH_VERSION !== $current_version ) {
 			trn_upgrade_sql( $current_version );
-		}
 
-		$options            = get_option( 'tournamatch_options', null );
-		$options['version'] = TOURNAMATCH_VERSION;
-		update_option( 'tournamatch_options', $options );
+			$options            = get_option( 'tournamatch_options', null );
+			$options['version'] = TOURNAMATCH_VERSION;
+			update_option( 'tournamatch_options', $options );
+		}
+	}
+}
+
+if ( ! function_exists( 'trn_upgrade_from_3' ) ) {
+	/**
+	 * Handles upgrades from Tournamatch 3.x to 4.x.
+	 *
+	 * @since 4.2.0
+	 */
+	function trn_upgrade_from_3() {
+		global $wpdb;
+
+		$sql   = array();
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders` ADD `competitor_type` ENUM('players','teams') NOT NULL DEFAULT 'players' AFTER `comp`";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_ladders` SET competitor_type = 'teams' WHERE comp = 3";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders` DROP `comp`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments` ADD `competitor_type` ENUM('players','teams') NOT NULL DEFAULT 'players' AFTER `comp`";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_tournaments` SET competitor_type = 'teams' WHERE comp = 3";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments` DROP `comp`";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_ladders_entries` SET competitor_type = 'players' WHERE competitor_type = 'player'";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_ladders_entries` SET competitor_type = 'teams' WHERE competitor_type = 'team'";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_tournaments_entries` SET competitor_type = 'players' WHERE competitor_type = 'player'";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_tournaments_entries` SET competitor_type = 'teams' WHERE competitor_type = 'team'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ratings` CHANGE `competitor_type` `competitor_type` ENUM('players','teams') NOT NULL DEFAULT 'players'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` CHANGE `competitor_type` `competitor_type` ENUM('players','teams') NOT NULL DEFAULT 'players'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments_entries` CHANGE `competitor_type` `competitor_type` ENUM('players','teams') NOT NULL DEFAULT 'players'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_competitions_petitions` CHANGE `competitor_type` `competitor_type` ENUM('players','teams') NOT NULL DEFAULT 'players'";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_matches` SET onetype = 'players' WHERE onetype = 'player'";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_matches` SET twotype = 'players' WHERE twotype = 'player'";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_matches` SET onetype = 'teams' WHERE onetype = 'team'";
+		$sql[] = "UPDATE `{$wpdb->prefix}trn_matches` SET twotype = 'teams' WHERE twotype = 'team'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_matches` CHANGE `onetype` `onetype` ENUM('players','teams') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'players'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_matches` CHANGE `twotype` `twotype` ENUM('players','teams') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'players'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders` CHANGE `maxnppt` `team_size` TINYINT NULL DEFAULT NULL";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders` CHANGE `scr` `uses_score` TINYINT(1) NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments` CHANGE `scr` `uses_score` TINYINT(1) NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` CHANGE `leid` `ladder_entry_id` INT NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` DROP `bst`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` CHANGE `pos` `position` INT NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` CHANGE `ties` `draws` INT NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_members` CHANGE `ties` `draws` INT UNSIGNED NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` DROP `lastid`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` DROP `wlpercent`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` CHANGE `bststreak` `best_streak` INT NOT NULL DEFAULT '0', CHANGE `wrsstreak` `worst_streak` INT NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams` CHANGE `tid` `team_id` INT NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_members_requests` CHANGE `tid` `team_id` INT UNSIGNED NOT NULL";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_ranks` CHANGE `tid` `team_id` INT NOT NULL";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments` CHANGE `chckin` `check_in_seconds` INT NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_members` DROP `matches`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_members` CHANGE `rank` `team_rank_id` INT NOT NULL";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` DROP `tot_matches`, DROP `tot_wlpercent`, DROP `tot_events`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams` DROP `tot_matches`, DROP `tot_wlpercent`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams` CHANGE `tot_wins` `wins` INT NOT NULL DEFAULT '0', CHANGE `tot_losses` `losses` INT NOT NULL DEFAULT '0', CHANGE `tot_ties` `draws` INT NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` CHANGE `tot_wins` `wins` INT UNSIGNED NOT NULL, CHANGE `tot_losses` `losses` INT UNSIGNED NOT NULL, CHANGE `tot_ties` `draws` INT UNSIGNED NOT NULL";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` DROP `username`, DROP `joined_date`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` CHANGE `pic` `avatar` VARCHAR(191) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams` CHANGE `pic` `avatar` VARCHAR(191) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_matches` CHANGE `oneid` `one_competitor_id` INT NOT NULL DEFAULT '0', CHANGE `onetype` `one_competitor_type` ENUM('players','teams') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'players', CHANGE `oneip` `one_ip` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '', CHANGE `oneres` `one_result` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '', CHANGE `onescr` `one_score` INT NOT NULL DEFAULT '0', CHANGE `onecom` `one_comment` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '', CHANGE `twoid` `two_competitor_id` INT NOT NULL DEFAULT '0', CHANGE `twotype` `two_competitor_type` ENUM('players','teams') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'players', CHANGE `twoip` `two_ip` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '', CHANGE `twores` `two_result` VARCHAR(5) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '', CHANGE `twoscr` `two_score` INT NOT NULL DEFAULT '0', CHANGE `twocom` `two_comment` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_matches` CHANGE `mid` `match_id` INT NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_challenges` CHANGE `id` `challenge_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_attachments` CHANGE `id` `attachment_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_games` CHANGE `gid` `game_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_games` CHANGE `img` `thumbnail` VARCHAR(191) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'blank.gif', CHANGE `console` `platform` VARCHAR(25) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_games` DROP `gdesc`, DROP `active`";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders` CHANGE `lid` `ladder_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders` CHANGE `gid` `game_id` INT NOT NULL DEFAULT '0', CHANGE `wpts` `win_points` TINYINT(1) NOT NULL DEFAULT '0', CHANGE `lpts` `loss_points` TINYINT(1) NOT NULL DEFAULT '0', CHANGE `tpts` `draw_points` TINYINT(1) NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ladders_entries` CHANGE `lid` `ladder_id` INT NOT NULL DEFAULT '0'";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` CHANGE `uid` `user_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_ratings` CHANGE `id` `rating_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_series` CHANGE `id` `series_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_series_standings` CHANGE `id` `series_standing_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_trophies` CHANGE `id` `trophy_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_members_requests` CHANGE `id` `team_member_request_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_members_invitations` CHANGE `id` `team_member_invitation_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_ranks` CHANGE `trid` `team_rank_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_teams_members` CHANGE `id` `team_member_id` INT UNSIGNED NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments_entries` CHANGE `teid` `tournament_entry_id` INT NOT NULL AUTO_INCREMENT";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments_entries` CHANGE `tournid` `tournament_id` INT NOT NULL";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` CHANGE `loc` `location` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT ''";
+		$sql[] = "ALTER TABLE `{$wpdb->prefix}trn_tournaments` CHANGE `tournid` `tournament_id` INT NOT NULL AUTO_INCREMENT, CHANGE `gid` `game_id` INT UNSIGNED NULL DEFAULT NULL";
+
+		foreach ( $sql as $query ) {
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->query( $query );
+		}
 	}
 }
 
@@ -3349,6 +3432,10 @@ if ( ! function_exists( 'trn_upgrade_sql' ) ) {
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		if ( version_compare( $version, '4.0.0', '<' ) ) {
+			trn_upgrade_from_3();
+		}
 
 		if ( version_compare( $version, '4.1.0', '<' ) ) {
 			$sql_fix = "CREATE TABLE `{$wpdb->prefix}trn_teams_members` (

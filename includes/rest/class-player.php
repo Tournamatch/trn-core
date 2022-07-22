@@ -405,17 +405,17 @@ WHERE `user_id` = %d
 		unset( $request['new_password'] );
 		unset( $request['confirm_password'] );
 
-//		$data   = array();
-//		$fields = array( 'display_name', 'location', 'flag', 'profile' );
-//
-//		foreach ( $fields as $field ) {
-//			if ( $request->has_param( $field ) ) {
-//				if ( (string) $player->$field !== (string) $request->get_param( $field ) ) {
-//					$data[ $field ] = $request->get_param( $field );
-//					$player->$field = $request->get_param( $field );
-//				}
-//			}
-//		}
+		// $data   = array();
+		// $fields = array( 'display_name', 'location', 'flag', 'profile' );
+		//
+		// foreach ( $fields as $field ) {
+		// if ( $request->has_param( $field ) ) {
+		// if ( (string) $player->$field !== (string) $request->get_param( $field ) ) {
+		// $data[ $field ] = $request->get_param( $field );
+		// $player->$field = $request->get_param( $field );
+		// }
+		// }
+		// }
 
 		$files = $request->get_file_params();
 		if ( ! empty( $files ) ) {
@@ -437,9 +437,9 @@ WHERE `user_id` = %d
 							}
 						}
 
-						//$data['avatar'] = $new_pic;
+						// $data['avatar'] = $new_pic;
 						$request['avatar'] = $new_pic;
-						$player->avatar = $new_pic;
+						$player->avatar    = $new_pic;
 					}
 				}
 			}
@@ -574,25 +574,25 @@ WHERE `user_id` = %d
 			),
 		);
 
-//		$icon_fields = apply_filters( 'trn_player_icon_fields', array() );
-//		foreach ( $icon_fields as $social_icon => $social_icon_data ) {
-//			$properties[ "trn_$social_icon" ] = array(
-//				/* translators: The name of a field. */
-//				'description' => sprintf( esc_html__( 'The %s field for the player.', 'tournamatch' ), $social_icon ),
-//				'type'        => 'string',
-//				'context'     => array( 'view', 'edit', 'embed' ),
-//			);
-//		}
-//
-//		$player_fields = apply_filters( 'trn_player_fields', array() );
-//		foreach ( $player_fields as $field_id => $field_data ) {
-//			$properties[ "trn_$field_id" ] = array(
-//				/* translators: The name of a field. */
-//				'description' => sprintf( esc_html__( 'The %s field for the player.', 'tournamatch' ), $field_id ),
-//				'type'        => 'string',
-//				'context'     => array( 'view', 'edit', 'embed' ),
-//			);
-//		}
+		// $icon_fields = apply_filters( 'trn_player_icon_fields', array() );
+		// foreach ( $icon_fields as $social_icon => $social_icon_data ) {
+		// $properties[ "trn_$social_icon" ] = array(
+		// * translators: The name of a field. */
+		// 'description' => sprintf( esc_html__( 'The %s field for the player.', 'tournamatch' ), $social_icon ),
+		// 'type'        => 'string',
+		// 'context'     => array( 'view', 'edit', 'embed' ),
+		// );
+		// }
+		//
+		// $player_fields = apply_filters( 'trn_player_fields', array() );
+		// foreach ( $player_fields as $field_id => $field_data ) {
+		// $properties[ "trn_$field_id" ] = array(
+		// * translators: The name of a field. */
+		// 'description' => sprintf( esc_html__( 'The %s field for the player.', 'tournamatch' ), $field_id ),
+		// 'type'        => 'string',
+		// 'context'     => array( 'view', 'edit', 'embed' ),
+		// );
+		// }
 
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',

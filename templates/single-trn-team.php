@@ -24,30 +24,15 @@ get_header();
 trn_get_header();
 
 $team_owner = trn_get_team_owner( $team_id );
-// $team_fields = apply_filters( 'trn_team_fields', array() );
-$user_id = get_current_user_id();
-
-// $social_fields = apply_filters( 'trn_team_icon_fields', array() );
+$user_id    = get_current_user_id();
 
 $team_links = array();
 if ( 0 !== $user_id ) {
 	$team_links[] = '<a class="trn-button trn-button-sm trn-button-secondary" id="trn-edit-team-button" style="display:none" href="' . trn_route( 'teams.single.edit', array( 'id' => $team_id ) ) . '">' . esc_html__( 'Edit Team', 'tournamatch' ) . '</a>';
-
 	$team_links[] = '<button class="trn-button trn-button-sm trn-button-danger" id="trn-delete-team-button" style="display:none">' . esc_html__( 'Delete Team', 'tournamatch' ) . '</button>';
 	$team_links[] = '<button class="trn-button trn-button-sm trn-button-secondary" id="trn-leave-team-button" style="display:none">' . esc_html__( 'Leave Team', 'tournamatch' ) . '</button>';
 	$team_links[] = '<button class="trn-button trn-button-sm trn-button-secondary" id="trn-join-team-button" style="display:none" data-team-id="' . intval( $team_id ) . '" data-user-id="' . get_current_user_id() . '">' . esc_html__( 'Join Team', 'tournamatch' ) . '</button>';
 }
-
-// $social_links = array();
-// foreach ( $social_fields as $social_icon => $social_icon_data ) {
-// if ( 0 < strlen( get_post_meta( $team->post_id, $social_icon, true ) ) ) {
-// $social_links[] = '<a href="' . esc_html( get_post_meta( $team->post_id, $social_icon, true ) ) . '"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-// }
-// }
-// if ( 0 === count( $social_links ) ) {
-// $social_links[] = '<em>' . esc_html__( 'No contacts to display.', 'tournamatch' ) . '</em>';
-// }
-// $social_links = implode( ' ', $social_links );
 
 $description_list = array(
 	'owner'         => array(

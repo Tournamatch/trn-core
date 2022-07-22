@@ -34,25 +34,6 @@ if ( is_user_logged_in() ) {
 	}
 }
 
-// $player_fields = apply_filters( 'trn_player_fields', array() );
-// $icon_fields   = apply_filters( 'trn_player_icon_fields', array() );
-//
-// $social_links = array();
-// foreach ( $icon_fields as $social_icon => $social_icon_data ) {
-// if ( 0 < strlen( get_user_meta( $user_id, "trn_$social_icon", true ) ) ) {
-// $social_links[] = '<a href="' . esc_html( get_user_meta( $user_id, "trn_$social_icon", true ) ) . '"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-// }
-// }
-//
-// if ( intval( trn_get_option( 'display_user_email' ) ) === 1 ) {
-// $social_links[] = '<a href="mailto:' . esc_html( get_userdata( $user_id )->user_email ) . '"><i class="fa fa-envelope"></i></a>';
-// }
-//
-// if ( 0 === count( $social_links ) ) {
-// $social_links[] = '<em>' . esc_html__( 'No contacts to display.', 'tournamatch' ) . '</em>';
-// }
-// $social_links = implode( ' ', $social_links );
-
 $description_list = array(
 	'joined_date'   => array(
 		'term'        => __( 'Joined Date', 'tournamatch' ),

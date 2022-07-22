@@ -342,7 +342,7 @@ class Team extends Controller {
 							}
 						}
 
-						$team->avatar   = $new_pic;
+						$team->avatar      = $new_pic;
 						$request['avatar'] = $new_pic;
 					}
 				}
@@ -487,25 +487,25 @@ class Team extends Controller {
 			),
 		);
 
-//		$icon_fields = apply_filters( 'trn_team_icon_fields', array() );
-//		foreach ( $icon_fields as $field_id => $field_data ) {
-//			$properties[ $field_id ] = array(
-//				/* translators: The name of the field. */
-//				'description' => sprintf( esc_html__( 'The %s field for the team.', 'tournamatch' ), $field_id ),
-//				'type'        => 'string',
-//				'context'     => array( 'view', 'edit', 'embed' ),
-//			);
-//		}
-//
-//		$team_fields = apply_filters( 'trn_team_fields', array() );
-//		foreach ( $team_fields as $field_id => $field_data ) {
-//			$properties[ $field_id ] = array(
-//				/* translators: The name of the field. */
-//				'description' => sprintf( esc_html__( 'The %s field for the team.', 'tournamatch' ), $field_id ),
-//				'type'        => 'string',
-//				'context'     => array( 'view', 'edit', 'embed' ),
-//			);
-//		}
+		// $icon_fields = apply_filters( 'trn_team_icon_fields', array() );
+		// foreach ( $icon_fields as $field_id => $field_data ) {
+		// $properties[ $field_id ] = array(
+		// * translators: The name of the field. */
+		// 'description' => sprintf( esc_html__( 'The %s field for the team.', 'tournamatch' ), $field_id ),
+		// 'type'        => 'string',
+		// 'context'     => array( 'view', 'edit', 'embed' ),
+		// );
+		// }
+		//
+		// $team_fields = apply_filters( 'trn_team_fields', array() );
+		// foreach ( $team_fields as $field_id => $field_data ) {
+		// $properties[ $field_id ] = array(
+		// * translators: The name of the field. */
+		// 'description' => sprintf( esc_html__( 'The %s field for the team.', 'tournamatch' ), $field_id ),
+		// 'type'        => 'string',
+		// 'context'     => array( 'view', 'edit', 'embed' ),
+		// );
+		// }
 
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',
