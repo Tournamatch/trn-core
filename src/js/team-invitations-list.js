@@ -68,25 +68,25 @@ import { trn } from './tournamatch.js';
                     let invitations = JSON.parse(xhr.response);
 
                     if ( invitations !== null && invitations.length > 0 ) {
-                        content += `<ul class="list-unstyled" id="trn-team-invitations-list">`;
+                        content += `<ul class="trn-list-unstyled" id="trn-team-invitations-list">`;
 
                         Array.prototype.forEach.call(invitations, function(invitation) {
-                            content += `<li class="text-center" id="trn-join-team-invitations-${invitation.team_member_invitation_id}">`;
+                            content += `<li class="trn-text-center" id="trn-join-team-invitations-${invitation.team_member_invitation_id}">`;
                             if ( 'email' === invitation.invitation_type ) {
                                 content += `${invitation.user_email}`;
                             } else {
                                 content += `<a href="${invitation._embedded.player[0].link}">${invitation._embedded.player[0].name}</a>`;
                             }
-                            content += ` <a class="trn-delete-team-invitations-link" data-invitation-id="${invitation.team_member_invitation_id}"><i class="fa fa-times text-danger"></i></a>`;
+                            content += ` <a class="trn-delete-team-invitations-link" data-invitation-id="${invitation.team_member_invitation_id}"><i class="fa fa-times trn-text-danger"></i></a>`;
                             content += `</li>`;
                         });
 
                         content += `</ul>`;
                     } else {
-                        content += `<p class="text-center">${options.language.zero_invitations}</p>`;
+                        content += `<p class="trn-text-center">${options.language.zero_invitations}</p>`;
                     }
                 } else {
-                    content += `<p class="text-center">${options.language.error}</p>`;
+                    content += `<p class="trn-text-center">${options.language.error}</p>`;
                 }
 
                 removeListeners();

@@ -75,7 +75,7 @@ class Shortcodes {
 
 		$html  = '<section id="trn-my-team-requests-section">';
 		$html .= '<div id="trn-my-team-requests-response"></div>';
-		$html .= '<p class="text-center">' . esc_html__( 'Loading team requests...', 'tournamatch' ) . '</p>';
+		$html .= '<p class="trn-text-center">' . esc_html__( 'Loading team requests...', 'tournamatch' ) . '</p>';
 		$html .= '</section>';
 
 		return $html;
@@ -111,7 +111,7 @@ class Shortcodes {
 
 		$html  = '<section id="trn-my-team-invitations-section">';
 		$html .= '<div id="trn-my-team-invitations-response"></div>';
-		$html .= '<p class="text-center">' . esc_html__( 'Loading team invitations...', 'tournamatch' ) . '</p>';
+		$html .= '<p class="trn-text-center">' . esc_html__( 'Loading team invitations...', 'tournamatch' ) . '</p>';
 		$html .= '</section>';
 
 		return $html;
@@ -154,8 +154,8 @@ class Shortcodes {
 
 		$html  = '<section id="trn-team-requests-section">';
 		$html .= '<div id="trn-team-requests-response"></div>';
-		$html .= '<h4 class="text-center" id="trn-team-requests-section-header">' . __( 'Requests', 'tournamatch' ) . '</h4>';
-		$html .= '<p class="text-center">' . __( 'Loading team requests...', 'tournamatch' ) . '</p>';
+		$html .= '<h4 class="trn-text-center" id="trn-team-requests-section-header">' . __( 'Requests', 'tournamatch' ) . '</h4>';
+		$html .= '<p class="trn-text-center">' . __( 'Loading team requests...', 'tournamatch' ) . '</p>';
 		$html .= '</section>';
 
 		return $html;
@@ -197,8 +197,8 @@ class Shortcodes {
 		wp_enqueue_script( 'trn_team_invitations_list' );
 
 		$html  = '<section id="trn-team-invitations-section">';
-		$html .= '<h4 class="text-center" id="trn-team-invitations-section-header">' . __( 'Invitations', 'tournamatch' ) . '</h4>';
-		$html .= '<p class="text-center">' . __( 'Loading team invitations...', 'tournamatch' ) . '</p>';
+		$html .= '<h4 class="trn-text-center" id="trn-team-invitations-section-header">' . __( 'Invitations', 'tournamatch' ) . '</h4>';
+		$html .= '<p class="trn-text-center">' . __( 'Loading team invitations...', 'tournamatch' ) . '</p>';
 		$html .= '</section>';
 
 		return $html;
@@ -239,18 +239,18 @@ class Shortcodes {
 		wp_enqueue_script( 'trn_email_team_invitation_form' );
 
 		$html  = '<section id="trn-email-team-invitation-section">';
-		$html .= '<h4 class="text-center" id="trn-email-team-invitation-section-header">' . __( 'Invite', 'tournamatch' ) . '</h4>';
+		$html .= '<h4 class="trn-text-center" id="trn-email-team-invitation-section-header">' . __( 'Invite', 'tournamatch' ) . '</h4>';
 		$html .= '<form class="form-horizontal" id="trn-email-team-invitation-form" novalidate>';
-		$html .= '	<div class="form-group">';
-		$html .= '		<label class="control-label col-md-3" for="trn-email-invite-address">' . __( 'Email', 'tournamatch' ) . '</label>';
-		$html .= '		<div class="col-md-9">';
-		$html .= '			<input type="email" class="form-control" name="trn-email-invite-address" id="trn-email-invite-address" required>';
-		$html .= '			<div class="invalid-feedback" id="trn-email-invite-address-error">' . __( 'A valid email address is required.', 'tournamatch' ) . '</div>';
+		$html .= '	<div class="trn-form-group">';
+		$html .= '		<label class="control-label trn-col-md-3" for="trn-email-invite-address">' . __( 'Email', 'tournamatch' ) . '</label>';
+		$html .= '		<div class="trn-col-md-9">';
+		$html .= '			<input type="email" class="trn-form-control" name="trn-email-invite-address" id="trn-email-invite-address" required>';
+		$html .= '			<div class="trn-invalid-feedback" id="trn-email-invite-address-error">' . __( 'A valid email address is required.', 'tournamatch' ) . '</div>';
 		$html .= '		</div>';
 		$html .= '	</div>';
-		$html .= '	<div class="form-group">';
-		$html .= '		<div class="col-md-offset-3 col-md-9">';
-		$html .= '			<button class="btn btn-secondary btn-sm" type="submit">' . __( 'Send Invitation', 'tournamatch' ) . '</button>';
+		$html .= '	<div class="trn-form-group">';
+		$html .= '		<div class="trn-col-md-offset-3 trn-col-md-9">';
+		$html .= '			<button class="trn-button trn-button-secondary trn-button-sm" type="submit">' . __( 'Send Invitation', 'tournamatch' ) . '</button>';
 		$html .= '		</div>';
 		$html .= '	</div>';
 		$html .= '</form>';
@@ -279,7 +279,7 @@ class Shortcodes {
 			return '';
 		}
 
-		return '<a class="btn btn-primary" href="' . trn_route( 'ladders.single.join', array( 'id' => $atts['id'] ) ) . '">' . esc_html__( 'Join', 'tournamatch' ) . '</a>';
+		return '<a class="trn-button" href="' . trn_route( 'ladders.single.join', array( 'id' => $atts['id'] ) ) . '">' . esc_html__( 'Join', 'tournamatch' ) . '</a>';
 	}
 
 	/**
@@ -302,7 +302,7 @@ class Shortcodes {
 			return '';
 		}
 
-		return '<a class="btn btn-primary" href="' . trn_route( 'tournaments.single.register', array( 'id' => $atts['id'] ) ) . '">' . esc_html__( 'Register', 'tournamatch' ) . '</a>';
+		return '<a class="trn-button" href="' . trn_route( 'tournaments.single.register', array( 'id' => $atts['id'] ) ) . '">' . esc_html__( 'Register', 'tournamatch' ) . '</a>';
 	}
 
 	/**
@@ -395,15 +395,15 @@ class Shortcodes {
 
 		$user_teams = $wpdb->get_results( $wpdb->prepare( "SELECT t.team_id AS id, t.name AS name FROM {$wpdb->prefix}trn_teams AS t LEFT JOIN {$wpdb->prefix}trn_teams_members AS tm ON t.team_id = tm.team_id WHERE tm.`team_rank_id` = 1 AND tm.user_id = %d", get_current_user_id() ) );
 
-		$html  = '<div class="btn-group">';
-		$html .= '  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="trn-invite-dropdown">' . __( 'Invite to...', 'tournamatch' ) . '</button>';
-		$html .= '  <div class="dropdown-menu" aria-labelledby="trn-invite-dropdown">';
+		$html  = '<div class="trn-button-group">';
+		$html .= '  <button class="trn-button trn-button-secondary trn-button-sm trn-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" id="trn-invite-dropdown">' . __( 'Invite to...', 'tournamatch' ) . '</button>';
+		$html .= '  <div class="trn-dropdown-menu" aria-labelledby="trn-invite-dropdown">';
 
 		if ( 0 === count( $user_teams ) ) {
-			$html .= '    <button class="dropdown-item" type="button"><em>' . __( 'No team available.', 'tournamatch' ) . '</em></button>';
+			$html .= '    <button class="trn-dropdown-item" type="button"><em>' . __( 'No team available.', 'tournamatch' ) . '</em></button>';
 		} else {
 			foreach ( $user_teams as $team ) {
-				$html .= '    <button class="dropdown-item trn-invite-player-to-team" type="button" data-team-id="' . intval( $team->id ) . '">' . esc_html( $team->name ) . '</button>';
+				$html .= '    <button class="trn-dropdown-item trn-invite-player-to-team" type="button" data-team-id="' . intval( $team->id ) . '">' . esc_html( $team->name ) . '</button>';
 			}
 		}
 		$html .= '  </div>';
@@ -441,7 +441,7 @@ class Shortcodes {
 		wp_localize_script( 'trn_dispute_match_button', 'trn_dispute_match_button_options', $options );
 		wp_enqueue_script( 'trn_dispute_match_button' );
 
-		return '<a class="btn btn-sm btn-danger trn-dispute-match-button" href="#" data-match-id="' . intval( $atts['id'] ) . '">' . esc_html__( 'Dispute', 'tournamatch' ) . '</a>';
+		return '<a class="trn-button trn-button-sm trn-button-danger trn-dispute-match-button" href="#" data-match-id="' . intval( $atts['id'] ) . '">' . esc_html__( 'Dispute', 'tournamatch' ) . '</a>';
 	}
 
 	/**
@@ -480,9 +480,9 @@ class Shortcodes {
 			$career_record = $wpdb->get_row( $wpdb->prepare( "SELECT `wins` AS `wins`, `losses` AS `losses`, `draws` AS `draws` FROM `{$wpdb->prefix}trn_teams` WHERE `team_id` = %d", $competitor_id ), ARRAY_A );
 		}
 
-		$options = get_option( 'tournamatch_options' );
+		$uses_draws = ( '1' === trn_get_option( 'uses_draws' ) );
 
-		if ( '0' === $options['uses_draws'] ) {
+		if ( ! $uses_draws ) {
 			unset( $career_record['draws'] );
 			/* translators: An integer dash another integer representing wins and losses. */
 			$career_record_format = esc_html__( '%1$d - %2$d', 'tournamatch' );
@@ -502,7 +502,7 @@ class Shortcodes {
 			$team_record              = $wpdb->get_row( $wpdb->prepare( "SELECT SUM(`wins`) AS `wins`, SUM(`losses`) AS `losses`, SUM(`draws`) AS `draws` FROM `{$wpdb->prefix}trn_teams_members` WHERE `user_id` = %d", $competitor_id ), ARRAY_A );
 			$career_record['wins']   += $team_record['wins'];
 			$career_record['losses'] += $team_record['losses'];
-			if ( '1' === $options['uses_draws'] ) {
+			if ( $uses_draws ) {
 				$career_record['draws'] += $team_record['draws'];
 			}
 
@@ -542,7 +542,7 @@ class Shortcodes {
 		}
 
 		if ( ! in_array( $tournament->status, array( 'in_progress', 'complete' ), true ) ) {
-			return '<p class="text-center">' . esc_html__( 'The tournament has not started.', 'tournamatch' ) . '</p>';
+			return '<p class="trn-text-center">' . esc_html__( 'The tournament has not started.', 'tournamatch' ) . '</p>';
 		}
 
 		$round_language = array(
@@ -611,6 +611,7 @@ class Shortcodes {
 				'replace' => esc_html__( 'Replace {NAME}', 'tournamatch' ),
 				'winner'  => esc_html__( 'Winner', 'tournamatch' ),
 			),
+			'undecided'        => trn_get_option( 'tournament_undecided_display' ),
 		);
 
 		wp_register_style( 'trn-tournament-brackets-style', plugins_url( '../../dist/css/brackets.css', __FILE__ ), array(), '1.0.0' );
@@ -620,8 +621,8 @@ class Shortcodes {
 		wp_localize_script( 'trn-tournament-brackets', 'trn_brackets_options', $options );
 		wp_enqueue_script( 'trn-tournament-brackets' );
 
-		$html  = sprintf( '<div id="tournamatch-%d" class="tournamatch-brackets" data-tournament-id="%d" data-tournament-size="%d">', $attributes['tournament_id'], $attributes['tournament_id'], $tournament->bracket_size );
-		$html .= '<p class="text-center">' . esc_html__( 'Loading brackets...', 'tournamatch' ) . '</p>';
+		$html  = sprintf( '<div id="tournamatch-%d" class="trn-brackets" data-tournament-id="%d" data-tournament-size="%d">', $attributes['tournament_id'], $attributes['tournament_id'], $tournament->bracket_size );
+		$html .= '<p class="trn-text-center">' . esc_html__( 'Loading brackets...', 'tournamatch' ) . '</p>';
 		$html .= '</div>';
 
 		return $html;

@@ -50,43 +50,43 @@ trn_get_header();
 ?>
 	<h4><?php esc_html_e( 'Confirm Match', 'tournamatch' ); ?></h4>
 	<form id="trn-confirm-match-form" action="#" method="post" enctype="multipart/form-data" >
-		<div class="form-group row">
-			<label for="competition_name" class="col-sm-3 control-label"><?php echo esc_html( $competition_type ); ?></label>
-			<div class="col-sm-4">
-				<p class="form-control-static"><?php echo esc_html( $competition->name ); ?></p>
+		<div class="trn-form-group trn-row">
+			<label for="competition_name" class="trn-col-sm-3"><?php echo esc_html( $competition_type ); ?></label>
+			<div class="trn-col-sm-4">
+				<p class="trn-form-control-static"><?php echo esc_html( $competition->name ); ?></p>
 			</div>
 		</div>
 		<?php if ( in_array( 'draw', array( $match->one_result, $match->two_result ), true ) ) : ?>
-			<div class="form-group row">
-				<label for="result" class="col-sm-3 control-label"><?php esc_html_e( 'Result', 'tournamatch' ); ?>:</label>
-				<div class="col-sm-6">
-					<p class="form-control-static"><?php esc_html_e( 'Draw', 'tournamatch' ); ?></p>
+			<div class="trn-form-group trn-row">
+				<label for="result" class="trn-col-sm-3"><?php esc_html_e( 'Result', 'tournamatch' ); ?>:</label>
+				<div class="trn-col-sm-6">
+					<p class="trn-form-control-static"><?php esc_html_e( 'Draw', 'tournamatch' ); ?></p>
 				</div>
 			</div>
 		<?php else : ?>
-			<div class="form-group row">
-				<label for="result" class="col-sm-3 control-label"><?php esc_html_e( 'Winner', 'tournamatch' ); ?>:</label>
-				<div class="col-sm-6">
-					<p class="form-control-static"><?php echo esc_html( $winner ); ?></p>
+			<div class="trn-form-group trn-row">
+				<label for="result" class="trn-col-sm-3"><?php esc_html_e( 'Winner', 'tournamatch' ); ?>:</label>
+				<div class="trn-col-sm-6">
+					<p class="trn-form-control-static"><?php echo esc_html( $winner ); ?></p>
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="result" class="col-sm-3 control-label"><?php esc_html_e( 'Loser', 'tournamatch' ); ?>:</label>
-				<div class="col-sm-6">
-					<p class="form-control-static"><?php echo esc_html( $loser ); ?></p>
+			<div class="trn-form-group trn-row">
+				<label for="result" class="trn-col-sm-3"><?php esc_html_e( 'Loser', 'tournamatch' ); ?>:</label>
+				<div class="trn-col-sm-6">
+					<p class="trn-form-control-static"><?php echo esc_html( $loser ); ?></p>
 				</div>
 			</div>
 		<?php endif; ?>
-		<div class="form-group row">
-			<label for="comment" class="col-sm-3 control-label"><?php esc_html_e( 'Comment', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-6">
-				<textarea class="form-control" id="comment" name='comment' cols='30' rows='5'></textarea>
+		<div class="trn-form-group trn-row">
+			<label for="comment" class="trn-col-sm-3"><?php esc_html_e( 'Comment', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-6">
+				<textarea class="trn-form-control" id="comment" name='comment' cols='30' trn-rows='5'></textarea>
 			</div>
 		</div>
-		<div class="form-group row">
-			<div class="offset-sm-3 col-sm-9">
+		<div class="trn-form-group trn-row">
+			<div class="offset-sm-3 trn-col-sm-9">
 				<input type='hidden' name='id' value='<?php intval( $match_id ); ?>'>
-				<input type='submit' id="trn-confirm-match-button" class="btn btn-primary" value='<?php esc_html_e( 'Confirm', 'tournamatch' ); ?>'>
+				<input type='submit' id="trn-confirm-match-button" class="trn-button" value='<?php esc_html_e( 'Confirm', 'tournamatch' ); ?>'>
 			</div>
 		</div>
 	</form>

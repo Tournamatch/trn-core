@@ -34,21 +34,21 @@ trn_get_header();
 
 ?>
 
-<div class="row mb-sm">
-	<div class="col-sm-2 col-xs-4 text-center">
-		<img class="game-thumbnail" src="<?php echo esc_html( $image_directory ); ?>/games/<?php echo is_null( $tournament->game_thumbnail ) ? 'blank.gif' : esc_html( $tournament->game_thumbnail ); ?>" alt="">
+<div class="trn-row trn-mb-sm">
+	<div class="trn-col-sm-2 trn-col-xs-4 trn-text-center">
+		<img class="trn-game-thumbnail" src="<?php echo esc_html( $image_directory ); ?>/games/<?php echo is_null( $tournament->game_thumbnail ) ? 'blank.gif' : esc_html( $tournament->game_thumbnail ); ?>" alt="">
 	</div>
-	<div class="col-sm-4 col-xs-8">
+	<div class="trn-col-sm-4 trn-col-xs-8">
 		<h3 id="trn-tournament-title"><?php echo esc_html( $tournament->name ); ?><br><small><?php echo esc_html( $tournament->game_name ); ?></small></h3>
 	</div>
-	<div class="col-sm-6 d-none d-sm-block">
-		<dl>
-			<dt><?php esc_html_e( 'Start Date', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $tournament->start_date ) ) ) ); ?></dd>
-			<dt><?php esc_html_e( 'Elimination', 'tournamatch' ); ?>:</dt>
-			<dd><?php esc_html_e( 'Single loss', 'tournamatch' ); ?></dd>
-			<dt><?php esc_html_e( 'Competition', 'tournamatch' ); ?>:</dt>
-			<dd>
+	<div class="trn-col-sm-6 d-none d-sm-block">
+		<dl class="trn-dl">
+			<dt class="trn-dt"><?php esc_html_e( 'Start Date', 'tournamatch' ); ?>:</dt>
+			<dd class="trn-dd"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $tournament->start_date ) ) ) ); ?></dd>
+			<dt class="trn-dt"><?php esc_html_e( 'Elimination', 'tournamatch' ); ?>:</dt>
+			<dd class="trn-dd"><?php esc_html_e( 'Single loss', 'tournamatch' ); ?></dd>
+			<dt class="trn-dt"><?php esc_html_e( 'Competition', 'tournamatch' ); ?>:</dt>
+			<dd class="trn-dd">
 				<?php if ( 'players' === $tournament->competitor_type ) : ?>
 					<?php esc_html_e( 'Singles', 'tournamatch' ); ?>
 				<?php else : ?>
@@ -56,16 +56,16 @@ trn_get_header();
 					<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $tournament->team_size ) ); ?>
 				<?php endif; ?>
 			</dd>
-			<dt><?php esc_html_e( 'Bracket Size', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo intval( $tournament->competitors ); ?>/<?php echo ( $tournament->bracket_size > 0 ) ? intval( $tournament->bracket_size ) : '&infin;'; ?></dd>
-			<dt><?php esc_html_e( 'Status', 'tournamatch' ); ?>:</dt>
-			<dd><?php echo esc_html( ucwords( str_replace( '_', ' ', $tournament->status ) ) ); ?></dd>
+			<dt class="trn-dt"><?php esc_html_e( 'Bracket Size', 'tournamatch' ); ?>:</dt>
+			<dd class="trn-dd"><?php echo intval( $tournament->competitors ); ?>/<?php echo ( $tournament->bracket_size > 0 ) ? intval( $tournament->bracket_size ) : '&infin;'; ?></dd>
+			<dt class="trn-dt"><?php esc_html_e( 'Status', 'tournamatch' ); ?>:</dt>
+			<dd class="trn-dd"><?php echo esc_html( ucwords( str_replace( '_', ' ', $tournament->status ) ) ); ?></dd>
 		</dl>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-sm-12">
+<div class="trn-row">
+	<div class="trn-col-sm-12">
 		<div id="trn-unregister-response"></div>
 	</div>
 </div>
@@ -79,7 +79,7 @@ $views = array(
 			if ( strlen( $tournament->rules ) > 0 ) {
 				echo wp_kses_post( stripslashes( $tournament->rules ) );
 			} else {
-				echo '<p class="text-center">';
+				echo '<p class="trn-text-center">';
 				esc_html_e( 'No rules to display.', 'tournamatch' );
 				echo '</p>';
 			}
@@ -186,7 +186,7 @@ if ( $register_conditions['can_unregister'] ) {
 			'unregister' => array(
 				'heading' => function( $tournament ) use ( $register_conditions ) {
 					?>
-					<a class="tournamatch-nav-link trn-tournament-unregister-button" href="#" data-tournament-registration-id="<?php echo intval( $register_conditions['id'] ); ?>" id="tournament-<?php echo intval( $tournament->tournament_id ); ?>-unregister-link"><?php esc_html_e( 'Unregister', 'tournamatch' ); ?></a>
+					<a class="trn-nav-link trn-tournament-unregister-button" href="#" data-tournament-registration-id="<?php echo intval( $register_conditions['id'] ); ?>" id="tournament-<?php echo intval( $tournament->tournament_id ); ?>-unregister-link"><?php esc_html_e( 'Unregister', 'tournamatch' ); ?></a>
 					<?php
 				},
 			),

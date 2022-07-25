@@ -47,25 +47,25 @@ class Tournamatch {
     }
 
     tabs(element) {
-        const tabs = element.getElementsByClassName('tournamatch-nav-link');
-        const panes = document.getElementsByClassName('tournamatch-tab-pane');
+        const tabs = element.getElementsByClassName('trn-nav-link');
+        const panes = document.getElementsByClassName('trn-tab-pane');
         const clearActive = () => {
             Array.prototype.forEach.call(tabs, (tab) => {
-                tab.classList.remove('tournamatch-nav-active');
+                tab.classList.remove('trn-nav-active');
                 tab.ariaSelected = false;
             });
-            Array.prototype.forEach.call(panes, pane => pane.classList.remove('tournamatch-tab-active'));
+            Array.prototype.forEach.call(panes, pane => pane.classList.remove('trn-tab-active'));
         };
         const setActive = (targetId) => {
-            const targetTab = document.querySelector('a[href="#' + targetId + '"].tournamatch-nav-link');
+            const targetTab = document.querySelector('a[href="#' + targetId + '"].trn-nav-link');
             const targetPaneId = targetTab && targetTab.dataset && targetTab.dataset.target || false;
 
             if (targetPaneId) {
                 clearActive();
-                targetTab.classList.add('tournamatch-nav-active');
+                targetTab.classList.add('trn-nav-active');
                 targetTab.ariaSelected = true;
 
-                document.getElementById(targetPaneId).classList.add('tournamatch-tab-active');
+                document.getElementById(targetPaneId).classList.add('trn-tab-active');
             }
         };
         const tabClick = (event) => {
@@ -94,16 +94,34 @@ class Tournamatch {
 //trn.initialize();
 if (!window.trn_obj_instance) {
     window.trn_obj_instance = new Tournamatch();
+
+    window.addEventListener('load', function () {
+
+        const tabViews = document.getElementsByClassName('trn-nav');
+
+        Array.from(tabViews).forEach((tab) => {
+            trn.tabs(tab);
+        });
+
+        const dropdowns = document.getElementsByClassName('trn-dropdown-toggle');
+        const handleDropdownClose = () => {
+            Array.from(dropdowns).forEach((dropdown) => {
+                dropdown.nextElementSibling.classList.remove('trn-show');
+            });
+            document.removeEventListener("click", handleDropdownClose, false);
+        };
+
+        Array.from(dropdowns).forEach((dropdown) => {
+            dropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.nextElementSibling.classList.add('trn-show');
+                document.addEventListener("click", handleDropdownClose, false);
+            }, false);
+        });
+
+    }, false);
 }
 export let trn = window.trn_obj_instance;
-
-window.addEventListener('load', function () {
-    const tabViews = document.getElementsByClassName( 'tournamatch-nav' );
-
-    Array.from(tabViews).forEach((tab) => {
-        trn.tabs(tab);
-    });
-}, false);
 
 class Tournamatch_Autocomplete {
 
@@ -140,17 +158,17 @@ class Tournamatch_Autocomplete {
             dataCallback(val).then((data) => {//p.then((data) => {
                 console.log(data);
 
-                /*close any already open lists of autocompleted values*/
+                /*close any already open lists of auto-completed values*/
                 this.closeAllLists();
                 if (!val) { return false;}
                 this.currentFocus = -1;
 
                 /*create a DIV element that will contain the items (values):*/
                 a = document.createElement("DIV");
-                a.setAttribute("id", this.nameInput.id + "-autocomplete-list");
-                a.setAttribute("class", "autocomplete-items");
+                a.setAttribute("id", this.nameInput.id + "-auto-complete-list");
+                a.setAttribute("class", "trn-auto-complete-items");
 
-                /*append the DIV element as a child of the autocomplete container:*/
+                /*append the DIV element as a child of the auto-complete container:*/
                 parent.appendChild(a);
 
                 /*for each item in the array...*/
@@ -201,7 +219,7 @@ class Tournamatch_Autocomplete {
 
         /*execute a function presses a key on the keyboard:*/
         this.nameInput.addEventListener("keydown", (e) => {
-            let x = document.getElementById(this.nameInput.id + "-autocomplete-list");
+            let x = document.getElementById(this.nameInput.id + "-auto-complete-list");
             if (x) x = x.getElementsByTagName("div");
             if (e.keyCode === 40) {
                 /*If the arrow DOWN key is pressed,
@@ -239,13 +257,13 @@ class Tournamatch_Autocomplete {
         if (this.currentFocus >= x.length) this.currentFocus = 0;
         if (this.currentFocus < 0) this.currentFocus = (x.length - 1);
         /*add class "autocomplete-active":*/
-        x[this.currentFocus].classList.add("autocomplete-active");
+        x[this.currentFocus].classList.add("trn-auto-complete-active");
     }
 
     removeActive(x) {
         /*a function to remove the "active" class from all autocomplete items:*/
         for (let i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
+            x[i].classList.remove("trn-auto-complete-active");
         }
     }
 
@@ -253,7 +271,7 @@ class Tournamatch_Autocomplete {
         console.log("close all lists");
         /*close all autocomplete lists in the document,
          except the one passed as an argument:*/
-        let x = document.getElementsByClassName("autocomplete-items");
+        let x = document.getElementsByClassName("auto-complete-items");
         for (let i = 0; i < x.length; i++) {
             if (element !== x[i] && element !== this.nameInput) {
                 x[i].parentNode.removeChild(x[i]);

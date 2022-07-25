@@ -20,17 +20,17 @@ $games           = trn_get_games_with_competition_counts( isset( $_GET['platform
 $image_directory = trn_upload_url() . '/images';
 
 ?>
-<div class="row" id="games">
+<div class="trn-row" id="games">
 	<?php foreach ( $games as $game ) : ?>
-	<div class="col-lg-4 col-sm-6">
-		<div class="item-wrapper">
-			<div class="item-thumbnail">
+	<div class="trn-col-lg-4 trn-col-sm-6">
+		<div class="trn-item-wrapper">
+			<div class="trn-item-thumbnail">
 				<img src="<?php echo esc_html( $image_directory . '/games/' . $game->thumbnail ); ?>" alt="<?php echo esc_html( $game->name ); ?>">
 			</div>
-			<div class="item-info">
-				<span class="item-title"><?php echo esc_html( $game->name ); ?></span>
-				<span class="item-meta"><?php echo esc_html( $game->platform ); ?></span>
-				<span class="item-meta">
+			<div class="trn-item-info">
+				<span class="trn-item-title"><?php echo esc_html( $game->name ); ?></span>
+				<span class="trn-item-meta"><?php echo esc_html( $game->platform ); ?></span>
+				<span class="trn-item-meta">
 					<?php
 					echo sprintf(
 						wp_kses_post(
@@ -42,7 +42,7 @@ $image_directory = trn_upload_url() . '/images';
 					)
 					?>
 				</span>
-				<span class="item-meta">
+				<span class="trn-item-meta">
 					<?php
 					echo sprintf(
 						wp_kses_post(
@@ -55,7 +55,7 @@ $image_directory = trn_upload_url() . '/images';
 					?>
 				</span>
 			</div>
-			<div class="clearfix"></div>
+			<div class="trn-clearfix"></div>
 		</div>
 	</div>
 	<?php endforeach; ?>

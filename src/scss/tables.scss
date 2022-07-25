@@ -1,0 +1,28 @@
+.trn {
+  table#{&}-table,
+  &-table {
+    all: unset;
+    @include reset();
+    display: table;
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+
+    & th,
+    & td {
+      padding: 0.75rem;
+      vertical-align: top;
+      border: none;
+      border-top: 1px solid #dee2e6;
+    }
+
+    & thead th {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+    }
+  }
+
+  &-table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+}

@@ -1,30 +1,31 @@
-/* Auto complete items. */
-#trn .autocomplete {
-  /*the container must be positioned relative:*/
-  position: relative;
-  display: inline-block;
-}
-#trn .autocomplete-items {
-  position: absolute;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  z-index: 99;
-  /*position the autocomplete items to be the same width as the container:*/
-  top: 100%;
-  left: 0;
-  right: 0;
-}
-#trn .autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
-  background-color: #fff;
-}
-#trn .autocomplete-items div:hover {
-  /*when hovering an item:*/
-  background-color: #e9e9e9;
-}
-#trn .autocomplete-active {
-  /*when navigating through the items using the arrow keys:*/
-  background-color: DodgerBlue !important;
-  color: #ffffff;
+.trn {
+  &-auto-complete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+  }
+  &-auto-complete-items {
+    position: absolute;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    z-index: 99;
+    /*position the auto complete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+  }
+  &-auto-complete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+  }
+  &-auto-complete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9;
+  }
+  &-auto-complete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+  }
 }

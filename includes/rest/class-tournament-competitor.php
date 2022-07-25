@@ -112,8 +112,7 @@ class Tournament_Competitor extends Controller {
 			new One_Competitor_Per_Tournament( $request['tournament_id'], get_current_user_id() ),
 		);
 
-		$enforce_team_minimum = get_option( 'tournamatch_options' )['enforce_team_minimum'];
-		if ( ( 1 === (int) $enforce_team_minimum ) && ( 'teams' === $tournament->competitor_type ) ) {
+		if ( ( '1' === trn_get_option( 'enforce_team_minimum' ) ) && ( 'teams' === $tournament->competitor_type ) ) {
 			$rules[] = new Requires_Minimum_Members( $request['competitor_id'], $request['tournament_id'], 'tournament' );
 		}
 

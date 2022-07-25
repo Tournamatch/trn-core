@@ -45,25 +45,25 @@ import { trn } from './tournamatch.js';
             if ( null === modal ) {
                 let content = ``;
 
-                content += `<div class="modal fade" id="trn-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="trn-confirm-title" aria-hidden="true">`;
-                content += `  <div class="modal-dialog modal-dialog-centered" role="document">`;
-                content += `    <div class="modal-content">`;
-                content += `      <div class="modal-header">`;
-                content += `        <h5 class="modal-title" id="trn-confirm-title"></h5>`;
-                content += `        <button type="button" class="close" data-dismiss="modal" aria-label="Close">`;
+                content += `<div class="modal trn-modal fade" id="trn-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="trn-confirm-title" aria-hidden="true">`;
+                content += `  <div class="modal-dialog trn-modal-dialog trn-modal-dialog-centered" role="document">`;
+                content += `    <div class="trn-modal-content">`;
+                content += `      <div class="trn-modal-header">`;
+                content += `        <h5 class="trn-modal-title" id="trn-confirm-title"></h5>`;
+                content += `        <button type="button" class="trn-close" data-dismiss="modal" aria-label="Close">`;
                 content += `          <span aria-hidden="true">&times;</span>`;
                 content += `        </button>`;
                 content += `      </div>`;
-                content += `      <div class="modal-body" id="trn-confirm-message"></div>`;
-                content += `      <div class="modal-footer">`;
-                content += `        <button type="button" class="btn btn-primary" id="trn-confirm-action-yes">${trn_confirm_action_options.language.yes}</button>`;
-                content += `        <button type="button" class="btn btn-secondary" data-dismiss="modal">${trn_confirm_action_options.language.no}</button>`;
+                content += `      <div class="trn-modal-body" id="trn-confirm-message"></div>`;
+                content += `      <div class="trn-modal-footer">`;
+                content += `        <button type="button" class="trn-button" id="trn-confirm-action-yes">${trn_confirm_action_options.language.yes}</button>`;
+                content += `        <button type="button" class="trn-button trn-button-secondary" data-dismiss="modal">${trn_confirm_action_options.language.no}</button>`;
                 content += `      </div>`;
                 content += `    </div>`;
                 content += `  </div>`;
                 content += `</div>`;
 
-                document.getElementById('trn').insertAdjacentHTML('beforeend', content);
+                document.body.insertAdjacentHTML('beforeend', content);
             }
 
             Array.prototype.forEach.call(links, function (link) {

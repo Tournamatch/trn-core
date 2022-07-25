@@ -66,7 +66,7 @@ class Challenge_Shortcodes {
 		wp_localize_script( 'trn_accept_challenge_button', 'trn_accept_challenge_button_options', $options );
 		wp_enqueue_script( 'trn_accept_challenge_button' );
 
-		return '<a href="#" id="trn-accept-test" class="btn btn-primary trn-accept-challenge-button mx-1" data-challenge-id="' . intval( $atts['id'] ) . '">' . __( 'Accept', 'tournamatch' ) . '</a>';
+		return '<a href="#" id="trn-accept-test" class="trn-button trn-accept-challenge-button trn-mx-1" data-challenge-id="' . intval( $atts['id'] ) . '">' . __( 'Accept', 'tournamatch' ) . '</a>';
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Challenge_Shortcodes {
 		wp_localize_script( 'trn_decline_challenge_button', 'trn_decline_challenge_button_options', $options );
 		wp_enqueue_script( 'trn_decline_challenge_button' );
 
-		return '<a href="#" class="btn btn-primary trn-decline-challenge-button mx-1" data-challenge-id="' . intval( $atts['id'] ) . '">' . __( 'Decline', 'tournamatch' ) . '</a>';
+		return '<a href="#" class="trn-button trn-decline-challenge-button trn-mx-1" data-challenge-id="' . intval( $atts['id'] ) . '">' . __( 'Decline', 'tournamatch' ) . '</a>';
 	}
 
 	/**
@@ -138,7 +138,7 @@ class Challenge_Shortcodes {
 
 		return '<a 
 		  href="#" 
-		  class="btn btn-danger trn-delete-challenge-button trn-confirm-action-link mx-1" 
+		  class="trn-button trn-button-danger trn-delete-challenge-button trn-confirm-action-link trn-mx-1" 
 		  data-challenge-id="' . intval( $atts['id'] ) . '" 
 		  data-confirm-title="' . esc_html__( 'Delete Challenge', 'tournamatch' ) . '" 
 		  data-confirm-message="' . esc_html__( 'Are you sure you want to delete this challenge?', 'tournamatch' ) . '"

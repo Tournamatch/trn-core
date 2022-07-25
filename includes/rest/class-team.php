@@ -259,8 +259,7 @@ class Team extends Controller {
 			new Unique_Team_Name( $team_name ),
 		);
 
-		$options = get_option( 'tournamatch_options' );
-		if ( is_array( $options ) && isset( $options['one_team_per_player'] ) && ( '1' === $options['one_team_per_player'] ) ) {
+		if ( '1' === trn_get_option( 'one_team_per_player' ) ) {
 			$rules[] = new One_Team_Per_User( $user_id );
 		}
 
@@ -322,18 +321,6 @@ class Team extends Controller {
 			]
 		);
 
-		$data   = array();
-		$fields = array( 'tag', 'name', 'flag' );
-
-		foreach ( $fields as $field ) {
-			if ( $request->has_param( $field ) ) {
-				if ( (string) $team->$field !== $request->get_param( $field ) ) {
-					$data[ $field ] = $request->get_param( $field );
-					$team->$field   = $request->get_param( $field );
-				}
-			}
-		}
-
 		$files = $request->get_file_params();
 		if ( ! empty( $files ) ) {
 			foreach ( $files as $key => $file ) {
@@ -354,18 +341,26 @@ class Team extends Controller {
 							}
 						}
 
-						$data['avatar'] = $new_pic;
-						$team->avatar   = $new_pic;
+						$team->avatar      = $new_pic;
+						$request['avatar'] = $new_pic;
 					}
 				}
 			}
 		}
 
-		if ( 0 < count( $data ) ) {
-			$wpdb->update( $wpdb->prefix . 'trn_teams', $data, array( 'team_id' => $team_id ) );
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
+
+		if ( 0 < count( $prepared_post ) ) {
+			$wpdb->update( $wpdb->prefix . 'trn_teams', $prepared_post, array( 'team_id' => $team_id ) );
 		}
 
-		return rest_ensure_response( $team );
+		$team = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_teams` WHERE `team_id` = %d", $team_id ) );
+
+		$request->set_param( 'context', 'edit' );
+
+		$response = $this->prepare_item_for_response( $team, $request );
+
+		return rest_ensure_response( $response );
 	}
 
 	/**
@@ -433,6 +428,7 @@ class Team extends Controller {
 				'type'        => 'object',
 				'trn-subtype' => 'datetime',
 				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 				'properties'  => array(
 					'raw'      => array(
 						'description' => esc_html__( 'Joined Date for the team, as it exists in the database.', 'tournamatch' ),
@@ -457,16 +453,19 @@ class Team extends Controller {
 				'description' => esc_html__( 'The number of win match for a team.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 			),
 			'losses'      => array(
 				'description' => esc_html__( 'The number of loss match for team.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 			),
 			'draws'       => array(
 				'description' => esc_html__( 'The number of draws for a team.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 			),
 			'members'     => array(
 				'description' => esc_html__( 'The number of members of a team.', 'tournamatch' ),
@@ -486,26 +485,6 @@ class Team extends Controller {
 				'readonly'    => true,
 			),
 		);
-
-		$icon_fields = apply_filters( 'trn_team_icon_fields', array() );
-		foreach ( $icon_fields as $field_id => $field_data ) {
-			$properties[ $field_id ] = array(
-				/* translators: The name of the field. */
-				'description' => sprintf( esc_html__( 'The %s field for the team.', 'tournamatch' ), $field_id ),
-				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
-			);
-		}
-
-		$team_fields = apply_filters( 'trn_team_fields', array() );
-		foreach ( $team_fields as $field_id => $field_data ) {
-			$properties[ $field_id ] = array(
-				/* translators: The name of the field. */
-				'description' => sprintf( esc_html__( 'The %s field for the team.', 'tournamatch' ), $field_id ),
-				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
-			);
-		}
 
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',

@@ -1,0 +1,130 @@
+label.trn-label,
+.trn-label {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+input.trn-form-control,
+select.trn-form-control,
+textarea.trn-form-control {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+input.trn-form-control {
+  overflow: visible;
+}
+
+select.trn-form-control {
+  text-transform: none;
+}
+
+select.trn-custom-select {
+  display: inline-block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
+  line-height: 1.5;
+  color: #495057;
+  vertical-align: middle;
+  background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right 0.75rem center;
+  background-size: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &-sm {
+    height: calc(1.8125rem + 2px);
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    font-size: 75%;
+  }
+}
+
+textarea.trn-form-control {
+  height: auto;
+}
+
+small.trn-form-text {
+  all: unset;
+  @include reset();
+  @include small();
+  display: block;
+  margin-top: 0.25rem;
+}
+
+// &-form-control:not([type=submit]):not([type=checkbox])
+input.trn,
+.trn {
+  &-form-control {
+    display: block;
+    width: 100%;
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &-sm {
+      height: calc(1.8125rem + 2px);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      border-radius: 0.2rem;
+    }
+
+    &:focus,
+    &[type="text"]:focus,&[type="email"]:focus, &[type="phno"]:focus, &[type="password"]:focus, &[type="search"]:focus,
+    &[type="tel"]:focus, &[type="submit"]:focus {
+      color: #495057;
+      background-color: #fff;
+      border-color: #80bdff;
+      outline: 0;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  }
+
+  &-form-control-file {
+    display: block;
+    width: 100%;
+  }
+
+  &-form-control-static {
+    margin-top: 0;
+  }
+
+  &-form-group {
+    margin-bottom: 1rem;
+  }
+}
+
+.trn {
+  &-was-validated &-form-control:valid {
+    border-color: $success;
+  }
+
+  &-was-validated &-form-control:invalid {
+    border-color: $danger;
+  }
+
+  &-invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: $danger;
+  }
+
+  &-was-validated &-form-control:invalid ~ &-invalid-feedback {
+    display: block;
+  }
+}

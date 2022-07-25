@@ -36,55 +36,55 @@ get_header();
 trn_get_header();
 
 ?>
-	<h1 class="mb-4"><?php esc_html_e( 'Edit Competitor', 'tournamatch' ); ?></h1>
+	<h1 class="trn-mb-4"><?php esc_html_e( 'Edit Competitor', 'tournamatch' ); ?></h1>
 	<div id="trn-update-response"></div>
 	<form method="post" id="trn-edit-competitor-form"
 			data-ladder-competitor-id="<?php echo intval( $ladder_entry_id ); ?>">
-		<div class="form-group row">
-			<label class="col-sm-3 col-form-label"><?php esc_html_e( 'Competitor', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-2">
-				<p class="form-control-static"><?php echo esc_html( $competitor_name ); ?></p>
+		<div class="trn-form-group trn-row">
+			<label class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Competitor', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-2">
+				<p class="trn-form-control-static"><?php echo esc_html( $competitor_name ); ?></p>
 			</div>
 		</div>
-		<div class="form-group row">
-			<label for="points" class="col-sm-3 col-form-label"><?php esc_html_e( 'Points', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="points" name="points"
+		<div class="trn-form-group trn-row">
+			<label for="points" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Points', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-2">
+				<input type="text" class="trn-form-control" id="points" name="points"
 						value="<?php echo intval( $points ); ?>"/>
 			</div>
 		</div>
-		<div class="form-group row">
-			<label for="wins" class="col-sm-3 col-form-label"><?php esc_html_e( 'Wins', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="wins" name="wins"
+		<div class="trn-form-group trn-row">
+			<label for="wins" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Wins', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-2">
+				<input type="text" class="trn-form-control" id="wins" name="wins"
 						value="<?php echo intval( $wins ); ?>"/>
 			</div>
 		</div>
-		<div class="form-group row">
-			<label for="losses" class="col-sm-3 col-form-label"><?php esc_html_e( 'Losses', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="losses" name="losses"
+		<div class="trn-form-group trn-row">
+			<label for="losses" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Losses', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-2">
+				<input type="text" class="trn-form-control" id="losses" name="losses"
 						value="<?php echo intval( $losses ); ?>"/>
 			</div>
 		</div>
-		<div class="form-group row">
-			<label for="draws" class="col-sm-3 col-form-label"><?php esc_html_e( 'Draws', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="draws" name="draws"
+		<div class="trn-form-group trn-row">
+			<label for="draws" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Draws', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-2">
+				<input type="text" class="trn-form-control" id="draws" name="draws"
 						value="<?php echo intval( $draws ); ?>"/>
 			</div>
 		</div>
-		<div class="form-group row">
-			<label for="streak" class="col-sm-3 col-form-label"><?php esc_html_e( 'Streak', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-2">
-				<input type="text" class="form-control" id="streak" name="streak"
+		<div class="trn-form-group trn-row">
+			<label for="streak" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Streak', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-2">
+				<input type="text" class="trn-form-control" id="streak" name="streak"
 						value="<?php echo esc_html( $streak ); ?>"/>
 			</div>
 		</div>
-		<div class="form-group row">
-			<div class="col-sm-6">
+		<div class="trn-form-group trn-row">
+			<div class="trn-offset-3 trn-col-sm-6">
 				<input type="submit" value="<?php esc_html_e( 'Save', 'tournamatch' ); ?>"
-						class="btn btn-primary"/>
+						class="trn-button"/>
 			</div>
 		</div>
 	</form>

@@ -75,7 +75,7 @@ import { trn } from './tournamatch.js';
             }
         );
 
-        if ('1' === options.uses_draws) {
+        if ( options.uses_draws ) {
             columnDefs.push(
                 {
                     targets: target++,

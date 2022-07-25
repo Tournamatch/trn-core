@@ -23,48 +23,48 @@ get_header();
 trn_get_header();
 
 ?>
-<h1 class="mb-4"><?php esc_html_e( 'Dashboard', 'tournamatch' ); ?></h1>
-<div class="row mb-3">
-	<div class="col-sm-12 pull-right">
-		<a class="pull-right btn btn-primary" href="<?php trn_esc_route_e( 'report.page' ); ?>"><?php esc_html_e( 'Results', 'tournamatch' ); ?></a>
-		<a class="pull-right btn btn-primary mr-1" href="<?php trn_esc_route_e( 'teams.single.create' ); ?>"><?php esc_html_e( 'Create Team', 'tournamatch' ); ?></a>
-		<div class="pull-right btn-group mr-1">
-			<a type="button" class="btn btn-primary" href="<?php trn_esc_route_e( 'players.single', array( 'id' => $user_id ) ); ?>"><?php esc_html_e( 'My Profile', 'tournamatch' ); ?></a>
-			<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<h1 class="trn-mb-4"><?php esc_html_e( 'Dashboard', 'tournamatch' ); ?></h1>
+<div class="trn-row trn-mb-3">
+	<div class="trn-col-sm-12 trn-pull-right">
+		<a class="trn-pull-right trn-button" href="<?php trn_esc_route_e( 'report.page' ); ?>"><?php esc_html_e( 'Results', 'tournamatch' ); ?></a>
+		<a class="trn-pull-right trn-button trn-mr-1" href="<?php trn_esc_route_e( 'teams.single.create' ); ?>"><?php esc_html_e( 'Create Team', 'tournamatch' ); ?></a>
+		<div class="trn-pull-right trn-button-group trn-mr-1">
+			<a type="button" class="trn-button" href="<?php trn_esc_route_e( 'players.single', array( 'id' => $user_id ) ); ?>"><?php esc_html_e( 'My Profile', 'tournamatch' ); ?></a>
+			<button type="button" class="trn-button trn-dropdown-toggle trn-dropdown-toggle-split" aria-haspopup="true" aria-expanded="false">
 				<span class="sr-only"><?php esc_html_e( 'Toggle Dropdown', 'tournamatch' ); ?></span>
 			</button>
-			<div class="dropdown-menu dropdown-menu-right">
-				<a class="dropdown-item" href="<?php trn_esc_route_e( 'players.single.edit', array( 'id' => $user_id ) ); ?>"><?php esc_html_e( 'Edit My Profile', 'tournamatch' ); ?></a>
+			<div class="trn-dropdown-menu dropdown-menu-right">
+				<a class="trn-dropdown-item" href="<?php trn_esc_route_e( 'players.single.edit', array( 'id' => $user_id ) ); ?>"><?php esc_html_e( 'Edit My Profile', 'tournamatch' ); ?></a>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="row mb-3">
-	<div class="col-sm-6">
-		<div class="card">
-			<div class="card-header text-center">
+<div class="trn-row trn-mb-3">
+	<div class="trn-col-sm-6">
+		<div class="trn-card">
+			<div class="trn-card-header trn-text-center">
 				<?php esc_html_e( 'Team Invitations Received', 'tournamatch' ); ?>
 			</div>
-			<div class="card-body">
+			<div class="trn-card-body">
 				<?php echo do_shortcode( '[trn-my-team-invitations-list]' ); ?>
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6">
-		<div class="card">
-			<div class="card-header text-center">
+	<div class="trn-col-sm-6">
+		<div class="trn-card">
+			<div class="trn-card-header trn-text-center">
 				<?php esc_html_e( 'Team Requests Sent', 'tournamatch' ); ?>
 			</div>
-			<div class="card-body">
+			<div class="trn-card-body">
 				<?php echo do_shortcode( '[trn-my-team-requests-list]' ); ?>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="row mb-3">
-	<div class="col-sm-12">
-		<div class="card">
-			<div class="card-header text-center">
+<div class="trn-row trn-mb-3">
+	<div class="trn-col-sm-12">
+		<div class="trn-card">
+			<div class="trn-card-header trn-text-center">
 				<?php esc_html_e( 'My Challenges', 'tournamatch' ); ?>
 			</div>
 			<?php
@@ -72,11 +72,11 @@ trn_get_header();
 
 			if ( 0 === count( $challenges ) ) :
 				?>
-				<div class="card-body">
-					<p class="text-center"><?php esc_html_e( 'No challenges to display.', 'tournamatch' ); ?></p>
+				<div class="trn-card-body">
+					<p class="trn-text-center"><?php esc_html_e( 'No challenges to display.', 'tournamatch' ); ?></p>
 				</div>
 			<?php else : ?>
-				<table class="card-body table table-striped trn-challenges-table" id="trn-my-challenges-table">
+				<table class="trn-card-body trn-table trn-table-striped trn-challenges-table" id="trn-my-challenges-table">
 					<thead>
 					<tr>
 						<th class="trn-challenges-table-ladder"><?php esc_html_e( 'Ladder', 'tournamatch' ); ?></th>
@@ -107,8 +107,8 @@ trn_get_header();
 							<td class="trn-challenges-table-match-time"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $challenge->match_time ) ) ) ); ?></td>
 							<td class="trn-challenges-table-status"><?php echo esc_html( ucwords( $challenge->accepted_state ) ); ?></td>
 							<td class="trn-challenges-table-action">
-								<div class="pull-right">
-									<a class="btn btn-sm btn-primary" href="<?php trn_esc_route_e( 'challenges.single', array( 'id' => $challenge->challenge_id ) ); ?>"><i class="fa fa-info"></i></a>
+								<div class="trn-pull-right">
+									<a class="trn-button trn-button-sm" href="<?php trn_esc_route_e( 'challenges.single', array( 'id' => $challenge->challenge_id ) ); ?>"><i class="fa fa-info"></i></a>
 								</div>
 							</td>
 						</tr>
@@ -119,10 +119,10 @@ trn_get_header();
 		</div>
 	</div>
 </div>
-<div class="row">
-	<div class="col-sm-12">
-		<div class="card">
-			<div class="card-header text-center">
+<div class="trn-row">
+	<div class="trn-col-sm-12">
+		<div class="trn-card">
+			<div class="trn-card-header trn-text-center">
 				<?php esc_html_e( 'My Competitions', 'tournamatch' ); ?>
 			</div>
 			<?php
@@ -130,11 +130,11 @@ trn_get_header();
 
 			if ( 0 === count( $competitions ) ) :
 				?>
-				<div class="card-body">
-					<p class="text-center"><?php esc_html_e( 'You are not currently competing in any events.', 'tournamatch' ); ?></p>
+				<div class="trn-card-body">
+					<p class="trn-text-center"><?php esc_html_e( 'You are not currently competing in any events.', 'tournamatch' ); ?></p>
 				</div>
 			<?php else : ?>
-				<table class="card-body table table-striped trn-my-competitions-table" id="trn-my-competitions-table">
+				<table class="trn-card-body trn-table trn-table-striped trn-my-competitions-table" id="trn-my-competitions-table">
 					<thead>
 					<tr>
 						<th class="trn-my-competitions-table-event"><?php esc_html_e( 'Event', 'tournamatch' ); ?></th>
@@ -154,18 +154,18 @@ trn_get_header();
 							<td class="trn-my-competitions-table-game"><?php echo esc_html( $competition->game_name ); ?></td>
 							<td class="trn-my-competitions-table-action">
 								<?php if ( 'ladder' === $competition->competition_type ) : ?>
-									<div class="pull-right">
-										<a class="btn btn-sm btn-primary" href="<?php trn_esc_route_e( 'matches.single.create', array( 'ladder_id' => $competition->id ) ); ?>"><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>
-										<a class="btn btn-sm btn-primary" href="<?php trn_esc_route_e( 'ladders.single.standings', array( 'id' => $competition->id ) ); ?>"><?php esc_html_e( 'Standings', 'tournamatch' ); ?></a>
+									<div class="trn-pull-right">
+										<a class="trn-button trn-button-sm" href="<?php trn_esc_route_e( 'matches.single.create', array( 'ladder_id' => $competition->id ) ); ?>"><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>
+										<a class="trn-button trn-button-sm" href="<?php trn_esc_route_e( 'ladders.single.standings', array( 'id' => $competition->id ) ); ?>"><?php esc_html_e( 'Standings', 'tournamatch' ); ?></a>
 									</div>
 								<?php else : ?>
 									<?php if ( in_array( $competition->status, array( 'in_progress', 'complete' ), true ) ) : ?>
-										<div class="pull-right">
-											<a class="btn btn-sm btn-primary" href="<?php trn_esc_route_e( 'tournaments.single.brackets', array( 'id' => $competition->id ) ); ?>"><?php esc_html_e( 'Brackets', 'tournamatch' ); ?></a>
+										<div class="trn-pull-right">
+											<a class="trn-button trn-button-sm" href="<?php trn_esc_route_e( 'tournaments.single.brackets', array( 'id' => $competition->id ) ); ?>"><?php esc_html_e( 'Brackets', 'tournamatch' ); ?></a>
 										</div>
 									<?php else : ?>
-										<div class="pull-right">
-											<a class="btn btn-sm btn-primary" href="<?php trn_esc_route_e( 'tournaments.single.rules', array( 'id' => $competition->id ) ); ?>"><?php esc_html_e( 'Rules', 'tournamatch' ); ?></a>
+										<div class="trn-pull-right">
+											<a class="trn-button trn-button-sm" href="<?php trn_esc_route_e( 'tournaments.single.rules', array( 'id' => $competition->id ) ); ?>"><?php esc_html_e( 'Rules', 'tournamatch' ); ?></a>
 										</div>
 									<?php endif; ?>
 								<?php endif; ?>

@@ -270,8 +270,7 @@ class Admin {
 
 		check_admin_referer( 'tournamatch-save-settings' );
 
-		$settings = trn_get_default_options();
-		$settings = array_merge( $settings, get_option( 'tournamatch_options' ) );
+		$settings = trn_get_options();
 
 		$options = $settings;
 		foreach ( $options as $key => $value ) {
@@ -295,8 +294,7 @@ class Admin {
 	 */
 	public function settings() {
 
-		$settings = trn_get_default_options();
-		$settings = array_merge( $settings, get_option( 'tournamatch_options' ) );
+		$settings = trn_get_options();
 
 		$form_values = array();
 		$form_action = trn_route( 'admin.tournamatch.save-settings', array( '_wpnonce' => wp_create_nonce( 'tournamatch-save-settings' ) ) );

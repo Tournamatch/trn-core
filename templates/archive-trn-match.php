@@ -16,7 +16,7 @@ get_header();
 trn_get_header();
 
 ?>
-	<h1 class="mb-4"><?php esc_html_e( 'Matches', 'tournamatch' ); ?></h1>
+	<h1 class="trn-mb-4"><?php esc_html_e( 'Matches', 'tournamatch' ); ?></h1>
 <?php
 
 echo do_shortcode( '[trn-matches-list-table]' );

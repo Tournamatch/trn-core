@@ -23,9 +23,9 @@ import { trn } from './tournamatch.js';
             const anchor = filterItem.querySelector('li a');
 
             Array.prototype.forEach.call(anchors, (anchor) => {
-                anchor.classList.remove('tournamatch-nav-active')
+                anchor.classList.remove('trn-nav-active')
             });
-            anchor.classList.add('tournamatch-nav-active');
+            anchor.classList.add('trn-nav-active');
 
             Array.prototype.forEach.call(tournaments, (tournament) => {
                 if ('all' === filter) {

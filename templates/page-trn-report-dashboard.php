@@ -25,13 +25,13 @@ get_header();
 trn_get_header();
 
 ?>
-	<h1 class="mb-4"><?php esc_html_e( 'Results Dashboard', 'tournamatch' ); ?></h1>
+	<h1 class="trn-mb-4"><?php esc_html_e( 'Results Dashboard', 'tournamatch' ); ?></h1>
 	<section>
-		<h4 class="text-center"><?php esc_html_e( 'Confirm Results', 'tournamatch' ); ?></h4>
+		<h4 class="trn-text-center"><?php esc_html_e( 'Confirm Results', 'tournamatch' ); ?></h4>
 		<div id="trn-dispute-match-response">
 			<?php //phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 			<?php if ( isset( $_GET['dispute_match_id'] ) ) : ?>
-				<div class="alert alert-success"><strong><?php esc_html_e( 'Success', 'tournamatch' ); ?>
+				<div class="trn-alert trn-alert-success"><strong><?php esc_html_e( 'Success', 'tournamatch' ); ?>
 						:</strong> <?php esc_html_e( 'The match dispute has been logged and an admin notified.', 'tournamatch' ); ?>
 				</div>
 			<?php endif; ?>
@@ -39,14 +39,14 @@ trn_get_header();
 		<?php //phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 		<?php if ( isset( $_GET['confirmed_match'] ) ) : ?>
 			<div id="trn-confirm-match-response">
-				<div class="alert alert-success"><strong><?php esc_html_e( 'Success', 'tournamatch' ); ?>
+				<div class="trn-alert trn-alert-success"><strong><?php esc_html_e( 'Success', 'tournamatch' ); ?>
 						:</strong> <?php esc_html_e( 'The match has been confirmed.', 'tournamatch' ); ?></div>
 			</div>
 		<?php endif; ?>
 		<?php if ( 0 < count( $can_confirm_matches ) ) : ?>
 			<?php /* translators: An integer number of matches. */ ?>
 			<p><?php printf( esc_html( _n( 'You have %d match waiting for your confirmation.', 'You have %d matches waiting for your confirmation.', count( $can_confirm_matches ), 'tournamatch' ) ), count( $can_confirm_matches ) ); ?></p>
-			<table class="table table-striped trn-confirm-results-table" id="confirm-results-list">
+			<table class="trn-table trn-table-striped trn-confirm-results-table" id="confirm-results-list">
 				<tr>
 					<th class="trn-confirm-results-table-event"><?php esc_html_e( 'Event', 'tournamatch' ); ?></th>
 					<th class="trn-confirm-results-table-name"><?php esc_html_e( 'Name', 'tournamatch' ); ?></th>
@@ -94,7 +94,7 @@ trn_get_header();
 							?>
 						</td>
 						<td class="action-link-cell trn-confirm-results-table-action">
-							<a class="btn btn-sm btn-success" href="<?php trn_esc_route_e( 'matches.single.confirm', array( 'id' => $match->match_id ) ); ?>">
+							<a class="trn-button trn-button-sm trn-button-success" href="<?php trn_esc_route_e( 'matches.single.confirm', array( 'id' => $match->match_id ) ); ?>">
 								<?php esc_html_e( 'Confirm', 'tournamatch' ); ?>
 							</a>
 							&nbsp;
@@ -104,17 +104,17 @@ trn_get_header();
 				<?php endforeach; ?>
 			</table>
 		<?php else : ?>
-			<p class='text-center'>
+			<p class='trn-text-center'>
 				<?php esc_html_e( 'There are no results waiting for your confirmation.', 'tournamatch' ); ?>
 			</p>
 		<?php endif; ?>
 	</section>
 	<section>
-	<h4 class='text-center'><?php esc_html_e( 'Your Reported Results', 'tournamatch' ); ?></h4>
+	<h4 class='trn-text-center'><?php esc_html_e( 'Your Reported Results', 'tournamatch' ); ?></h4>
 	<?php if ( 0 < count( $reported_matches ) ) : ?>
 		<?php /* translators: An integer number of matches. */ ?>
 		<p><?php printf( esc_html( _n( 'You are waiting on %d match to be confirmed.', 'You are waiting on %d matches to be confirmed.', count( $reported_matches ), 'tournamatch' ) ), count( $reported_matches ) ); ?></p>
-		<table class="table table-striped trn-report-results-table" id="reported-results-list">
+		<table class="trn-table trn-table-striped trn-report-results-table" id="reported-results-list">
 			<tr>
 				<th class="trn-report-results-table-event"><?php esc_html_e( 'Event', 'tournamatch' ); ?></th>
 				<th class="trn-report-results-table-name"><?php esc_html_e( 'Name', 'tournamatch' ); ?></th>
@@ -162,7 +162,7 @@ trn_get_header();
 						?>
 					</td>
 					<td class="action-link-cell trn-report-results-table-action">
-						<a class="btn btn-sm btn-danger trn-confirm-action-link trn-delete-match-action"
+						<a class="trn-button trn-button-sm trn-button-danger trn-confirm-action-link trn-delete-match-action"
 								href="#"
 								data-match-id="<?php echo intval( $match->match_id ); ?>"
 								data-confirm-title="<?php esc_html_e( 'Delete Match', 'tournamatch' ); ?>"
@@ -182,15 +182,15 @@ trn_get_header();
 			<?php endforeach; ?>
 		</table>
 	<?php else : ?>
-		<p class='text-center'>
+		<p class='trn-text-center'>
 			<?php esc_html_e( 'There are no results you\'re waiting on for confirmation.', 'tournamatch' ); ?>
 		</p>
 	<?php endif; ?>
 	</section>
 	<section>
-		<div class="row">
-			<div class="col-sm-12">
-				<h4 class="text-center"><?php esc_html_e( 'Your Scheduled Matches', 'tournamatch' ); ?></h4>
+		<div class="trn-row">
+			<div class="trn-col-sm-12">
+				<h4 class="trn-text-center"><?php esc_html_e( 'Your Scheduled Matches', 'tournamatch' ); ?></h4>
 				<?php
 				$scheduled_matches = trn_get_scheduled_matches( $user_id );
 				?>
@@ -200,31 +200,31 @@ trn_get_header();
 			</div>
 		</div>
 		<br>
-		<div class="row">
+		<div class="trn-row">
 			<?php if ( trn_get_option( 'open_play_enabled' ) ) : ?>
-				<div class="col-md-6">
-					<h4 class="text-center"><?php esc_html__( 'Report Ladder Results', 'tournamatch' ); ?></h4>
+				<div class="trn-col-md-6">
+					<h4 class="trn-text-center"><?php esc_html__( 'Report Ladder Results', 'tournamatch' ); ?></h4>
 					<?php
 					$ladders = trn_get_user_open_play_ladders( $user_id );
 					if ( 0 < count( $ladders ) ) {
 						?>
-						<form id="report-ladder-form" class="form-inline text-center"
+						<form id="report-ladder-form" class="form-inline trn-text-center"
 								action="<?php trn_esc_route_e( 'matches.single.create' ); ?>" method="post">
-							<div class="form-group">
+							<div class="trn-form-group">
 								<label for="ladder_id"
 										class="control-label"><?php esc_html_e( 'Select Ladder', 'tournamatch' ); ?></label>
-								<select id="ladder_id" class="form-control mx-sm-3" name='ladder_id'>
+								<select id="ladder_id" class="trn-form-control mx-sm-3" name='ladder_id'>
 									<?php foreach ( $ladders as $ladder ) : ?>
 										<option value="<?php echo intval( $ladder->ladder_id ); ?>"><?php echo esc_html( $ladder->name ); ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
-							<button class="btn btn-sm btn-primary" type='submit'
+							<button class="trn-button trn-button-sm" type='submit'
 									id="report-ladder-button"><?php esc_html_e( 'Report', 'tournamatch' ); ?></button>
 						</form>
 						<?php
 					} else {
-						echo '<p class="text-center">' . esc_html__( 'You are not participating in any active ladders.', 'tournamatch' ) . '</p>';
+						echo '<p class="trn-text-center">' . esc_html__( 'You are not participating in any active ladders.', 'tournamatch' ) . '</p>';
 					}
 					?>
 				</div>

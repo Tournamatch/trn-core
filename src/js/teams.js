@@ -31,7 +31,7 @@ import { trn } from './tournamatch.js';
                         window.location.reload();
                     } else {
                         let response = JSON.parse(xhr.response);
-                        document.getElementById('trn-delete-team-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                        document.getElementById('trn-delete-team-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                     }
                 };
 
@@ -71,33 +71,12 @@ import { trn } from './tournamatch.js';
                     return row.members;
                 },
             },
-            {
-                targets: 3,
-                name: 'contacts',
-                className: 'trn-teams-table-contact',
-                render: function (data, type, row) {
-                    let links = [];
-
-                    for (const property in options.social_links) {
-                        if ( row[property] && row[property].length > 0 ) {
-                            links.push(options.social_links[property].format(row[property]));
-                        }
-                    }
-
-                    if (links.length > 0) {
-                        return links.join(' ');
-                    } else {
-                        return ``;
-                    }
-                },
-                orderable: false,
-            },
         ];
 
         if (options.user_capability) {
             columnDefs.push(
                 {
-                    targets: 4,
+                    targets: 3,
                     name: 'admin',
                     render: function(data, type, row) {
                         const message = options.language.delete_confirm.format(row.name);

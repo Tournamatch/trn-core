@@ -29,7 +29,7 @@ import { trn } from './tournamatch.js';
                         window.location.reload();
                     } else {
                         let response = JSON.parse(xhr.response);
-                        document.getElementById('trn-promote-competitor-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                        document.getElementById('trn-promote-competitor-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                     }
                 };
 
@@ -54,7 +54,7 @@ import { trn } from './tournamatch.js';
                         window.location.reload();
                     } else {
                         let response = JSON.parse(xhr.response);
-                        document.getElementById('trn-remove-competitor-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                        document.getElementById('trn-remove-competitor-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                     }
                 };
 
@@ -197,13 +197,13 @@ import { trn } from './tournamatch.js';
                 render: function (data, type, row) {
                     let idleClass;
                     if (7 >= row.days_idle) {
-                        idleClass = `ladder-active-last-7`;
+                        idleClass = `trn-ladder-active-last-7`;
                     } else if (14 >= row.days_idle) {
-                        idleClass = `ladder-active-last-14`;
+                        idleClass = `trn-ladder-active-last-14`;
                     } else if (21 >= row.days_idle) {
-                        idleClass = `ladder-active-last-21`;
+                        idleClass = `trn-ladder-active-last-21`;
                     } else {
-                        idleClass = `ladder-inactive`;
+                        idleClass = `trn-ladder-inactive`;
                     }
                     return `<span class="${idleClass}">${row.days_idle}</span>`;
                 },

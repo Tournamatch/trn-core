@@ -38,42 +38,42 @@ get_header();
 trn_get_header();
 
 ?>
-	<h1 class="mb-4"><?php esc_html_e( 'Select New Competitor', 'tournamatch' ); ?></h1>
+	<h1 class="trn-mb-4"><?php esc_html_e( 'Select New Competitor', 'tournamatch' ); ?></h1>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
-		<div class="form-group row">
-			<label class="col-sm-4 col-lg-3 control-label"><?php esc_html_e( 'Tournament', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-6 col-lg-4">
-				<p class="form-control-static"><?php echo esc_html( $tournament->name ); ?></p>
+		<div class="trn-form-group trn-row">
+			<label class="trn-col-sm-4 trn-col-lg-3"><?php esc_html_e( 'Tournament', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-6 trn-col-lg-4">
+				<p class="trn-form-control-static"><?php echo esc_html( $tournament->name ); ?></p>
 			</div>
 		</div>
-		<div class="form-group row">
-			<label class="col-sm-4 col-lg-3 control-label"><?php esc_html_e( 'Opponent', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-6 col-lg-4">
+		<div class="trn-form-group trn-row">
+			<label class="trn-col-sm-4 trn-col-lg-3"><?php esc_html_e( 'Opponent', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-6 trn-col-lg-4">
 				<?php if ( isset( $opponent ) ) : ?>
-					<p class="form-control-static"><?php echo esc_html( $opponent->name ); ?> </p>
+					<p class="trn-form-control-static"><?php echo esc_html( $opponent->name ); ?> </p>
 				<?php else : ?>
-					<p class="form-control-static"><?php esc_html_e( 'Undecided', 'tournamatch' ); ?> </p>
+					<p class="trn-form-control-static"><?php esc_html_e( 'Undecided', 'tournamatch' ); ?> </p>
 				<?php endif; ?>
 			</div>
 		</div>
-		<div class="form-group row">
+		<div class="trn-form-group trn-row">
 			<label for="new_competitor_id"
-					class="col-sm-4 col-lg-3 control-label"><?php esc_html_e( 'Competitor', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-4">
-				<select id="new_competitor_id" name="new_competitor_id" class="form-control">
+					class="trn-col-sm-4 trn-col-lg-3"><?php esc_html_e( 'Competitor', 'tournamatch' ); ?>:</label>
+			<div class="trn-col-sm-4">
+				<select id="new_competitor_id" name="new_competitor_id" class="trn-form-control">
 					<?php foreach ( $competitors as $competitor ) : ?>
 						<option value="<?php echo intval( $competitor->competitor_id ); ?>" <?php echo ( intval( $competitor->competitor_id ) === $competitor_id ) ? 'selected' : ''; ?>><?php echo esc_html( $competitor->competitor_name ); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
-		<div class="form-group row">
-			<div class="col-sm-offset-4 col-lg-offset-3 col-sm-6">
+		<div class="trn-form-group trn-row">
+			<div class="trn-col-sm-offset-4 trn-col-lg-offset-3 trn-col-sm-6">
 				<?php wp_nonce_field( 'tournamatch-replace-tournament-competitor' ); ?>
 				<input type="hidden" name="match_id" value="<?php echo intval( $match_id ); ?>">
 				<input type="hidden" name="competitor_id" value="<?php echo intval( $competitor_id ); ?>">
 				<input type="hidden" name="action" value="trn-replace-tournament-competitor">
-				<input type="submit" class="btn btn-default" value="Update">
+				<input type="submit" class="trn-button" value="Update">
 			</div>
 		</div>
 	</form>

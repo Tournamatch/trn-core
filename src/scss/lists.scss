@@ -1,0 +1,29 @@
+.trn {
+  &-dl {
+    all: unset;
+    @include reset();
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  &-dt {
+    all: unset;
+    @include reset();
+    font-weight: 700;
+    display: block;
+  }
+  &-dd {
+    all: unset;
+    @include reset();
+    margin-bottom: 0.5rem;
+    margin-left: 0;
+    display: block;
+  }
+}
+
+ul.trn-list-unstyled li, ul.trn-list-inline li {
+  list-style: none;
+}
+
+li.trn-list-inline-item {
+  display: inline-block;
+}

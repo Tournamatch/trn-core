@@ -72,21 +72,21 @@ import { trn } from './tournamatch.js';
                     let requests = JSON.parse(xhr.response);
 
                     if ( requests !== null && requests.length > 0 ) {
-                        content += `<ul class="list-unstyled" id="trn-my-team-requests-list">`;
+                        content += `<ul class="trn-list-unstyled" id="trn-my-team-requests-list">`;
 
                         Array.prototype.forEach.call(requests, function(request) {
-                            content += `<li class="text-center" id="trn-join-team-request-${request.team_member_request_id}">`;
+                            content += `<li class="trn-text-center" id="trn-join-team-request-${request.team_member_request_id}">`;
                             content += `<a href="${request._embedded.team[0].link}">${request._embedded.team[0].name}</a> `;
-                            content += `<a class="trn-delete-team-request-link" data-request-id="${request.team_member_request_id}"><i class="fa fa-times text-danger"></i></a>`;
+                            content += `<a class="trn-delete-team-request-link" data-request-id="${request.team_member_request_id}"><i class="fa fa-times trn-text-danger"></i></a>`;
                             content += `</li>`;
                         });
 
                         content += `</ul>`;
                     } else {
-                        content += `<p class="text-center">${options.language.zero_requests}</p>`;
+                        content += `<p class="trn-text-center">${options.language.zero_requests}</p>`;
                     }
                 } else {
-                    content += `<p class="text-center">${options.language.error}</p>`;
+                    content += `<p class="trn-text-center">${options.language.error}</p>`;
                 }
 
                 removeListeners();

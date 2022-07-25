@@ -402,17 +402,8 @@ WHERE `user_id` = %d
 			);
 		}
 
-		$data   = array();
-		$fields = array( 'display_name', 'location', 'flag', 'profile' );
-
-		foreach ( $fields as $field ) {
-			if ( $request->has_param( $field ) ) {
-				if ( (string) $player->$field !== (string) $request->get_param( $field ) ) {
-					$data[ $field ] = $request->get_param( $field );
-					$player->$field = $request->get_param( $field );
-				}
-			}
-		}
+		unset( $request['new_password'] );
+		unset( $request['confirm_password'] );
 
 		$files = $request->get_file_params();
 		if ( ! empty( $files ) ) {
@@ -434,18 +425,26 @@ WHERE `user_id` = %d
 							}
 						}
 
-						$data['avatar'] = $new_pic;
-						$player->avatar = $new_pic;
+						$request['avatar'] = $new_pic;
+						$player->avatar    = $new_pic;
 					}
 				}
 			}
 		}
 
-		if ( 0 < count( $data ) ) {
-			$wpdb->update( $wpdb->prefix . 'trn_players_profiles', $data, array( 'user_id' => $user_id ) );
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
+
+		if ( 0 < count( $prepared_post ) ) {
+			$wpdb->update( $wpdb->prefix . 'trn_players_profiles', $prepared_post, array( 'user_id' => $user_id ) );
 		}
 
-		return rest_ensure_response( $player );
+		$player = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_players_profiles` WHERE `user_id` = %d", $user_id ) );
+
+		$request->set_param( 'context', 'edit' );
+
+		$response = $this->prepare_item_for_response( $player, $request );
+
+		return rest_ensure_response( $response );
 	}
 
 	/**
@@ -519,16 +518,19 @@ WHERE `user_id` = %d
 				'description' => esc_html__( 'The number of individual wins for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 			),
 			'losses'      => array(
 				'description' => esc_html__( 'The number of individual losses for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 			),
 			'draws'       => array(
 				'description' => esc_html__( 'The number of individual draws for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
+				'readonly'    => true,
 			),
 			'profile'     => array(
 				'description' => esc_html__( 'The long text bio for the player.', 'tournamatch' ),
@@ -558,26 +560,6 @@ WHERE `user_id` = %d
 				'readonly'    => true,
 			),
 		);
-
-		$icon_fields = apply_filters( 'trn_player_icon_fields', array() );
-		foreach ( $icon_fields as $social_icon => $social_icon_data ) {
-			$properties[ "trn_$social_icon" ] = array(
-				/* translators: The name of a field. */
-				'description' => sprintf( esc_html__( 'The %s field for the player.', 'tournamatch' ), $social_icon ),
-				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
-			);
-		}
-
-		$player_fields = apply_filters( 'trn_player_fields', array() );
-		foreach ( $player_fields as $field_id => $field_data ) {
-			$properties[ "trn_$field_id" ] = array(
-				/* translators: The name of a field. */
-				'description' => sprintf( esc_html__( 'The %s field for the player.', 'tournamatch' ), $field_id ),
-				'type'        => 'string',
-				'context'     => array( 'view', 'edit', 'embed' ),
-			);
-		}
 
 		$schema = array(
 			'$schema'    => 'http://json-schema.org/draft-04/schema#',

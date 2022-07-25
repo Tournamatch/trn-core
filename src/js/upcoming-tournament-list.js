@@ -95,11 +95,11 @@ import { trn } from './tournamatch.js';
                             }
                             content += `    </span>`;
                             content += `    <ul class="list-inline">`;
-                            content += `      <li class="list-inline-item"><a href="${tournament.link}" class="btn btn-sm btn-primary">${options.language.more_info}</a></li>`;
-                            content += `      <li class="list-inline-item"><a href="${tournament.register_link}" class="btn btn-sm btn-primary" >${options.language.register}</a></li>`;
+                            content += `      <li class="list-inline-item"><a href="${tournament.link}" class="trn-button trn-button-sm">${options.language.more_info}</a></li>`;
+                            content += `      <li class="list-inline-item"><a href="${tournament.register_link}" class="trn-button trn-button-sm" >${options.language.register}</a></li>`;
                             content += `    </ul>`;
                             content += `  </div>`;
-                            content += `  <div class="clearfix"></div>`;
+                            content += `  <div class="trn-clearfix"></div>`;
                             content += `</div>`;
                         });
 
@@ -109,10 +109,10 @@ import { trn } from './tournamatch.js';
                         content += `<button id="trn-upcoming-tournaments-next-button">&#62;</button>`;
                         content += `</div>`;
                     } else {
-                        content += `<p class="text-center">${options.language.zero_tournaments}</p>`;
+                        content += `<p class="trn-text-center">${options.language.zero_tournaments}</p>`;
                     }
                 } else {
-                    content += `<p class="text-center">${options.language.error}</p>`;
+                    content += `<p class="trn-text-center">${options.language.error}</p>`;
                 }
 
                 removeListeners();

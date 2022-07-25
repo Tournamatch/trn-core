@@ -68,54 +68,54 @@ get_header();
 
 trn_get_header();
 ?>
-<div class="row" id="trn-match-details">
-	<div class="col-sm-6">
+<div class="trn-row" id="trn-match-details">
+	<div class="trn-col-sm-6">
 		<h3 style="display: flex">
 			<div style="flex: 1; display: flex; justify-content: center; align-items: center">
-				<div style="display: inline-block; text-align: center"><?php trn_display_avatar( $match['one_id'], $competitor_type, $match['one_avatar'], 'match-avatar' ); ?><br><span style="font-size: .75em"><?php echo esc_html( $match['one_name'] ); ?></span>
+				<div style="display: inline-block; text-align: center"><?php trn_display_avatar( $match['one_id'], $competitor_type, $match['one_avatar'], 'trn-match-avatar' ); ?><br><span style="font-size: .75em"><?php echo esc_html( $match['one_name'] ); ?></span>
 
 				</div>
 			</div>
 			<span style="margin: auto 0"> vs. </span>
 			<div style="flex:1; display: flex; justify-content: center; align-items: center">
-				<div style="display: inline-block; text-align: center"><?php trn_display_avatar( $match['two_id'], $competitor_type, $match['two_avatar'], 'match-avatar' ); ?><br><span style="font-size: .75em"><?php echo esc_html( $match['two_name'] ); ?></span>
+				<div style="display: inline-block; text-align: center"><?php trn_display_avatar( $match['two_id'], $competitor_type, $match['two_avatar'], 'trn-match-avatar' ); ?><br><span style="font-size: .75em"><?php echo esc_html( $match['two_name'] ); ?></span>
 				</div>
 			</div>
 		</h3>
 	</div>
-	<div class="col-sm-6">
+	<div class="trn-col-sm-6">
 		<h3><?php esc_html_e( 'Match Details', 'tournamatch' ); ?></h3>
-		<dl class="row">
-			<dt class="col-sm-6"><?php echo esc_html( substr( ucwords( $match['competition_type'] ), 0, -1 ) ); ?>: </dt>
-			<dd class="col-sm-6">
+		<dl class="trn-row trn-dl">
+			<dt class="trn-col-sm-6 trn-dt"><?php echo esc_html( substr( ucwords( $match['competition_type'] ), 0, -1 ) ); ?>: </dt>
+			<dd class="trn-col-sm-6 trn-dd">
 				<?php if ( 'ladders' === $match['competition_type'] ) : ?>
 					<a href="<?php trn_esc_route_e( 'ladders.single', array( 'id' => $match['competition_id'] ) ); ?>"><?php echo esc_html( $match['competition_name'] ); ?></a>
 				<?php else : ?>
 					<a href="<?php trn_esc_route_e( 'tournaments.single.brackets', array( 'id' => $match['competition_id'] ) ); ?>"><?php echo esc_html( $match['competition_name'] ); ?></a>
 				<?php endif; ?>
 			</dd>
-			<dt class="col-sm-6"><?php esc_html_e( 'Status', 'tournamatch' ); ?>: </dt>
-			<dd class="col-sm-6" id="trn_match_status"><?php echo esc_html( ucwords( $match['match_status'] ) ); ?></dd>
-			<dt class="col-sm-6"><?php esc_html_e( 'Date', 'tournamatch' ); ?>: </dt>
-			<dd class="col-sm-6"><?php echo ( ( '0000-00-00 00:00:00' === $match['match_date'] ) ? '&nbsp;' : esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match['match_date'] ) ) ) ) ); ?></dd>
+			<dt class="trn-col-sm-6 trn-dt"><?php esc_html_e( 'Status', 'tournamatch' ); ?>: </dt>
+			<dd class="trn-col-sm-6 trn-dd" id="trn_match_status"><?php echo esc_html( ucwords( $match['match_status'] ) ); ?></dd>
+			<dt class="trn-col-sm-6 trn-dt"><?php esc_html_e( 'Date', 'tournamatch' ); ?>: </dt>
+			<dd class="trn-col-sm-6 trn-dd"><?php echo ( ( '0000-00-00 00:00:00' === $match['match_date'] ) ? '&nbsp;' : esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $match['match_date'] ) ) ) ) ); ?></dd>
 		</dl>
 	</div>
 </div>
-<div class="row">
-	<div class="col-sm-6">
+<div class="trn-row">
+	<div class="trn-col-sm-6">
 		<h3><?php esc_html_e( 'Result', 'tournamatch' ); ?></h3>
-		<dl class="row">
+		<dl class="trn-row trn-dl">
 			<?php if ( 'draw' === $match['one_result'] ) : ?>
-				<dt class="col-sm-6"><?php esc_html_e( 'Result', 'tournamatch' ); ?>: </dt>
-				<dd class="col-sm-6"><?php esc_html_e( 'Draw', 'tournamatch' ); ?></dd>
+				<dt class="trn-col-sm-6 trn-dt"><?php esc_html_e( 'Result', 'tournamatch' ); ?>: </dt>
+				<dd class="trn-col-sm-6 trn-dd"><?php esc_html_e( 'Draw', 'tournamatch' ); ?></dd>
 			<?php elseif ( 'confirmed' !== $match['match_status'] ) : ?>
-				<dt class="col-sm-6"><?php esc_html_e( 'Winner', 'tournamatch' ); ?>: </dt>
-				<dd class="col-sm-6"></dd>
-				<dt class="col-sm-6"><?php esc_html_e( 'Loser', 'tournamatch' ); ?>: </dt>
-				<dd class="col-sm-6"></dd>
+				<dt class="trn-col-sm-6 trn-dt"><?php esc_html_e( 'Winner', 'tournamatch' ); ?>: </dt>
+				<dd class="trn-col-sm-6 trn-dd"></dd>
+				<dt class="trn-col-sm-6 trn-dt"><?php esc_html_e( 'Loser', 'tournamatch' ); ?>: </dt>
+				<dd class="trn-col-sm-6 trn-dd"></dd>
 			<?php else : ?>
-				<dt class="col-sm-6"><?php esc_html_e( 'Winner', 'tournamatch' ); ?>: </dt>
-				<dd class="col-sm-6" id="trn_match_winner">
+				<dt class="trn-col-sm-6 trn-dt"><?php esc_html_e( 'Winner', 'tournamatch' ); ?>: </dt>
+				<dd class="trn-col-sm-6 trn-dd" id="trn_match_winner">
 					<?php
 					if ( 'won' === $match['one_result'] ) {
 						echo wp_kses_data( $one_name );
@@ -124,8 +124,8 @@ trn_get_header();
 					}
 					?>
 				</dd>
-				<dt class="col-sm-6"><?php esc_html_e( 'Loser', 'tournamatch' ); ?>: </dt>
-				<dd class="col-sm-6" id="trn_match_loser">
+				<dt class="trn-col-sm-6 trn-dt"><?php esc_html_e( 'Loser', 'tournamatch' ); ?>: </dt>
+				<dd class="trn-col-sm-6 trn-dd" id="trn_match_loser">
 					<?php
 					if ( 'lost' === $match['one_result'] ) {
 						echo wp_kses_data( $one_name );
@@ -138,32 +138,32 @@ trn_get_header();
 		</dl>
 	</div>
 </div>
-<div class="row">
-	<div class="col-sm-12">
+<div class="trn-row">
+	<div class="trn-col-sm-12">
 		<h3><?php esc_html_e( 'Comments', 'tournamatch' ); ?></h3>
-		<dl>
-			<dt><?php echo esc_html( $match['one_name'] ); ?>: </dt>
-			<dd><?php echo esc_html( $match['one_comment'] ); ?></dd>
-			<dt><?php echo esc_html( $match['two_name'] ); ?>: </dt>
-			<dd><?php echo esc_html( $match['two_comment'] ); ?></dd>
+		<dl class="trn-dl">
+			<dt class="trn-dt"><?php echo esc_html( $match['one_name'] ); ?>: </dt>
+			<dd class="trn-dd"><?php echo esc_html( $match['one_comment'] ); ?></dd>
+			<dt class="trn-dt"><?php echo esc_html( $match['two_name'] ); ?>: </dt>
+			<dd class="trn-dd"><?php echo esc_html( $match['two_comment'] ); ?></dd>
 		</dl>
 	</div>
 </div>
-<div class="pull-right">
+<div class="trn-pull-right">
 	<?php if ( $can_confirm ) : ?>
-		<a class="btn btn-primary" href="<?php trn_esc_route_e( 'matches.single.confirm', array( 'id' => $match['match_id'] ) ); ?>"><?php esc_html_e( 'Confirm', 'tournamatch' ); ?></a>
+		<a class="trn-button" href="<?php trn_esc_route_e( 'matches.single.confirm', array( 'id' => $match['match_id'] ) ); ?>"><?php esc_html_e( 'Confirm', 'tournamatch' ); ?></a>
 	<?php endif; ?>
 	<?php if ( $can_dispute ) : ?>
 		<?php echo do_shortcode( '[trn-dispute-match-button id="' . intval( $match['match_id'] ) . '"]' ); ?>
 	<?php endif; ?>
 	<?php if ( $can_report ) : ?>
-		<a class="btn btn-primary" href=""><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>
+		<a class="trn-button" href=""><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>
 	<?php endif; ?>
 	<?php if ( $can_delete ) : ?>
-		<a class="btn btn-danger trn-confirm-action-link trn-delete-match-action" href="#" data-match-id="<?php echo intval( $match['match_id'] ); ?>" data-confirm-title="<?php esc_html_e( 'Delete Match', 'tournamatch' ); ?>" data-confirm-message="<?php esc_html_e( 'Are you sure you want to delete this match?', 'tournamatch' ); ?>"><?php esc_html_e( 'Delete', 'tournamatch' ); ?></a>
+		<a class="trn-button trn-button-danger trn-confirm-action-link trn-delete-match-action" href="#" data-match-id="<?php echo intval( $match['match_id'] ); ?>" data-confirm-title="<?php esc_html_e( 'Delete Match', 'tournamatch' ); ?>" data-confirm-message="<?php esc_html_e( 'Are you sure you want to delete this match?', 'tournamatch' ); ?>"><?php esc_html_e( 'Delete', 'tournamatch' ); ?></a>
 	<?php endif; ?>
 	<?php if ( $can_clear ) : ?>
-		<a class="btn btn-danger" href="
+		<a class="trn-button trn-button-danger" href="
 		<?php
 		trn_esc_route_e(
 			'admin.tournaments.clear-match',

@@ -48,32 +48,11 @@ import { trn } from './tournamatch.js';
                     return row.teams;
                 },
             },
-            {
-                targets: 4,
-                name: 'contact',
-                className: 'trn-players-table-contact',
-                render: function (data, type, row) {
-                    let links = [];
-
-                    for (const property in options.social_links) {
-                        if ( row[property] && row[property].length > 0 ) {
-                            links.push(options.social_links[property].format(row[property]));
-                        }
-                    }
-
-                    if (links.length > 0) {
-                        return links.join(' ');
-                    } else {
-                        return ``;
-                    }
-                },
-                orderable: false,
-            },
         ];
         if (options.user_capability) {
             columnDefs.push(
                 {
-                    targets: 5,
+                    targets: 4,
                     name: 'actions',
                     className: 'trn-players-table-admin',
                     render: function (data, type, row) {

@@ -18,7 +18,7 @@ import zip from 'gulp-zip';
 const PRODUCTION = yargs.argv.prod;
 
 export const styles = () => {
-  return src(['src/scss/brackets.scss', 'src/scss/components.scss', 'src/scss/online-statistics-widget.scss', 'src/scss/trn.datatable.bootstrap4.css', 'src/scss/trn.bootstrap.4.3.1.css', 'src/scss/fontawesome.5.14.0.css'])
+  return src(['src/scss/brackets.scss', 'src/scss/components.scss', 'src/scss/online-statistics-widget.scss', 'src/scss/trn.datatable.bootstrap4.css', 'src/scss/fontawesome.5.14.0.css'])
     .pipe(gulpif(!PRODUCTION, sourcemaps.init()))
     .pipe(sass().on('error', sass.logError))
     .pipe(gulpif(PRODUCTION, postcss([autoprefixer])))

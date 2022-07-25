@@ -33,7 +33,7 @@ import { trn } from './tournamatch.js';
                     if (xhr.status === 200) {
                         $.event('team-invitations').dispatchEvent(new Event('changed'));
                         document.getElementById('trn-email-team-invitation-form').reset();
-                        form.classList.remove('was-validated');
+                        form.classList.remove('trn-was-validated');
                     } else {
                         document.getElementById('trn-email-invite-address').setCustomValidity(options.language.email_required);
                     }
@@ -46,7 +46,7 @@ import { trn } from './tournamatch.js';
                 }));
             }
 
-            form.classList.add('was-validated');
+            form.classList.add('trn-was-validated');
         }, false);
     }, false);
 })(trn);

@@ -1,72 +1,70 @@
-.tournamatch-brackets {
+.trn-brackets {
   overflow-x: auto;
   width: 100%;
   margin: 0 auto;
   padding-bottom: 100px;
-}
 
-.tournamatch-progress {
-  height: 3px;
-  background-color: #ff4200;
-}
+  &-progress {
+    height: 3px;
+    background-color: #ff4200;
+  }
 
-.tournamatch-round-header-container {
-  display: inline-block;
-  white-space: nowrap;
-}
+  &-round-header-container {
+    display: inline-block;
+    white-space: nowrap;
+  }
 
-.tournamatch-round-header {
-  background-color: #547abe;
-  border-radius: 5px;
-  padding: 0 5px 0 5px;
-  width: 198px;
-  display: inline-block;
-  margin: 1px;
-}
+  &-round-header {
+    background-color: #547abe;
+    border-radius: 5px;
+    padding: 0 5px 0 5px;
+    width: 198px;
+    display: inline-block;
+    margin: 1px;
+  }
 
-.tournamatch-round-body-container {
-  white-space: nowrap;
-  display: inline-block;
-}
+  &-round-body-container {
+    white-space: nowrap;
+    display: inline-block;
+  }
 
-.tournamatch-round-body {
-  width: 200px;
-  display: inline-block;
-}
+  &-round-body {
+    width: 200px;
+    display: inline-block;
+  }
 
-.tournamatch-match {
-  display: flex;
-  position: relative;
-}
+  &-match {
+    display: flex;
+    position: relative;
+  }
 
-.tournamatch-match-body {
-  background-color: #444;
-  color: white;
-  border-radius: 5px;
-  flex-grow: 1;
-  margin-right: 32px;
-}
+  &-match-body {
+    background-color: #444;
+    color: white;
+    border-radius: 5px;
+    flex-grow: 1;
+    margin-right: 32px;
+  }
 
-.tournamatch-competitor {
-  display: block;
-  padding: 0 3px 0 3px;
-  border-radius: 0 0 5px 5px;
-}
+  &-competitor {
+    display: block;
+    padding: 0 3px 0 3px;
+    border-radius: 0 0 5px 5px;
+  }
 
-.tournamatch-competitor:first-child {
-  border-radius: 5px 5px 0 0;
-}
+  &-competitor:first-child {
+    border-radius: 5px 5px 0 0;
+  }
 
-.tournamatch-competitor-highlight {
-  background-color: #6b6b6b;
-}
+  &-competitor-highlight {
+    background-color: #6b6b6b;
+  }
 
-.tournamatch-brackets {
-  .match-half {
+  &-match-half {
     display: block;
   }
 
-  .top-half {
+  &-top-half {
     width: 32px;
     height: calc((100% / 2) + 1px);
     background-image: url("../images/brackets/top.gif");
@@ -78,7 +76,7 @@
     right: 0;
   }
 
-  .bottom-half {
+  &-bottom-half {
     width: 32px;
     height: calc((100% / 2) + 1px);
     background-image: url("../images/brackets/bottom.gif");
@@ -90,7 +88,7 @@
     right: 0;
   }
 
-  .winners-line {
+  &-winners-line {
     width: 32px;
     height: 100%;
     margin-left: -32px;
@@ -100,23 +98,23 @@
     position: absolute;
   }
 
-  .more-details {
+  &-more-details {
     color: #ff4200;
     cursor: pointer;
     opacity: .5;
     position: absolute;
   }
 
-  .top-half > .dropdown > .more-details {
+  &-top-half > &-dropdown > &-more-details {
     top: -25px;
   }
 
-  .winners-line > .dropdown > .more-details {
+  &-winners-line > &-dropdown > &-more-details {
     top: -17px;
     left: -22px;
   }
 
-  .more-details:hover {
+  &-more-details:hover {
     -webkit-animation: fadeInFromNone 0.5s ease-out forwards;
     -moz-animation: fadeInFromNone 0.5s ease-out forwards;
     -o-animation: fadeInFromNone 0.5s ease-out forwards;
@@ -171,13 +169,13 @@
     }
   }
 
-  .dropdown {
+  &-dropdown {
     position: relative;
     display: inline-block;
     right: -30px;
   }
 
-  .dropdown-content {
+  &-dropdown-content {
     display: none;
     position: absolute;
     left: 20px;
@@ -187,31 +185,31 @@
     z-index: 1;
   }
 
-  .top-half > .dropdown > .dropdown-content {
+  &-top-half > &-dropdown > &-dropdown-content {
     top: -25px;
   }
 
-  .winners-line > .dropdown > .dropdown-content {
+  &-winners-line > &-dropdown > &-dropdown-content {
     left: -3px;
     top: -25px;
   }
 
-  .dropdown-content a {
+  &-dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
   }
 
-  .dropdown-content a:hover {
+  &-dropdown-content a:hover {
     background-color: #f1f1f1;
   }
 
-  .dropdown:hover .dropdown-content {
+  &-dropdown:hover &-dropdown-content {
     display: block;
   }
 
-  .vertical-line {
+  &-vertical-line {
     width: 32px;
     height: 100%;
     margin: auto;
@@ -220,7 +218,7 @@
     margin-right: 0;
   }
 
-  .horizontal-line {
+  &-horizontal-line {
     width: 32px;
     height: 100%;
     margin-left: -32px;

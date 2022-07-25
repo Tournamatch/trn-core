@@ -58,13 +58,12 @@ class Table_Shortcodes {
 	public function teams_list_table( $atts = [], $content = null, $tag = '' ) {
 
 		$html  = '<div id="trn-delete-team-response"></div>';
-		$html .= '<table class="table table-striped" id="trn-teams-table">';
+		$html .= '<table class="trn-table trn-table-striped" id="trn-teams-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-teams-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-teams-table-created">' . esc_html__( 'Created', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-teams-table-members">' . esc_html__( 'Members', 'tournamatch' ) . '</th>';
-		$html .= '<th class="trn-teams-table-contact">' . esc_html__( 'Contacts', 'tournamatch' ) . '</th>';
 
 		if ( current_user_can( 'manage_tournamatch' ) ) {
 			$html .= '<th class="trn-teams-table-admin">' . esc_html__( 'Admin', 'tournamatch' ) . '</th>';
@@ -74,13 +73,6 @@ class Table_Shortcodes {
 		$html .= '</thead>';
 		$html .= '<tbody></tbody>';
 		$html .= '</table>';
-
-		$social_fields = apply_filters( 'trn_team_icon_fields', array() );
-
-		$social_links = array();
-		foreach ( $social_fields as $social_icon => $social_icon_data ) {
-			$social_links[ $social_icon ] = '<a href="{0}"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-		}
 
 		$table_language = array(
 			'sEmptyTable'     => esc_html__( 'No teams to display.', 'tournamatch' ),
@@ -118,7 +110,6 @@ class Table_Shortcodes {
 				'delete_confirm' => esc_html__( 'Are you sure you want to delete team &quot;{0}&quot;?', 'tournamatch' ),
 			),
 			'user_capability' => current_user_can( 'manage_tournamatch' ),
-			'social_links'    => $social_links,
 		);
 
 		wp_register_script( 'trn-teams-list-table', plugins_url( '../../dist/js/teams.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '3.21.1', true );
@@ -141,14 +132,13 @@ class Table_Shortcodes {
 	 */
 	public function players_list_table( $atts = [], $content = null, $tag = '' ) {
 
-		$html  = '<table class="table table-striped trn-players-table" id="trn_players_list_table">';
+		$html  = '<table class="trn-table trn-table-striped trn-players-table" id="trn_players_list_table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-players-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-players-table-joined">' . esc_html__( 'Joined', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-players-table-location">' . esc_html__( 'Location', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-players-table-teams">' . esc_html__( 'Teams', 'tournamatch' ) . '</th>';
-		$html .= '<th class="trn-players-table-contact">' . esc_html__( 'Contacts', 'tournamatch' ) . '</th>';
 
 		if ( current_user_can( 'manage_tournamatch' ) ) {
 			$html .= '<th class="trn-players-table-admin">' . esc_html__( 'Admin', 'tournamatch' ) . '</th>';
@@ -158,17 +148,6 @@ class Table_Shortcodes {
 		$html .= '</thead>';
 		$html .= '<tbody></tbody>';
 		$html .= '</table>';
-
-		$icon_fields = apply_filters( 'trn_player_icon_fields', array() );
-
-		$social_links = array();
-		foreach ( $icon_fields as $social_icon => $social_icon_data ) {
-			$social_links[ 'trn_' . $social_icon ] = '<a href="{0}"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
-		}
-
-		if ( intval( trn_get_option( 'display_user_email' ) ) === 1 ) {
-			$social_links['user_email'] = '<a href="mailto:{0}"><i class="fa fa-envelope"></i></a>';
-		}
 
 		$table_language = array(
 			'sEmptyTable'     => esc_html__( 'No data available in table', 'tournamatch' ),
@@ -204,7 +183,6 @@ class Table_Shortcodes {
 				'edit_player' => esc_html__( 'Edit Player', 'tournamatch' ),
 			),
 			'user_capability' => current_user_can( 'manage_tournamatch' ),
-			'social_links'    => $social_links,
 		);
 
 		wp_register_script( 'players', plugins_url( '../../dist/js/players.js', __FILE__ ), array( 'jquery', 'tournamatch', 'datatables' ), '3.21.1', true );
@@ -229,7 +207,7 @@ class Table_Shortcodes {
 	public function challenges_list_table( $atts = [], $content = null, $tag = '' ) {
 
 		$html  = '<div id="trn-delete-challenge-response"></div>';
-		$html .= '<table class="table table-striped trn-challenges-table" id="trn-challenge-list-table">';
+		$html .= '<table class="trn-table trn-table-striped trn-challenges-table" id="trn-challenge-list-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-challenges-table-ladder">' . esc_html__( 'Ladder', 'tournamatch' ) . '</th>';
@@ -304,7 +282,7 @@ class Table_Shortcodes {
 	 */
 	public function matches_list_table( $atts = [], $content = null, $tag = '' ) {
 
-		$html  = '<table class="table table-striped trn-matches-table" id="match-list-table" style="width:100%">';
+		$html  = '<table class="trn-table trn-table-striped trn-matches-table" id="match-list-table" style="width:100%">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-matches-table-event">' . esc_html__( 'Event', 'tournamatch' ) . '</th>';
@@ -391,7 +369,7 @@ class Table_Shortcodes {
 
 		$lid = intval( $atts['ladder_id'] );
 
-		$html  = '<table class="table table-striped trn-ladder-matches-table" id="trn-ladder-matches-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-ladder-matches-table" id="trn-ladder-matches-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-ladder-matches-table-result">' . esc_html__( 'Result', 'tournamatch' ) . '</th>';
@@ -496,7 +474,7 @@ class Table_Shortcodes {
 
 		$html  = '<div id="trn-remove-competitor-response"></div>';
 		$html .= '<div id="trn-promote-competitor-response"></div>';
-		$html .= '<table class="table table-striped trn-ladder-standings-table" id="ladder-standings-table">';
+		$html .= '<table class="trn-table trn-table-striped trn-ladder-standings-table" id="ladder-standings-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-ladder-standings-table-number"></th>';
@@ -609,7 +587,7 @@ class Table_Shortcodes {
 
 		$tournament_id = intval( $atts['tournament_id'] );
 
-		$html  = '<table class="table table-striped trn-tournament-matches-table" id="trn-tournament-matches-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-tournament-matches-table" id="trn-tournament-matches-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-tournament-matches-table-competitors">' . esc_html__( 'Competitors', 'tournamatch' ) . '</th>';
@@ -696,9 +674,9 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$options = get_option( 'tournamatch_options' );
+		$uses_draws = ( '1' === trn_get_option( 'uses_draws' ) );
 
-		$html  = '<table class="table table-striped trn-ladder-competitions-table" id="trn-ladder-competitions-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-ladder-competitions-table" id="trn-ladder-competitions-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-ladder-competitions-table-name">' . esc_html__( 'Ladder', 'tournamatch' ) . '</th>';
@@ -709,7 +687,7 @@ class Table_Shortcodes {
 		$html .= '<th class="trn-ladder-competitions-table-position">' . esc_html__( 'Position', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-ladder-competitions-table-wins">' . esc_html__( 'W', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-ladder-competitions-table-losses">' . esc_html__( 'L', 'tournamatch' ) . '</th>';
-		if ( '1' === $options['uses_draws'] ) {
+		if ( $uses_draws ) {
 			$html .= '<th class="trn-ladder-competitions-table-draws">' . esc_html__( 'D', 'tournamatch' ) . '</th>';
 		}
 		$html .= '<th class="trn-ladder-competitions-table-win-percent">' . esc_html__( 'W%', 'tournamatch' ) . '</th>';
@@ -748,7 +726,7 @@ class Table_Shortcodes {
 			'api_url'         => site_url( 'wp-json/tournamatch/v1/' ),
 			'rest_nonce'      => wp_create_nonce( 'wp_rest' ),
 			'table_language'  => $table_language,
-			'uses_draws'      => $options['uses_draws'],
+			'uses_draws'      => $uses_draws,
 			'competitor_id'   => $competitor_id,
 			'competitor_type' => $competitor_type,
 			'slug'            => ( 'players' === $competitor_type ) ? 'player_id' : 'team_id',
@@ -789,7 +767,7 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$html  = '<table class="table table-striped trn-tournament-competitions-table" id="trn-tournament-competitions-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-tournament-competitions-table" id="trn-tournament-competitions-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-tournament-competitions-table-name">' . esc_html__( 'Tournament', 'tournamatch' ) . '</th>';
@@ -865,7 +843,7 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$html  = '<table class="table table-striped trn-player-team-table" id="trn-player-teams-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-player-team-table" id="trn-player-teams-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-player-team-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
@@ -942,7 +920,7 @@ class Table_Shortcodes {
 		if ( ( 0 === $competitor_id ) || ( ! in_array( $competitor_type, array( 'players', 'teams' ), true ) ) ) {
 			return '';
 		}
-		$html  = '<table class="table table-striped trn-match-history-table" id="trn-competitor-match-list-table">';
+		$html  = '<table class="trn-table trn-table-striped trn-match-history-table" id="trn-competitor-match-list-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-match-history-event">' . esc_html__( 'Event', 'tournamatch' ) . '</th>';
@@ -1021,10 +999,8 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$options = get_option( 'tournamatch_options' );
-
 		$html  = '<div id="trn-team-roster-response"></div>';
-		$html .= '<table class="table table-striped trn-team-roster-table" id="trn-team-roster-table">';
+		$html .= '<table class="trn-table trn-table-striped trn-team-roster-table" id="trn-team-roster-table">';
 		$html .= '<thead>';
 		$html .= '<tr>';
 		$html .= '<th class="trn-team-roster-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
@@ -1076,7 +1052,7 @@ class Table_Shortcodes {
 				'confirm_new_owner' => esc_html__( 'Are you sure you want to promote another player to team owner?', 'tournamatch' ),
 			),
 			'team_id'         => $team_id,
-			'uses_draws'      => ( '1' === $options['uses_draws'] ),
+			'uses_draws'      => ( '1' === trn_get_option( 'uses_draws' ) ),
 			'ranks'           => $ranks,
 			'can_edit_roster' => $can_edit_roster,
 			'flag_directory'  => plugins_url( 'tournamatch' ) . '/dist/images/flags/',

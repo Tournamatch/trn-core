@@ -25,89 +25,79 @@ if ( is_null( $player ) ) {
 	exit;
 }
 
-$player_fields = apply_filters( 'trn_player_fields', array() );
-$icon_fields   = apply_filters( 'trn_player_icon_fields', array() );
+$form_fields = array(
+	'display_name'     => array(
+		'id'       => 'display_name',
+		'label'    => __( 'Display Name', 'tournamatch' ),
+		'required' => true,
+		'type'     => 'text',
+		'value'    => isset( $player->display_name ) ? $player->display_name : '',
+	),
+	'location'         => array(
+		'id'    => 'location',
+		'label' => __( 'Location', 'tournamatch' ),
+		'type'  => 'text',
+		'value' => isset( $player->location ) ? $player->location : '',
+	),
+	'flag'             => array(
+		'id'      => 'flag',
+		'label'   => __( 'Country Flag', 'tournamatch' ),
+		'type'    => 'select',
+		'value'   => isset( $player->flag ) ? $player->flag : 'blank.gif',
+		'options' => trn_get_flag_options(),
+	),
+	'avatar'           => array(
+		'id'          => 'avatar',
+		'label'       => __( 'Avatar', 'tournamatch' ),
+		'type'        => 'thumbnail',
+		'description' => __( 'Only choose file if you wish to change your avatar.', 'tournamatch' ),
+		'value'       => isset( $player->avatar ) ? $player->avatar : '',
+		'thumbnail'   => function( $context ) {
+			trn_display_avatar( $context->user_id, 'players', $context->avatar );
+		},
+	),
+	'profile'          => array(
+		'id'    => 'profile',
+		'label' => __( 'Profile', 'tournamatch' ),
+		'type'  => 'textarea',
+		'value' => isset( $player->profile ) ? $player->profile : '',
+	),
+	'new_password'     => array(
+		'id'          => 'new_password',
+		'label'       => __( 'New password', 'tournamatch' ),
+		'type'        => 'password',
+		'description' => __( 'Only enter if you wish to change your password.', 'tournamatch' ),
+	),
+	'confirm_password' => array(
+		'id'          => 'confirm_password',
+		'label'       => __( 'Confirm password', 'tournamatch' ),
+		'type'        => 'password',
+		'description' => __( 'Only enter if you wish to change your password.', 'tournamatch' ),
+	),
+);
+
+$form = array(
+	'attributes' => array(
+		'id'             => 'trn-edit-player-profile-form',
+		'action'         => '#',
+		'method'         => 'post',
+		'enctype'        => 'multipart/form-data',
+		'data-player-id' => intval( $user_id ),
+	),
+	'fields'     => $form_fields,
+	'submit'     => array(
+		'id'      => 'trn-save-button',
+		'content' => __( 'Save', 'tournamatch' ),
+	),
+);
 
 get_header();
 
 trn_get_header();
 
 ?>
-	<h1 class="mb-4"><?php esc_html_e( 'Edit Profile', 'tournamatch' ); ?></h1>
-	<form action="#" method="post" enctype="multipart/form-data" id="trn-edit-player-profile-form" data-player-id="<?php echo intval( $user_id ); ?>">
-		<div class="form-group row">
-			<label for="display_name" class="control-label col-sm-3"><?php esc_html_e( 'Display Name', 'tournamatch' ); ?></label>
-			<div class="col-sm-4">
-				<input class="form-control" type="text" id="display_name" name="display_name" value="<?php echo esc_html( $player->display_name ); ?>">
-			</div>
-		</div>
-		<div class="form-group row">
-			<label for="location" class="control-label col-sm-3"><?php esc_html_e( 'Location', 'tournamatch' ); ?></label>
-			<div class="col-sm-4">
-				<input class="form-control" type="text" id="location" name="location" value="<?php echo esc_html( $player->location ); ?>">
-			</div>
-		</div>
-		<div class="form-group row">
-			<label for="flag" class="control-label col-sm-3"><?php esc_html_e( 'Country Flag', 'tournamatch' ); ?></label>
-			<div class="col-sm-4">
-				<select id="flag" name="flag" class="form-control">
-					<option value="blank.gif" <?php echo ( 'blank.gif' === $player->flag ) ? 'selected' : ''; ?>><?php esc_html_e( 'No Flag', 'tournamatch' ); ?></option>
-					<?php foreach ( trn_get_flag_list() as $flag => $flag_title ) : ?>
-						<option value="<?php echo esc_html( $flag ); ?>" <?php echo ( $flag === $player->flag ) ? 'selected' : ''; ?>><?php echo esc_html( $flag_title ); ?></option>
-					<?php endforeach; ?>
-				</select>
-			</div>
-		</div>
-		<?php foreach ( $icon_fields as $social_icon => $social_icon_data ) : ?>
-			<div class="form-group row">
-				<label for="<?php echo esc_html( $social_icon ); ?>" class="control-label col-sm-3"><?php echo esc_html( $social_icon_data['display_name'] ); ?></label>
-				<div class="col-sm-4">
-					<input class="form-control" type="<?php echo esc_html( $social_icon_data['input_type'] ); ?>" id="<?php echo esc_html( $social_icon ); ?>" name="<?php echo esc_html( $social_icon ); ?>" value="<?php echo esc_html( get_user_meta( $user_id, "trn_$social_icon", true ) ); ?>">
-				</div>
-			</div>
-		<?php endforeach; ?>
-		<?php foreach ( $player_fields as $field_id => $field_data ) : ?>
-			<div class="form-group row">
-				<label for="<?php echo esc_html( $field_id ); ?>" class="control-label col-sm-3"><?php echo esc_html( $field_data['display_name'] ); ?></label>
-				<div class="col-sm-4">
-					<input class="form-control" type="<?php echo esc_html( $field_data['input_type'] ); ?>" id="<?php echo esc_html( $field_id ); ?>" name="<?php echo esc_html( $field_id ); ?>" value="<?php echo esc_html( get_user_meta( $user_id, "trn_$field_id", true ) ); ?>">
-				</div>
-			</div>
-		<?php endforeach; ?>
-		<div class="form-group row">
-			<label for="avatar" class="control-label col-sm-3"><?php esc_html_e( 'Avatar', 'tournamatch' ); ?></label>
-			<div class="col-sm-9">
-				<input class="form-control-file" type="file" id="avatar" name="avatar" value="<?php echo esc_url( $player->avatar ); ?>">
-				<small class="form-text text-muted"><?php esc_html_e( 'Only choose file if you wish to change your avatar.', 'tournamatch' ); ?></small>
-				<?php trn_display_avatar( $player->user_id, 'players', $player->avatar ); ?>
-			</div>
-		</div>
-		<div class="form-group row">
-			<label for="profile" class="control-label col-sm-3"><?php esc_html_e( 'Profile', 'tournamatch' ); ?></label>
-			<div class="col-sm-6">
-				<textarea class="form-control" rows="10" id="profile" name="profile"><?php echo wp_kses_post( $player->profile ); ?></textarea>
-			</div>
-		</div>
-		<div class="form-group row">
-			<label for="new_password" class="control-label col-sm-3"><?php esc_html_e( 'New Password', 'tournamatch' ); ?></label>
-			<div class="col-sm-4">
-				<input class="form-control" type="password" id="new_password" name="new_password">
-				<small class="form-text text-muted"><?php esc_html_e( 'Only enter if you wish to change your password.', 'tournamatch' ); ?></small>
-			</div>
-		</div>
-		<div class="form-group row">
-			<label for="confirm_password" class="control-label col-sm-3"><?php esc_html_e( 'Confirm Password', 'tournamatch' ); ?></label>
-			<div class="col-sm-4">
-				<input class="form-control" type="password" id="confirm_password" name="confirm_password">
-				<small class="form-text text-muted"><?php esc_html_e( 'Only enter if you wish to change your password.', 'tournamatch' ); ?></small>
-			</div>
-		</div>
-		<div class="form-group row">
-			<div class="offset-sm-3 col-sm-4">
-				<input id="trn-save-button" class="btn btn-primary" type="submit" value="<?php esc_html_e( 'Save', 'tournamatch' ); ?>">
-			</div>
-		</div>
-	</form>
+	<h1 class="trn-mb-4"><?php esc_html_e( 'Edit Profile', 'tournamatch' ); ?></h1>
+	<?php trn_user_form( $form, $player ); ?>
 	<div id="trn-update-response"></div>
 <?php
 

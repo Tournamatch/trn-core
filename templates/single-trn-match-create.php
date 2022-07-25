@@ -74,7 +74,7 @@ get_header();
 trn_get_header();
 
 ?>
-<h1 class="mb-4"><?php esc_html_e( 'Report Results', 'tournamatch' ); ?></h1>
+<h1 class="trn-mb-4"><?php esc_html_e( 'Report Results', 'tournamatch' ); ?></h1>
 <section>
 	<h4><?php esc_html_e( 'Scheduled Matches', 'tournamatch' ); ?></h4>
 	<?php trn_get_template_part( 'partials/scheduled-matches-table', '', array( 'scheduled_matches' => $scheduled_matches ) ); ?>

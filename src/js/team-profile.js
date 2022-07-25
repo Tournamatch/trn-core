@@ -84,27 +84,27 @@ import { trn } from './tournamatch.js';
             const userId = parseInt(options.current_user_id);
 
             if (canDelete(userId, members)) {
-                deleteTeamButton.style.display = 'inline';
+                deleteTeamButton.style.display = 'inline-block';
                 deleteTeamButton.dataset.teamMemberId = getCurrentUserTeamMemberId(userId, members);
             } else {
                 deleteTeamButton.style.display = 'none';
             }
 
             if (canJoin(userId, members)) {
-                joinTeamButton.style.display = 'inline';
+                joinTeamButton.style.display = 'inline-block';
             } else {
                 joinTeamButton.style.display = 'none';
             }
 
             if (canLeave(userId, members)) {
-                leaveTeamButton.style.display = 'inline';
+                leaveTeamButton.style.display = 'inline-block';
                 leaveTeamButton.dataset.teamMemberId = getCurrentUserTeamMemberId(userId, members);
             } else {
                 leaveTeamButton.style.display = 'none';
             }
 
             if (options.can_edit || canEdit(userId, members)) {
-                editTeamButton.style.display = 'inline';
+                editTeamButton.style.display = 'inline-block';
             } else{
                 editTeamButton.style.display = 'none';
             }
@@ -128,7 +128,7 @@ import { trn } from './tournamatch.js';
 
                         content += memberLinks.join(', ');
                     } else {
-                        content += `<p class="text-center">${options.language.zero_members}</p>`;
+                        content += `<p class="trn-text-center">${options.language.zero_members}</p>`;
                     }
                     if (options.is_logged_in) {
                         evaluateButtonStates(response);
@@ -156,9 +156,9 @@ import { trn } from './tournamatch.js';
             xhr.onload = function () {
                 let response = JSON.parse(xhr.response);
                 if (xhr.status === 201) {
-                    document.getElementById('trn-join-team-response').innerHTML = `<div class="alert alert-success"><strong>${options.language.success}!</strong> ${options.language.success_message}</div>`;
+                    document.getElementById('trn-join-team-response').innerHTML = `<div class="trn-alert trn-alert-success"><strong>${options.language.success}!</strong> ${options.language.success_message}</div>`;
                 } else {
-                    document.getElementById('trn-join-team-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
+                    document.getElementById('trn-join-team-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
                 }
             };
 
@@ -182,7 +182,7 @@ import { trn } from './tournamatch.js';
                     $.event('team-members').dispatchEvent(new CustomEvent('changed', { detail: { team_member_id: leaveTeamButton.dataset.teamMemberId } } ));
                 } else {
                     let response = JSON.parse(xhr.response);
-                    document.getElementById('trn-leave-team-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
+                    document.getElementById('trn-leave-team-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
                 }
             };
 
@@ -199,7 +199,7 @@ import { trn } from './tournamatch.js';
                     window.location.href = options.teams_url;
                 } else {
                     let response = JSON.parse(xhr.response);
-                    document.getElementById('trn-leave-team-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
+                    document.getElementById('trn-leave-team-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
                 }
             };
 
@@ -251,7 +251,7 @@ import { trn } from './tournamatch.js';
                             $.event('team-members').dispatchEvent(new CustomEvent('changed', { } ));
                         } else {
                             const message = ( xhr.status === 403 ) ? JSON.parse(xhr.response).message : options.language.failure_message;
-                            document.getElementById('trn-add-player-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}:</strong> ${message}</div>`;
+                            document.getElementById('trn-add-player-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}:</strong> ${message}</div>`;
                         }
                     };
                     xhr.send($.param({
@@ -293,8 +293,8 @@ import { trn } from './tournamatch.js';
 
                     /*create a DIV element that will contain the items (values):*/
                     a = document.createElement("DIV");
-                    a.setAttribute("id", this.id + "-autocomplete-list");
-                    a.setAttribute("class", "autocomplete-items");
+                    a.setAttribute("id", this.id + "-auto-complete-list");
+                    a.setAttribute("class", "trn-auto-complete-items");
 
                     /*append the DIV element as a child of the autocomplete container:*/
                     parent.appendChild(a);
@@ -344,7 +344,7 @@ import { trn } from './tournamatch.js';
 
             /*execute a function presses a key on the keyboard:*/
             nameInput.addEventListener("keydown", function(e) {
-                let x = document.getElementById(this.id + "-autocomplete-list");
+                let x = document.getElementById(this.id + "-auto-complete-list");
                 if (x) x = x.getElementsByTagName("div");
                 if (e.keyCode === 40) {
                     /*If the arrow DOWN key is pressed,
@@ -382,13 +382,13 @@ import { trn } from './tournamatch.js';
             if (currentFocus >= x.length) currentFocus = 0;
             if (currentFocus < 0) currentFocus = (x.length - 1);
             /*add class "autocomplete-active":*/
-            x[currentFocus].classList.add("autocomplete-active");
+            x[currentFocus].classList.add("trn-auto-complete-active");
         }
 
         function removeActive(x) {
             /*a function to remove the "active" class from all autocomplete items:*/
             for (let i = 0; i < x.length; i++) {
-                x[i].classList.remove("autocomplete-active");
+                x[i].classList.remove("trn-auto-complete-active");
             }
         }
 
@@ -396,7 +396,7 @@ import { trn } from './tournamatch.js';
             console.log("close all lists");
             /*close all autocomplete lists in the document,
              except the one passed as an argument:*/
-            let x = document.getElementsByClassName("autocomplete-items");
+            let x = document.getElementsByClassName("trn-auto-complete-items");
             for (let i = 0; i < x.length; i++) {
                 if (elmnt !== x[i] && elmnt !== nameInput) {
                     x[i].parentNode.removeChild(x[i]);

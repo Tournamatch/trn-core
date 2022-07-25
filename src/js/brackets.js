@@ -62,21 +62,21 @@
         function () {
 
             function competitorMouseOver(event) {
-                const className = `competitor-${event.target.dataset.competitorId}`;
+                const className = `trn-brackets-competitor-${event.target.dataset.competitorId}`;
                 Array.from(document.getElementsByClassName(className))
                     .forEach(
                         item => {
-                            item.classList.add('tournamatch-competitor-highlight');
+                            item.classList.add('trn-brackets-competitor-highlight');
                         }
                     );
             }
 
             function competitorMouseLeave(event) {
-                const className = `competitor-${event.target.dataset.competitorId}`;
+                const className = `trn-brackets-competitor-${event.target.dataset.competitorId}`;
                 Array.from(document.getElementsByClassName(className))
                     .forEach(
                         item => {
-                            item.classList.remove('tournamatch-competitor-highlight');
+                            item.classList.remove('trn-brackets-competitor-highlight');
                         }
                     );
             }
@@ -94,7 +94,7 @@
             }
 
             function renderProgress(float) {
-                return `<div class="tournamatch-progress" style="width: ${100 * float}%;">&nbsp;</div> `;
+                return `<div class="trn-brackets-progress" style="width: ${100 * float}%;">&nbsp;</div> `;
             }
 
             function renderDropDown(tournament, tournament_id, spot_id) {
@@ -103,9 +103,9 @@
 
                 if (tournament.matches[spot_id] && ((tournament.matches[spot_id].one_competitor_id !== null) || (tournament.matches[spot_id].two_competitor_id !== null))) {
                     const match_id = tournament.matches[spot_id].match_id;
-                    content += `<div class="dropdown">`;
-                    content += `<span class="more-details dashicons dashicons-admin-generic"></span>`;
-                    content += `<div class="dropdown-content" >`;
+                    content += `<div class="trn-brackets-dropdown">`;
+                    content += `<span class="trn-brackets-more-details dashicons dashicons-admin-generic"></span>`;
+                    content += `<div class="trn-brackets-dropdown-content" >`;
                     if (tournament.matches[spot_id] && tournament.matches[spot_id].one_competitor_id !== null && tournament.matches[spot_id].one_competitor_id !== 0) {
                         const one_id = tournament.matches[spot_id].one_competitor_id;
                         const advance_url = options.advance_url.replace('{ID}', match_id).replace('{WINNER_ID}', one_id).replace('{NONCE}', options.advance_nonce);
@@ -132,36 +132,37 @@
             }
 
             function renderMatch(tournament, tournament_id, match_id, flow, can_edit_matches) {
+                const undecided = (options.undecided && options.undecided.length > 0) ? options.undecided : '&nbsp;';
                 let content = ``;
-                content += `<div class="tournamatch-match">`;
-                content += `<div class="horizontal-line"></div>`;
-                content += `<div class="tournamatch-match-body">`;
+                content += `<div class="trn-brackets-match">`;
+                content += `<div class="trn-brackets-horizontal-line"></div>`;
+                content += `<div class="trn-brackets-match-body">`;
 
-                if (tournament.matches[match_id] && tournament.matches[match_id].one_competitor_id !== null) {
+                if (tournament.matches[match_id] && tournament.matches[match_id].one_competitor_id !== null && tournament.matches[match_id].one_competitor_id !== 0) {
                     const one_id = tournament.matches[match_id].one_competitor_id;
                     const one_name = tournament.competitors[one_id] ? tournament.competitors[one_id].name : '&nbsp;';
                     const one_url = tournament.competitors[one_id] ? `${options.site_url}/${tournament.competitors[one_id].competitor_type}/${one_id}` : "#";
-                    content += `<span id="trn_spot_${match_id}_one" class="tournamatch-competitor competitor-${one_id}" data-competitor-id="${one_id}"><a href="${one_url}">${one_name}</a></span>`;
+                    content += `<span id="trn_spot_${match_id}_one" class="trn-brackets-competitor trn-brackets-competitor-${one_id}" data-competitor-id="${one_id}"><a href="${one_url}">${one_name}</a></span>`;
                 } else {
-                    content += `<span id="trn_spot_${match_id}_one" class="tournamatch-competitor">&nbsp;</span>`;
+                    content += `<span id="trn_spot_${match_id}_one" class="trn-brackets-competitor">${undecided}</span>`;
                 }
 
-                if (tournament.matches[match_id] && tournament.matches[match_id].two_competitor_id !== null) {
+                if (tournament.matches[match_id] && tournament.matches[match_id].two_competitor_id !== null && tournament.matches[match_id].two_competitor_id !== 0) {
                     const two_id = tournament.matches[match_id].two_competitor_id;
                     const two_name = tournament.competitors[two_id] ? tournament.competitors[two_id].name : '&nbsp;';
                     const two_url = tournament.competitors[two_id] ? `${options.site_url}/${tournament.competitors[two_id].competitor_type}/${two_id}` : "#";
-                    content += `<span id="trn_spot_${match_id}_two" class="tournamatch-competitor competitor-${two_id}" data-competitor-id="${two_id}"><a href="${two_url}">${two_name}</a></span>`;
+                    content += `<span id="trn_spot_${match_id}_two" class="trn-brackets-competitor trn-brackets-competitor-${two_id}" data-competitor-id="${two_id}"><a href="${two_url}">${two_name}</a></span>`;
                 } else {
-                    content += `<span id="trn_spot_${match_id}_two" class="tournamatch-competitor">&nbsp;</span>`;
+                    content += `<span id="trn_spot_${match_id}_two" class="trn-brackets-competitor">${undecided}</span>`;
                 }
 
                 content += `</div>`;
 
                 if (flow) {
                     if (0 === match_id % 2) {
-                        content += `<div class="bottom-half">`;
+                        content += `<div class="trn-brackets-bottom-half">`;
                     } else {
-                        content += `<div class="top-half">`;
+                        content += `<div class="trn-brackets-top-half">`;
                     }
 
                     if (can_edit_matches) {
@@ -182,36 +183,36 @@
 
                 container.dataset.trnTotalRounds = tournament.rounds;
 
-                content += `<div class="tournamatch-round-header-container">`;
+                content += `<div class="trn-brackets-round-header-container">`;
                 for (let i = 0; i <= tournament.rounds; i++) {
-                    content += `<span class="tournamatch-round-header">${options.language.rounds[i]}</span>`;
+                    content += `<span class="trn-brackets-round-header">${options.language.rounds[i]}</span>`;
                 }
                 content += `</div>`;
                 content += renderProgress(calculateProgress(tournament));
 
-                content += `<div class="tournamatch-round-body-container">`;
+                content += `<div class="trn-brackets-round-body-container">`;
                 let spot = 1;
                 let sumOfGames = 0;
                 for (let round = 1; round <= tournament.rounds; round++) {
                     numberOfGames = Math.ceil(tournament.size / (Math.pow(2, round)));
                     matchPaddingCount = Math.pow(2, round) - 1;
 
-                    content += `<div class="tournamatch-round-body">`;
+                    content += `<div class="trn-brackets-round-body">`;
 
                     for (spot; spot <= (numberOfGames + sumOfGames); spot++) {
                         for (let padding = 0; padding < matchPaddingCount; padding++) {
                             if (1 === spot % 2) {
-                                content += `<div class="match-half">&nbsp;</div> `;
+                                content += `<div class="trn-brackets-match-half">&nbsp;</div> `;
                             } else {
-                                content += `<div class="vertical-line">&nbsp;</div> `;
+                                content += `<div class="trn-brackets-vertical-line">&nbsp;</div> `;
                             }
                         }
                         content += renderMatch(tournament, tournament_id, spot, round !== tournament.rounds, options.can_edit_matches);
                         for (let padding = 0; padding < matchPaddingCount; padding++) {
                             if ((round !== tournament.rounds) && (1 === spot % 2)) {
-                                content += `<div class="vertical-line">&nbsp;</div> `;
+                                content += `<div class="trn-brackets-vertical-line">&nbsp;</div> `;
                             } else {
-                                content += `<div class="match-half">&nbsp;</div> `;
+                                content += `<div class="trn-brackets-match-half">&nbsp;</div> `;
                             }
                         }
                     }
@@ -220,29 +221,29 @@
                 }
 
                 // Display the last winner's spot.
-                content += `<div class="tournamatch-round-body">`;
+                content += `<div class="trn-brackets-round-body">`;
                 for (let padding = 0; padding < matchPaddingCount; padding++) {
-                    content += `<div class="match-half">&nbsp;</div> `;
+                    content += `<div class="trn-brackets-match-half">&nbsp;</div> `;
                 }
-                content += `<div class="tournamatch-match">`;
-                content += `<div class="winners-line">`;
+                content += `<div class="trn-brackets-match">`;
+                content += `<div class="trn-brackets-winners-line">`;
                 if (options.can_edit_matches) {
                     content += renderDropDown(tournament, tournament_id, spot - 1);
                 }
                 content += `</div>`;
-                content += `<div class="tournamatch-match-body">`;
-                content += `<span class="tournamatch-competitor"><strong>${options.language.winner}</strong></span>`;
+                content += `<div class="trn-brackets-match-body">`;
+                content += `<span class="trn-brackets-competitor"><strong>${options.language.winner}</strong></span>`;
                 if (tournament.matches[spot - 1] && tournament.matches[spot - 1].match_status === 'confirmed') {
                 //if (tournament.matches[spot] && tournament.matches[spot].one_competitor_id !== null) {
                     const winner_id = tournament.matches[spot -1].one_result === 'won' ? tournament.matches[spot -1].one_competitor_id : tournament.matches[spot -1].two_competitor_id;
-                    content += `<span class="tournamatch-competitor competitor-${winner_id}" data-competitor-id="${winner_id}">${tournament.competitors[winner_id].name}</span>`;
+                    content += `<span class="trn-brackets-competitor competitor-${winner_id}" data-competitor-id="${winner_id}">${tournament.competitors[winner_id].name}</span>`;
                 } else {
-                    content += `<span class="tournamatch-competitor">&nbsp;</span>`;
+                    content += `<span class="trn-brackets-competitor">&nbsp;</span>`;
                 }
                 content += `</div>`;
                 content += `</div>`;
                 for (let padding = 0; padding < matchPaddingCount; padding++) {
-                    content += `<div class="match-half">&nbsp;</div> `;
+                    content += `<div class="trn-brackets-match-half">&nbsp;</div> `;
                 }
                 content += `</div>`;
                 // End of display last winner's spot.
@@ -251,7 +252,7 @@
 
                 container.innerHTML = content;
 
-                Array.from(document.getElementsByClassName('tournamatch-competitor'))
+                Array.from(document.getElementsByClassName('trn-brackets-competitor'))
                     .forEach(
                         (item) => {
                             item.addEventListener('mouseover', competitorMouseOver);
@@ -286,7 +287,7 @@
                 //     );
             }
 
-            Array.from(document.getElementsByClassName('tournamatch-brackets'))
+            Array.from(document.getElementsByClassName('trn-brackets'))
                 .forEach(
                     (item) => {
                         const tournamentId = item.dataset.tournamentId;
