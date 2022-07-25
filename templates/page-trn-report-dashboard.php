@@ -209,7 +209,7 @@ trn_get_header();
 					if ( 0 < count( $ladders ) ) {
 						?>
 						<form id="report-ladder-form" class="form-inline text-center"
-								action="<?php trn_esc_route_e( 'report.page' ); ?>" method="post">
+								action="<?php trn_esc_route_e( 'matches.single.create' ); ?>" method="post">
 							<div class="form-group">
 								<label for="ladder_id"
 										class="control-label"><?php esc_html_e( 'Select Ladder', 'tournamatch' ); ?></label>

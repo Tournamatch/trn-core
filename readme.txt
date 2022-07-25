@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.0
-Stable tag: 4.0.3
+Stable tag: 4.1.0
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -42,7 +42,42 @@ You should add links to your menu for the following pages (replace example.com w
 - example.com/teams
 - example.com/tournaments
 
+== Screenshots ==
+
+1. A ladder standings page showing 8 competitors, total points, games played, wins, losses, draws, win percent, streak, and days idle. Draw match results can be disabled in settings. There are also two icons in the Action column for editing a competitor's standing and removing a competitor.
+2. An 8 competitor tournament. You can advance competitors through the brackets by viewing the brackets while authenticated as an admin. Hover the cursor over the gear icon to see the match drop down menu.
+3. A team roster page for team owners to manage who is on their team. Owners can send invites or directly invite other users, and users can also request to join a team.  
+4. The WordPress backend **All Tournaments** list. Here you can find actions for **Registration** (for manually registering competitors), **Start**, **Reset**, **Finish**, **Edit**, and **Clone**.
+5. The WordPress backend tournament matches screen. You can manually advance competitors in the tournament, confirm reported matches, or clear match disputes. Users can also report their own matches which the opposite competitors can then confirm.
+6. The WordPress backend **Create new ladder** form. You can choose how many points to reward for wins, losses, and draws.
+7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
+
 == Changelog ==
+
+= 4.1.0 =
+* **Fixed a critical bug in 4.0.x that caused the players list and new teams to fail.**
+* Added a list of page shortcuts to the WordPress Backend -> Tournamatch page.
+* Updated the single player, single team, single tournament, and single ladder template pages to dynamically aggregate tabbed views.
+* Added four new filters for single page template views.
+* Added view links to the WordPress Backend Ladder list table and Tournament list table.
+* Refactored the rest classes to dynamically prepare responses based on item schema.
+* Refactored the tournament and ladder admin form to dynamically build form elements.
+* Changed where Tournamatch scripts are enqueued so that shortcuts can work on non-Tournamatch pages.
+* Fixed a bug causing complete tournaments to display the message "The tournament has not started."
+* Added a check to the brackets shortcode to verify the given tournament exists.
+* Fixed an incorrectly named primary key on the team members table.
+* Fixed an incorrectly named key on the tournaments entries table.
+* Fixed a broken link to the competitor flag on the newest members widget.
+- Removed missing goals and delta fields from edit ladder competitor page.
+- Removed redundant info button on ladder archive page.
+- Fixed an issue preventing teams from creating challenges.
+- Fixed an issue preventing non-admins from editing their own user profiles.
+- Fixed an issue when attempting to create a challenge with no supported ladders or no competitors.
+- Fixed occurrences of null dates for scheduled matches and the backend match list table.
+- Fixed an issue causing the challenger and challengee team name to be blank for team challenges.
+- Reporting an unscheduled new match from the results dashboard works as expected.
+* Removed commented out code.
+* Removed several unused classes and assets.
 
 = 4.0.3 =
 * Fixed date localization.

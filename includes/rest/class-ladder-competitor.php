@@ -201,7 +201,7 @@ SELECT
     ELSE FORMAT((`le1`.`wins` / (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`)), 3) 
     END AS `win_percent`, 
   (UNIX_TIMESTAMP() - `time`) AS `idle_unix_timestamp`,
-  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `le1`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
 WHERE `le1`.`ladder_entry_id` = %d",
 				$wpdb->insert_id
@@ -279,7 +279,7 @@ SELECT
     WHEN 'players' THEN `p`.`display_name`
     ELSE `t`.`name`
     END AS `name`,
-  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`     
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `le1`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`     
 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
   LEFT JOIN `{$wpdb->prefix}trn_ladders` AS `l` ON `l`.`ladder_id` = `le1`.`ladder_id`
   LEFT JOIN `{$wpdb->prefix}trn_players_profiles` AS `p` ON `le1`.`competitor_id` = `p`.`user_id` AND `le1`.`competitor_type` = 'players'
@@ -430,7 +430,7 @@ SELECT
     ELSE FORMAT((`le1`.`wins` / (`le1`.`wins` + `le1`.`losses` + `le1`.`draws`)), 3) 
     END AS `win_percent`, 
   (UNIX_TIMESTAMP() - `time`) AS `idle_unix_timestamp`,
-  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `l`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
+  (SELECT COUNT(*) + 1 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le2` WHERE `le2`.`ladder_id` = `le1`.`ladder_id` AND `le2`.`points` > `le1`.`points`) AS `rank`   
 FROM `{$wpdb->prefix}trn_ladders_entries` AS `le1`
 WHERE `le1`.`ladder_entry_id` = %d",
 				$ladder_entry_id
@@ -697,6 +697,7 @@ WHERE `le1`.`ladder_entry_id` = %d",
 			'joined_date'     => array(
 				'description' => esc_html__( 'The datetime the ladder competitor joined the ladder.', 'tournamatch' ),
 				'type'        => 'object',
+				'trn-subtype' => 'datetime',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'properties'  => array(
 					'raw'      => array(
@@ -776,6 +777,17 @@ WHERE `le1`.`ladder_entry_id` = %d",
 			'days_idle'       => array(
 				'description' => esc_html__( 'The total number of days since the last match for the ladder competitor.', 'tournamatch' ),
 				'type'        => 'integer',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $competitor ) {
+					if ( 0 < strlen( $competitor->time ) ) {
+						$date_time_1 = new \DateTime( '@0' );
+						$date_time_2       = new \DateTime( '@' . $competitor->idle_unix_timestamp );
+
+						return (int) $date_time_1->diff( $date_time_2 )->format( '%a' );
+					} else {
+						return '';
+					}
+				},
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 			),
@@ -791,6 +803,10 @@ WHERE `le1`.`ladder_entry_id` = %d",
 			$properties['edit_link'] = array(
 				'description' => esc_html__( 'URL to edit the competitor.' ),
 				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $competitor ) {
+					return trn_route( 'ladder-competitors.single.edit', array( 'id' => $competitor->ladder_entry_id ) );
+				},
 				'format'      => 'uri',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,

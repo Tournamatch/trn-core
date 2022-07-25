@@ -11,7 +11,7 @@
  * Plugin Name: Tournamatch
  * Plugin URI: https://www.tournamatch.com/
  * Description: Ladder and tournament plugin for eSports and online gaming leagues.
- * Version: 4.0.3
+ * Version: 4.1.0
  * Author: Tournamatch
  * Author URI: https://www.tournamatch.com
  * Text Domain: tournamatch
@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.0.3' );
+define( 'TOURNAMATCH_VERSION', '4.1.0' );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -64,7 +64,6 @@ add_action(
 	}
 );
 
-require_once __TRNPATH . 'includes/rest/class-rest.php';
 require_once __TRNPATH . 'includes/rest/class-controller.php';
 require_once __TRNPATH . 'includes/rest/class-challenge.php';
 require_once __TRNPATH . 'includes/rest/class-challenge-builder.php';
@@ -1019,6 +1018,52 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 
 		wp_register_script( 'trn-delete-match', plugins_url( '/dist/js/delete-match.js', __FILE__ ), array( 'tournamatch' ), '3.11.0', true );
 		wp_localize_script( 'trn-delete-match', 'trn_delete_match_options', $delete_options );
+
+		$trn_options = get_option( 'tournamatch_options' );
+		if ( array_key_exists( 'include_bootstrap_scripts', $trn_options ) && ( '1' === $trn_options['include_bootstrap_scripts'] ) ) {
+			wp_register_style( 'trn_bootstrap_css', plugins_url( '/dist/css/trn.bootstrap.4.3.1.css', __FILE__ ), array(), '4.3' );
+			wp_enqueue_style( 'trn_bootstrap_css' );
+		}
+
+		wp_register_style( 'trn_font_awesome_css', plugins_url( '/dist/css/fontawesome.5.14.0.css', __FILE__ ), array(), '5.14.0' );
+		wp_enqueue_style( 'trn_font_awesome_css' );
+
+		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '3.0.0' );
+		wp_enqueue_style( 'trn_components_css' );
+
+		wp_register_style( 'datatables', plugins_url( '/dist/css/trn.datatable.bootstrap4.css', __FILE__ ), array(), '1.10.19' );
+		wp_enqueue_style( 'datatables' );
+
+		$trn_options = get_option( 'tournamatch_options' );
+		if ( array_key_exists( 'include_bootstrap_scripts', $trn_options ) && ( '1' === $trn_options['include_bootstrap_scripts'] ) ) {
+			wp_register_script( 'trn_popper', plugins_url( '/dist/vendor/popper.min.js', __FILE__ ), array( 'jquery' ), '1.14.7', true );
+			wp_register_script(
+				'trn_bootstrap_js',
+				plugins_url( '/dist/vendor/bootstrap.js', __FILE__ ),
+				array(
+					'jquery',
+					'trn_popper',
+				),
+				'4.3',
+				true
+			);
+			wp_enqueue_script( 'trn_bootstrap_js' );
+		}
+
+		wp_register_script( 'datatables', plugins_url( '/dist/vendor/jquery.dataTables.min.js', __FILE__ ), array( 'jquery' ), '1.10.20', true );
+		wp_register_script(
+			'datatables-bootstrap',
+			plugins_url( '/dist/vendor/dataTables.bootstrap4.min.js', __FILE__ ),
+			array(
+				'jquery',
+				'datatables',
+			),
+			'1.10.20',
+			true
+		);
+		wp_enqueue_script( 'datatables-bootstrap' );
+
+		wp_enqueue_script( 'trn-confirm-action' );
 	}
 
 	add_action( 'wp_enqueue_scripts', 'trn_register_scripts' );
@@ -1337,7 +1382,13 @@ if ( ! function_exists( 'scheduled_matches_table' ) ) {
 						<a href="<?php trn_esc_route_e( $scheduled_match->route_name, array( $scheduled_match->route_var => $scheduled_match->two_competitor_id ) ); ?>"><?php echo esc_html( $scheduled_match->two_name ); ?></a>
 					</td>
 					<td class="trn-scheduled-matches-table-date">
-						<?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $scheduled_match->match_date ) ) ) ); ?>
+						<?php
+						if ( '0000-00-00 00:00:00' !== $scheduled_match->match_date ) {
+							echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $scheduled_match->match_date ) ) ) );
+						} else {
+							echo '&nbsp;';
+						}
+						?>
 					</td>
 					<td class="trn-scheduled-matches-table-action">
 						<a class="btn btn-sm btn-primary"
@@ -1638,6 +1689,7 @@ if ( ! function_exists( 'trn_route' ) ) {
 			'challenges.archive'               => 'challenges',
 			'challenges.single'                => 'challenges/{id}',
 			'challenges.single.create'         => 'challenges/create',
+			'games.archive'                    => 'games',
 			'ladder-competitors.single.edit'   => 'ladder-competitors/{id}/edit',
 			'ladders.archive'                  => 'ladders',
 			'ladders.single'                   => 'ladders/{id}',
@@ -2043,20 +2095,6 @@ if ( ! function_exists( 'trn_get_header' ) ) {
 	 * @since 4.0.0
 	 */
 	function trn_get_header() {
-		$trn_options = get_option( 'tournamatch_options' );
-		if ( array_key_exists( 'include_bootstrap_scripts', $trn_options ) && ( '1' === $trn_options['include_bootstrap_scripts'] ) ) {
-			wp_register_style( 'trn_bootstrap_css', plugins_url( '/dist/css/trn.bootstrap.4.3.1.css', __FILE__ ), array(), '4.3' );
-			wp_enqueue_style( 'trn_bootstrap_css' );
-		}
-
-		wp_register_style( 'trn_font_awesome_css', plugins_url( '/dist/css/fontawesome.5.14.0.css', __FILE__ ), array(), '5.14.0' );
-		wp_enqueue_style( 'trn_font_awesome_css' );
-
-		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '3.0.0' );
-		wp_enqueue_style( 'trn_components_css' );
-
-		wp_register_style( 'datatables', plugins_url( '/dist/css/trn.datatable.bootstrap4.css', __FILE__ ), array(), '1.10.19' );
-		wp_enqueue_style( 'datatables' );
 
 		do_action( 'tournamatch_after_header' );
 
@@ -2075,36 +2113,6 @@ if ( ! function_exists( 'trn_get_footer' ) ) {
 
 		echo '</div>';
 
-		$trn_options = get_option( 'tournamatch_options' );
-		if ( array_key_exists( 'include_bootstrap_scripts', $trn_options ) && ( '1' === $trn_options['include_bootstrap_scripts'] ) ) {
-			wp_register_script( 'trn_popper', plugins_url( '/dist/vendor/popper.min.js', __FILE__ ), array( 'jquery' ), '1.14.7', true );
-			wp_register_script(
-				'trn_bootstrap_js',
-				plugins_url( '/dist/vendor/bootstrap.js', __FILE__ ),
-				array(
-					'jquery',
-					'trn_popper',
-				),
-				'4.3',
-				true
-			);
-			wp_enqueue_script( 'trn_bootstrap_js' );
-		}
-
-		wp_register_script( 'datatables', plugins_url( '/dist/vendor/jquery.dataTables.min.js', __FILE__ ), array( 'jquery' ), '1.10.20', true );
-		wp_register_script(
-			'datatables-bootstrap',
-			plugins_url( '/dist/vendor/dataTables.bootstrap4.min.js', __FILE__ ),
-			array(
-				'jquery',
-				'datatables',
-			),
-			'1.10.20',
-			true
-		);
-		wp_enqueue_script( 'datatables-bootstrap' );
-
-		wp_enqueue_script( 'trn-confirm-action' );
 	}
 }
 
@@ -2588,3 +2596,451 @@ add_action(
 		exit;
 	}
 );
+
+if ( ! function_exists( 'trn_table_column_exists' ) ) {
+	/**
+	 * Evaluates whether a database table has a given column.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $table_name The name of the table to check.
+	 * @param string $column_name The name of the column to look for.
+	 *
+	 * @return bool True if exists, false otherwise.
+	 */
+	function trn_table_column_exists( $table_name, $column_name ) {
+		global $wpdb;
+
+		$exists = $wpdb->get_var( $wpdb->prepare( 'SELECT COUNT(*) FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA` = %s AND `TABLE_NAME` = %s AND `column_name` = %s', DB_NAME, $table_name, $column_name ) );
+
+		return ( '0' !== $exists );
+	}
+}
+
+if ( ! function_exists( 'trn_verify_plugin_dependencies' ) ) {
+	/**
+	 * Verifies a plugin meets the necessary dependencies to activate.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string $plugin Name of the plugin that is activating.
+	 * @param array  $dependencies Array of dependencies to verify.
+	 */
+	function trn_verify_plugin_dependencies( $plugin, $dependencies ) {
+		$errors = array();
+
+		foreach ( $dependencies as $dependency => $minimum_version ) {
+			$path = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $dependency;
+			if ( file_exists( $path ) ) {
+				$data   = get_plugin_data( $path );
+				$failed = ! version_compare( $data['Version'], $minimum_version, '>=' );
+				if ( $failed ) {
+					/* translators: Plugin Name, a semantic version, another plugin name. Another plugin name and the actual version. */
+					$errors[] = sprintf( esc_html__( 'Plugin "%1$s" requires a minimum version "%2$s" of "%3$s". "%4$s" is version "%5$s" and the minimum was not met.', 'tournamatch' ), $plugin, $minimum_version, $data['Name'], $data['Name'], $data['Version'] );
+				}
+			}
+		};
+
+		if ( 0 < count( $errors ) ) {
+			echo '<h3>' . esc_html__( 'Please update all Tournamatch plugins before activating.', 'tournamatch' ) . ' ' . esc_html__( 'The minimum version was not met for one or more plugins.', 'tournamatch' ) . '</h3>';
+			echo '<p>';
+			array_walk(
+				$errors,
+				function( $error ) {
+					echo esc_html( $error ) . '<br>';
+				}
+			);
+			echo '</p>';
+
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error, WordPress.PHP.NoSilencedErrors.Discouraged
+			@trigger_error( esc_html__( 'Please update all Tournamatch plugins before activating.', 'tournamatch' ), E_USER_ERROR );
+		}
+	}
+}
+
+if ( ! function_exists( 'trn_array_insert' ) ) {
+	/**
+	 * Inserts a key/value pair in an array before or after a given key.
+	 *
+	 * @since 4.1.0
+	 *
+	 * https://stackoverflow.com/a/25878227
+	 *
+	 * @param array  $array The target array to manipulate.
+	 * @param string $search_key The key in the target array to find.
+	 * @param string $insert_key The key of the value to insert.
+	 * @param mixed  $insert_value The value to insert.
+	 * @param bool   $insert_after_founded_key Indicates whether to insert before or after the found key.
+	 * @param bool   $append_if_not_found Indicates whether to add the new item to the end of the key was not found.
+	 *
+	 * @return array
+	 */
+	function trn_array_insert( $array, $search_key, $insert_key, $insert_value, $insert_after_founded_key = true, $append_if_not_found = false ) {
+		$new_array = array();
+
+		foreach ( $array as $key => $value ) {
+			if ( $key === $search_key && ! $insert_after_founded_key ) {
+				$new_array[ $insert_key ] = $insert_value;
+			}
+
+			$new_array[ $key ] = $value;
+
+			if ( $key === $search_key && $insert_after_founded_key ) {
+				$new_array[ $insert_key ] = $insert_value;
+			}
+		}
+
+		if ( $append_if_not_found && count( $array ) === count( $new_array ) ) {
+			$new_array[ $insert_key ] = $insert_value;
+		}
+
+		return $new_array;
+	}
+}
+
+if ( ! function_exists( 'trn_admin_form' ) ) {
+	/**
+	 * Displays an Tournamatch form in the WordPress backend.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param array $form Array of form attributes and meta data.
+	 * @param mixed $context The data context this form targets.
+	 */
+	function trn_admin_form( $form, $context ) {
+		$form_id  = isset( $form['id'] ) ? $form['id'] : '';
+		$action   = isset( $form['action'] ) ? $form['action'] : '#';
+		$method   = isset( $form['method'] ) ? $form['method'] : 'post';
+		$sections = isset( $form['sections'] ) ? $form['sections'] : array();
+
+		/**
+		 * Filters an array of sections for this form.
+		 *
+		 * The dynamic portion of the hook name, `$form_id`, refers to the admin form's HTML id.
+		 *
+		 * Possible hook names include:
+		 *
+		 *  - `trn_trn_tournament_form_sections`
+		 *  - `trn_trn_tournament_form_sections`
+		 *  - `trn_trn_ladder_form_sections`
+		 *
+		 * @since 4.1.0
+		 *
+		 * @param stdClass $sections An array of sections to display.
+		 * @param stdClass $context The data context item we are rendering a form for.
+		 */
+		$sections = apply_filters( "trn_{$form_id}_sections", $sections, $context );
+
+		$submit_id      = isset( $form['submit']['id'] ) ? $form['submit']['id'] : '';
+		$submit_content = isset( $form['submit']['content'] ) ? $form['submit']['content'] : __( 'Submit', 'tournamatch' );
+		?>
+		<form action="<?php echo esc_url( $action ); ?>" method="<?php echo esc_attr( $method ); ?>" id="<?php echo esc_attr( $form_id ); ?>">
+			<?php
+			foreach ( $sections as $section ) :
+				$section_id = isset( $section['id'] ) ? $section['id'] : null;
+				$content    = isset( $section['content'] ) ? $section['content'] : '';
+				$fields     = isset( $section['fields'] ) ? $section['fields'] : array();
+
+				if ( is_null( $section_id ) ) {
+					continue;
+				}
+
+				/**
+				 * Filters an array of fields for a given section.
+				 *
+				 * The dynamic portion of the hook name, `$form_id`, refers to the admin form's HTML id.
+				 * The dynamic portion of the hook name, `$section_id`, refers to the admin form section's HTML id.
+				 *
+				 * Possible hook names include:
+				 *
+				 *  - `trn_trn_tournament_form_general_fields`
+				 *  - `trn_trn_tournament_form_other_fields`
+				 *  - `trn_trn_ladder_form_challenge_fields`
+				 *
+				 * @since 4.1.0
+				 *
+				 * @param stdClass $fields An array of field items to display.
+				 * @param stdClass $context The data context item we are rendering a form for.
+				 */
+				$fields = apply_filters( "trn_{$form_id}_{$section_id}_fields", $fields, $context );
+
+				?>
+			<h2 class="title"><?php echo esc_html( $content ); ?></h2>
+			<table class="form-table">
+				<?php
+				foreach ( $fields as $field ) :
+					$id          = isset( $field['id'] ) ? $field['id'] : '';
+					$label       = isset( $field['label'] ) ? $field['label'] : $field['label'];
+					$name        = isset( $field['name'] ) ? $field['name'] : $id;
+					$type        = isset( $field['type'] ) ? $field['type'] : 'text';
+					$required    = isset( $field['required'] ) ? $field['required'] : false;
+					$disabled    = isset( $field['disabled'] ) ? $field['disabled'] : false;
+					$value       = isset( $field['value'] ) ? $field['value'] : '';
+					$description = isset( $field['description'] ) ? $field['description'] : null;
+
+					?>
+					<tr class="form-field <?php echo esc_attr( "trn_{$id}_row" ); ?>">
+						<th scope="row">
+							<label for="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $label ); ?>
+								<?php if ( $required ) : ?>
+									<span class="description"><?php esc_html_e( '(required)', 'tournamatch' ); ?></span>
+								<?php endif; ?>
+							</label>
+						</th>
+						<td>
+							<?php
+
+							switch ( $type ) {
+								case 'datetime-local':
+									if ( 0 < strlen( $value ) ) {
+										$start_date = new \DateTime( $value . 'Z' );
+										$start_date->setTimezone( new \DateTimeZone( wp_timezone_string() ) );
+										$start_date = $start_date->format( 'Y-m-d\TH:i' );
+									} else {
+										$start_date = '';
+									}
+
+									echo '<input id="' . esc_attr( $id ) . '_field" name="' . esc_attr( $name ) . '_field" type="datetime-local" value="' . esc_attr( $start_date ) . '"';
+									if ( $required ) {
+										echo ' required';
+									}
+									if ( $disabled ) {
+										echo ' disabled';
+									}
+									echo '>';
+									echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="hidden" value="' . esc_attr( $start_date ) . '"';
+									if ( $disabled ) {
+										echo ' disabled';
+									}
+									echo '>';
+									break;
+
+								case 'select':
+									$options = isset( $field['options'] ) ? $field['options'] : array();
+									$options = is_array( $options ) ? $options : array();
+									$options = array_map(
+										function( $option ) {
+												$default_option = array(
+													'content' => $option,
+													'value'   => $option,
+												);
+
+											if ( is_array( $option ) ) {
+												return array_merge( $default_option, $option );
+											} else {
+												return $default_option;
+											}
+										},
+										$options
+									);
+
+									/**
+									 * Filters an array of options for a select drop down.
+									 *
+									 * The dynamic portion of the hook name, `$form_id`, refers to the admin form's HTML id.
+									 * The dynamic portion of the hook name, `$id`, refers to the admin form input's HTML id.
+									 *
+									 * Possible hook names include:
+									 *
+									 *  - `trn_trn_tournament_form_game_id_options`
+									 *  - `trn_trn_tournament_form_initial_seeding_options`
+									 *  - `trn_trn_ladder_form_ranking_method_options`
+									 *
+									 * @since 4.1.0
+									 *
+									 * @param stdClass $options An array of 'content' 'value' items to display.
+									 * @param stdClass $context The data context item we are rendering a form for.
+									 */
+									$options = apply_filters( "trn_{$form_id}_{$id}_options", $options, $context );
+
+									if ( 0 < count( $options ) ) {
+										echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"';
+										if ( $required ) {
+											echo ' required';
+										}
+										if ( $disabled ) {
+											echo ' disabled';
+										}
+										echo '>';
+										foreach ( $options as $option ) {
+											$option_value   = isset( $option['value'] ) ? $option['value'] : '';
+											$option_content = isset( $option['content'] ) ? $option['content'] : '';
+											echo '<option value="' . esc_attr( $option_value ) . '"';
+											if ( $value === $option_value ) {
+												echo ' selected';
+											}
+											echo '>' . esc_html( $option_content ) . '</option>';
+										}
+
+										echo '</select>';
+									} else {
+										echo '<p>' . esc_html__( 'No items exist.', 'tournamatch' ) . '</p>';
+									}
+									break;
+
+								case 'textarea':
+									echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="10"';
+									if ( $required ) {
+										echo ' required';
+									}
+									if ( $disabled ) {
+										echo ' disabled';
+									}
+									echo '>' . esc_textarea( $value ) . '</textarea>';
+									break;
+
+								case 'number':
+									echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="number" value="' . intval( $value ) . '"';
+									if ( $required ) {
+										echo ' required';
+									}
+									if ( $disabled ) {
+										echo ' disabled';
+									}
+									echo '/>';
+									break;
+
+								case 'text':
+								default:
+									echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="text" value="' . esc_attr( $value ) . '"';
+									if ( $required ) {
+										echo ' required';
+									}
+									if ( $disabled ) {
+										echo ' disabled';
+									}
+									echo '/>';
+									break;
+							}
+
+							if ( ! is_null( $description ) ) {
+								echo '<p class="description">' . esc_html( $description ) . '</p>';
+							}
+							?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		<?php endforeach; ?>
+			<p class="submit">
+				<input type="submit" id="<?php echo esc_attr( $submit_id ); ?>" value="<?php echo esc_attr( $submit_content ); ?>" class="button button-primary">
+			</p>
+		</form>
+		<?php
+	}
+}
+
+if ( ! function_exists( 'trn_single_template_tab_views' ) ) {
+	/**
+	 * Renders a tabbed view of pages.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param array $views Array of view pages.
+	 * @param mixed $data_context Data context to bind each page to.
+	 */
+	function trn_single_template_tab_views( $views, $data_context ) {
+		?>
+		<ul class="tournamatch-nav mt-md">
+			<?php foreach ( $views as $view_id => $view ) : ?>
+				<li class="tournamatch-nav-item" role="presentation" >
+					<?php
+
+					if ( isset( $view['heading'] ) && is_object( $view['heading'] ) && ( $view['heading'] instanceof \Closure ) ) {
+						call_user_func( $view['heading'], $data_context );
+					} else {
+						echo '<a class="tournamatch-nav-link" href="';
+
+						if ( isset( $view['href'] ) ) {
+							echo esc_attr( esc_url( $view['href'] ) );
+						} else {
+							echo '#' . esc_attr( $view_id );
+						}
+
+						echo '"';
+
+						if ( ! isset( $view['href'] ) ) {
+							echo ' data-target="' . esc_attr( $view_id ) . '"';
+						}
+
+						$heading = isset( $view['heading'] ) ? $view['heading'] : $view_id;
+
+						echo '>' . esc_html( $heading ) . '</a>';
+					}
+					?>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+
+		<div class="tournamatch-tab-content">
+			<?php foreach ( $views as $view_id => $view ) : ?>
+				<div id="<?php echo esc_attr( $view_id ); ?>" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="<?php echo esc_attr( $view_id ); ?>-tab">
+					<?php
+
+					if ( isset( $view['content'] ) && is_object( $view['content'] ) && ( $view['content'] instanceof \Closure ) ) {
+						call_user_func( $view['content'], $data_context );
+					}
+
+					?>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+		<?php
+	}
+}
+
+add_action( 'plugins_loaded', 'trn_update_db_check' );
+if ( ! function_exists( 'trn_update_db_check' ) ) {
+	/**
+	 * Determines if the database needs to be upgraded.
+	 *
+	 * @since 4.1.0
+	 */
+	function trn_update_db_check() {
+		$options         = get_option( 'tournamatch_options', null );
+		$current_version = isset( $options['version'] ) ? $options['version'] : '4.0.0';
+
+		if ( TOURNAMATCH_VERSION !== $current_version ) {
+			trn_upgrade_sql( $current_version );
+		}
+
+		$options            = get_option( 'tournamatch_options', null );
+		$options['version'] = TOURNAMATCH_VERSION;
+		update_option( 'tournamatch_options', $options );
+	}
+}
+
+if ( ! function_exists( 'trn_upgrade_sql' ) ) {
+	/**
+	 * Performs a database update for Tournamatch.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @param string|null $version The current version.
+	 */
+	function trn_upgrade_sql( $version = null ) {
+		global $wpdb;
+
+		if ( empty( $version ) ) {
+			return;
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		if ( version_compare( $version, '4.1.0', '<' ) ) {
+			$sql_fix = "CREATE TABLE `{$wpdb->prefix}trn_teams_members` (
+  `team_member_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `team_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `joined_date` datetime NOT NULL,
+  `team_rank_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `wins` int(10) unsigned NOT NULL DEFAULT '0',
+  `losses` int(10) unsigned NOT NULL DEFAULT '0',
+  `draws` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`team_member_id`)
+);";
+			dbDelta( $sql_fix, true );
+		}
+	}
+}

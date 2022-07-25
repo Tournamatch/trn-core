@@ -336,59 +336,6 @@ WHERE 1 = 1 ";
 		);
 	}
 
-
-	/**
-	 * Prepares a single tournament registration item for response.
-	 *
-	 * @since 3.17.0
-	 *
-	 * @param Object           $tournament_registration Tournament registration object.
-	 * @param \WP_REST_Request $request                 Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $tournament_registration, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'tournament_entry_id', $fields ) ) {
-			$data['tournament_entry_id'] = (int) $tournament_registration->tournament_entry_id;
-		}
-
-		if ( rest_is_field_included( 'tournament_id', $fields ) ) {
-			$data['tournament_id'] = (int) $tournament_registration->tournament_id;
-		}
-
-		if ( rest_is_field_included( 'competitor_id', $fields ) ) {
-			$data['competitor_id'] = (int) $tournament_registration->competitor_id;
-		}
-
-		if ( rest_is_field_included( 'competitor_type', $fields ) ) {
-			$data['competitor_type'] = $tournament_registration->competitor_type;
-		}
-
-		if ( rest_is_field_included( 'joined_date', $fields ) ) {
-			$data['joined_date'] = array(
-				'raw'      => $tournament_registration->joined_date,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $tournament_registration->joined_date ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'can_unregister', $fields ) ) {
-			// Admins, single competitors, and team owners may unregister if the tournament has not started.
-			$data['can_unregister'] = false;        }
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $tournament_registration );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
 	/**
 	 * Prepares links for the request.
 	 *
@@ -468,6 +415,7 @@ WHERE 1 = 1 ";
 				'joined_date'         => array(
 					'description' => esc_html__( 'The datetime the tournament competitor registered for the tournament.', 'tournamatch' ),
 					'type'        => 'object',
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(
@@ -487,6 +435,10 @@ WHERE 1 = 1 ";
 				'can_unregister'      => array(
 					'description' => esc_html__( 'Indicates whether the authenticated user may unregister for the tournament.', 'tournamatch' ),
 					'type'        => 'boolean',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $competitor ) {
+						return false;
+					},
 					'context'     => array( 'view' ),
 					'readonly'    => true,
 				),

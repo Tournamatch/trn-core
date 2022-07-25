@@ -96,8 +96,46 @@ class Admin {
 	 * @since 4.0.0
 	 */
 	public function tournamatch() {
-		$options = get_option( 'tournamatch_options', null );
-		$version = isset( $options['version'] ) ? $options['version'] : esc_html__( 'None set', 'tournamatch' );
+		$version = TOURNAMATCH_VERSION;
+
+		$shortcuts = array(
+			'challenges'        => array(
+				'content' => __( 'Challenges', 'tournamatch' ),
+				'link'    => trn_route( 'challenges.archive' ),
+			),
+			'games'             => array(
+				'content' => __( 'Games', 'tournamatch' ),
+				'link'    => trn_route( 'games.archive' ),
+			),
+			'players'           => array(
+				'content' => __( 'Players', 'tournamatch' ),
+				'link'    => trn_route( 'players.archive' ),
+			),
+			'teams'             => array(
+				'content' => __( 'Teams', 'tournamatch' ),
+				'link'    => trn_route( 'teams.archive' ),
+			),
+			'matches'           => array(
+				'content' => __( 'Matches', 'tournamatch' ),
+				'link'    => trn_route( 'matches.archive' ),
+			),
+			'ladders'           => array(
+				'content' => __( 'Ladders', 'tournamatch' ),
+				'link'    => trn_route( 'ladders.archive' ),
+			),
+			'tournaments'       => array(
+				'content' => __( 'Tournaments', 'tournamatch' ),
+				'link'    => trn_route( 'tournaments.archive' ),
+			),
+			'user-dashboard'    => array(
+				'content' => __( 'User Dashboard', 'tournamatch' ),
+				'link'    => trn_route( 'players.single.dashboard' ),
+			),
+			'results-dashboard' => array(
+				'content' => __( 'Results Dashboard', 'tournamatch' ),
+				'link'    => trn_route( 'report.page' ),
+			),
+		);
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline">Tournamatch</h1>
@@ -115,7 +153,14 @@ class Admin {
 			<p><?php printf( esc_html__( 'For support, please email us at support@tournamatch.com or %1$sopen a support%2$s ticket.', 'tournamatch' ), '<a href="https://www.tournamatch.com/support" target="_blank">', '</a>' ); ?></p>
 			<h2><?php esc_html_e( 'Version', 'tournamatch' ); ?></h2>
 			<?php /* translators: Semantic version number such as 10.9.86. */ ?>
-			<p><?php printf( esc_html__( 'You are on Tournamatch version %s.', 'tournamatch' ), esc_html( $version ) ); ?></p>
+			<p><?php printf( esc_html__( 'You are using Tournamatch version %s.', 'tournamatch' ), esc_html( $version ) ); ?></p>
+			<h2><?php esc_html_e( 'Shortcuts', 'tournamatch' ); ?></h2>
+			<p><?php esc_html_e( 'You should consider adding links to the following front end (user-facing) pages.', 'tournamatch' ); ?></p>
+			<ul>
+				<?php foreach ( $shortcuts as $shortcut ) : ?>
+				<li><?php echo esc_html( $shortcut['content'] ); ?> (<a href="<?php echo esc_url( $shortcut['link'] ); ?>"><?php echo esc_url( $shortcut['link'] ); ?></a>) </li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
 		<?php
 	}

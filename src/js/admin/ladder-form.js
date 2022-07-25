@@ -42,25 +42,22 @@ import { trn } from './../tournamatch.js';
         }, false);
 
 
-        // Team size group
-        const competition_field = document.getElementById('competitor_type');
-        const team_size_group = document.getElementById('team_size_group');
+        // Team size select
+        let competition      = document.getElementById('competitor_type');
+        let competitionGroup = document.getElementsByClassName('trn_team_size_row');
 
         function toggleTeamSize() {
-            const team_size_fields = document.getElementById('team_size');
-            if (competition_field.value === 'players') {
-                team_size_fields.required = false;
-                team_size_group.style.display = 'none';
-                team_size_fields.disabled = true;
+            if (competition.value === 'teams') {
+                Array.from(competitionGroup).forEach((element) => {
+                    element.style.display = 'table-row';
+                });
             } else {
-                team_size_group.style.display = 'table-row';
-                team_size_fields.required = true;
-                team_size_fields.disabled = false;
+                Array.from(competitionGroup).forEach((element) => {
+                    element.style.display = 'none';
+                });
             }
         }
-        competition_field.addEventListener('change', function () {
-            toggleTeamSize();
-        });
+        competition.addEventListener('change', () => toggleTeamSize());
         toggleTeamSize();
 
     }, false);

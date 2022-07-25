@@ -97,6 +97,14 @@ if (!window.trn_obj_instance) {
 }
 export let trn = window.trn_obj_instance;
 
+window.addEventListener('load', function () {
+    const tabViews = document.getElementsByClassName( 'tournamatch-nav' );
+
+    Array.from(tabViews).forEach((tab) => {
+        trn.tabs(tab);
+    });
+}, false);
+
 class Tournamatch_Autocomplete {
 
     // currentFocus;

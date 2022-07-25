@@ -44,6 +44,9 @@ foreach ( $social_fields as $social_icon => $social_icon_data ) {
 		$social_links[] = '<a href="' . esc_html( get_post_meta( $team->post_id, $social_icon, true ) ) . '"><i class="' . esc_html( $social_icon_data['icon'] ) . '"></i></a>';
 	}
 }
+if ( 0 === count( $social_links ) ) {
+	$social_links[] = '<em>' . esc_html__( 'No contacts to display.', 'tournamatch' ) . '</em>';
+}
 $social_links = implode( ' ', $social_links );
 
 ?>
@@ -63,7 +66,7 @@ $social_links = implode( ' ', $social_links );
 			<?php endforeach; ?>
 			<dt><?php esc_html_e( 'Members', 'tournamatch' ); ?>:</dt>
 			<dd id="trn-team-members-list">
-				<?php esc_html_e( 'Loading team members...', 'tournamatch' ); ?>
+				<em><?php esc_html_e( 'Loading team members...', 'tournamatch' ); ?></em>
 			</dd>
 			<dt><?php esc_html_e( 'Contact', 'tournamatch' ); ?>:</dt>
 			<dd><?php echo wp_kses_post( $social_links ); ?></dd>
@@ -107,67 +110,86 @@ $social_links = implode( ' ', $social_links );
 		<?php trn_display_avatar( $team->team_id, 'teams', $team->avatar ); ?>
 	</div>
 </div>
-
-<ul id="tournamatch-team-views" class="tournamatch-nav mt-md">
-	<li class="flex-sm tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#roster" aria-selected="true" aria-controls="roster" role="tab" data-target="roster"><span><?php esc_html_e( 'Team Roster', 'tournamatch' ); ?></span></a></li>
-	<li class="flex-sm tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#ladders" aria-selected="false" aria-controls="ladders" role="tab" data-target="ladders"><span><?php esc_html_e( 'Ladders', 'tournamatch' ); ?></span></a></li>
-	<li class="flex-sm tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#tournaments" aria-selected="false" aria-controls="tournaments" role="tab" data-target="tournaments"><span><?php esc_html_e( 'Tournaments', 'tournamatch' ); ?></span></a></li>
-	<li class="flex-sm tournamatch-nav-item" role="presentation"><a class="tournamatch-nav-link" href="#match-history" aria-selected="false" aria-controls="match-history" role="tab" data-target="match-history"><span><?php esc_html_e( 'Match History', 'tournamatch' ); ?></span></a></li>
-</ul>
-
-<!-- Tab panes -->
-<div class="tournamatch-tab-content">
-	<div id="roster" class="tournamatch-tab-pane tournamatch-tab-active" role="tabpanel" aria-labelledby="roster-tab">
-		<h4 class="text-center"><?php esc_html_e( 'Team Roster', 'tournamatch' ); ?></h4>
-		<?php
-		echo do_shortcode( '[trn-team-roster-table team_id="' . intval( $team_id ) . '"]' );
-
-		if ( current_user_can( 'manage_tournamatch' ) ) {
-			?>
-			<div class="float-right">
-				<form autocomplete="off" class="form-inline" id="trn-add-player-form">
-					<label for="trn-add-player-input" class="sr-only"><?php esc_html_e( 'Player Name', 'tournamatch' ); ?>:</label>
-					<div class="autocomplete mr-sm-2">
-						<input type="text" id="trn-add-player-input" class="form-control" placeholder="<?php esc_html_e( 'Player name', 'tournamatch' ); ?>" required>
-					</div>
-					<button id="trn-add-player-button" class="btn btn-primary"><?php esc_html_e( 'Add Player', 'tournamatch' ); ?></button>
-				</form>
-			</div>
-			<div class="clearfix mb-3"></div>
-			<?php
-		}
-
-		if ( intval( $team_owner->id ) === $user_id ) {
-			?>
-			<div class="row">
-				<div class="col-md-6" id="invite-panel">
-					<?php echo do_shortcode( '[trn-email-team-invitation-form team_id="' . intval( $team_id ) . '"]' ); ?>
-				</div>
-				<div class="col-md-3" id="invitations-panel">
-					<?php echo do_shortcode( '[trn-team-invitations-list team_id="' . intval( $team_id ) . '"]' ); ?>
-				</div>
-				<div class="col-md-3" id="requests-panel">
-					<?php echo do_shortcode( '[trn-team-requests-list team_id="' . intval( $team_id ) . '"]' ); ?>
-				</div>
-			</div>
-			<?php
-		}
-		?>
-	</div>
-	<div id="ladders" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="ladders-tab">
-		<h4 class="text-center"><?php esc_html_e( 'Ladders', 'tournamatch' ); ?></h4>
-		<?php echo do_shortcode( '[trn-competitor-ladders-list-table competitor_type="teams" competitor_id="' . intval( $team_id ) . '"]' ); ?>
-	</div>
-	<div id="tournaments" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="tournaments-tab">
-		<h4 class="text-center"><?php esc_html_e( 'Tournaments', 'tournamatch' ); ?></h4>
-		<?php echo do_shortcode( '[trn-competitor-tournaments-list-table competitor_type="teams" competitor_id="' . intval( $team_id ) . '"]' ); ?>
-	</div>
-	<div id="match-history" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="match-history-tab">
-		<h4 class="text-center"><?php esc_html_e( 'Match History', 'tournamatch' ); ?></h4>
-		<?php echo do_shortcode( '[trn-competitor-match-list-table competitor_type="teams" competitor_id="' . intval( $team_id ) . '"]' ); ?>
-	</div>
-</div>
 <?php
+
+$views = array(
+	'roster'        => array(
+		'heading' => __( 'Team Roster', 'tournamatch' ),
+		'content' => function( $team ) use ( $team_owner ) {
+			$team_id = $team->team_id;
+			$user_id = get_current_user_id();
+
+			echo do_shortcode( '[trn-team-roster-table team_id="' . intval( $team_id ) . '"]' );
+
+			if ( current_user_can( 'manage_tournamatch' ) ) {
+				?>
+				<div class="float-right">
+					<form autocomplete="off" class="form-inline" id="trn-add-player-form">
+						<label for="trn-add-player-input" class="sr-only"><?php esc_html_e( 'Player Name', 'tournamatch' ); ?>:</label>
+						<div class="autocomplete mr-sm-2">
+							<input type="text" id="trn-add-player-input" class="form-control" placeholder="<?php esc_html_e( 'Player name', 'tournamatch' ); ?>" required>
+						</div>
+						<button id="trn-add-player-button" class="btn btn-primary"><?php esc_html_e( 'Add Player', 'tournamatch' ); ?></button>
+					</form>
+				</div>
+				<div class="clearfix mb-3"></div>
+				<?php
+			}
+
+			if ( intval( $team_owner->id ) === $user_id ) {
+				?>
+				<div class="row">
+					<div class="col-md-6" id="invite-panel">
+						<?php echo do_shortcode( '[trn-email-team-invitation-form team_id="' . intval( $team_id ) . '"]' ); ?>
+					</div>
+					<div class="col-md-3" id="invitations-panel">
+						<?php echo do_shortcode( '[trn-team-invitations-list team_id="' . intval( $team_id ) . '"]' ); ?>
+					</div>
+					<div class="col-md-3" id="requests-panel">
+						<?php echo do_shortcode( '[trn-team-requests-list team_id="' . intval( $team_id ) . '"]' ); ?>
+					</div>
+				</div>
+				<?php
+			}
+		},
+	),
+	'ladders'       => array(
+		'heading' => __( 'Ladders', 'tournamatch' ),
+		'content' => function( $team ) {
+			echo do_shortcode( '[trn-competitor-ladders-list-table competitor_type="teams" competitor_id="' . intval( $team->team_id ) . '"]' );
+		},
+	),
+	'tournaments'   => array(
+		'heading' => __( 'Tournaments', 'tournamatch' ),
+		'content' => function( $team ) {
+			echo do_shortcode( '[trn-competitor-tournaments-list-table competitor_type="teams" competitor_id="' . intval( $team->team_id ) . '"]' );
+		},
+	),
+	'match-history' => array(
+		'heading' => __( 'Match History', 'tournamatch' ),
+		'content' => function( $team ) {
+			echo do_shortcode( '[trn-competitor-match-list-table competitor_type="teams" competitor_id="' . intval( $team->team_id ) . '"]' );
+		},
+	),
+);
+
+/**
+ * Filters an array of views for the single team template page.
+ *
+ * @since 4.1.0
+ *
+ * @param array $views {
+ *          An associative array of tabbed views.
+ *
+ *          @param string|callable $heading The content or callable content of the header tab.
+ *          @param string $href The url of the header tab.
+ *          @param string|callable $content The content or callable content of the tabbed page.
+ *      }
+ * @param stdClass $team The data context item we are rendering a page for.
+ */
+$views = apply_filters( 'trn_single_team_views', $views, $team );
+
+trn_single_template_tab_views( $views, $team );
 
 trn_get_footer();
 

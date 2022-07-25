@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $user_id = get_query_var( 'id', null );
-if ( is_user_logged_in() && is_null( $user_id ) ) {
+if ( is_user_logged_in() && ( ( get_current_user_id() === intval( $user_id ) ) || is_null( $user_id ) ) ) {
 	$user_id = get_current_user_id();
 } elseif ( ! current_user_can( 'manage_tournamatch' ) ) {
 	wp_safe_redirect( trn_route( 'players.archive' ) );

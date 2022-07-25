@@ -194,7 +194,7 @@ class Team_Rank extends Controller {
 	public function get_items( $request ) {
 		global $wpdb;
 
-		$team_ranks_result = $wpdb->get_results( "SELECT `team_rank_id`, `title`, `max`, `weight`, `team_id` FROM `{$wpdb->prefix}trn_teams_ranks` ORDER BY `weight` ASC" );
+		$team_ranks_result = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}trn_teams_ranks` ORDER BY `weight` ASC" );
 
 		$team_ranks = array();
 
@@ -236,7 +236,7 @@ class Team_Rank extends Controller {
 	public function create_item( $request ) {
 		global $wpdb;
 
-		$lowest_rank = $wpdb->get_row( "SELECT * FROM `{$wpdb->prefix}trn_teams_ranks` WHERE `team_id` = '-1' ORDER BY `weight` DESC LIMIT 1" );
+		$lowest_rank = $wpdb->get_row( "SELECT * FROM `{$wpdb->prefix}trn_teams_ranks` ORDER BY `weight` DESC LIMIT 1" );
 		$wpdb->query( $wpdb->prepare( "UPDATE `{$wpdb->prefix}trn_teams_ranks` SET `weight` = %d WHERE `team_rank_id` = %d", ( $lowest_rank->weight + 1 ), $lowest_rank->team_rank_id ) );
 		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_teams_ranks` VALUES (NULL, %s, %d, %d)", $request->get_param( 'title' ), $request->get_param( 'max' ), $lowest_rank->weight ) );
 
@@ -420,43 +420,6 @@ class Team_Rank extends Controller {
 			),
 			204
 		);
-	}
-
-
-	/**
-	 * Prepares a single team rank item for response.
-	 *
-	 * @since 3.17.0
-	 *
-	 * @param Object           $team_rank Team Rank object.
-	 * @param \WP_REST_Request $request   Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $team_rank, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'team_rank_id', $fields ) ) {
-			$data['team_rank_id'] = (int) $team_rank->team_rank_id;
-		}
-
-		if ( rest_is_field_included( 'title', $fields ) ) {
-			$data['title'] = $team_rank->title;
-		}
-
-		if ( rest_is_field_included( 'max', $fields ) ) {
-			$data['max'] = (int) $team_rank->max;
-		}
-
-		if ( rest_is_field_included( 'weight', $fields ) ) {
-			$data['weight'] = (int) $team_rank->weight;
-		}
-
-		return rest_ensure_response( $data );
 	}
 
 	/**

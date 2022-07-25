@@ -122,10 +122,6 @@ class Challenge_Builder extends Controller {
 			}
 		}
 
-		if ( 0 === count( $competitors ) ) {
-			return new \WP_Error( 'rest_custom_error', esc_html__( 'Ladder does not have any competitors to challenge.', 'tournamatch' ), array( 'status' => 422 ) );
-		}
-
 		$response = array(
 			'ladder_id'   => $ladder_id,
 			'challenger'  => $challengers,

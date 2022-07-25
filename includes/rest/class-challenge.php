@@ -612,93 +612,6 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 	}
 
 	/**
-	 * Prepares a single challenge item for response.
-	 *
-	 * @since 3.15.0
-	 *
-	 * @param Object           $challenge Challenge object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $challenge, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'challenge_id', $fields ) ) {
-			$data['challenge_id'] = (int) $challenge->challenge_id;
-		}
-
-		if ( rest_is_field_included( 'ladder_id', $fields ) ) {
-			$data['ladder_id'] = (int) $challenge->ladder_id;
-		}
-
-		if ( rest_is_field_included( 'challenge_type', $fields ) ) {
-			$data['challenge_type'] = $challenge->challenge_type;
-		}
-
-		if ( rest_is_field_included( 'challenger_id', $fields ) ) {
-			$data['challenger_id'] = (int) $challenge->challenger_id;
-		}
-
-		if ( rest_is_field_included( 'challenger_type', $fields ) ) {
-			$data['challenger_type'] = $challenge->competitor_type;
-		}
-
-		if ( rest_is_field_included( 'challengee_id', $fields ) ) {
-			$data['challengee_id'] = (int) $challenge->challengee_id;
-		}
-
-		if ( rest_is_field_included( 'challengee_type', $fields ) ) {
-			$data['challengee_type'] = $challenge->competitor_type;
-		}
-
-		if ( rest_is_field_included( 'match_time', $fields ) ) {
-			$data['match_time'] = array(
-				'raw'      => $challenge->match_time,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $challenge->match_time ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'accepted_state', $fields ) ) {
-			$data['accepted_state'] = $challenge->accepted_state;
-		}
-
-		if ( rest_is_field_included( 'accepted_at', $fields ) ) {
-			$data['accepted_at'] = array(
-				'raw'      => $challenge->accepted_at,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $challenge->accepted_at ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'match_id', $fields ) ) {
-			$data['match_id'] = (int) $challenge->match_id;
-		}
-
-		if ( rest_is_field_included( 'expires_at', $fields ) ) {
-			$data['expires_at'] = array(
-				'raw'      => $challenge->expires_at,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $challenge->expires_at ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'link', $fields ) ) {
-			$data['link'] = trn_route( 'challenges.single', array( 'id' => $challenge->challenge_id ) );
-		}
-
-		// Wrap the data in a response object.
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $challenge );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
-	/**
 	 * Prepares links for the request.
 	 *
 	 * @since 3.21.0
@@ -784,6 +697,10 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 				'challenger_type' => array(
 					'description' => esc_html__( 'The competitor type of the challenger.', 'tournamatch' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $challenge ) {
+						return $challenge->competitor_type;
+					},
 					'enum'        => array( 'players', 'teams' ),
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
@@ -796,6 +713,10 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 				'challengee_type' => array(
 					'description' => esc_html__( 'The competitor type of the challengee.', 'tournamatch' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $challenge ) {
+						return $challenge->competitor_type;
+					},
 					'enum'        => array( 'players', 'teams' ),
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
@@ -803,6 +724,7 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 				'match_time'      => array(
 					'description' => esc_html__( 'The match time for the challenge.', 'tournamatch' ),
 					'type'        => 'object',
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(
@@ -829,6 +751,7 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 				'accepted_at'     => array(
 					'description' => esc_html__( 'The accepted at time for the challenge.', 'tournamatch' ),
 					'type'        => array( 'object', 'null' ),
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(
@@ -853,6 +776,7 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 				'expires_at'      => array(
 					'description' => esc_html__( 'The expiration at time for the challenge.', 'tournamatch' ),
 					'type'        => array( 'object', 'null' ),
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(
@@ -872,6 +796,10 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 				'link'            => array(
 					'description' => esc_html__( 'URL to the challenge.' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $challenge ) {
+						return trn_route( 'challenges.single', array( 'id' => $challenge->challenge_id ) );
+					},
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,

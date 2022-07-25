@@ -543,29 +543,29 @@ WHERE `tm`.`competition_type` = %s AND `match_status` != 'tournament_none' ",
 
 		$html = '';
 		if ( 'undetermined' === $item['match_status'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
+			/* translators: One competitor name and another competitor name. */
 			$html .= esc_html__( 'The competitors in this tournament match are not yet determined.', 'tournamatch' );
 		} elseif ( 'scheduled' === $item['match_status'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
+			/* translators: One competitor name and another competitor name. */
 			$html .= sprintf( esc_html__( 'A match between %1$s and %2$s is scheduled.', 'tournamatch' ), esc_html( $row3['name'] ), esc_html( $row33['name'] ) );
 		} elseif ( 'won' === $item['one_result'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
-			$html .= sprintf( esc_html__( '%1$s reported a win against %2$s on %3$s.', 'tournamatch' ), esc_html( $row3['name'] ), esc_html( $row33['name'] ), date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $item['match_date'] ) ) ) );
+			/* translators: One competitor name and another competitor name. */
+			$html .= sprintf( esc_html__( '%1$s reported a win against %2$s.', 'tournamatch' ), esc_html( $row3['name'] ), esc_html( $row33['name'] ) );
 		} elseif ( 'draw' === $item['one_result'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
-			$html .= sprintf( esc_html__( '%1$s reported a draw against %2$s on %3$s.', 'tournamatch' ), esc_html( $row3['name'] ), esc_html( $row33['name'] ), date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $item['match_date'] ) ) ) );
+			/* translators: One competitor name and another competitor name. */
+			$html .= sprintf( esc_html__( '%1$s reported a draw against %2$s.', 'tournamatch' ), esc_html( $row3['name'] ), esc_html( $row33['name'] ) );
 		} elseif ( 'lost' === $item['one_result'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
-			$html .= sprintf( esc_html__( '%1$s reported a loss against %2$s on %3$s.', 'tournamatch' ), esc_html( $row3['name'] ), esc_html( $row33['name'] ), date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $item['match_date'] ) ) ) );
+			/* translators: One competitor name and another competitor name. */
+			$html .= sprintf( esc_html__( '%1$s reported a loss against %2$s.', 'tournamatch' ), esc_html( $row3['name'] ), esc_html( $row33['name'] ) );
 		} elseif ( 'won' === $item['two_result'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
-			$html .= sprintf( esc_html__( '%1$s reported a win against %2$s on %3$s.', 'tournamatch' ), esc_html( $row33['name'] ), esc_html( $row3['name'] ), date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $item['match_date'] ) ) ) );
+			/* translators: One competitor name and another competitor name. */
+			$html .= sprintf( esc_html__( '%1$s reported a win against %2$s.', 'tournamatch' ), esc_html( $row33['name'] ), esc_html( $row3['name'] ) );
 		} elseif ( 'draw' === $item['two_result'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
-			$html .= sprintf( esc_html__( '%1$s reported a draw against %2$s on %3$s.', 'tournamatch' ), esc_html( $row33['name'] ), esc_html( $row3['name'] ), date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $item['match_date'] ) ) ) );
+			/* translators: One competitor name and another competitor name. */
+			$html .= sprintf( esc_html__( '%1$s reported a draw against %2$s.', 'tournamatch' ), esc_html( $row33['name'] ), esc_html( $row3['name'] ) );
 		} elseif ( 'lost' === $item['two_result'] ) {
-			/* translators: One competitor name and another competitor name on a datetime. */
-			$html .= sprintf( esc_html__( '%1$s reported a loss against %2$s on %3$s.', 'tournamatch' ), esc_html( $row33['name'] ), esc_html( $row3['name'] ), date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $item['match_date'] ) ) ) );
+			/* translators: One competitor name and another competitor name. */
+			$html .= sprintf( esc_html__( '%1$s reported a loss against %2$s.', 'tournamatch' ), esc_html( $row33['name'] ), esc_html( $row3['name'] ) );
 		}
 
 		return $html;

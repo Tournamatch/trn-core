@@ -58,7 +58,7 @@ class Newest_Members extends \WP_Widget {
 
 		echo '<ul class="trn-newest-members-widget">';
 		foreach ( $newest_members as $new_member ) {
-			echo '<li class="trn-newest-members-widget-member"><img class="trn-newest-members-widget-member-flag" src="' . esc_url( plugins_url( 'tournamatch' ) . '/images/flags/' . $new_member['flag'] ) . '" title="' . esc_html( $new_member['flag'] ) . '" border="0"> <a class="trn-newest-members-widget-member-name" href="' . esc_url( trn_route( 'players.single', array( 'id' => $new_member['id'] ) ) ) . '">' . esc_html( $new_member['name'] ) . '</a></li>';
+			echo '<li class="trn-newest-members-widget-member"><img class="trn-newest-members-widget-member-flag" src="' . esc_url( plugins_url( 'tournamatch' ) . '/dist/images/flags/' . $new_member['flag'] ) . '" title="' . esc_html( $new_member['flag'] ) . '" border="0"> <a class="trn-newest-members-widget-member-name" href="' . esc_url( trn_route( 'players.single', array( 'id' => $new_member['id'] ) ) ) . '">' . esc_html( $new_member['name'] ) . '</a></li>';
 		}
 		echo '</ul>';
 		echo wp_kses_post( $args['after_widget'] );

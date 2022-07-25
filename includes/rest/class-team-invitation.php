@@ -424,58 +424,6 @@ class Team_Invitation extends Controller {
 	}
 
 	/**
-	 * Prepares a single team-invitation item for response.
-	 *
-	 * @since 4.0.0
-	 *
-	 * @param Object           $team_invitation    Team invitation object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $team_invitation, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'team_member_invitation_id', $fields ) ) {
-			$data['team_member_invitation_id'] = (int) $team_invitation->team_member_invitation_id;
-		}
-
-		if ( rest_is_field_included( 'team_id', $fields ) ) {
-			$data['team_id'] = (int) $team_invitation->team_id;
-		}
-
-		if ( rest_is_field_included( 'invitation_type', $fields ) ) {
-			$data['invitation_type'] = $team_invitation->invitation_type;
-		}
-
-		if ( rest_is_field_included( 'user_id', $fields ) ) {
-			$data['user_id'] = (int) $team_invitation->user_id;
-		}
-
-		if ( rest_is_field_included( 'user_email', $fields ) ) {
-			$data['user_email'] = $team_invitation->user_email;
-		}
-
-		if ( rest_is_field_included( 'invited_at', $fields ) ) {
-			$data['invited_at'] = array(
-				'raw'      => $team_invitation->invited_at,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team_invitation->invited_at ) ) ),
-			);
-		}
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $team_invitation );
-		$response->add_links( $links );
-
-		return $response;
-	}
-
-	/**
 	 * Prepares links for the invitation.
 	 *
 	 * @since 4.0.0
@@ -557,6 +505,7 @@ class Team_Invitation extends Controller {
 				'invited_at'                => array(
 					'description' => esc_html__( 'The datetime the team request was created for the team invitation.', 'tournamatch' ),
 					'type'        => 'object',
+					'trn-subtype' => 'datetime',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'properties'  => array(
 						'raw'      => array(

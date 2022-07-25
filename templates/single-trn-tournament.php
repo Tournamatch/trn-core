@@ -23,7 +23,7 @@ if ( is_null( $tournament ) ) {
 	exit;
 }
 
-$my_tournaments      = trn_get_user_tournaments( get_current_user_id() );
+$my_tournaments      = array_column( trn_get_user_tournaments( get_current_user_id() ), 'tournament_id' );
 $register_conditions = trn_get_tournament_register_conditions( $tournament->tournament_id, get_current_user_id() );
 $competitors         = trn_get_tournament_competitors( $tournament_id );
 $registered          = trn_get_registered_competitors( $tournament_id );
@@ -70,105 +70,129 @@ trn_get_header();
 	</div>
 </div>
 
-<ul id="tournamatch-tournament-views" class="tournamatch-nav">
-	<?php if ( in_array( $tournament->status, [ 'in_progress', 'complete' ], true ) ) : ?>
-		<li class="tournamatch-nav-item" role="presentation" >
-			<a class="tournamatch-nav-link" href="#brackets" data-target="brackets"><?php esc_html_e( 'Brackets', 'tournamatch' ); ?></a>
-		</li>
-	<?php endif; ?>
-	<li class="tournamatch-nav-item" role="presentation" >
-		<a class="tournamatch-nav-link" href="#rules" data-target="rules"><?php esc_html_e( 'Rules', 'tournamatch' ); ?></a>
-	</li>
-	<li class="tournamatch-nav-item" role="presentation" >
-		<a class="tournamatch-nav-link" href="#matches" data-target="matches"><?php esc_html_e( 'Matches', 'tournamatch' ); ?></a>
-	</li>
-	<li class="tournamatch-nav-item" role="presentation" >
-		<a class="tournamatch-nav-link" href="#registered" data-target="registered"><?php esc_html_e( 'Registered', 'tournamatch' ); ?></a>
-	</li>
-	<?php if ( ( 'in_progress' === $tournament->status ) && in_array( (int) $tournament->tournament_id, $my_tournaments, true ) ) : ?>
-		<li class="tournamatch-nav-item" role="presentation">
-			<a class="tournamatch-nav-link" href="<?php trn_esc_route_e( 'report.page' ); ?>" ><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>
-		</li>
-	<?php endif; ?>
-
-	<!-- Need a link for reporting result/joining if not yet registered. -->
-	<?php if ( $register_conditions['can_register'] ) : ?>
-		<li class="tournamatch-nav-item" role="presentation">
-			<a class="tournamatch-nav-link" href="<?php trn_esc_route_e( 'tournaments.single.register', array( 'id' => $tournament->tournament_id ) ); ?>" id="tournament-<?php echo intval( $tournament->tournament_id ); ?>-register-link"><?php esc_html_e( 'Sign Up', 'tournamatch' ); ?></a>
-		</li>
-	<?php elseif ( $register_conditions['can_unregister'] ) : ?>
-		<li class="tournamatch-nav-item" role="presentation">
-			<a class="tournamatch-nav-link trn-tournament-unregister-button" href="#" data-tournament-registration-id="<?php echo intval( $register_conditions['id'] ); ?>" id="tournament-<?php echo intval( $tournament->tournament_id ); ?>-unregister-link"><?php esc_html_e( 'Unregister', 'tournamatch' ); ?></a>
-		</li>
-	<?php endif; ?>
-</ul>
-
-<div class="tournamatch-tab-content">
-	<?php if ( in_array( $tournament->status, [ 'in_progress', 'complete' ], true ) ) : ?>
-		<div id="brackets" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="brackets-tab">
-			<?php echo do_shortcode( '[trn-brackets tournament_id="' . intval( $tournament->tournament_id ) . '"]' ); ?>
-		</div>
-	<?php endif; ?>
-	<div id="rules" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="rules-tab">
-		<?php
-		if ( strlen( $tournament->rules ) > 0 ) :
-			echo wp_kses_post( stripslashes( $tournament->rules ) );
-		else :
-			?>
-			<p class="text-center">
-				<?php esc_html_e( 'No rules to display.', 'tournamatch' ); ?>
-			</p>
-		<?php endif; ?>
-	</div>
-	<div id="matches" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="matches-tab">
-		<?php echo do_shortcode( '[trn-tournament-matches-list-table tournament_id="' . intval( $tournament->tournament_id ) . '"]' ); ?>
-	</div>
-	<div id="registered" class="tournamatch-tab-pane" role="tabpanel" aria-labelledby="registered-tab">
-		<style type="text/css">
-			.trn-tournament-registered-item {
-				width: 200px;
-				height: 50px;
-				padding: 10px;
-				margin: 10px;
-				display: inline-table;
-			}
-			.trn-tournament-registered-item-avatar > img {
-				height: 48px;
-				width: 48px;
-				float: left;
-				margin-right: 5px;
-				border-radius: 2px;
-			}
-		</style>
-		<div class="d-flex flex-row flex-wrap" id="trn-tournament-registered">
-			<?php foreach ( $registered as $competitor ) : ?>
-				<div class="trn-tournament-registered-item shadow-sm rounded">
-					<span class="trn-tournament-registered-item-avatar"><?php trn_display_avatar( $competitor->competitor_id, $competitor->competitor_type, $competitor->avatar ); ?></span>
-					<a href="<?php trn_esc_route_e( "{$competitor->competitor_type}.single", array( 'id' => $competitor->competitor_id ) ); ?>"><?php echo esc_html( $competitor->competitor_name ); ?></a>
-					<?php if ( current_user_can( 'manage_tournamatch' ) && in_array( $tournament->status, [ 'created', 'open' ], true ) ) : ?>
-						&nbsp; <a style="float: right" href="
-						<?php
-						trn_esc_route_e(
-							'admin.tournaments.remove-entry',
-							array(
-								'tournament_entry_id' => $competitor->tournament_entry_id,
-								'_wpnonce'            => wp_create_nonce( 'tournamatch-remove-tournament-entry' ),
-							)
-						);
-						?>
-																"><i class="fa fa-times" aria-hidden="true"></i></a>
-					<?php endif; ?>
-					<?php if ( 'teams' === $tournament->competitor_type ) : ?>
-						<br><small><?php echo intval( $competitor->members ); ?>/<?php echo intval( $tournament->team_size ); ?></small>
-					<?php endif; ?>
-				</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</div>
 <?php
 
+$views = array(
+	'rules'      => array(
+		'heading' => __( 'Rules', 'tournamatch' ),
+		'content' => function( $tournament ) {
+			if ( strlen( $tournament->rules ) > 0 ) {
+				echo wp_kses_post( stripslashes( $tournament->rules ) );
+			} else {
+				echo '<p class="text-center">';
+				esc_html_e( 'No rules to display.', 'tournamatch' );
+				echo '</p>';
+			}
+		},
+	),
+	'matches'    => array(
+		'heading' => __( 'Matches', 'tournamatch' ),
+		'content' => function( $tournament ) {
+			echo do_shortcode( '[trn-tournament-matches-list-table tournament_id="' . intval( $tournament->tournament_id ) . '"]' );
+		},
+	),
+	'registered' => array(
+		'heading' => __( 'Registered', 'tournamatch' ),
+		'content' => function( $tournament ) use ( $registered ) {
+			?>
+			<style type="text/css">
+				.trn-tournament-registered-item {
+					width: 200px;
+					height: 50px;
+					padding: 10px;
+					margin: 10px;
+					display: inline-table;
+				}
+				.trn-tournament-registered-item-avatar > img {
+					height: 48px;
+					width: 48px;
+					float: left;
+					margin-right: 5px;
+					border-radius: 2px;
+				}
+			</style>
+			<div class="d-flex flex-row flex-wrap" id="trn-tournament-registered">
+				<?php foreach ( $registered as $competitor ) : ?>
+					<div class="trn-tournament-registered-item shadow-sm rounded">
+						<span class="trn-tournament-registered-item-avatar"><?php trn_display_avatar( $competitor->competitor_id, $competitor->competitor_type, $competitor->avatar ); ?></span>
+						<a href="<?php trn_esc_route_e( "{$competitor->competitor_type}.single", array( 'id' => $competitor->competitor_id ) ); ?>"><?php echo esc_html( $competitor->competitor_name ); ?></a>
+						<?php if ( current_user_can( 'manage_tournamatch' ) && in_array( $tournament->status, [ 'created', 'open' ], true ) ) : ?>
+							&nbsp; <a style="float: right" href="
+							<?php
+							trn_esc_route_e(
+								'admin.tournaments.remove-entry',
+								array(
+									'tournament_entry_id' => $competitor->tournament_entry_id,
+									'_wpnonce'            => wp_create_nonce( 'tournamatch-remove-tournament-entry' ),
+								)
+							);
+							?>
+						"><i class="fa fa-times" aria-hidden="true"></i></a>
+						<?php endif; ?>
+						<?php if ( 'teams' === $tournament->competitor_type ) : ?>
+							<br><small><?php echo intval( $competitor->members ); ?>/<?php echo intval( $tournament->team_size ); ?></small>
+						<?php endif; ?>
+					</div>
+				<?php endforeach; ?>
+			</div>
+
+			<?php
+		},
+	),
+);
+
+if ( in_array( $tournament->status, [ 'in_progress', 'complete' ], true ) ) {
+	$views = array_merge(
+		array(
+			'brackets' => array(
+				'heading' => __( 'Brackets', 'tournamatch' ),
+				'content' => function ( $tournament ) {
+					echo do_shortcode( '[trn-brackets tournament_id="' . intval( $tournament->tournament_id ) . '"]' );
+				},
+			),
+		),
+		$views
+	);
+}
+
+if ( ( 'in_progress' === $tournament->status ) && in_array( $tournament->tournament_id, $my_tournaments, true ) ) {
+	$views = array_merge(
+		$views,
+		array(
+			'report' => array(
+				'heading' => __( 'Report', 'tournamatch' ),
+				'href'    => trn_route( 'report.page' ),
+			),
+		)
+	);
+}
+
+if ( $register_conditions['can_register'] ) {
+	$views = array_merge(
+		$views,
+		array(
+			'register' => array(
+				'heading' => __( 'Sign Up', 'tournamatch' ),
+				'href'    => trn_route( 'tournaments.single.register', array( 'id' => $tournament->tournament_id ) ),
+			),
+		)
+	);
+}
+
 if ( $register_conditions['can_unregister'] ) {
+	$views = array_merge(
+		$views,
+		array(
+			'unregister' => array(
+				'heading' => function( $tournament ) use ( $register_conditions ) {
+					?>
+					<a class="tournamatch-nav-link trn-tournament-unregister-button" href="#" data-tournament-registration-id="<?php echo intval( $register_conditions['id'] ); ?>" id="tournament-<?php echo intval( $tournament->tournament_id ); ?>-unregister-link"><?php esc_html_e( 'Unregister', 'tournamatch' ); ?></a>
+					<?php
+				},
+			),
+		)
+	);
+
 	$options = array(
 		'api_url'     => site_url( 'wp-json/tournamatch/v1/' ),
 		'rest_nonce'  => wp_create_nonce( 'wp_rest' ),
@@ -185,8 +209,23 @@ if ( $register_conditions['can_unregister'] ) {
 	wp_enqueue_script( 'tournament-unregister' );
 }
 
-wp_register_script( 'tournament', plugins_url( '../dist/js/single-trn-tournament.js', __FILE__ ), array( 'tournamatch' ), '4.0.0', true );
-wp_enqueue_script( 'tournament' );
+/**
+ * Filters an array of views for the single tournament template page.
+ *
+ * @since 4.1.0
+ *
+ * @param array $views {
+ *          An associative array of tabbed views.
+ *
+ *          @param string|callable $heading The content or callable content of the header tab.
+ *          @param string $href The url of the header tab.
+ *          @param string|callable $content The content or callable content of the tabbed page.
+ *      }
+ * @param stdClass $tournament The data context item we are rendering a page for.
+ */
+$views = apply_filters( 'trn_single_tournament_views', $views, $tournament );
+
+trn_single_template_tab_views( $views, $tournament );
 
 trn_get_footer();
 

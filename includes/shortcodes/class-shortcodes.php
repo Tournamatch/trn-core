@@ -537,7 +537,11 @@ class Shortcodes {
 
 		$tournament = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments` WHERE `tournament_id` = %d", $attributes['tournament_id'] ) );
 
-		if ( ! in_array( $tournament->status, array( 'in_progress', 'finished' ), true ) ) {
+		if ( is_null( $tournament ) ) {
+			return '';
+		}
+
+		if ( ! in_array( $tournament->status, array( 'in_progress', 'complete' ), true ) ) {
 			return '<p class="text-center">' . esc_html__( 'The tournament has not started.', 'tournamatch' ) . '</p>';
 		}
 

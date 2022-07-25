@@ -18,13 +18,17 @@ import { trn } from './../tournamatch.js';
 
     // Team size select
     let competition      = document.getElementById('competitor_type');
-    let competitionGroup = document.getElementById('team_size_group');
+    let competitionGroup = document.getElementsByClassName('trn_team_size_row');
 
     function toggleTeamSize() {
         if (competition.value === 'teams') {
-            competitionGroup.style.display = 'table-row';
+            Array.from(competitionGroup).forEach((element) => {
+                element.style.display = 'table-row';
+            });
         } else {
-            competitionGroup.style.display = 'none';
+            Array.from(competitionGroup).forEach((element) => {
+                element.style.display = 'none';
+            });
         }
     }
     competition.addEventListener('change', () => toggleTeamSize());

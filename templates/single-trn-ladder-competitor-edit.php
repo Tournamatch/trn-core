@@ -29,9 +29,6 @@ $wins            = $competitor['wins'];
 $losses          = $competitor['losses'];
 $draws           = $competitor['draws'];
 $streak          = $competitor['streak'];
-$goals_for       = $competitor['goals_for'];
-$goals_against   = $competitor['goals_against'];
-$change          = $competitor['delta'];
 $competitor_name = $competitor['competitor_name'];
 
 get_header();
@@ -82,16 +79,6 @@ trn_get_header();
 			<div class="col-sm-2">
 				<input type="text" class="form-control" id="streak" name="streak"
 						value="<?php echo esc_html( $streak ); ?>"/>
-			</div>
-		</div>
-		<div class="form-group row" style="display: none">
-			<label for="change" class="col-sm-3 col-form-label"><?php esc_html_e( 'Change', 'tournamatch' ); ?>:</label>
-			<div class="col-sm-4">
-				<select id="change" name="change" class="form-control">
-					<option value="1" <?php echo ( intval( $change ) === 1 ) ? 'selected' : ''; ?>><?php esc_html_e( 'Up', 'tournamatch' ); ?></option>
-					<option value="0" <?php echo ( intval( $change ) === 0 ) ? 'selected' : ''; ?>><?php esc_html_e( 'No Change', 'tournamatch' ); ?></option>
-					<option value="-1" <?php echo ( intval( $change ) === - 1 ) ? 'selected' : ''; ?>><?php esc_html_e( 'Down', 'tournamatch' ); ?></option>
-				</select>
 			</div>
 		</div>
 		<div class="form-group row">

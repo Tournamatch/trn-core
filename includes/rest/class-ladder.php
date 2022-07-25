@@ -218,21 +218,9 @@ class Ladder extends Controller {
 	public function create_item( $request ) {
 		global $wpdb;
 
-		$data = array(
-			'name'              => $request->get_param( 'name' ),
-			'game_id'           => $request->get_param( 'game_id' ),
-			'competitor_type'   => $request->get_param( 'competitor_type' ),
-			'team_size'         => $request->get_param( 'team_size' ),
-			'win_points'        => $request->get_param( 'win_points' ),
-			'loss_points'       => $request->get_param( 'loss_points' ),
-			'draw_points'       => $request->get_param( 'draw_points' ),
-			'direct_challenges' => $request->get_param( 'direct_challenges' ),
-			'rules'             => $request->get_param( 'rules' ),
-			'visibility'        => $request->get_param( 'visibility' ),
-			'status'            => $request->get_param( 'status' ),
-		);
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
 
-		$wpdb->insert( $wpdb->prefix . 'trn_ladders', $data );
+		$wpdb->insert( $wpdb->prefix . 'trn_ladders', $prepared_post );
 
 		$ladder = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders` WHERE `ladder_id` = %d", $wpdb->insert_id ) );
 
@@ -294,46 +282,10 @@ class Ladder extends Controller {
 			$this->verify_business_rules( $rules );
 		}
 
-		$schema = $this->get_item_schema();
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
 
-		$data = array();
-
-		if ( ! empty( $schema['properties']['name'] ) && isset( $request['name'] ) ) {
-			$data['name'] = $request['name'];
-		}
-		if ( ! empty( $schema['properties']['game_id'] ) && isset( $request['game_id'] ) ) {
-			$data['game_id'] = $request['game_id'];
-		}
-		if ( ! empty( $schema['properties']['competitor_type'] ) && isset( $request['competitor_type'] ) ) {
-			$data['competitor_type'] = $request['competitor_type'];
-		}
-		if ( ! empty( $schema['properties']['team_size'] ) && isset( $request['team_size'] ) ) {
-			$data['team_size'] = $request['team_size'];
-		}
-		if ( ! empty( $schema['properties']['win_points'] ) && isset( $request['win_points'] ) ) {
-			$data['win_points'] = $request['win_points'];
-		}
-		if ( ! empty( $schema['properties']['loss_points'] ) && isset( $request['loss_points'] ) ) {
-			$data['loss_points'] = $request['loss_points'];
-		}
-		if ( ! empty( $schema['properties']['draw_points'] ) && isset( $request['draw_points'] ) ) {
-			$data['draw_points'] = $request['draw_points'];
-		}
-		if ( ! empty( $schema['properties']['direct_challenges'] ) && isset( $request['direct_challenges'] ) ) {
-			$data['direct_challenges'] = $request['direct_challenges'];
-		}
-		if ( ! empty( $schema['properties']['rules'] ) && isset( $request['rules'] ) ) {
-			$data['rules'] = $request['rules'];
-		}
-		if ( ! empty( $schema['properties']['visibility'] ) && isset( $request['visibility'] ) ) {
-			$data['visibility'] = $request['visibility'];
-		}
-		if ( ! empty( $schema['properties']['status'] ) && isset( $request['status'] ) ) {
-			$data['status'] = $request['status'];
-		}
-
-		if ( 0 < count( $data ) ) {
-			$wpdb->update( $wpdb->prefix . 'trn_ladders', $data, array( 'ladder_id' => $request['id'] ) );
+		if ( 0 < count( $prepared_post ) ) {
+			$wpdb->update( $wpdb->prefix . 'trn_ladders', $prepared_post, array( 'ladder_id' => $request['id'] ) );
 		}
 
 		$ladder = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders` WHERE `ladder_id` = %d", $ladder->ladder_id ) );
@@ -346,75 +298,27 @@ class Ladder extends Controller {
 	}
 
 	/**
-	 * Prepares a single ladder item for response.
+	 * Prepares links for the request.
 	 *
-	 * @since 3.19.0
+	 * @since 4.1.0
 	 *
-	 * @param Object           $ladder  Ladder object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
+	 * @param object $ladder Ladder object.
+	 * @return array Links for the given ladder.
 	 */
-	public function prepare_item_for_response( $ladder, $request ) {
+	protected function prepare_links( $ladder ) {
 
-		$fields = $this->get_fields_for_response( $request );
+		$base = "{$this->namespace}/ladders";
 
-		// Base fields for every post.
-		$data = array();
+		$links = array(
+			'self'       => array(
+				'href' => rest_url( trailingslashit( $base ) . $ladder->ladder_id ),
+			),
+			'collection' => array(
+				'href' => rest_url( $base ),
+			),
+		);
 
-		if ( rest_is_field_included( 'ladder_id', $fields ) ) {
-			$data['ladder_id'] = (int) $ladder->ladder_id;
-		}
-
-		if ( rest_is_field_included( 'name', $fields ) ) {
-			$data['name'] = $ladder->name;
-		}
-
-		if ( rest_is_field_included( 'game_id', $fields ) ) {
-			$data['game_id'] = (int) $ladder->game_id;
-		}
-
-		if ( rest_is_field_included( 'competitor_type', $fields ) ) {
-			$data['competitor_type'] = $ladder->competitor_type;
-		}
-
-		if ( rest_is_field_included( 'team_size', $fields ) ) {
-			$data['team_size'] = (int) $ladder->team_size;
-		}
-
-		if ( rest_is_field_included( 'win_points', $fields ) ) {
-			$data['win_points'] = (int) $ladder->win_points;
-		}
-
-		if ( rest_is_field_included( 'loss_points', $fields ) ) {
-			$data['loss_points'] = (int) $ladder->loss_points;
-		}
-
-		if ( rest_is_field_included( 'draw_points', $fields ) ) {
-			$data['draw_points'] = (int) $ladder->draw_points;
-		}
-
-		if ( rest_is_field_included( 'direct_challenges', $fields ) ) {
-			$data['direct_challenges'] = ( 'enabled' === $ladder->direct_challenges ) ? 'enabled' : 'disabled';
-		}
-
-		if ( rest_is_field_included( 'rules', $fields ) ) {
-			$data['rules'] = $ladder->rules;
-		}
-
-		if ( rest_is_field_included( 'visibility', $fields ) ) {
-			$data['visibility'] = ( 'visible' === $ladder->visibility ) ? 'visible' : 'hidden';
-		}
-
-		if ( rest_is_field_included( 'status', $fields ) ) {
-			$data['status'] = ( 'active' === $ladder->status ) ? 'active' : 'inactive';
-		}
-
-		if ( rest_is_field_included( 'link', $fields ) ) {
-			$data['link'] = trn_route( 'ladders.single', array( 'id' => $ladder->ladder_id ) );
-		}
-
-		return rest_ensure_response( $data );
+		return $links;
 	}
 
 	/**
@@ -514,6 +418,10 @@ class Ladder extends Controller {
 				'link'              => array(
 					'description' => esc_html__( 'URL to the ladder.' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $ladder ) {
+						return trn_route( 'ladders.single', array( 'id' => $ladder->ladder_id ) );
+					},
 					'format'      => 'uri',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,

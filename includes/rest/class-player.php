@@ -449,92 +449,6 @@ WHERE `user_id` = %d
 	}
 
 	/**
-	 * Prepares a single player item for response.
-	 *
-	 * @since 3.19.0
-	 *
-	 * @param Object           $player    Player object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $player, $request ) {
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'user_id', $fields ) ) {
-			$data['user_id'] = (int) $player->user_id;
-		}
-
-		if ( rest_is_field_included( 'display_name', $fields ) ) {
-			$data['name'] = $player->display_name;
-		}
-
-		if ( rest_is_field_included( 'joined_date', $fields ) ) {
-			$joined_date         = get_user_by( 'id', $player->user_id )->data->user_registered;
-			$data['joined_date'] = array(
-				'raw'      => $joined_date,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $joined_date ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'location', $fields ) ) {
-			$data['location'] = $player->location;
-		}
-
-		if ( rest_is_field_included( 'flag', $fields ) ) {
-			$data['flag'] = $player->flag;
-		}
-
-		if ( rest_is_field_included( 'wins', $fields ) ) {
-			$data['wins'] = (int) $player->wins;
-		}
-
-		if ( rest_is_field_included( 'losses', $fields ) ) {
-			$data['losses'] = (int) $player->losses;
-		}
-
-		if ( rest_is_field_included( 'draws', $fields ) ) {
-			$data['draws'] = (int) $player->draws;
-		}
-
-		if ( rest_is_field_included( 'profile', $fields ) ) {
-			$data['profile'] = $player->profile;
-		}
-
-		if ( rest_is_field_included( 'avatar', $fields ) ) {
-			$data['avatar'] = $player->avatar;
-		}
-
-		if ( rest_is_field_included( 'teams', $fields ) ) {
-			$data['teams'] = $player->teams;
-		}
-
-		$icon_fields = apply_filters( 'trn_player_icon_fields', array() );
-		foreach ( $icon_fields as $social_icon => $social_icon_data ) {
-			if ( rest_is_field_included( "trn_$social_icon", $fields ) ) {
-				$data[ "trn_$social_icon" ] = get_user_meta( $player->user_id, "trn_$social_icon", true );
-			}
-		}
-
-		$player_fields = apply_filters( 'trn_player_fields', array() );
-		foreach ( $player_fields as $field_id => $field_data ) {
-			if ( rest_is_field_included( "trn_$field_id", $fields ) ) {
-				$data[ "trn_$field_id" ] = get_user_meta( $player->user_id, "trn_$field_id", true );
-			}
-		}
-
-		if ( rest_is_field_included( 'link', $fields ) ) {
-			$data['link'] = trn_route( 'players.single', array( 'id' => $player->user_id ) );
-		}
-
-		return rest_ensure_response( $data );
-	}
-
-	/**
 	 * Retrieves the players schema, conforming to JSON Schema.
 	 *
 	 * @since 3.19.0
@@ -547,21 +461,33 @@ WHERE `user_id` = %d
 		}
 
 		$properties = array(
-			'user_id'      => array(
+			'user_id'     => array(
 				'description' => esc_html__( 'The user id for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 			),
-			'display_name' => array(
+			'name'        => array(
 				'description' => esc_html__( 'The display name for the player.', 'tournamatch' ),
 				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $player ) {
+					return $player->display_name;
+				},
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'required'    => true,
 			),
-			'joined_date'  => array(
+			'joined_date' => array(
 				'description' => esc_html__( 'The date the player registered on the website.', 'tournamatch' ),
 				'type'        => 'object',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $player ) {
+					$joined_date = get_user_by( 'id', $player->user_id )->data->user_registered;
+					return array(
+						'raw'      => $joined_date,
+						'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $joined_date ) ) ),
+					);
+				},
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 				'properties'  => array(
@@ -579,50 +505,54 @@ WHERE `user_id` = %d
 					),
 				),
 			),
-			'location'     => array(
+			'location'    => array(
 				'description' => esc_html__( 'The location for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'flag'         => array(
+			'flag'        => array(
 				'description' => esc_html__( 'The country flag for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'wins'         => array(
+			'wins'        => array(
 				'description' => esc_html__( 'The number of individual wins for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'losses'       => array(
+			'losses'      => array(
 				'description' => esc_html__( 'The number of individual losses for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'draws'        => array(
+			'draws'       => array(
 				'description' => esc_html__( 'The number of individual draws for the player.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'profile'      => array(
+			'profile'     => array(
 				'description' => esc_html__( 'The long text bio for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'avatar'       => array(
+			'avatar'      => array(
 				'description' => esc_html__( 'The avatar for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
-			'teams'        => array(
+			'teams'       => array(
 				'description' => esc_html__( 'The number of teams the player is a member of.', 'tournamatch' ),
 				'type'        => 'integer',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
 			),
-			'link'         => array(
+			'link'        => array(
 				'description' => esc_html__( 'URL to the player.' ),
 				'type'        => 'string',
+				'trn-subtype' => 'callable',
+				'trn-get'     => function( $player ) {
+					return trn_route( 'players.single', array( 'id' => $player->user_id ) );
+				},
 				'format'      => 'uri',
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
