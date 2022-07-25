@@ -12,7 +12,7 @@ A ladder and tournament plugin for eSports, physical sports, board games, and ot
 
 == Description ==
 
-**Important**: If you are upgrading from version 3.x, please read this page prior to proceeding.
+**Important**: If you are upgrading from version 3.x, please read [this page](https://www.tournamatch.com/major-version-delta/) prior to proceeding.
 
 Use this plugin to create tournaments and ladders (leader boards) on your website. Ladders track points, wins, losses, [optionally] draws, games played, win streak, and win percent. Tournaments support single elimination head-to-head competitions. It includes match challenges, player profiles, team profiles, ladder and tournament rule pages, match lists, and a player dashboard for managing everything.
 
