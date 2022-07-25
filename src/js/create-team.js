@@ -42,7 +42,7 @@ import { trn } from './tournamatch.js';
                     tag: document.getElementById('trn-team-tag').value
                 }));
             }
-            form.classList.add('was-validated');
+            form.classList.add('trn-was-validated');
         }, false);
     }, false);
 })(trn);

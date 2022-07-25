@@ -94,25 +94,34 @@ class Tournamatch {
 //trn.initialize();
 if (!window.trn_obj_instance) {
     window.trn_obj_instance = new Tournamatch();
+
+    window.addEventListener('load', function () {
+
+        const tabViews = document.getElementsByClassName('trn-nav');
+
+        Array.from(tabViews).forEach((tab) => {
+            trn.tabs(tab);
+        });
+
+        const dropdowns = document.getElementsByClassName('trn-dropdown-toggle');
+        const handleDropdownClose = () => {
+            Array.from(dropdowns).forEach((dropdown) => {
+                dropdown.nextElementSibling.classList.remove('trn-show');
+            });
+            document.removeEventListener("click", handleDropdownClose, false);
+        };
+
+        Array.from(dropdowns).forEach((dropdown) => {
+            dropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.nextElementSibling.classList.add('trn-show');
+                document.addEventListener("click", handleDropdownClose, false);
+            }, false);
+        });
+
+    }, false);
 }
 export let trn = window.trn_obj_instance;
-
-window.addEventListener('load', function () {
-    const tabViews = document.getElementsByClassName('trn-nav');
-
-    Array.from(tabViews).forEach((tab) => {
-        trn.tabs(tab);
-    });
-
-    const dropdowns = document.getElementsByClassName('trn-dropdown-toggle');
-
-    Array.from(dropdowns).forEach((dropdown) => {
-        dropdown.addEventListener('click', function() {
-            const theDropdown = this.nextElementSibling;
-            theDropdown.classList.add('trn-show');
-        }, false);
-    })
-}, false);
 
 class Tournamatch_Autocomplete {
 

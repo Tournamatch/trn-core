@@ -63,7 +63,7 @@ import { trn } from './tournamatch.js';
                 content += `  </div>`;
                 content += `</div>`;
 
-                document.getElementById('trn').insertAdjacentHTML('beforeend', content);
+                document.body.insertAdjacentHTML('beforeend', content);
             }
 
             Array.prototype.forEach.call(links, function (link) {

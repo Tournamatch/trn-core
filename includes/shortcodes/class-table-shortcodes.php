@@ -674,7 +674,7 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$options = get_option( 'tournamatch_options' );
+		$uses_draws = ( '1' === trn_get_option( 'uses_draws' ) );
 
 		$html  = '<table class="trn-table trn-table-striped trn-ladder-competitions-table" id="trn-ladder-competitions-table">';
 		$html .= '<thead>';
@@ -687,7 +687,7 @@ class Table_Shortcodes {
 		$html .= '<th class="trn-ladder-competitions-table-position">' . esc_html__( 'Position', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-ladder-competitions-table-wins">' . esc_html__( 'W', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-ladder-competitions-table-losses">' . esc_html__( 'L', 'tournamatch' ) . '</th>';
-		if ( '1' === $options['uses_draws'] ) {
+		if ( $uses_draws ) {
 			$html .= '<th class="trn-ladder-competitions-table-draws">' . esc_html__( 'D', 'tournamatch' ) . '</th>';
 		}
 		$html .= '<th class="trn-ladder-competitions-table-win-percent">' . esc_html__( 'W%', 'tournamatch' ) . '</th>';
@@ -726,7 +726,7 @@ class Table_Shortcodes {
 			'api_url'         => site_url( 'wp-json/tournamatch/v1/' ),
 			'rest_nonce'      => wp_create_nonce( 'wp_rest' ),
 			'table_language'  => $table_language,
-			'uses_draws'      => $options['uses_draws'],
+			'uses_draws'      => $uses_draws,
 			'competitor_id'   => $competitor_id,
 			'competitor_type' => $competitor_type,
 			'slug'            => ( 'players' === $competitor_type ) ? 'player_id' : 'team_id',
@@ -999,8 +999,6 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$options = get_option( 'tournamatch_options' );
-
 		$html  = '<div id="trn-team-roster-response"></div>';
 		$html .= '<table class="trn-table trn-table-striped trn-team-roster-table" id="trn-team-roster-table">';
 		$html .= '<thead>';
@@ -1054,7 +1052,7 @@ class Table_Shortcodes {
 				'confirm_new_owner' => esc_html__( 'Are you sure you want to promote another player to team owner?', 'tournamatch' ),
 			),
 			'team_id'         => $team_id,
-			'uses_draws'      => ( '1' === $options['uses_draws'] ),
+			'uses_draws'      => ( '1' === trn_get_option( 'uses_draws' ) ),
 			'ranks'           => $ranks,
 			'can_edit_roster' => $can_edit_roster,
 			'flag_directory'  => plugins_url( 'tournamatch' ) . '/dist/images/flags/',

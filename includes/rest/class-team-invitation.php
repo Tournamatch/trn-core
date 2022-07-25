@@ -200,8 +200,7 @@ class Team_Invitation extends Controller {
 		if ( 'user' === $type ) {
 			$rules[] = new One_User_Per_Team( $team_id, $user_id );
 
-			$options = get_option( 'tournamatch_options' );
-			if ( is_array( $options ) && isset( $options['one_team_per_player'] ) && ( '1' === $options['one_team_per_player'] ) ) {
+			if ( '1' === trn_get_option( 'one_team_per_player' ) ) {
 				$rules[] = new One_Team_Per_User( $user_id );
 			}
 		}
@@ -269,8 +268,7 @@ class Team_Invitation extends Controller {
 			new Team_Not_Maxed( $team_id ),
 		);
 
-		$options = get_option( 'tournamatch_options' );
-		if ( is_array( $options ) && isset( $options['one_team_per_player'] ) && ( '1' === $options['one_team_per_player'] ) ) {
+		if ( '1' === trn_get_option( 'one_team_per_player' ) ) {
 			array_splice( $rules, 1, 0, array( new One_Team_Per_User( $user_id ) ) );
 		}
 

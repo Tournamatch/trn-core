@@ -172,6 +172,25 @@ if ( ! function_exists( 'trn_get_default_options' ) ) {
 	}
 }
 
+if ( ! function_exists( 'trn_get_options' ) ) {
+	/**
+	 * Retrieves an array of Tournamatch options.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return array An array of options.
+	 */
+	function trn_get_options() {
+		$options        = trn_get_default_options();
+		$stored_options = get_option( 'tournamatch_options' );
+		if ( is_array( $stored_options ) ) {
+			$options = array_merge( $options, $stored_options );
+		}
+
+		return $options;
+	}
+}
+
 if ( ! function_exists( 'trn_get_option' ) ) {
 	/**
 	 * Retrieves a Tournamatch option value by option name.
@@ -179,23 +198,36 @@ if ( ! function_exists( 'trn_get_option' ) ) {
 	 * @since 4.0.0
 	 *
 	 * @param string $option The option name.
+	 * @param mixed  $default The default value to return.
 	 *
 	 * @return mixed The option value.
 	 */
-	function trn_get_option( $option ) {
-		static $options;
+	function trn_get_option( $option, $default = false ) {
+		$options = trn_get_options();
 
-		if ( is_null( $options ) ) {
-			$options        = trn_get_default_options();
-			$stored_options = get_option( 'tournamatch_options' );
-			if ( is_array( $stored_options ) ) {
-				$options = array_merge( $options, $stored_options );
-			}
-			$options['allowed_extensions'] = json_decode( trn_get_option( 'allowed_extensions' ), true );
-			$options['admin_email']        = get_option( 'admin_email' );
-		}
+		$options['allowed_extensions'] = json_decode( $options['allowed_extensions'], true );
+		$options['admin_email']        = get_option( 'admin_email' );
 
-		return $options[ $option ];
+		return isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	}
+}
+
+if ( ! function_exists( 'trn_update_option' ) ) {
+	/**
+	 * Updates a single Tournamatch option.
+	 *
+	 * @since 4.2.0
+	 *
+	 * @param string $option The option name.
+	 * @param mixed  $value The value to set.
+	 */
+	function trn_update_option( $option, $value ) {
+		$options = trn_get_options();
+
+		$options[ $option ] = $value;
+
+		$options = apply_filters( 'tournamatch_save_options', $options );
+		update_option( 'tournamatch_options', $options );
 	}
 }
 
@@ -392,12 +424,12 @@ if ( ! function_exists( 'get_match_result_text' ) ) {
 
 		// Format result to display.
 		if ( is_null( $one_name ) ) {
-			$one_name = get_option( 'tournamatch_options' )['tournament_undecided_display'];
+			$one_name = trn_get_option( 'tournament_undecided_display' );
 		} else {
 			$one_name = sprintf( '<a href="%1$s">%2$s</a>', esc_url( trn_route( $route_name, array( 'id' => $match->one_competitor_id ) ) ), $one_name );
 		}
 		if ( is_null( $two_name ) ) {
-			$two_name = get_option( 'tournamatch_options' )['tournament_undecided_display'];
+			$two_name = trn_get_option( 'tournament_undecided_display' );
 		} else {
 			$two_name = sprintf( '<a href="%1$s">%2$s</a>', esc_url( trn_route( $route_name, array( 'id' => $match->two_competitor_id ) ) ), $two_name );
 		}
@@ -2337,8 +2369,7 @@ if ( ! function_exists( 'display' ) ) {
 	 * @param object $competitor The competitor to display.
 	 */
 	function display( $competitor ) {
-		$options = get_option( 'tournamatch_options', null );
-		if ( isset( $options['bracket_seeds_enabled'] ) && ( '1' === $options['bracket_seeds_enabled'] ) ) {
+		if ( trn_get_option( 'bracket_seeds_enabled' ) ) {
 			echo '<span class="seed">' . intval( $competitor->seed ) . '.</span> ';
 		}
 
@@ -3318,15 +3349,11 @@ if ( ! function_exists( 'trn_update_db_check' ) ) {
 	 * @since 4.1.0
 	 */
 	function trn_update_db_check() {
-		$options         = get_option( 'tournamatch_options', null );
-		$current_version = isset( $options['version'] ) ? $options['version'] : '4.0.0';
+		$current_version = trn_get_option( 'version' );
 
 		if ( TOURNAMATCH_VERSION !== $current_version ) {
 			trn_upgrade_sql( $current_version );
-
-			$options            = get_option( 'tournamatch_options', null );
-			$options['version'] = TOURNAMATCH_VERSION;
-			update_option( 'tournamatch_options', $options );
+			trn_update_option( 'version', TOURNAMATCH_VERSION );
 		}
 	}
 }

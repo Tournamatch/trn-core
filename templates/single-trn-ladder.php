@@ -136,7 +136,7 @@ if ( $can_leave ) {
 			'leave' => array(
 				'heading' => function( $ladder ) use ( $competitor ) {
 					?>
-					<a class="tournamatch-nav-link trn-confirm-action-link trn-leave-ladder-link"
+					<a class="trn-nav-link trn-confirm-action-link trn-leave-ladder-link"
 							id="trn-leave-ladder-link"
 							href="#leave"
 							data-competitor-id="<?php echo intval( $competitor->ladder_entry_id ); ?>"

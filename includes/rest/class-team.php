@@ -259,8 +259,7 @@ class Team extends Controller {
 			new Unique_Team_Name( $team_name ),
 		);
 
-		$options = get_option( 'tournamatch_options' );
-		if ( is_array( $options ) && isset( $options['one_team_per_player'] ) && ( '1' === $options['one_team_per_player'] ) ) {
+		if ( '1' === trn_get_option( 'one_team_per_player' ) ) {
 			$rules[] = new One_Team_Per_User( $user_id );
 		}
 

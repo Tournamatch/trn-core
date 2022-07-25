@@ -128,7 +128,7 @@ class Ladder_Competitor extends Controller {
 						if ( $can_manage_tournamatch ) {
 							return true;
 						} else {
-							if ( '1' === get_option( 'tournamatch_options' )['can_leave_ladder'] ) {
+							if ( '1' === trn_get_option( 'can_leave_ladder' ) ) {
 								$competitor = $wpdb->get_row( $wpdb->prepare( "SELECT `le`.`competitor_id`, `l`.`competitor_type` FROM `{$wpdb->prefix}trn_ladders_entries` AS `le` LEFT JOIN `{$wpdb->prefix}trn_ladders` AS `l` ON `le`.`ladder_id` = `l`.`ladder_id` WHERE `le`.`ladder_entry_id` = %d", $request->get_param( 'id' ) ) );
 								if ( 'players' === $competitor->competitor_type ) {
 									return ( intval( $competitor->competitor_id ) === get_current_user_id() );
@@ -181,7 +181,7 @@ class Ladder_Competitor extends Controller {
 			new One_Competitor_Per_Ladder( $ladder->ladder_id, get_current_user_id() ),
 		);
 
-		$enforce_team_minimum = get_option( 'tournamatch_options' )['enforce_team_minimum'];
+		$enforce_team_minimum = trn_get_option( 'enforce_team_minimum' );
 		if ( ( 1 === (int) $enforce_team_minimum ) && ( 'teams' === $ladder->competitor_type ) ) {
 			$rules[] = new Requires_Minimum_Members( $request['competitor_id'], $request['ladder_id'], 'ladder' );
 		}

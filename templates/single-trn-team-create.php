@@ -41,14 +41,14 @@ if ( ! $can_create ) :
 			<label for="trn-team-name" class="trn-col-sm-3"><?php esc_html_e( 'Team Name', 'tournamatch' ); ?>:</label>
 			<div class="trn-col-sm-3">
 				<input type="text" id="trn-team-name" name="trn-team-name" class="trn-form-control" maxlength="25" required>
-				<div class="invalid-feedback" id="trn-team-name-error"><?php esc_html_e( 'Team name is required.', 'tournamatch' ); ?></div>
+				<div class="trn-invalid-feedback" id="trn-team-name-error"><?php esc_html_e( 'Team name is required.', 'tournamatch' ); ?></div>
 			</div>
 		</div>
 		<div class="trn-form-group">
 			<label for="trn-team-tag" class="trn-col-sm-3"><?php esc_html_e( 'Team Tag', 'tournamatch' ); ?>:</label>
 			<div class="trn-col-sm-3">
 				<input type="text" id="trn-team-tag" name="trn-team-tag" class="trn-form-control" maxlength="5" required>
-				<div class="invalid-feedback" id="trn-team-tag-error"><?php esc_html_e( 'Team tag is required.', 'tournamatch' ); ?></div>
+				<div class="trn-invalid-feedback" id="trn-team-tag-error"><?php esc_html_e( 'Team tag is required.', 'tournamatch' ); ?></div>
 			</div>
 		</div>
 		<div class="trn-form-group">

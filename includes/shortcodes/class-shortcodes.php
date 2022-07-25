@@ -245,7 +245,7 @@ class Shortcodes {
 		$html .= '		<label class="control-label trn-col-md-3" for="trn-email-invite-address">' . __( 'Email', 'tournamatch' ) . '</label>';
 		$html .= '		<div class="trn-col-md-9">';
 		$html .= '			<input type="email" class="trn-form-control" name="trn-email-invite-address" id="trn-email-invite-address" required>';
-		$html .= '			<div class="invalid-feedback" id="trn-email-invite-address-error">' . __( 'A valid email address is required.', 'tournamatch' ) . '</div>';
+		$html .= '			<div class="trn-invalid-feedback" id="trn-email-invite-address-error">' . __( 'A valid email address is required.', 'tournamatch' ) . '</div>';
 		$html .= '		</div>';
 		$html .= '	</div>';
 		$html .= '	<div class="trn-form-group">';
@@ -480,9 +480,9 @@ class Shortcodes {
 			$career_record = $wpdb->get_row( $wpdb->prepare( "SELECT `wins` AS `wins`, `losses` AS `losses`, `draws` AS `draws` FROM `{$wpdb->prefix}trn_teams` WHERE `team_id` = %d", $competitor_id ), ARRAY_A );
 		}
 
-		$options = get_option( 'tournamatch_options' );
+		$uses_draws = ( '1' === trn_get_option( 'uses_draws' ) );
 
-		if ( '0' === $options['uses_draws'] ) {
+		if ( ! $uses_draws ) {
 			unset( $career_record['draws'] );
 			/* translators: An integer dash another integer representing wins and losses. */
 			$career_record_format = esc_html__( '%1$d - %2$d', 'tournamatch' );
@@ -502,7 +502,7 @@ class Shortcodes {
 			$team_record              = $wpdb->get_row( $wpdb->prepare( "SELECT SUM(`wins`) AS `wins`, SUM(`losses`) AS `losses`, SUM(`draws`) AS `draws` FROM `{$wpdb->prefix}trn_teams_members` WHERE `user_id` = %d", $competitor_id ), ARRAY_A );
 			$career_record['wins']   += $team_record['wins'];
 			$career_record['losses'] += $team_record['losses'];
-			if ( '1' === $options['uses_draws'] ) {
+			if ( $uses_draws ) {
 				$career_record['draws'] += $team_record['draws'];
 			}
 
@@ -611,6 +611,7 @@ class Shortcodes {
 				'replace' => esc_html__( 'Replace {NAME}', 'tournamatch' ),
 				'winner'  => esc_html__( 'Winner', 'tournamatch' ),
 			),
+			'undecided'        => trn_get_option( 'tournament_undecided_display' ),
 		);
 
 		wp_register_style( 'trn-tournament-brackets-style', plugins_url( '../../dist/css/brackets.css', __FILE__ ), array(), '1.0.0' );

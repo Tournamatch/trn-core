@@ -35,7 +35,7 @@ trn_get_header();
 <h1 class="trn-mb-4"><?php esc_html_e( 'Tournaments', 'tournamatch' ); ?></h1>
 
 <!-- Tab navigation -->
-<ul class="trn-nav trn-mb-sm flex-column flex-sm-row">
+<ul class="trn-nav trn-mb-sm flex-column flex-sm-row tournament-filter">
 	<li role="presentation" class="trn-nav-item flex-sm" aria-controls="all" data-filter="all"><a class="trn-nav-link trn-nav-active" href="#"><span><?php esc_html_e( 'All', 'tournamatch' ); ?></span></a></li>
 	<li role="presentation" class="trn-nav-item flex-sm" aria-controls="upcoming" data-filter="upcoming"><a class="trn-nav-link" href="#"><span><?php esc_html_e( 'Upcoming', 'tournamatch' ); ?></span></a></li>
 	<li role="presentation" class="trn-nav-item flex-sm" aria-controls="in_progress" data-filter="in_progress"><a class="trn-nav-link" href="#"><span><?php esc_html_e( 'In Progress', 'tournamatch' ); ?></span></a></li>
