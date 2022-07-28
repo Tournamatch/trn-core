@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.1
-Stable tag: 4.2.0
+Stable tag: 4.2.1
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,10 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.2.1 =
+* Added appropriate redirects to several user-facing pages if the current visitor is unauthenticated or has insufficient privileges.
+* Fixed a failed redirect bug on the matches report screen if the current visitor is unauthenticated or has insufficient privileges.
 
 = 4.2.0 =
 * Refactored all styles to be prefixed with 'trn-'. If you previously styled Tournamatch with additional CSS, you should prefix your CSS with 'trn-'. Tournamatch no longer depends on Bootstrap and should look consistent from theme to theme.

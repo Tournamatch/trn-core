@@ -12,7 +12,13 @@
 defined( 'ABSPATH' ) || exit;
 
 $match_id = get_query_var( 'id' );
-$match    = trn_get_match( $match_id );
+
+if ( ! trn_can_confirm_match( get_current_user_id(), $match_id ) ) {
+	wp_safe_redirect( trn_route( 'matches.single', array( 'id' => $match_id ) ) );
+	exit;
+}
+
+$match = trn_get_match( $match_id );
 
 if ( is_null( $match ) || ( 'reported' !== $match->match_status ) ) {
 	wp_safe_redirect( trn_route( 'report.page' ) );

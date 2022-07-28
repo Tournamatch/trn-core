@@ -13,6 +13,11 @@ defined( 'ABSPATH' ) || exit;
 
 $ladder_entry_id = get_query_var( 'id' );
 
+if ( ! current_user_can( 'manage_tournamatch' ) ) {
+	wp_safe_redirect( trn_route( 'ladders.archive' ) );
+	exit;
+}
+
 global $wpdb;
 
 $competitor = trn_get_ladder_competitor( $ladder_entry_id );

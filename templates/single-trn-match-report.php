@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 $match_id = get_query_var( 'id' );
 
 if ( ! trn_can_report_match( get_current_user_id(), $match_id ) ) {
-	wp_safe_redirect( 'matches.single' );
+	wp_safe_redirect( trn_route( 'matches.single', array( 'id' => $match_id ) ) );
 	exit;
 }
 

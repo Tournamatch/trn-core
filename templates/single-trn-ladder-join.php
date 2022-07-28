@@ -13,10 +13,15 @@ defined( 'ABSPATH' ) || exit;
 
 $ladder_id = get_query_var( 'id' );
 
+if ( ! is_user_logged_in() ) {
+	wp_safe_redirect( wp_login_url( trn_route( 'ladders.single.join', array( 'id' => $ladder_id ) ) ) );
+	exit;
+}
+
 $ladder = trn_get_ladder( $ladder_id );
 
 if ( is_null( $ladder ) ) {
-	wp_safe_redirect( wp_login_url( trn_route( 'ladders.single.join' ) ) );
+	wp_safe_redirect( trn_route( 'ladders.archive' ) );
 	exit;
 }
 
