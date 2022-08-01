@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.1
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,12 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.2.2 =
+* Fixed spelling error of the South African flag. It is now displayed correctly as 'South Africa'.
+* The tournament registered page will now reload when clicking on the 'Unregister' button.
+* Fixed several occurrences of alerts missing the 'trn-' CSS prefix. Those are fixed and are now styled correctly.
+* When the file extension of user-submitted avatars for player and team profiles is not allowed, an error message is now displayed.
 
 = 4.2.1 =
 * Added appropriate redirects to several user-facing pages if the current visitor is unauthenticated or has insufficient privileges.

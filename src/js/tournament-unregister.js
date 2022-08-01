@@ -31,6 +31,7 @@ import { trn } from './tournamatch.js';
                     if (xhr.status === 204) {
                         // In the future, we should refresh the registration list.
                         window.location.href = options.refresh_url;
+                        window.location.reload();
                     } else {
                         document.getElementById('trn-unregister-response').innerHTML = `<p class="notice notice-error"><strong>${options.language.failure}:</strong> ${options.language.failure_message}</p>`;
                     }

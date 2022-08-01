@@ -1581,55 +1581,55 @@ msgstr ""
 msgid "Competitor two ip address for the match."
 msgstr ""
 
-#: includes/rest/class-player.php:464
+#: includes/rest/class-player.php:448
 msgid "The user id for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:470
+#: includes/rest/class-player.php:454
 msgid "The display name for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:480
+#: includes/rest/class-player.php:464
 msgid "The date the player registered on the website."
 msgstr ""
 
-#: includes/rest/class-player.php:494
+#: includes/rest/class-player.php:478
 msgid "The date the player registered on the website, as it exists in the database."
 msgstr ""
 
-#: includes/rest/class-player.php:500
+#: includes/rest/class-player.php:484
 msgid "The date the player registered on the website, transformed for display."
 msgstr ""
 
-#: includes/rest/class-player.php:508
+#: includes/rest/class-player.php:492
 msgid "The location for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:513
+#: includes/rest/class-player.php:497
 msgid "The country flag for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:518
+#: includes/rest/class-player.php:502
 msgid "The number of individual wins for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:524
+#: includes/rest/class-player.php:508
 msgid "The number of individual losses for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:530
+#: includes/rest/class-player.php:514
 msgid "The number of individual draws for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:536
+#: includes/rest/class-player.php:520
 msgid "The long text bio for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:541
+#: includes/rest/class-player.php:525
 msgid "The avatar for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:546
+#: includes/rest/class-player.php:530
 msgid "The number of teams the player is a member of."
 msgstr ""
 
@@ -1827,51 +1827,51 @@ msgstr ""
 msgid "The team was created"
 msgstr ""
 
-#: includes/rest/class-team.php:404
+#: includes/rest/class-team.php:388
 msgid "The id for the team."
 msgstr ""
 
-#: includes/rest/class-team.php:410
+#: includes/rest/class-team.php:394
 msgid "The display tag for the team."
 msgstr ""
 
-#: includes/rest/class-team.php:416
+#: includes/rest/class-team.php:400
 msgid "The display name for the team."
 msgstr ""
 
-#: includes/rest/class-team.php:422
+#: includes/rest/class-team.php:406
 msgid "The display flag for the team."
 msgstr ""
 
-#: includes/rest/class-team.php:427
+#: includes/rest/class-team.php:411
 msgid "The datetime the team was created."
 msgstr ""
 
-#: includes/rest/class-team.php:434
+#: includes/rest/class-team.php:418
 msgid "Joined Date for the team, as it exists in the database."
 msgstr ""
 
-#: includes/rest/class-team.php:440
+#: includes/rest/class-team.php:424
 msgid "Joined Date for the object, transformed for display."
 msgstr ""
 
-#: includes/rest/class-team.php:448
+#: includes/rest/class-team.php:432
 msgid "The avatar for the teams."
 msgstr ""
 
-#: includes/rest/class-team.php:453
+#: includes/rest/class-team.php:437
 msgid "The number of win match for a team."
 msgstr ""
 
-#: includes/rest/class-team.php:459
+#: includes/rest/class-team.php:443
 msgid "The number of loss match for team."
 msgstr ""
 
-#: includes/rest/class-team.php:465
+#: includes/rest/class-team.php:449
 msgid "The number of draws for a team."
 msgstr ""
 
-#: includes/rest/class-team.php:471
+#: includes/rest/class-team.php:455
 msgid "The number of members of a team."
 msgstr ""
 
@@ -3471,4 +3471,9 @@ msgstr ""
 
 #: tournamatch.php:2969, tournamatch.php:3015
 msgid "Submit"
+msgstr ""
+
+#. translators: A comma-separated list of allowed file extensions.
+#: tournamatch.php:3522
+msgid "The file extension is not allowed. Please submit an avatar with one of the following extensions: %s"
 msgstr ""

@@ -42,7 +42,7 @@ import { trn } from './tournamatch.js';
                 if ([201,200].includes(xhr.status)) {
                     window.location.href = `${response.link}`;
                 } else {
-                    document.getElementById('trn-report-match-form-message').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+                    document.getElementById('trn-report-match-form-message').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                 }
             };
 

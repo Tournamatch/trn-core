@@ -38,7 +38,7 @@ import { trn } from './tournamatch.js';
             removeAcceptButton();
             removeDeclineButton();
             document.getElementById('trn-challenge-status').innerText = options.language.accepted;
-            document.getElementById('trn-challenge-success-response').innerHTML = `<div class="alert alert-success"><strong>${options.language.success}</strong>: ${options.language.acceptedMessage}</div>`;
+            document.getElementById('trn-challenge-success-response').innerHTML = `<div class="trn-alert trn-alert-success"><strong>${options.language.success}</strong>: ${options.language.acceptedMessage}</div>`;
 
             let xhr = new XMLHttpRequest();
             xhr.open('GET', `${options.api_url}challenges/${event.detail}/?_embed`);
@@ -58,12 +58,12 @@ import { trn } from './tournamatch.js';
             removeAcceptButton();
             removeDeclineButton();
             document.getElementById('trn-challenge-status').innerText = options.language.declined;
-            document.getElementById('trn-challenge-success-response').innerHTML = `<div class="alert alert-success"><strong>${options.language.success}</strong>: ${options.language.declinedMessage}</div>`;
+            document.getElementById('trn-challenge-success-response').innerHTML = `<div class="trn-alert trn-alert-success"><strong>${options.language.success}</strong>: ${options.language.declinedMessage}</div>`;
         });
 
         $.event('challenge').addEventListener('error', function(event) {
             let response = JSON.parse(event.detail);
-            document.getElementById('trn-challenge-failure-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
+            document.getElementById('trn-challenge-failure-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
         });
 
     }, false);

@@ -324,26 +324,10 @@ class Team extends Controller {
 		$files = $request->get_file_params();
 		if ( ! empty( $files ) ) {
 			foreach ( $files as $key => $file ) {
-				$file_pieces   = explode( '.', $file['name'] );
-				$pic_extension = end( $file_pieces );
-				if ( in_array( $pic_extension, trn_get_option( 'allowed_extensions' ), true ) ) {
-					$avatar_directory = trn_upload_dir() . '/images/avatars/';
-					$new_pic          = uniqid() . '.' . $pic_extension;
+				$request['avatar'] = trn_store_profile_avatar( $file, $team->avatar );
 
-					// move this to permanent location.
-					if ( move_uploaded_file( $file['tmp_name'], $avatar_directory . $new_pic ) ) {
-						// remove the old file.
-						if ( strlen( $team->avatar ) > 0 ) {
-							if ( file_exists( $team->avatar ) ) {
-								unlink( $team->avatar );
-							} elseif ( file_exists( $avatar_directory . $team->avatar ) ) {
-								unlink( $avatar_directory . $team->avatar );
-							}
-						}
-
-						$team->avatar      = $new_pic;
-						$request['avatar'] = $new_pic;
-					}
+				if ( is_wp_error( $request['avatar'] ) ) {
+					return $request['avatar'];
 				}
 			}
 		}

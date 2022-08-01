@@ -27,7 +27,7 @@ import { trn } from './tournamatch.js';
                 console.log(xhr);
                 let response = JSON.parse(xhr.response);
                 if (xhr.status === 200) {
-                    document.getElementById('trn-update-response').innerHTML = `<div class="alert alert-success"><strong>${options.language.success}!</strong> ${options.language.success_message}</div>`;
+                    document.getElementById('trn-update-response').innerHTML = `<div class="trn-alert trn-alert-success"><strong>${options.language.success}!</strong> ${options.language.success_message}</div>`;
 
                     // Update the team profile avatar.
                     if (response.avatar.length > 0) {
@@ -36,8 +36,10 @@ import { trn } from './tournamatch.js';
                             avatarPreview[0].setAttribute('src', options.avatar_upload_path + response.avatar);
                         }
                     }
+                } else if (xhr.status === 409) {
+                    document.getElementById('trn-update-response').innerHTML = `<div class="trn-alert trn-alert-warning"><strong>${options.language.failure}:</strong> ${response.message}</div>`;
                 } else {
-                    document.getElementById('trn-update-response').innerHTML = `<div class="alert alert-danger"><strong>${options.language.failure}:</strong> ${options.language.failure_message}</div>`;
+                    document.getElementById('trn-update-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}:</strong> ${options.language.failure_message}</div>`;
                 }
             };
 

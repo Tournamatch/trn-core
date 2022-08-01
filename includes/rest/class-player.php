@@ -408,26 +408,10 @@ WHERE `user_id` = %d
 		$files = $request->get_file_params();
 		if ( ! empty( $files ) ) {
 			foreach ( $files as $key => $file ) {
-				$file_pieces   = explode( '.', $file['name'] );
-				$pic_extension = end( $file_pieces );
-				if ( in_array( $pic_extension, trn_get_option( 'allowed_extensions' ), true ) ) {
-					$avatar_directory = trn_upload_dir() . '/images/avatars/';
-					$new_pic          = uniqid() . '.' . $pic_extension;
+				$request['avatar'] = trn_store_profile_avatar( $file, $player->avatar );
 
-					// move this to permanent location.
-					if ( move_uploaded_file( $file['tmp_name'], $avatar_directory . $new_pic ) ) {
-						// remove the old file.
-						if ( strlen( $player->avatar ) > 0 ) {
-							if ( file_exists( $player->avatar ) ) {
-								unlink( $player->avatar );
-							} elseif ( file_exists( $avatar_directory . $player->avatar ) ) {
-								unlink( $avatar_directory . $player->avatar );
-							}
-						}
-
-						$request['avatar'] = $new_pic;
-						$player->avatar    = $new_pic;
-					}
+				if ( is_wp_error( $request['avatar'] ) ) {
+					return $request['avatar'];
 				}
 			}
 		}

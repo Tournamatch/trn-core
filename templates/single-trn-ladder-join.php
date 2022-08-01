@@ -42,7 +42,7 @@ trn_get_header();
 ?>
 <h1 class="trn-mb-4"><?php esc_html_e( 'Join Ladder', 'tournamatch' ); ?></h1>
 <?php if ( ! $can_join ) : ?>
-	<div class="alert alert-info">
+	<div class="trn-alert trn-alert-info">
 		<?php esc_html_e( 'You are already participating on this ladder.', 'tournamatch' ); ?>
 	</div>
 <?php else : ?>

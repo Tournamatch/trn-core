@@ -11,7 +11,7 @@
  * Plugin Name: Tournamatch
  * Plugin URI: https://www.tournamatch.com/
  * Description: Ladder and tournament plugin for eSports and online gaming leagues.
- * Version: 4.2.1
+ * Version: 4.2.2
  * Author: Tournamatch
  * Author URI: https://www.tournamatch.com
  * Text Domain: tournamatch
@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.2.1' );
+define( 'TOURNAMATCH_VERSION', '4.2.2' );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -3477,6 +3477,51 @@ if ( ! function_exists( 'trn_upgrade_sql' ) ) {
   PRIMARY KEY (`team_member_id`)
 );";
 			dbDelta( $sql_fix, true );
+		}
+
+		if ( version_compare( $version, '4.2.2', '<' ) ) {
+			$wpdb->query( "UPDATE {$wpdb->prefix}trn_players_profiles SET `flag` = 'south_africa.gif' WHERE `flag` = 'southafrica.gif'" );
+		}
+	}
+}
+
+if ( ! function_exists( 'trn_store_profile_avatar' ) ) {
+	/**
+	 * Stores a profile (player or team) avatar and moves the file to the appropriate location.
+	 *
+	 * @param array $file User-submitted file data.
+	 * @param string $old_avatar File name of the old avatar.
+	 *
+	 * @return string|WP_Error The new file name or error on failure.
+	 */
+	function trn_store_profile_avatar( $file, $old_avatar ) {
+		$file_pieces        = explode( '.', $file['name'] );
+		$pic_extension      = strtolower( end( $file_pieces ) );
+		$allowed_extensions = trn_get_option( 'allowed_extensions' );
+		if ( in_array( $pic_extension, $allowed_extensions, true ) ) {
+			$avatar_directory = trn_upload_dir() . '/images/avatars/';
+			$new_pic          = uniqid() . '.' . $pic_extension;
+
+			// move this to permanent location.
+			if ( move_uploaded_file( $file['tmp_name'], $avatar_directory . $new_pic ) ) {
+				// remove the old file.
+				if ( strlen( $old_avatar ) > 0 ) {
+					if ( file_exists( $old_avatar ) ) {
+						unlink( $old_avatar );
+					} elseif ( file_exists( $avatar_directory . $old_avatar ) ) {
+						unlink( $avatar_directory . $old_avatar );
+					}
+				}
+
+				return $new_pic;
+			}
+
+			return $old_avatar; // Wrong! This is probably because of a writing permission issue and we should return the appropriate error.
+		} else {
+			/* translators: A comma-separated list of allowed file extensions. */
+			$message = sprintf( esc_html__( 'The file extension is not allowed. Please submit an avatar with one of the following extensions: %s', 'tournamatch' ), implode( ', ', $allowed_extensions ) );
+
+			return new \WP_Error( 'rest_custom_error', $message, array( 'status' => 409 ) );
 		}
 	}
 }
