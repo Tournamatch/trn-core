@@ -64,32 +64,32 @@ trn_get_header();
 
 		?>
 		<div class="trn-col-sm-6 tournament" data-filter="<?php echo esc_html( $filter ); ?>" id="trn-tournament-<?php echo intval( $tournament->id ); ?>-details">
-			<div class="trn-item-wrapper">
-				<div class="trn-item-thumbnail">
-					<a href="<?php trn_esc_route_e( 'tournaments.single.rules', array( 'id' => intval( $tournament->id ) ) ); ?>" title="<?php esc_html_e( 'View Tournament', 'tournamatch' ); ?>">
-						<img src="<?php echo esc_url( $image_directory ); ?>/games/<?php echo is_null( $tournament->game_id ) ? 'blank.gif' : esc_html( $tournament->game_thumbnail ); ?>" alt="<?php echo esc_html( $tournament->game_name ); ?>">
-					</a>
+			<div class="trn-item-wrapper" onclick="window.location.href = '<?php trn_esc_route_e( 'tournaments.single.rules', array( 'id' => intval( $tournament->id ) ) ); ?>'">
+				<div class="trn-item-group">
+					<div class="trn-item-thumbnail">
+						<?php trn_game_thumbnail( $tournament ); ?>
+					</div>
+					<div class="trn-item-info">
+						<span class="trn-item-title"><?php echo esc_html( $tournament->name ); ?></span>
+						<span class="trn-item-meta"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $tournament->start_date ) ) ) ); ?></span>
+					</div>
 				</div>
-				<div class="trn-item-info">
-					<span class="trn-item-title"><?php echo esc_html( $tournament->name ); ?></span>
-					<span class="trn-item-meta"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $tournament->start_date ) ) ) ); ?></span>
-					<span class="trn-item-meta"><?php esc_html_e( 'One loss', 'tournamatch' ); ?></span>
-					<span class="trn-item-meta"><a href="<?php trn_esc_route_e( 'tournaments.single.registered', array( 'id' => intval( $tournament->id ) ) ); ?>"><?php echo intval( $tournament->competitors ); ?></a>/<?php echo ( intval( $tournament->bracket_size ) > 0 ) ? intval( $tournament->bracket_size ) : '&infin;'; ?></span>
-					<ul class="trn-list-inline">
-						<li class="trn-list-inline-item"><a href="<?php trn_esc_route_e( 'tournaments.single.rules', array( 'id' => intval( $tournament->id ) ) ); ?>" class="trn-button trn-button-sm"><?php esc_html_e( 'Info', 'tournamatch' ); ?></a></li>
-						<?php if ( $can_register ) : ?>
-							<li class="trn-list-inline-item"><a href="<?php trn_esc_route_e( 'tournaments.single.register', array( 'id' => $tournament->id ) ); ?>" class="trn-button trn-button-sm" id="tournament-<?php echo intval( $tournament->id ); ?>-register-link"><?php esc_html_e( 'Sign up', 'tournamatch' ); ?></a></li>
+				<ul class="trn-item-list">
+					<li class="trn-item-list-item members">
+						<?php echo intval( $tournament->competitors ); ?>/<?php echo ( $tournament->bracket_size > 0 ) ? intval( $tournament->bracket_size ) : '&infin;'; ?>
+					</li>
+					<li class="trn-item-list-item info">
+						<?php echo esc_html( ucwords( str_replace( '_', ' ', $tournament->status ) ) ); ?>
+					</li>
+					<li class="trn-item-list-item competitor-type">
+						<?php if ( 'players' === $tournament->competitor_type ) : ?>
+							<?php esc_html_e( 'Singles', 'tournamatch' ); ?>
+						<?php else : ?>
+							<?php /* translators: Opponent name vs opponent name. */ ?>
+							<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $tournament->team_size ) ); ?>
 						<?php endif; ?>
-						<?php if ( in_array( $tournament->status, [ 'in_progress', 'complete' ], true ) ) : ?>
-							<li class="trn-list-inline-item"><a href="<?php trn_esc_route_e( 'tournaments.single.brackets', array( 'id' => intval( $tournament->id ) ) ); ?>" class="trn-button trn-button-sm"><?php esc_html_e( 'Brackets', 'tournamatch' ); ?></a></li>
-						<?php endif; ?>
-						<?php if ( ( 'in_progress' === $tournament->status ) && in_array( (string) $tournament->id, $my_tournaments, true ) ) : ?>
-							<?php /* TODO: In the future, report button should auto take you to the next match or the my-match screen. */ ?>
-							<li class="trn-list-inline-item"><a href="<?php trn_esc_route_e( 'report.page' ); ?>" class="trn-button trn-button-sm"><?php esc_html_e( 'Report', 'tournamatch' ); ?></a></li>
-						<?php endif; ?>
-					</ul>
-				</div>
-				<div class="trn-clearfix"></div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	<?php endforeach ?>

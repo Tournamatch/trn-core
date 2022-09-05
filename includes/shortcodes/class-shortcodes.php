@@ -396,7 +396,7 @@ class Shortcodes {
 		$user_teams = $wpdb->get_results( $wpdb->prepare( "SELECT t.team_id AS id, t.name AS name FROM {$wpdb->prefix}trn_teams AS t LEFT JOIN {$wpdb->prefix}trn_teams_members AS tm ON t.team_id = tm.team_id WHERE tm.`team_rank_id` = 1 AND tm.user_id = %d", get_current_user_id() ) );
 
 		$html  = '<div class="trn-button-group">';
-		$html .= '  <button class="trn-button trn-button-secondary trn-button-sm trn-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" id="trn-invite-dropdown">' . __( 'Invite to...', 'tournamatch' ) . '</button>';
+		$html .= '  <button class="trn-button trn-button-sm trn-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" id="trn-invite-dropdown">' . __( 'Invite to...', 'tournamatch' ) . '</button>';
 		$html .= '  <div class="trn-dropdown-menu" aria-labelledby="trn-invite-dropdown">';
 
 		if ( 0 === count( $user_teams ) ) {

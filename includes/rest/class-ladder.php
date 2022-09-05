@@ -356,6 +356,18 @@ class Ladder extends Controller {
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'default'     => 0,
 				),
+				'thumbnail_id'      => array(
+					'description' => esc_html__( 'The image thumbnail for the ladder.', 'tournamatch' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => 0,
+				),
+				'banner_id'         => array(
+					'description' => esc_html__( 'The image banner for the ladder.', 'tournamatch' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => 0,
+				),
 				'competitor_type'   => array(
 					'description' => esc_html__( 'Indicates whether the ladder is a singles or teams competition.', 'tournamatch' ),
 					'type'        => 'string',

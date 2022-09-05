@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.2.2' );
+define( 'TOURNAMATCH_VERSION', '4.3.0' );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -3482,6 +3482,14 @@ if ( ! function_exists( 'trn_upgrade_sql' ) ) {
 		if ( version_compare( $version, '4.2.2', '<' ) ) {
 			$wpdb->query( "UPDATE {$wpdb->prefix}trn_players_profiles SET `flag` = 'south_africa.gif' WHERE `flag` = 'southafrica.gif'" );
 		}
+
+		if ( version_compare( $version, '4.3.0', '<' ) ) {
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_games` ADD `thumbnail_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail`, ADD `banner_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail_id`;" );
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_ladders` ADD `thumbnail_id` INT(10) UNSIGNED NOT NULL AFTER `game_id`, ADD `banner_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail_id`;" );
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_tournaments` ADD `thumbnail_id` INT(10) UNSIGNED NOT NULL AFTER `game_id`, ADD `banner_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail_id`;" );
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` ADD `banner` VARCHAR(191) NULL DEFAULT NULL AFTER `avatar`;" );
+			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_teams` ADD `banner` VARCHAR(191) NULL DEFAULT NULL AFTER `avatar`;" );
+		}
 	}
 }
 
@@ -3495,33 +3503,48 @@ if ( ! function_exists( 'trn_store_profile_avatar' ) ) {
 	 * @return string|WP_Error The new file name or error on failure.
 	 */
 	function trn_store_profile_avatar( $file, $old_avatar ) {
-		$file_pieces        = explode( '.', $file['name'] );
-		$pic_extension      = strtolower( end( $file_pieces ) );
-		$allowed_extensions = trn_get_option( 'allowed_extensions' );
-		if ( in_array( $pic_extension, $allowed_extensions, true ) ) {
-			$avatar_directory = trn_upload_dir() . '/images/avatars/';
-			$new_pic          = uniqid() . '.' . $pic_extension;
+		if ( 0 === $file['error'] ) {
+			$file_pieces        = explode( '.', $file['name'] );
+			$pic_extension      = strtolower( end( $file_pieces ) );
+			$allowed_extensions = trn_get_option( 'allowed_extensions' );
+			if ( in_array( $pic_extension, $allowed_extensions, true ) ) {
+				$avatar_directory = trn_upload_dir() . '/images/avatars/';
+				$new_pic          = uniqid() . '.' . $pic_extension;
 
-			// move this to permanent location.
-			if ( move_uploaded_file( $file['tmp_name'], $avatar_directory . $new_pic ) ) {
-				// remove the old file.
-				if ( strlen( $old_avatar ) > 0 ) {
-					if ( file_exists( $old_avatar ) ) {
-						unlink( $old_avatar );
-					} elseif ( file_exists( $avatar_directory . $old_avatar ) ) {
-						unlink( $avatar_directory . $old_avatar );
+				// move this to permanent location.
+				if ( move_uploaded_file( $file['tmp_name'], $avatar_directory . $new_pic ) ) {
+					// remove the old file.
+					if ( strlen( $old_avatar ) > 0 ) {
+						if ( file_exists( $old_avatar ) ) {
+							unlink( $old_avatar );
+						} elseif ( file_exists( $avatar_directory . $old_avatar ) ) {
+							unlink( $avatar_directory . $old_avatar );
+						}
 					}
+
+					return $new_pic;
 				}
 
-				return $new_pic;
+				return $old_avatar; // Wrong! This is probably because of a writing permission issue and we should return the appropriate error.
+			} else {
+				/* translators: A comma-separated list of allowed file extensions. */
+				$message = sprintf( esc_html__( 'The file extension is not allowed. Please submit an avatar with one of the following extensions: %s', 'tournamatch' ), implode( ', ', $allowed_extensions ) );
+
+				return new \WP_Error( 'rest_custom_error', $message, array( 'status' => 409 ) );
 			}
+		} elseif ( in_array( $file['error'], array( 1, 2, 3, 6, 7, 8 ), true ) ) {
+			$php_file_upload_errors = array(
+				0 => esc_html__( 'There is no error, the file uploaded with success', 'tournamatch' ),
+				1 => esc_html__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini', 'tournamatch' ),
+				2 => esc_html__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form', 'tournamatch' ),
+				3 => esc_html__( 'The uploaded file was only partially uploaded', 'tournamatch' ),
+				4 => esc_html__( 'No file was uploaded', 'tournamatch' ),
+				6 => esc_html__( 'Missing a temporary folder', 'tournamatch' ),
+				7 => esc_html__( 'Failed to write file to disk.', 'tournamatch' ),
+				8 => esc_html__( 'A PHP extension stopped the file upload.', 'tournamatch' ),
+			);
 
-			return $old_avatar; // Wrong! This is probably because of a writing permission issue and we should return the appropriate error.
-		} else {
-			/* translators: A comma-separated list of allowed file extensions. */
-			$message = sprintf( esc_html__( 'The file extension is not allowed. Please submit an avatar with one of the following extensions: %s', 'tournamatch' ), implode( ', ', $allowed_extensions ) );
-
-			return new \WP_Error( 'rest_custom_error', $message, array( 'status' => 409 ) );
+			return new \WP_Error( 'rest_custom_error', $php_file_upload_errors[ $file['error'] ], array( 'status' => 409 ) );
 		}
 	}
 }
@@ -3578,6 +3601,114 @@ if ( ! function_exists( 'trn_display_media_input' ) ) {
 
 		wp_register_script( 'trn-admin-media-upload', plugins_url( 'dist/js/media-upload.js', __FILE__ ), array( 'jquery' ), '4.3.0', true );
 		wp_enqueue_script( 'trn-admin-media-upload' );
+	}
+}
+
+if ( ! function_exists( 'trn_game_thumbnail' ) ) {
+	/**
+	 * Displays HTML markup for an events game thumbnail.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param object $event The event.
+	 */
+	function trn_game_thumbnail( $event ) {
+		global $wpdb;
+
+		$image_directory = trn_upload_url() . '/images';
+
+		// Set the default image thumbnail.
+		$src = $image_directory . '/games/blank.gif';
+
+		if ( ! is_null( $event->thumbnail_id ) && ( 0 < $event->thumbnail_id ) ) {
+			$src = wp_get_attachment_image_src( $event->thumbnail_id );
+			if ( is_array( $src ) ) {
+				$src = $src[0];
+			}
+		} elseif ( ! is_null( $event->game_id ) ) {
+			$game = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_games` WHERE `game_id` = %d", $event->game_id ) );
+
+			if ( ! is_null( $game ) && ( 0 < $game->thumbnail_id ) ) {
+				$src = wp_get_attachment_image_src( $game->thumbnail_id );
+				if ( is_array( $src ) ) {
+					$src = $src[0];
+				}
+			} elseif ( 0 < strlen( $game->thumbnail ) ) {
+				$src = $image_directory . '/games/' . $game->thumbnail;
+			}
+		}
+
+		$alt = '';
+		if ( isset( $event->game ) ) {
+			$alt = $event->game;
+		} elseif ( isset( $event->game_name ) ) {
+			$alt = $event->game_name;
+		}
+		?>
+		<img src="<?php echo esc_attr( $src ); ?>"
+				alt="<?php echo esc_attr( $alt ); ?>">
+		<?php
+	}
+}
+
+if ( ! function_exists( 'trn_header_banner_style' ) ) {
+	/**
+	 * Displays an inline style for a competitions banner image.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param integer $banner_id The wp attachment post id of the event banner to display.
+	 * @param integer $game_id The game id of the event.
+	 */
+	function trn_header_banner_style( $banner_id, $game_id ) {
+		global $wpdb;
+
+		$src = null;
+
+		if ( isset( $banner_id ) && ( 0 < $banner_id ) ) {
+			$src = wp_get_attachment_image_src( $banner_id );
+			if ( is_array( $src ) ) {
+				$src = $src[0];
+			}
+		} elseif ( isset( $game_id ) && ( 0 < $game_id ) ) {
+			$game = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_games` WHERE `game_id` = %d", $game_id ) );
+
+			if ( ! is_null( $game ) && ( 0 < $game->banner_id ) ) {
+				$src = wp_get_attachment_image_src( $game->banner_id );
+				if ( is_array( $src ) ) {
+					$src = $src[0];
+				}
+			}
+		}
+
+		if ( ! is_null( $src ) ) {
+			echo ' style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 1)), url(\'' . esc_url( $src ) . '\') no-repeat center; background-size: cover;"';
+		} else {
+			echo ' style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 1)); background-size: cover;"';
+		}
+	}
+}
+
+if ( ! function_exists( 'trn_competitor_header_banner_style' ) ) {
+	/**
+	 * Displays the inline style for a competitors banner.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $banner The banner url for the competitor.
+	 */
+	function trn_competitor_header_banner_style( $banner ) {
+		$src = null;
+
+		if ( 0 < strlen( $banner ) ) {
+			$src = trn_upload_url() . '/images/avatars/' . $banner;
+		}
+
+		if ( ! is_null( $src ) ) {
+			echo ' style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 1)), url(\'' . esc_url( $src ) . '\') no-repeat center; background-size: cover;"';
+		} else {
+			echo ' style="background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 1)); background-size: cover;"';
+		}
 	}
 }
 

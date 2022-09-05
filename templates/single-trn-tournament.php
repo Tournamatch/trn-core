@@ -33,43 +33,38 @@ get_header();
 trn_get_header();
 
 ?>
+<div class="trn-competition-header"<?php trn_header_banner_style( $tournament->banner_id, $tournament->game_id ); ?>>
+	<h1 class="trn-competition-name"><?php echo esc_html( $tournament->name ); ?></h1>
+	<span class="trn-competition-game"><?php echo esc_html( $tournament->game_name ); ?></span>
+	<span class="trn-competition-actions">
+	<?php if ( is_user_logged_in() ) : ?>
 
-<div class="trn-row trn-mb-sm">
-	<div class="trn-col-sm-2 trn-col-xs-4 trn-text-center">
-		<img class="trn-game-thumbnail" src="<?php echo esc_html( $image_directory ); ?>/games/<?php echo is_null( $tournament->game_thumbnail ) ? 'blank.gif' : esc_html( $tournament->game_thumbnail ); ?>" alt="">
-	</div>
-	<div class="trn-col-sm-4 trn-col-xs-8">
-		<h3 id="trn-tournament-title"><?php echo esc_html( $tournament->name ); ?><br><small><?php echo esc_html( $tournament->game_name ); ?></small></h3>
-	</div>
-	<div class="trn-col-sm-6 d-none d-sm-block">
-		<dl class="trn-dl">
-			<dt class="trn-dt"><?php esc_html_e( 'Start Date', 'tournamatch' ); ?>:</dt>
-			<dd class="trn-dd"><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $tournament->start_date ) ) ) ); ?></dd>
-			<dt class="trn-dt"><?php esc_html_e( 'Elimination', 'tournamatch' ); ?>:</dt>
-			<dd class="trn-dd"><?php esc_html_e( 'Single loss', 'tournamatch' ); ?></dd>
-			<dt class="trn-dt"><?php esc_html_e( 'Competition', 'tournamatch' ); ?>:</dt>
-			<dd class="trn-dd">
-				<?php if ( 'players' === $tournament->competitor_type ) : ?>
-					<?php esc_html_e( 'Singles', 'tournamatch' ); ?>
-				<?php else : ?>
-					<?php /* translators: Opponent name vs opponent name. */ ?>
-					<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $tournament->team_size ) ); ?>
-				<?php endif; ?>
-			</dd>
-			<dt class="trn-dt"><?php esc_html_e( 'Bracket Size', 'tournamatch' ); ?>:</dt>
-			<dd class="trn-dd"><?php echo intval( $tournament->competitors ); ?>/<?php echo ( $tournament->bracket_size > 0 ) ? intval( $tournament->bracket_size ) : '&infin;'; ?></dd>
-			<dt class="trn-dt"><?php esc_html_e( 'Status', 'tournamatch' ); ?>:</dt>
-			<dd class="trn-dd"><?php echo esc_html( ucwords( str_replace( '_', ' ', $tournament->status ) ) ); ?></dd>
-		</dl>
-	</div>
+	<?php endif; ?>
+	</span>
+	<ul class="trn-competition-list">
+		<li class="trn-competition-list-item joined">
+			<?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $tournament->start_date ) ) ) ); ?>
+		</li>
+		<li class="trn-competition-list-item members">
+			<?php echo intval( $tournament->competitors ); ?>/<?php echo ( $tournament->bracket_size > 0 ) ? intval( $tournament->bracket_size ) : '&infin;'; ?>
+		</li>
+		<li class="trn-competition-list-item info">
+			<?php echo esc_html( ucwords( str_replace( '_', ' ', $tournament->status ) ) ); ?>
+		</li>
+		<li class="trn-competition-list-item format">
+			<?php esc_html_e( 'Single Elimination', 'tournamatch' ); ?>
+		</li>
+		<li class="trn-competition-list-item competitor-type">
+			<?php if ( 'players' === $tournament->competitor_type ) : ?>
+				<?php esc_html_e( 'Singles', 'tournamatch' ); ?>
+			<?php else : ?>
+				<?php /* translators: Opponent name vs opponent name. */ ?>
+				<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $tournament->team_size ) ); ?>
+			<?php endif; ?>
+		</li>
+	</ul>
 </div>
-
-<div class="trn-row">
-	<div class="trn-col-sm-12">
-		<div id="trn-unregister-response"></div>
-	</div>
-</div>
-
+<div id="trn-unregister-response"></div>
 <?php
 
 $views = array(

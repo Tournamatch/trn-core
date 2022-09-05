@@ -2,6 +2,22 @@
   &-item-wrapper {
     padding: 10px;
     margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+
+    &:hover {
+      border: 1px solid rgba(0, 0, 0, 0.1875);
+      background: rgba(0, 0, 0, 0.0625);
+      cursor:pointer;
+    }
+  }
+
+  &-item-group {
+    display: block;
+    width: 100%;
   }
 
   &-item-thumbnail {
@@ -26,9 +42,7 @@
   &-item-meta {
     display: block;
   }
-  #games &-item-info span:nth-child(2) {
-    padding-bottom: 21px;
-  }
+
   #tournaments &-item-info ul {
     margin-top: 0;
   }

@@ -17,14 +17,7 @@ $game_id = isset( $_GET['game_id'] ) ? intval( $_GET['game_id'] ) : null;
 // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 $platform = isset( $_GET['platform'] ) ? sanitize_text_field( wp_unslash( $_GET['platform'] ) ) : null;
 
-$ladders         = trn_get_ladders( $game_id, $platform );
-$is_admin        = current_user_can( 'manage_tournamatch' );
-$image_directory = trn_upload_url() . '/images';
-
-$my_ladders = array();
-if ( is_user_logged_in() ) {
-	$my_ladders = array_column( trn_get_user_ladders( get_current_user_id() ), 'ladder_id' );
-}
+$ladders = trn_get_ladders( $game_id, $platform );
 
 get_header();
 
@@ -33,49 +26,34 @@ trn_get_header();
 ?>
 	<h1 class="trn-mb-4"><?php esc_html_e( 'Ladders', 'tournamatch' ); ?></h1>
 	<div class="trn-row" id="ladders">
-		<?php
-		foreach ( $ladders as $ladder ) :
-			?>
+		<?php foreach ( $ladders as $ladder ) : ?>
 			<div class="trn-col-sm-6">
-				<div class="trn-item-wrapper">
-					<div class="trn-item-thumbnail">
-						<a href="<?php trn_esc_route_e( 'ladders.single', array( 'id' => $ladder->ladder_id ) ); ?>"
-							title="<?php esc_html_e( 'View Ladder', 'tournamatch' ); ?>">
-							<img src="<?php echo ! is_null( $ladder->game_id ) ? esc_url( $image_directory . '/games/' . $ladder->thumbnail ) : esc_url( $image_directory . '/games/blank.gif' ); ?>"
-								alt="<?php echo esc_html( $ladder->game ); ?>">
-						</a>
+				<div class="trn-item-wrapper" onclick="window.location.href = '<?php trn_esc_route_e( 'ladders.single', array( 'id' => $ladder->ladder_id ) ); ?>'">
+					<div class="trn-item-group">
+						<div class="trn-item-thumbnail">
+							<?php trn_game_thumbnail( $ladder ); ?>
+						</div>
+						<div class="trn-item-info" style="float: left; margin-left: 10px">
+							<span class="trn-item-title"><?php echo esc_html( $ladder->name ); ?></span>
+						</div>
 					</div>
-					<div class="trn-item-info" style="float: left; margin-left: 10px">
-						<span class="trn-item-title"><?php echo esc_html( $ladder->name ); ?></span>
-						<span class="trn-item-meta"><?php esc_html_e( 'Points', 'tournamatch' ); ?></span>
-						<span class="trn-item-meta">
-						<?php
-						/* translators: Integer number of competitors */
-							printf( esc_html__( '%d Competitors', 'tournamatch' ), intval( $ladder->competitors ) )
-						?>
-							</span>
-
-					</div>
-					<ul class="trn-list-unstyled trn-text-center" style="float: right">
-						<?php if ( 'active' === $ladder->status ) : ?>
-							<?php if ( in_array( (string) $ladder->ladder_id, $my_ladders, true ) ) : ?>
-								<li class="list-inline-ite" style="margin-bottom: 10px"><a
-											href="<?php trn_esc_route_e( 'matches.single.create', array( 'ladder_id' => $ladder->ladder_id ) ); ?>"
-											class="trn-button trn-button-sm"><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>
-								</li>
+					<ul class="trn-item-list">
+						<li class="trn-item-list-item members">
+							<?php /* translators: number of competitors. */ ?>
+							<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', 8, 'tournamatch' ) ), 8 ); ?>
+						</li>
+						<li class="trn-item-list-item ranking">
+							<?php esc_html_e( 'Points', 'tournamatch' ); ?>
+						</li>
+						<li class="trn-item-list-item competitor-type">
+							<?php if ( 'players' === $ladder->competitor_type ) : ?>
+								<?php esc_html_e( 'Singles', 'tournamatch' ); ?>
 							<?php else : ?>
-								<li class="list-inline-ite" style="margin-bottom: 10px"><a
-											id="trn-ladder-<?php echo intval( $ladder->ladder_id ); ?>-join"
-											href="<?php trn_esc_route_e( 'ladders.single.join', array( 'id' => $ladder->ladder_id ) ); ?>"
-											class="trn-button trn-button-sm"><?php esc_html_e( 'Join', 'tournamatch' ); ?></a>
-								</li>
+								<?php /* translators: Opponent name vs opponent name. */ ?>
+								<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $ladder->team_size ) ); ?>
 							<?php endif; ?>
-						<?php endif ?>
-						<li style=""><a
-									href="<?php trn_esc_route_e( 'ladders.single', array( 'id' => intval( $ladder->ladder_id ) ) ); ?>"
-									class="trn-button trn-button-sm"><?php esc_html_e( 'View', 'tournamatch' ); ?></a></li>
+						</li>
 					</ul>
-					<div class="trn-clearfix"></div>
 				</div>
 			</div>
 		<?php endforeach; ?>
