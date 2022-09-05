@@ -455,7 +455,6 @@ class Table_Shortcodes {
 	 * @return string
 	 */
 	public function ladder_standings_list_table( $atts = [], $content = null, $tag = '' ) {
-		global $wpdb;
 
 		$atts = array_change_key_case( (array) $atts, CASE_LOWER );
 
@@ -464,13 +463,13 @@ class Table_Shortcodes {
 			return '';
 		}
 
-		$lid    = intval( $atts['ladder_id'] );
-		$ladder = $wpdb->get_row( $wpdb->prepare( "SELECT `l`.*, `g`.`name` AS `game_name`, `g`.`thumbnail` AS `game_thumbnail` FROM `{$wpdb->prefix}trn_ladders` AS `l` LEFT JOIN `{$wpdb->prefix}trn_games` AS `g` ON `l`.`game_id` = `g`.`game_id` WHERE `l`.`ladder_id` = %d", $lid ) );
+		$ladder_id = intval( $atts['ladder_id'] );
 
-		$row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders` WHERE `ladder_id`= %d AND visibility = %s", $lid, 'visible' ), ARRAY_A );
+		$ladder = trn_get_ladder( $ladder_id );
+		$ladder = trn_the_ladder( $ladder );
 
 		$uses_draws    = ( '1' === trn_get_option( 'uses_draws' ) );
-		$can_challenge = is_user_logged_in() && ( 'enabled' === $row['direct_challenges'] );
+		$can_challenge = is_user_logged_in() && ( 'enabled' === $ladder->direct_challenges );
 
 		$html  = '<div id="trn-remove-competitor-response"></div>';
 		$html .= '<div id="trn-promote-competitor-response"></div>';
@@ -479,7 +478,7 @@ class Table_Shortcodes {
 		$html .= '<tr>';
 		$html .= '<th class="trn-ladder-standings-table-number"></th>';
 		$html .= '<th class="trn-ladder-standings-table-name">' . esc_html__( 'Name', 'tournamatch' ) . '</th>';
-		$html .= '<th class="trn-ladder-standings-table-rating">' . esc_html__( 'Points', 'tournamatch' ) . '</th>';
+		$html .= '<th class="trn-ladder-standings-table-rating">' . esc_html( $ladder->ranking_mode_label ) . '</th>';
 		$html .= '<th class="trn-ladder-standings-table-games-played">' . esc_html__( 'GP', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-ladder-standings-table-wins">' . esc_html__( 'W', 'tournamatch' ) . '</th>';
 		$html .= '<th class="trn-ladder-standings-table-losses">' . esc_html__( 'L', 'tournamatch' ) . '</th>';
@@ -538,9 +537,9 @@ class Table_Shortcodes {
 				'promote_link_title'     => esc_html__( 'Move this competitor up one rank.', 'tournamatch' ),
 			),
 			'ladder_id'       => intval( $ladder->ladder_id ),
-			'default_target'  => 'points',
+			'default_target'  => $ladder->ranking_mode_field,
 			'uses_draws'      => ( '1' === trn_get_option( 'uses_draws' ) ),
-			'can_challenge'   => is_user_logged_in() && ( 'enabled' === $row['direct_challenges'] ),
+			'can_challenge'   => $can_challenge,
 			'current_user_id' => get_current_user_id(),
 			'is_admin'        => current_user_can( 'manage_tournamatch' ),
 			'flag_path'       => plugins_url( 'tournamatch' ) . '/dist/images/flags/',

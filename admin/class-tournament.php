@@ -238,7 +238,7 @@ class Tournament {
 				'id'      => 'general',
 				'content' => __( 'General Tournament Info', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'name'         => array(
 						'id'          => 'name',
 						'label'       => __( 'Name', 'tournamatch' ),
 						'required'    => true,
@@ -246,7 +246,7 @@ class Tournament {
 						'description' => __( 'The name displayed to users for the tournament.', 'tournamatch' ),
 						'value'       => isset( $tournament->name ) ? $tournament->name : '',
 					),
-					array(
+					'game_id'      => array(
 						'id'          => 'game_id',
 						'label'       => __( 'Game', 'tournamatch' ),
 						'type'        => 'select',
@@ -254,7 +254,7 @@ class Tournament {
 						'value'       => isset( $tournament->game_id ) ? intval( $tournament->game_id ) : 0,
 						'options'     => $game_options,
 					),
-					array(
+					'bracket_size' => array(
 						'id'          => 'bracket_size',
 						'label'       => __( 'Bracket Size', 'tournamatch' ),
 						'type'        => 'select',
@@ -269,7 +269,7 @@ class Tournament {
 				'id'      => 'datetime',
 				'content' => __( 'Date and Time Settings', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'start_date' => array(
 						'id'          => 'start_date',
 						'label'       => __( 'Start Date and Time', 'tournamatch' ),
 						'description' => __( 'The date and time the tournament is scheduled to start.', 'tournamatch' ),
@@ -284,7 +284,7 @@ class Tournament {
 				'id'      => 'match',
 				'content' => __( 'Match Settings', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'competitor_type' => array(
 						'id'          => 'competitor_type',
 						'label'       => __( 'Competition', 'tournamatch' ),
 						'type'        => 'select',
@@ -302,7 +302,7 @@ class Tournament {
 							),
 						),
 					),
-					array(
+					'team_size'       => array(
 						'id'          => 'team_size',
 						'label'       => __( 'Players per Team', 'tournamatch' ),
 						'type'        => 'number',
@@ -315,14 +315,14 @@ class Tournament {
 				'id'      => 'other',
 				'content' => __( 'Other Settings', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'rules'      => array(
 						'id'          => 'rules',
 						'label'       => __( 'Rules', 'tournamatch' ),
 						'description' => __( 'The rules for the tournament. HTML is allowed.', 'tournamatch' ),
 						'type'        => 'textarea',
 						'value'       => isset( $tournament->rules ) ? $tournament->rules : '',
 					),
-					array(
+					'visibility' => array(
 						'id'          => 'visibility',
 						'label'       => __( 'Visibility', 'tournamatch' ),
 						'description' => __( 'Toggle display of this tournament outside Admin.', 'tournamatch' ),

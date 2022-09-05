@@ -188,7 +188,11 @@ class Ladder_Competitor extends Controller {
 
 		$this->verify_business_rules( $rules );
 
-		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_ladders_entries` (`ladder_entry_id`, `ladder_id`, `competitor_id`, `competitor_type`, `joined_date`) VALUES (NULL, %d, %d, %s, UTC_TIMESTAMP())", $request['ladder_id'], $request['competitor_id'], $request['competitor_type'] ) );
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
+
+		if ( 0 < count( $prepared_post ) ) {
+			$wpdb->insert( $wpdb->prefix . 'trn_ladders_entries', $prepared_post );
+		}
 
 		$competitor = $wpdb->get_row(
 			$wpdb->prepare(
@@ -313,7 +317,7 @@ WHERE 1 = 1 ";
 		$total_filtered = $wpdb->num_rows;
 
 		if ( ! empty( $request['orderby'] ) ) {
-			$columns  = array(
+			$columns = array(
 				'name'         => 'name',
 				'points'       => 'points',
 				'wins'         => 'wins',
@@ -324,6 +328,16 @@ WHERE 1 = 1 ";
 				'idle'         => 'idle_unix_timestamp',
 				'games_played' => 'games_played',
 			);
+
+			/**
+			 * Filters an array of orderable columns of ladder competitors.
+			 *
+			 * @since 4.3.0
+			 *
+			 * @param array $columns An array of columns.
+			 */
+			$columns = apply_filters( 'trn_filter_ladder_competitor_orderable_columns', $columns );
+
 			$order_by = explode( '.', $request['orderby'] );
 
 			if ( ( 2 === count( $order_by ) && in_array( $order_by[0], array_keys( $columns ), true ) ) ) {
@@ -391,32 +405,10 @@ WHERE 1 = 1 ";
 			return new \WP_Error( 'rest_custom_error', esc_html__( 'Ladder competitor does not exist.', 'tournamatch' ), array( 'status' => 404 ) );
 		}
 
-		$schema = $this->get_item_schema();
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
 
-		$data = array();
-
-		$allowed_fields = array(
-			'points'        => 'points',
-			'rating'        => 'rating',
-			'wins'          => 'wins',
-			'losses'        => 'losses',
-			'draws'         => 'draws',
-			'streak'        => 'streak',
-			'goals_for'     => 'goals_for',
-			'goals_against' => 'goals_against',
-		);
-
-		array_walk(
-			$allowed_fields,
-			function ( $field, $key ) use ( $schema, $request, &$data ) {
-				if ( ! empty( $schema['properties'][ $field ] ) && $request->has_param( $field ) ) {
-					$data[ $key ] = $request->get_param( $field );
-				}
-			}
-		);
-
-		if ( 0 < count( $data ) ) {
-			$wpdb->update( $wpdb->prefix . 'trn_ladders_entries', $data, array( 'ladder_entry_id' => $ladder_entry_id ) );
+		if ( 0 < count( $prepared_post ) ) {
+			$wpdb->update( $wpdb->prefix . 'trn_ladders_entries', $prepared_post, array( 'ladder_entry_id' => $ladder_entry_id ) );
 		}
 
 		$competitor = $wpdb->get_row(
@@ -514,111 +506,6 @@ WHERE `le1`.`ladder_entry_id` = %d",
 			),
 			204
 		);
-	}
-
-	/**
-	 * Prepares a single ladder competitor item for response.
-	 *
-	 * @since 3.23.0
-	 *
-	 * @param Object           $competitor Ladder competitor object.
-	 * @param \WP_REST_Request $request Request object.
-	 *
-	 * @return \WP_REST_Response Response object.
-	 */
-	public function prepare_item_for_response( $competitor, $request ) {
-		global $wpdb;
-
-		$fields = $this->get_fields_for_response( $request );
-
-		// Base fields for every post.
-		$data = array();
-
-		if ( rest_is_field_included( 'ladder_entry_id', $fields ) ) {
-			$data['ladder_entry_id'] = (int) $competitor->ladder_entry_id;
-		}
-
-		if ( rest_is_field_included( 'ladder_id', $fields ) ) {
-			$data['ladder_id'] = (int) $competitor->ladder_id;
-		}
-
-		if ( rest_is_field_included( 'competitor_id', $fields ) ) {
-			$data['competitor_id'] = (int) $competitor->competitor_id;
-		}
-
-		if ( rest_is_field_included( 'competitor_type', $fields ) ) {
-			$data['competitor_type'] = $competitor->competitor_type;
-		}
-
-		if ( rest_is_field_included( 'joined_date', $fields ) ) {
-			$data['joined_date'] = array(
-				'raw'      => $competitor->joined_date,
-				'rendered' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $competitor->joined_date ) ) ),
-			);
-		}
-
-		if ( rest_is_field_included( 'points', $fields ) ) {
-			$data['points'] = (int) $competitor->points;
-		}
-
-		if ( rest_is_field_included( 'rank', $fields ) ) {
-			$data['rank'] = (int) $competitor->rank;
-		}
-
-		if ( rest_is_field_included( 'games_played', $fields ) && isset( $competitor->games_played ) ) {
-			$data['games_played'] = (int) $competitor->games_played;
-		}
-
-		if ( rest_is_field_included( 'wins', $fields ) ) {
-			$data['wins'] = (int) $competitor->wins;
-		}
-
-		if ( rest_is_field_included( 'losses', $fields ) ) {
-			$data['losses'] = (int) $competitor->losses;
-		}
-
-		if ( rest_is_field_included( 'draws', $fields ) ) {
-			$data['draws'] = (int) $competitor->draws;
-		}
-
-		if ( rest_is_field_included( 'win_percent', $fields ) ) {
-			$data['win_percent'] = $competitor->win_percent;
-		}
-
-		if ( rest_is_field_included( 'streak', $fields ) ) {
-			$data['streak'] = (int) $competitor->streak;
-		}
-
-		if ( rest_is_field_included( 'best_streak', $fields ) ) {
-			$data['best_streak'] = (int) $competitor->best_streak;
-		}
-
-		if ( rest_is_field_included( 'worst_streak', $fields ) ) {
-			$data['worst_streak'] = (int) $competitor->worst_streak;
-		}
-
-		if ( rest_is_field_included( 'days_idle', $fields ) ) {
-			if ( 0 < strlen( $competitor->time ) ) {
-				$date_time_1       = new \DateTime( '@0' );
-				$date_time_2       = new \DateTime( '@' . $competitor->idle_unix_timestamp );
-				$data['days_idle'] = (int) $date_time_1->diff( $date_time_2 )->format( '%a' );
-			} else {
-				$data['days_idle'] = '';
-			}
-		}
-
-		if ( current_user_can( 'manage_tournamatch' ) ) {
-			if ( rest_is_field_included( 'edit_link', $fields ) ) {
-				$data['edit_link'] = trn_route( 'ladder-competitors.single.edit', array( 'id' => $competitor->ladder_entry_id ) );
-			}
-		}
-
-		$response = rest_ensure_response( $data );
-
-		$links = $this->prepare_links( $competitor );
-		$response->add_links( $links );
-
-		return $response;
 	}
 
 	/**
@@ -781,7 +668,7 @@ WHERE `le1`.`ladder_entry_id` = %d",
 				'trn-get'     => function( $competitor ) {
 					if ( 0 < strlen( $competitor->time ) ) {
 						$date_time_1 = new \DateTime( '@0' );
-						$date_time_2       = new \DateTime( '@' . $competitor->idle_unix_timestamp );
+						$date_time_2 = new \DateTime( '@' . $competitor->idle_unix_timestamp );
 
 						return (int) $date_time_1->diff( $date_time_2 )->format( '%a' );
 					} else {
@@ -790,12 +677,6 @@ WHERE `le1`.`ladder_entry_id` = %d",
 				},
 				'context'     => array( 'view', 'edit', 'embed' ),
 				'readonly'    => true,
-			),
-			'last_match_id'   => array(
-				'description' => esc_html__( 'The match id of the last match for the ladder competitor.', 'tournamatch' ),
-				'type'        => 'integer',
-				'context'     => array( 'view', 'edit', 'embed' ),
-				'default'     => 0,
 			),
 		);
 

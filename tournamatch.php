@@ -2856,6 +2856,10 @@ if ( ! function_exists( 'trn_user_form' ) ) {
 						<?php
 
 						switch ( $type ) {
+							case 'static':
+								echo '<div class="trn-col-sm-4">';
+								echo '<p class="trn-form-control-static">' . esc_html( $field['value'] ) . '</p>';
+								break;
 							case 'select':
 								echo '<div class="trn-col-sm-4">';
 

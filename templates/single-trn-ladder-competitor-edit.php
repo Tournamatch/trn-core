@@ -27,14 +27,70 @@ if ( is_null( $competitor ) ) {
 	exit;
 }
 
-$ladder = trn_get_ladder( $competitor['ladder_id'] );
+$ladder = trn_get_ladder( $competitor->ladder_id );
+$ladder = trn_the_ladder( $ladder );
 
-$points          = $competitor['points'];
-$wins            = $competitor['wins'];
-$losses          = $competitor['losses'];
-$draws           = $competitor['draws'];
-$streak          = $competitor['streak'];
-$competitor_name = $competitor['competitor_name'];
+$form_fields = array(
+	'name'                      => array(
+		'id'    => 'name',
+		'label' => __( 'Competitor', 'tournamatch' ),
+		'type'  => 'static',
+		'value' => $competitor->competitor_name,
+	),
+	$ladder->ranking_mode_field => array(
+		'id'    => $ladder->ranking_mode_field,
+		'label' => $ladder->ranking_mode_label,
+		'type'  => 'number',
+		'value' => isset( $competitor->{$ladder->ranking_mode_field} ) ? $competitor->{$ladder->ranking_mode_field} : '',
+	),
+	'wins'                      => array(
+		'id'    => 'wins',
+		'label' => __( 'Wins', 'tournamatch' ),
+		'type'  => 'number',
+		'value' => isset( $competitor->wins ) ? $competitor->wins : '',
+	),
+	'losses'                    => array(
+		'id'    => 'losses',
+		'label' => __( 'Losses', 'tournamatch' ),
+		'type'  => 'number',
+		'value' => isset( $competitor->losses ) ? $competitor->losses : '',
+	),
+	'streak'                    => array(
+		'id'    => 'streak',
+		'label' => __( 'Streak', 'tournamatch' ),
+		'type'  => 'number',
+		'value' => isset( $competitor->streak ) ? $competitor->streak : '',
+	),
+);
+
+if ( trn_get_option( 'uses_draws' ) ) {
+	$form_fields = trn_array_merge_after_key(
+		$form_fields,
+		'losses',
+		array(
+			'draws' => array(
+				'id'    => 'draws',
+				'label' => __( 'Draws', 'tournamatch' ),
+				'type'  => 'number',
+				'value' => isset( $competitor->draws ) ? $competitor->draws : '',
+			),
+		)
+	);
+}
+
+$form = array(
+	'attributes' => array(
+		'id'                        => 'trn-edit-competitor-form',
+		'action'                    => '#',
+		'method'                    => 'post',
+		'data-ladder-competitor-id' => intval( $ladder_entry_id ),
+	),
+	'fields'     => $form_fields,
+	'submit'     => array(
+		'id'      => 'trn-save-button',
+		'content' => __( 'Save', 'tournamatch' ),
+	),
+);
 
 get_header();
 
@@ -42,57 +98,8 @@ trn_get_header();
 
 ?>
 	<h1 class="trn-mb-4"><?php esc_html_e( 'Edit Competitor', 'tournamatch' ); ?></h1>
+	<?php trn_user_form( $form, $competitor ); ?>
 	<div id="trn-update-response"></div>
-	<form method="post" id="trn-edit-competitor-form"
-			data-ladder-competitor-id="<?php echo intval( $ladder_entry_id ); ?>">
-		<div class="trn-form-group trn-row">
-			<label class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Competitor', 'tournamatch' ); ?>:</label>
-			<div class="trn-col-sm-2">
-				<p class="trn-form-control-static"><?php echo esc_html( $competitor_name ); ?></p>
-			</div>
-		</div>
-		<div class="trn-form-group trn-row">
-			<label for="points" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Points', 'tournamatch' ); ?>:</label>
-			<div class="trn-col-sm-2">
-				<input type="text" class="trn-form-control" id="points" name="points"
-						value="<?php echo intval( $points ); ?>"/>
-			</div>
-		</div>
-		<div class="trn-form-group trn-row">
-			<label for="wins" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Wins', 'tournamatch' ); ?>:</label>
-			<div class="trn-col-sm-2">
-				<input type="text" class="trn-form-control" id="wins" name="wins"
-						value="<?php echo intval( $wins ); ?>"/>
-			</div>
-		</div>
-		<div class="trn-form-group trn-row">
-			<label for="losses" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Losses', 'tournamatch' ); ?>:</label>
-			<div class="trn-col-sm-2">
-				<input type="text" class="trn-form-control" id="losses" name="losses"
-						value="<?php echo intval( $losses ); ?>"/>
-			</div>
-		</div>
-		<div class="trn-form-group trn-row">
-			<label for="draws" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Draws', 'tournamatch' ); ?>:</label>
-			<div class="trn-col-sm-2">
-				<input type="text" class="trn-form-control" id="draws" name="draws"
-						value="<?php echo intval( $draws ); ?>"/>
-			</div>
-		</div>
-		<div class="trn-form-group trn-row">
-			<label for="streak" class="trn-col-sm-3 trn-col-form-label"><?php esc_html_e( 'Streak', 'tournamatch' ); ?>:</label>
-			<div class="trn-col-sm-2">
-				<input type="text" class="trn-form-control" id="streak" name="streak"
-						value="<?php echo esc_html( $streak ); ?>"/>
-			</div>
-		</div>
-		<div class="trn-form-group trn-row">
-			<div class="trn-offset-3 trn-col-sm-6">
-				<input type="submit" value="<?php esc_html_e( 'Save', 'tournamatch' ); ?>"
-						class="trn-button"/>
-			</div>
-		</div>
-	</form>
 <?php
 
 $options = array(

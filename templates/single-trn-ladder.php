@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 $ladder_id = get_query_var( 'id' );
 
 $ladder = trn_get_ladder( $ladder_id );
+$ladder = trn_the_ladder( $ladder );
 if ( is_null( $ladder ) ) {
 	wp_safe_redirect( trn_route( 'ladders.archive' ) );
 	exit;
@@ -60,7 +61,7 @@ trn_get_header();
 			<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', 8, 'tournamatch' ) ), 8 ); ?>
 		</li>
 		<li class="trn-competition-list-item ranking">
-			<?php esc_html_e( 'Points', 'tournamatch' ); ?>
+			<?php echo esc_html( $ladder->ranking_mode_label ); ?>
 		</li>
 		<li class="trn-competition-list-item competitor-type">
 			<?php if ( 'players' === $ladder->competitor_type ) : ?>

@@ -266,7 +266,7 @@ class Ladder {
 				'id'      => 'general',
 				'content' => __( 'General Ladder Info', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'name'        => array(
 						'id'          => 'name',
 						'label'       => __( 'Name', 'tournamatch' ),
 						'required'    => true,
@@ -274,7 +274,7 @@ class Ladder {
 						'description' => __( 'The name displayed to users for the ladder.', 'tournamatch' ),
 						'value'       => isset( $ladder->name ) ? $ladder->name : '',
 					),
-					array(
+					'game_id'     => array(
 						'id'          => 'game_id',
 						'label'       => __( 'Game', 'tournamatch' ),
 						'type'        => 'select',
@@ -282,19 +282,19 @@ class Ladder {
 						'value'       => isset( $ladder->game_id ) ? intval( $ladder->game_id ) : 0,
 						'options'     => $game_options,
 					),
-					array(
+					'win_points'  => array(
 						'id'    => 'win_points',
 						'label' => __( 'Win', 'tournamatch' ),
 						'type'  => 'number',
 						'value' => isset( $ladder->win_points ) ? intval( $ladder->win_points ) : 3,
 					),
-					array(
+					'loss_points' => array(
 						'id'    => 'loss_points',
 						'label' => __( 'Loss', 'tournamatch' ),
 						'type'  => 'number',
 						'value' => isset( $ladder->loss_points ) ? intval( $ladder->loss_points ) : 1,
 					),
-					array(
+					'draw_points' => array(
 						'id'          => 'draw_points',
 						'label'       => __( 'Draw', 'tournamatch' ),
 						'description' => __( 'Points awarded for wins, losses and draws.', 'tournamatch' ),
@@ -307,7 +307,7 @@ class Ladder {
 				'id'      => 'match',
 				'content' => __( 'Match Settings', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'competitor_type' => array(
 						'id'          => 'competitor_type',
 						'label'       => __( 'Competition', 'tournamatch' ),
 						'type'        => 'select',
@@ -325,7 +325,7 @@ class Ladder {
 							),
 						),
 					),
-					array(
+					'team_size'       => array(
 						'id'          => 'team_size',
 						'label'       => __( 'Players per Team', 'tournamatch' ),
 						'type'        => 'number',
@@ -338,7 +338,7 @@ class Ladder {
 				'id'      => 'challenge',
 				'content' => __( 'Challenge Settings', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'direct_challenges' => array(
 						'id'          => 'direct_challenges',
 						'label'       => __( 'Direct Challenges', 'tournamatch' ),
 						'type'        => 'select',
@@ -361,14 +361,14 @@ class Ladder {
 				'id'      => 'other',
 				'content' => __( 'Other Settings', 'tournamatch' ),
 				'fields'  => array(
-					array(
+					'rules'      => array(
 						'id'          => 'rules',
 						'label'       => __( 'Rules', 'tournamatch' ),
 						'description' => __( 'The rules for the ladder. HTML is allowed.', 'tournamatch' ),
 						'type'        => 'textarea',
 						'value'       => isset( $ladder->rules ) ? $ladder->rules : '',
 					),
-					array(
+					'visibility' => array(
 						'id'          => 'visibility',
 						'label'       => __( 'Visibility', 'tournamatch' ),
 						'description' => __( 'Toggle display of this ladder outside Admin.', 'tournamatch' ),
@@ -385,7 +385,7 @@ class Ladder {
 							),
 						),
 					),
-					array(
+					'status'     => array(
 						'id'          => 'status',
 						'label'       => __( 'Status', 'tournamatch' ),
 						'description' => __( 'Toggle activity such as reporting, confirming, joining, etc.', 'tournamatch' ),

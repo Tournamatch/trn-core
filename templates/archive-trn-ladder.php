@@ -26,7 +26,9 @@ trn_get_header();
 ?>
 	<h1 class="trn-mb-4"><?php esc_html_e( 'Ladders', 'tournamatch' ); ?></h1>
 	<div class="trn-row" id="ladders">
-		<?php foreach ( $ladders as $ladder ) : ?>
+		<?php foreach ( $ladders as $ladder ) :
+			$ladder = trn_the_ladder( $ladder );
+			?>
 			<div class="trn-col-sm-6">
 				<div class="trn-item-wrapper" onclick="window.location.href = '<?php trn_esc_route_e( 'ladders.single', array( 'id' => $ladder->ladder_id ) ); ?>'">
 					<div class="trn-item-group">
@@ -43,7 +45,7 @@ trn_get_header();
 							<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', 8, 'tournamatch' ) ), 8 ); ?>
 						</li>
 						<li class="trn-item-list-item ranking">
-							<?php esc_html_e( 'Points', 'tournamatch' ); ?>
+							<?php echo esc_html( $ladder->ranking_mode_label ); ?>
 						</li>
 						<li class="trn-item-list-item competitor-type">
 							<?php if ( 'players' === $ladder->competitor_type ) : ?>
