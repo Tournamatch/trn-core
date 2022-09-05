@@ -30,10 +30,11 @@ class Tournamatch_Game_List_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'cb'       => '<input type="checkbox" />',
-			'name'     => esc_html__( 'Name', 'tournamatch' ),
-			'platform' => esc_html__( 'Platform', 'tournamatch' ),
-			'image'    => esc_html__( 'Image', 'tournamatch' ),
+			'cb'        => '<input type="checkbox" />',
+			'name'      => esc_html__( 'Name', 'tournamatch' ),
+			'platform'  => esc_html__( 'Platform', 'tournamatch' ),
+			'thumbnail' => esc_html__( 'Thumbnail', 'tournamatch' ),
+			'banner'    => esc_html__( 'Banner', 'tournamatch' ),
 		);
 
 		return $columns;
@@ -211,11 +212,17 @@ class Tournamatch_Game_List_Table extends WP_List_Table {
 	public function column_default( $item, $column_name ) {
 		switch ( $column_name ) {
 			case 'platform':
-				return $item->platform;
-			case 'image':
-				return $item->thumbnail;
+				return esc_html( $item->platform );
+			case 'thumbnail':
+				if ( empty( $item->thumbnail_id ) && ! empty( $item->thumbnail ) ) {
+					return '<span class="trn-admin-game-warning">' . esc_html( $item->thumbnail ) . '</span>';
+				} else {
+					return empty( $item->thumbnail_id ) ? esc_html( $item->thumbnail ) : wp_get_attachment_image( $item->thumbnail_id );
+				}
+			case 'banner':
+				return wp_get_attachment_image( $item->banner_id, array( 320, 80 ) );
 			default:
-				return $item;
+				return esc_html( $item );
 		}
 	}
 }

@@ -3489,7 +3489,7 @@ if ( ! function_exists( 'trn_store_profile_avatar' ) ) {
 	/**
 	 * Stores a profile (player or team) avatar and moves the file to the appropriate location.
 	 *
-	 * @param array $file User-submitted file data.
+	 * @param array  $file User-submitted file data.
 	 * @param string $old_avatar File name of the old avatar.
 	 *
 	 * @return string|WP_Error The new file name or error on failure.
@@ -3523,6 +3523,61 @@ if ( ! function_exists( 'trn_store_profile_avatar' ) ) {
 
 			return new \WP_Error( 'rest_custom_error', $message, array( 'status' => 409 ) );
 		}
+	}
+}
+
+if ( ! function_exists( 'trn_display_media_input' ) ) {
+	/**
+	 * Displays a form input for selecting media to upload.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param array $args Array of arguments for the input field.
+	 */
+	function trn_display_media_input( $args ) {
+		if ( empty( $args['id'] ) ) {
+			return;
+		}
+
+		$id     = $args['id'];
+		$button = empty( $args['button'] ) ? __( 'Upload Image', 'tournamatch' ) : $args['button'];
+		$value  = empty( $args['value'] ) ? null : intval( $args['value'] );
+		$width  = empty( $args['width'] ) ? 100 : intval( $args['width'] );
+		$height = empty( $args['height'] ) ? 100 : intval( $args['height'] );
+
+		$src = is_null( $value ) ? '' : wp_get_attachment_image_src( $value );
+		if ( is_array( $src ) ) {
+			$src = $src[0];
+		}
+
+		$button_id  = "$id-button";
+		$preview_id = "$id-preview";
+		$wrapper_id = "$id-preview-wrapper";
+
+		$img_class = 0 < strlen( $src ) ? '' : ' hidden';
+
+		wp_enqueue_media();
+		?>
+		<div id="<?php echo esc_attr( $wrapper_id ); ?>" class="trn-upload-image-preview-wrapper">
+			<img id="<?php echo esc_attr( $preview_id ); ?>" class="trn-upload-image-preview<?php echo esc_attr( $img_class ); ?>" src="<?php echo esc_attr( $src ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>">
+		</div>
+		<input
+			id="<?php echo esc_attr( $button_id ); ?>"
+			name="<?php echo esc_attr( $button_id ); ?>"
+			type="button"
+			class="button trn-media-upload-button"
+			value="<?php echo esc_attr( $button ); ?>"
+			data-post-id="<?php echo esc_attr( $value ); ?>"
+			data-preview-id="<?php echo esc_attr( $preview_id ); ?>"
+			data-input-id="<?php echo esc_attr( $id ); ?>"
+			data-title="<?php echo esc_attr__( 'Select image', 'tournamatch' ); ?>"
+			data-button-text="<?php echo esc_attr__( 'Select image', 'tournamatch' ); ?>"
+		/>
+		<input id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $id ); ?>" type="hidden" value="<?php echo esc_attr( $value ); ?>">
+		<?php
+
+		wp_register_script( 'trn-admin-media-upload', plugins_url( 'dist/js/media-upload.js', __FILE__ ), array( 'jquery' ), '4.3.0', true );
+		wp_enqueue_script( 'trn-admin-media-upload' );
 	}
 }
 

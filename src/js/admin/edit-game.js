@@ -37,7 +37,8 @@ import { trn } from './../tournamatch.js';
                 xhr.send($.param({
                     name: document.getElementById('trn-game-name').value,
                     platform: document.getElementById('trn-game-platform').value,
-                    thumbnail: document.getElementById('trn-game-thumbnail').value
+                    thumbnail_id: document.getElementById('trn-game-thumbnail').value || 0,
+                    banner_id: document.getElementById('trn-game-banner').value || 0,
                 }));
             }
         }, false);
