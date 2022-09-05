@@ -33,6 +33,8 @@ defined( 'ABSPATH' ) || exit;
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
 define( 'TOURNAMATCH_VERSION', '4.3.0' );
+define( 'TOURNAMATCH_API_VERSION', '4.3.0' );
+define( 'TOURNAMATCH_API', 'https://www.tournamatch.com/api' );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -228,6 +230,26 @@ if ( ! function_exists( 'trn_update_option' ) ) {
 
 		$options = apply_filters( 'tournamatch_save_options', $options );
 		update_option( 'tournamatch_options', $options );
+	}
+}
+
+if ( ! function_exists( 'trn_api_address' ) ) {
+	/**
+	 * Returns the Tournamatch API url for a given path.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param string $path The path to return.
+	 * @param string $version A specific version of the API. Defaults to latest.
+	 *
+	 * @return string
+	 */
+	function trn_api_address( $path = '', $version = '' ) {
+		if ( 0 === strlen( $version ) ) {
+			$version = TOURNAMATCH_API_VERSION;
+		}
+
+		return TOURNAMATCH_API . '/' . $version . '/' . $path;
 	}
 }
 

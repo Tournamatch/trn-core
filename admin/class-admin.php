@@ -44,6 +44,7 @@ class Admin {
 
 		$post_hooks = array(
 			'trn-save-settings' => array( $this, 'save_settings' ),
+			'trn-activate-license' => array( $this, 'activate_license' ),
 		);
 
 		array_walk(
@@ -88,6 +89,106 @@ class Admin {
 			'trn-settings',
 			array( $this, 'settings' )
 		);
+		add_submenu_page(
+			'tournamatch',
+			esc_html__( 'Add-ons', 'tournamatch' ),
+			esc_html__( 'Add-ons', 'tournamatch' ),
+			'manage_tournamatch',
+			'trn-add-ons',
+			array( $this, 'add_ons' )
+		);
+	}
+
+	/**
+	 * Displays the add-ons page.
+	 *
+	 * @since 4.3.0
+	 */
+	public function add_ons() {
+		$license_status = trn_get_option( 'license_status', '' );
+
+		$arguments        = array(
+			'method'  => 'GET',
+			'headers' => array(
+				'Content-Type' => 'application/json; charset=utf-8',
+				'Accept'       => 'application/json; charset=utf-8',
+				'Api-Version'  => TOURNAMATCH_API_VERSION,
+				'Api-License'  => str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ),
+			),
+			'timeout' => 5,
+		);
+		$response         = wp_remote_post( trn_api_address( 'add-ons.php' ), $arguments );
+		$response_code    = wp_remote_retrieve_response_code( $response );
+
+		$add_ons = null;
+		if ( 200 === intval( $response_code ) ) {
+			$add_ons = json_decode( wp_remote_retrieve_body( $response ) );
+		}
+
+		?>
+		<div class="wrap">
+			<?php /* translators: First parameter is always Tournamatch */ ?>
+			<h1 class="wp-heading-inline"><?php printf( esc_html__( '%s Add-ons', 'tournamatch' ), 'Tournamatch' ); ?></h1>
+			<?php if ( 'valid' !== $license_status ) : ?>
+			<div class="notice notice-info">
+				<p>
+					<?php esc_html_e( 'Please purchase a Tournamatch license to get access to add-on automatic updates and premium support.', 'tournamatch' ); ?>
+				</p>
+			</div>
+			<?php endif; ?>
+			<?php if ( is_null( $add_ons ) ) : ?>
+				<p>
+					<?php esc_html_e( 'There was an issue retrieving Tournamatch add-ons.', 'tournamatch' ); ?>
+					<?php /* translators: First and second parameter are html anchor elements. */ ?>
+					<?php printf( esc_html__( 'Please visit the Tournamatch %sadd-ons%s page directly to see a list of add-ons.', 'tournamatch' ), '<a href="https://www.tournamatch.com/add-ons" target="_blank">', '</a>'); ?>
+				</p>
+			<?php else : ?>
+				<style type="text/css">
+					.trn-admin-add-ons {
+						display: grid;
+						grid-template-columns: 1fr 1fr 1fr 1fr;
+						row-gap: 20px;
+						column-gap: 20px;
+					}
+					.trn-admin-add-on-card {
+						display: inline-block;
+						border: 1px solid #ccc;
+						border-radius: 3px;
+						background-color: #fff;
+						position: relative;
+						height: 250px
+					}
+					.trn-admin-add-on-card-body {
+						padding: 10px;
+
+					}
+					.trn-admin-add-on-card-footer {
+						padding: 10px;
+						position: absolute;
+						right: 0;
+						left: 0;
+						bottom: 0;
+						background-color: #eee;
+						border-top: 1px solid #ccc;
+						text-align: center;
+					}
+				</style>
+				<div class="trn-admin-add-ons">
+				<?php foreach( $add_ons as $add_on ) : ?>
+					<div class="trn-admin-add-on-card">
+						<div class="trn-admin-add-on-card-body">
+							<h3><?php echo esc_html( $add_on->title ); ?></h3>
+							<p><?php echo esc_html( $add_on->summary ); ?></p>
+						</div>
+						<div class="trn-admin-add-on-card-footer">
+							<a class="button button-primary" href="<?php echo esc_attr( $add_on->url ); ?>"><?php esc_html_e( 'Get This Add-on', 'tournamatch' ); ?></a>
+						</div>
+					</div>
+				<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+		<?php
 	}
 
 	/**
@@ -262,6 +363,53 @@ class Admin {
 	}
 
 	/**
+	 * Handles activating a license.
+	 *
+	 * @since 4.3.0
+	 */
+	public function activate_license() {
+		check_admin_referer( 'tournamatch-activate-license' );
+
+		$license_key = isset( $_POST['license_key'] ) ? sanitize_text_field( wp_unslash( $_POST['license_key'] ) ) : '';
+
+		if ( 0 < strlen( $license_key ) ) {
+			$arguments = array(
+				'method'  => 'POST',
+				'headers' => array(
+					'Content-Type'    => 'application/json; charset=utf-8',
+					'Accept'          => 'application/json; charset=utf-8',
+					'Api-Version'     => TOURNAMATCH_API_VERSION,
+					'Api-License-Key' => $license_key,
+				),
+				'timeout' => 5,
+			);
+
+			$response      = wp_remote_post( trn_api_address( 'activate.php' ), $arguments );
+			$response_code = wp_remote_retrieve_response_code( $response );
+
+
+			if ( 200 === intval( $response_code ) ) {
+				$response_body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+				trn_update_option( 'license_key', $license_key );
+				trn_update_option( 'license_status', isset( $response_body['status'] ) ? $response_body['status'] : 'valid' );
+
+				if ( isset( $response_body['expires'] ) ) {
+					trn_update_option( 'license_expires', $response_body['expires'] );
+				}
+			} else {
+				$response_body = wp_remote_retrieve_body( $response );
+
+				wp_safe_redirect( trn_route( 'admin.tournamatch.settings', array( 'response' => $response_body, 'license_key' => $license_key ) ) );
+				exit;
+			}
+		}
+
+		wp_safe_redirect( trn_route( 'admin.tournamatch.settings' ) );
+		exit;
+	}
+
+	/**
 	 * Handles saving the settings.
 	 *
 	 * @since 4.0.0
@@ -340,6 +488,7 @@ class Admin {
 						data-tab="tournament"><?php esc_html_e( 'Tournament', 'tournamatch' ); ?></a>
 				<a href="#team" class="nav-tab" data-tab="team"><?php esc_html_e( 'Team', 'tournamatch' ); ?></a>
 				<a href="#other" class="nav-tab" data-tab="other"><?php esc_html_e( 'Other', 'tournamatch' ); ?></a>
+				<a href="#license" class="nav-tab" data-tab="license"><?php esc_html_e( 'License', 'tournamatch' ); ?></a>
 			</nav>
 			<div class="tab-content wp-clearfix">
 				<div class="tab-pane active" id="ladder">
@@ -540,6 +689,77 @@ class Admin {
 									class="button button-default" id="cancelButton"/>
 						</p>
 					</form>
+				</div>
+				<div class="tab-pane" id="license">
+					<h2><?php esc_html_e( 'License', 'tournamatch' ); ?></h2>
+					<p><?php esc_html_e( 'A license provides access to add-on automatic updates and premium support.'); ?></p>
+					<?php
+
+					$response_key = isset( $_GET['license_key'] ) ? sanitize_text_field( wp_unslash( $_GET['license_key'] ) ) : '';
+					$response     = isset( $_GET['response'] ) ? sanitize_text_field( wp_unslash( $_GET['response'] ) ) : '';
+
+					$license_key     = trn_get_option( 'license_key', $response_key );
+					$license_status  = trn_get_option( 'license_status', '' );
+					$license_expires = trn_get_option( 'license_expires', '' );
+
+					if ( 'valid' === $license_status ) : ?>
+						<style type="text/css">
+							dl.trn-license-data {
+								display: grid;
+								grid-template-columns: 50% 50%;
+							}
+
+							dl.trn-license-data dt {
+								font-weight: bold;
+							}
+						</style>
+						<dl class="trn-license-data">
+							<dt><?php esc_html_e( 'License Key', 'tournamatch' ); ?></dt>
+							<dd><?php echo esc_html( $license_key ); ?></dd>
+							<dt><?php esc_html_e( 'Status', 'tournamatch' ); ?></dt>
+							<dd><?php echo esc_html( ucwords( $license_status ) ); ?></dd>
+							<?php if ( 0 < strlen( $license_expires ) ) : ?>
+								<dt><?php esc_html_e( 'Expires', 'tournamatch' ); ?></dt>
+								<dd><?php echo esc_html( $license_expires ); ?></dd>
+							<?php endif; ?>
+						</dl>
+					<?php else : ?>
+						<style type="text/css">
+							.text-danger {
+								color: #dc3545;
+							}
+							input.text-danger {
+								color: #dc3545;
+								border-color: #dc3545;
+							}
+							input.text-danger:focus {
+								border-color: #dc3545;
+								box-shadow: 0 0 0 1px #dc3545
+							}
+						</style>
+						<form class="trn-license-form" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>" method="post">
+							<table class="form-table" role="presentation">
+								<tr class="form-field">
+									<th scope="row">
+										<label for="license_key"><?php esc_html_e( 'License Key', 'tournamatch' ); ?></label>
+									</th>
+									<td>
+										<input name="license_key" id="license_key" type="text" value="<?php echo esc_html( $license_key ); ?>" required <?php if ( 0 < strlen( $response ) ) echo 'class="text-danger"'; ?>>
+										<?php if ( 0 < strlen( $response ) ) : ?>
+											<p class="text-danger"><?php echo esc_html( $response ); ?></p>
+										<?php endif; ?>
+									</td>
+								</tr>
+							</table>
+
+							<p class="submit">
+								<input type="hidden" name="action" value="trn-activate-license"/>
+								<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'tournamatch-activate-license' ) ); ?>"/>
+								<input type="submit" value="<?php esc_html_e( 'Activate', 'tournamatch' ); ?>"
+										class="button button-primary" id="trn-activate-button"/>
+							</p>
+						</form>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
