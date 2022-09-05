@@ -150,7 +150,7 @@ if ( in_array( $tournament->status, [ 'in_progress', 'complete' ], true ) ) {
 	);
 }
 
-if ( ( 'in_progress' === $tournament->status ) && in_array( $tournament->tournament_id, $my_tournaments, true ) ) {
+if ( ( 'in_progress' === $tournament->status ) && in_array( (int) $tournament->tournament_id, $my_tournaments, true ) ) {
 	$views = array_merge(
 		$views,
 		array(
