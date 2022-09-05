@@ -118,7 +118,7 @@ class Tournament_Competitor extends Controller {
 
 		$this->verify_business_rules( $rules );
 
-		$wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}trn_tournaments_entries VALUES (NULL, %d, %d, %s, UTC_TIMESTAMP(), NULL)", $request['tournament_id'], $request['competitor_id'], $request['competitor_type'] ) );
+		$wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}trn_tournaments_entries (`tournament_entry_id`, `tournament_id`, `competitor_id`, `competitor_type`, `joined_date`, `seed`) VALUES (NULL, %d, %d, %s, UTC_TIMESTAMP(), NULL)", $request['tournament_id'], $request['competitor_id'], $request['competitor_type'] ) );
 
 		$competitor = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_entry_id` = %d", $wpdb->insert_id ) );
 
