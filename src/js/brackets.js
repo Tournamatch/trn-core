@@ -121,7 +121,8 @@
                         content += `<a href="${replace_url}" class="replace-competitor" data-tournament-id="${tournament_id}" data-match-id="${spot_id}" data-competitor-id="${two_id}">${options.language.replace.replace('{NAME}', tournament.competitors[two_id].name)}</a>`;
                     }
                     if ( !is_first_round) {
-                        content += `<a href="#" class="clear-competitors" data-tournament-id="${tournament_id}" data-match-id="${spot_id}">${options.language.clear}</a>`;
+                        const clear_url = options.clear_url.replace('{ID}', match_id).replace('{NONCE}', options.clear_nonce);
+                        content += `<a href="${clear_url}" class="clear-competitors" data-tournament-id="${tournament_id}" data-match-id="${spot_id}">${options.language.clear}</a>`;
 
                     }
                     content += `</div>`;
