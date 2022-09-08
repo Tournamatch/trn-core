@@ -625,7 +625,7 @@ class Shortcodes {
 		wp_register_style( 'trn-tournament-brackets-style', plugins_url( '../../dist/css/brackets.css', __FILE__ ), array(), '1.0.0' );
 		wp_enqueue_style( 'trn-tournament-brackets-style' );
 
-		wp_register_script( 'trn-tournament-brackets', plugins_url( '../../dist/js/brackets.js', __FILE__ ), array(), '1.0.0', true );
+		wp_register_script( 'trn-tournament-brackets', plugins_url( '../../dist/js/brackets.js', __FILE__ ), array(), '4.3.0', true );
 		wp_localize_script( 'trn-tournament-brackets', 'trn_brackets_options', $options );
 		wp_enqueue_script( 'trn-tournament-brackets' );
 

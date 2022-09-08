@@ -72,7 +72,7 @@ $options = array(
 		'error_members'   => esc_html__( 'An error occurred.', 'tournamatch' ),
 	),
 );
-wp_register_script( 'trn_team_profile', plugins_url( '../dist/js/team-profile.js', __FILE__ ), array( 'tournamatch' ), '3.27.0', true );
+wp_register_script( 'trn_team_profile', plugins_url( '../dist/js/team-profile.js', __FILE__ ), array( 'tournamatch' ), '4.3.0', true );
 wp_localize_script( 'trn_team_profile', 'trn_team_profile_options', $options );
 wp_enqueue_script( 'trn_team_profile' );
 

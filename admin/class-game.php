@@ -197,7 +197,7 @@ class Game {
 					),
 				];
 
-				wp_register_script( 'trn-admin-edit-game', plugins_url( '../dist/js/edit-game.js', __FILE__ ), array( 'tournamatch' ), '3.24.0', true );
+				wp_register_script( 'trn-admin-edit-game', plugins_url( '../dist/js/edit-game.js', __FILE__ ), array( 'tournamatch' ), '4.3.0', true );
 				wp_localize_script( 'trn-admin-edit-game', 'trn_edit_game_options', $options );
 				wp_enqueue_script( 'trn-admin-edit-game' );
 				break;
@@ -315,7 +315,7 @@ class Game {
 					),
 				];
 
-				wp_register_script( 'trn-admin-manage-games', plugins_url( '../dist/js/games.js', __FILE__ ), array( 'tournamatch' ), '3.25.0', true );
+				wp_register_script( 'trn-admin-manage-games', plugins_url( '../dist/js/games.js', __FILE__ ), array( 'tournamatch' ), '4.3.0', true );
 				wp_localize_script( 'trn-admin-manage-games', 'trn_manage_games_options', $options );
 				wp_enqueue_script( 'trn-admin-manage-games' );
 				break;
