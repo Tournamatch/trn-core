@@ -35,6 +35,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'TOURNAMATCH_VERSION', '4.3.0' );
 define( 'TOURNAMATCH_API_VERSION', '4.3.0' );
 define( 'TOURNAMATCH_API', 'https://www.tournamatch.com/api' );
+define( 'TOURNAMATCH_ADD_ONS_ENABLED', false );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -3510,11 +3511,83 @@ if ( ! function_exists( 'trn_upgrade_sql' ) ) {
 		}
 
 		if ( version_compare( $version, '4.3.0', '<' ) ) {
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_games` ADD `thumbnail_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail`, ADD `banner_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail_id`;" );
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_ladders` ADD `thumbnail_id` INT(10) UNSIGNED NOT NULL AFTER `game_id`, ADD `banner_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail_id`;" );
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_tournaments` ADD `thumbnail_id` INT(10) UNSIGNED NOT NULL AFTER `game_id`, ADD `banner_id` INT(10) UNSIGNED NOT NULL AFTER `thumbnail_id`;" );
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_players_profiles` ADD `banner` VARCHAR(191) NULL DEFAULT NULL AFTER `avatar`;" );
-			$wpdb->query( "ALTER TABLE `{$wpdb->prefix}trn_teams` ADD `banner` VARCHAR(191) NULL DEFAULT NULL AFTER `avatar`;" );
+			$upgrade_sql = "CREATE TABLE `{$wpdb->prefix}trn_games` (
+  `game_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) NOT NULL DEFAULT '',
+  `thumbnail` varchar(191) NOT NULL DEFAULT 'blank.gif',
+  `thumbnail_id` int(10) unsigned NOT NULL,
+  `banner_id` int(10) unsigned NOT NULL,
+  `platform` varchar(25) NOT NULL DEFAULT '',
+  PRIMARY KEY (`game_id`)
+);
+
+CREATE TABLE `{$wpdb->prefix}trn_ladders` (
+  `ladder_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `game_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `thumbnail_id` int(10) unsigned NOT NULL,
+  `banner_id` int(10) unsigned NOT NULL,
+  `competitor_type` enum('players','teams') NOT NULL DEFAULT 'players',
+  `team_size` tinyint(2) unsigned DEFAULT NULL,
+  `win_points` tinyint(2) NOT NULL DEFAULT '0',
+  `loss_points` tinyint(2) NOT NULL DEFAULT '0',
+  `draw_points` tinyint(2) NOT NULL DEFAULT '0',
+  `direct_challenges` enum('enabled','disabled') NOT NULL DEFAULT 'disabled',
+  `rules` text NOT NULL,
+  `visibility` enum('visible','hidden') NOT NULL DEFAULT 'visible',
+  `status` enum('active','inactive') NOT NULL DEFAULT 'active',
+  PRIMARY KEY (`ladder_id`)
+);
+
+CREATE TABLE `{$wpdb->prefix}trn_players_profiles` (
+  `user_id` int(10) unsigned NOT NULL,
+  `display_name` varchar(191) NOT NULL DEFAULT '',
+  `location` varchar(191) NOT NULL DEFAULT '',
+  `flag` varchar(191) NOT NULL DEFAULT 'blank.gif',
+  `wins` int(10) unsigned NOT NULL DEFAULT '0',
+  `losses` int(10) unsigned NOT NULL DEFAULT '0',
+  `draws` int(10) unsigned NOT NULL DEFAULT '0',
+  `profile` text DEFAULT NULL,
+  `avatar` varchar(191) NOT NULL DEFAULT 'blank.gif',
+  `banner` varchar(191) DEFAULT NULL,
+  PRIMARY KEY (`user_id`)
+);
+
+CREATE TABLE `{$wpdb->prefix}trn_teams` (
+  `team_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tag` varchar(5) NOT NULL DEFAULT '',
+  `name` varchar(191) NOT NULL DEFAULT '',
+  `flag` varchar(191) NOT NULL DEFAULT 'blank.gif',
+  `joined_date` datetime NOT NULL,
+  `avatar` varchar(191) NOT NULL DEFAULT '',
+  `banner` varchar(191) DEFAULT NULL,
+  `wins` int(10) unsigned NOT NULL DEFAULT '0',
+  `losses` int(10) unsigned NOT NULL DEFAULT '0',
+  `draws` int(10) unsigned NOT NULL DEFAULT '0',
+  `members` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`team_id`)
+);
+
+CREATE TABLE `{$wpdb->prefix}trn_tournaments` (
+  `tournament_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) NOT NULL,
+  `game_id` int(10) unsigned DEFAULT NULL,
+  `thumbnail_id` int(10) unsigned NOT NULL,
+  `banner_id` int(10) unsigned NOT NULL,
+  `start_date` datetime NOT NULL,
+  `competitor_type` enum('players','teams') NOT NULL DEFAULT 'players',
+  `team_size` tinyint(2) unsigned DEFAULT NULL,
+  `bracket_size` int(10) unsigned NOT NULL,
+  `started_size` int(10) unsigned DEFAULT NULL,
+  `games` smallint(5) unsigned NOT NULL,
+  `rules` text NOT NULL,
+  `visibility` enum('visible','hidden') NOT NULL DEFAULT 'visible',
+  `status` enum('created','open','check_in','in_progress','complete') NOT NULL DEFAULT 'open',
+  PRIMARY KEY (`tournament_id`)
+);
+";
+
+			dbDelta( $upgrade_sql, true );
 		}
 	}
 }

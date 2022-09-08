@@ -43,7 +43,7 @@ class Admin {
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 
 		$post_hooks = array(
-			'trn-save-settings' => array( $this, 'save_settings' ),
+			'trn-save-settings'    => array( $this, 'save_settings' ),
 			'trn-activate-license' => array( $this, 'activate_license' ),
 		);
 
@@ -89,14 +89,19 @@ class Admin {
 			'trn-settings',
 			array( $this, 'settings' )
 		);
-		add_submenu_page(
-			'tournamatch',
-			esc_html__( 'Add-ons', 'tournamatch' ),
-			esc_html__( 'Add-ons', 'tournamatch' ),
-			'manage_tournamatch',
-			'trn-add-ons',
-			array( $this, 'add_ons' )
-		);
+
+		if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) {
+			if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) {
+				add_submenu_page(
+					'tournamatch',
+					esc_html__( 'Add-ons', 'tournamatch' ),
+					esc_html__( 'Add-ons', 'tournamatch' ),
+					'manage_tournamatch',
+					'trn-add-ons',
+					array( $this, 'add_ons' )
+				);
+			}
+		}
 	}
 
 	/**
@@ -106,19 +111,20 @@ class Admin {
 	 */
 	public function add_ons() {
 		$license_status = trn_get_option( 'license_status', '' );
+		$http_host      = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
 
-		$arguments        = array(
+		$arguments     = array(
 			'method'  => 'GET',
 			'headers' => array(
 				'Content-Type' => 'application/json; charset=utf-8',
 				'Accept'       => 'application/json; charset=utf-8',
 				'Api-Version'  => TOURNAMATCH_API_VERSION,
-				'Api-License'  => str_replace( 'www.', '', $_SERVER['HTTP_HOST'] ),
+				'Api-License'  => str_replace( 'www.', '', $http_host ),
 			),
 			'timeout' => 5,
 		);
-		$response         = wp_remote_post( trn_api_address( 'add-ons.php' ), $arguments );
-		$response_code    = wp_remote_retrieve_response_code( $response );
+		$response      = wp_remote_post( trn_api_address( 'add-ons.php' ), $arguments );
+		$response_code = wp_remote_retrieve_response_code( $response );
 
 		$add_ons = null;
 		if ( 200 === intval( $response_code ) ) {
@@ -140,7 +146,7 @@ class Admin {
 				<p>
 					<?php esc_html_e( 'There was an issue retrieving Tournamatch add-ons.', 'tournamatch' ); ?>
 					<?php /* translators: First and second parameter are html anchor elements. */ ?>
-					<?php printf( esc_html__( 'Please visit the Tournamatch %sadd-ons%s page directly to see a list of add-ons.', 'tournamatch' ), '<a href="https://www.tournamatch.com/add-ons" target="_blank">', '</a>'); ?>
+					<?php printf( esc_html__( 'Please visit the Tournamatch %1$sadd-ons%2$s page directly to see a list of add-ons.', 'tournamatch' ), '<a href="https://www.tournamatch.com/add-ons" target="_blank">', '</a>' ); ?>
 				</p>
 			<?php else : ?>
 				<style type="text/css">
@@ -174,7 +180,7 @@ class Admin {
 					}
 				</style>
 				<div class="trn-admin-add-ons">
-				<?php foreach( $add_ons as $add_on ) : ?>
+				<?php foreach ( $add_ons as $add_on ) : ?>
 					<div class="trn-admin-add-on-card">
 						<div class="trn-admin-add-on-card-body">
 							<h3><?php echo esc_html( $add_on->title ); ?></h3>
@@ -387,7 +393,6 @@ class Admin {
 			$response      = wp_remote_post( trn_api_address( 'activate.php' ), $arguments );
 			$response_code = wp_remote_retrieve_response_code( $response );
 
-
 			if ( 200 === intval( $response_code ) ) {
 				$response_body = json_decode( wp_remote_retrieve_body( $response ), true );
 
@@ -400,7 +405,15 @@ class Admin {
 			} else {
 				$response_body = wp_remote_retrieve_body( $response );
 
-				wp_safe_redirect( trn_route( 'admin.tournamatch.settings', array( 'response' => $response_body, 'license_key' => $license_key ) ) );
+				wp_safe_redirect(
+					trn_route(
+						'admin.tournamatch.settings',
+						array(
+							'response'    => $response_body,
+							'license_key' => $license_key,
+						)
+					)
+				);
 				exit;
 			}
 		}
@@ -488,7 +501,11 @@ class Admin {
 						data-tab="tournament"><?php esc_html_e( 'Tournament', 'tournamatch' ); ?></a>
 				<a href="#team" class="nav-tab" data-tab="team"><?php esc_html_e( 'Team', 'tournamatch' ); ?></a>
 				<a href="#other" class="nav-tab" data-tab="other"><?php esc_html_e( 'Other', 'tournamatch' ); ?></a>
-				<a href="#license" class="nav-tab" data-tab="license"><?php esc_html_e( 'License', 'tournamatch' ); ?></a>
+				<?php if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) : ?>
+					<?php if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) : ?>
+						<a href="#license" class="nav-tab" data-tab="license"><?php esc_html_e( 'License', 'tournamatch' ); ?></a>
+					<?php endif; ?>
+				<?php endif; ?>
 			</nav>
 			<div class="tab-content wp-clearfix">
 				<div class="tab-pane active" id="ladder">
@@ -690,77 +707,96 @@ class Admin {
 						</p>
 					</form>
 				</div>
-				<div class="tab-pane" id="license">
-					<h2><?php esc_html_e( 'License', 'tournamatch' ); ?></h2>
-					<p><?php esc_html_e( 'A license provides access to add-on automatic updates and premium support.'); ?></p>
-					<?php
+				<?php if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) : ?>
+					<?php if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) : ?>
+						<div class="tab-pane" id="license">
+							<h2><?php esc_html_e( 'License', 'tournamatch' ); ?></h2>
+							<p><?php esc_html_e( 'A license provides access to add-on automatic updates and premium support.' ); ?></p>
+							<?php
 
-					$response_key = isset( $_GET['license_key'] ) ? sanitize_text_field( wp_unslash( $_GET['license_key'] ) ) : '';
-					$response     = isset( $_GET['response'] ) ? sanitize_text_field( wp_unslash( $_GET['response'] ) ) : '';
+							//phpcs:ignore WordPress.Security.NonceVerification.Recommended
+							$response_key = isset( $_GET['license_key'] ) ? sanitize_text_field( wp_unslash( $_GET['license_key'] ) ) : '';
 
-					$license_key     = trn_get_option( 'license_key', $response_key );
-					$license_status  = trn_get_option( 'license_status', '' );
-					$license_expires = trn_get_option( 'license_expires', '' );
+							//phpcs:ignore WordPress.Security.NonceVerification.Recommended
+							$response = isset( $_GET['response'] ) ? sanitize_text_field( wp_unslash( $_GET['response'] ) ) : '';
 
-					if ( 'valid' === $license_status ) : ?>
-						<style type="text/css">
-							dl.trn-license-data {
-								display: grid;
-								grid-template-columns: 50% 50%;
-							}
+							$license_key     = trn_get_option( 'license_key', $response_key );
+							$license_status  = trn_get_option( 'license_status', '' );
+							$license_expires = trn_get_option( 'license_expires', '' );
 
-							dl.trn-license-data dt {
-								font-weight: bold;
-							}
-						</style>
-						<dl class="trn-license-data">
-							<dt><?php esc_html_e( 'License Key', 'tournamatch' ); ?></dt>
-							<dd><?php echo esc_html( $license_key ); ?></dd>
-							<dt><?php esc_html_e( 'Status', 'tournamatch' ); ?></dt>
-							<dd><?php echo esc_html( ucwords( $license_status ) ); ?></dd>
-							<?php if ( 0 < strlen( $license_expires ) ) : ?>
-								<dt><?php esc_html_e( 'Expires', 'tournamatch' ); ?></dt>
-								<dd><?php echo esc_html( $license_expires ); ?></dd>
+							if ( 'valid' === $license_status ) :
+								?>
+								<style type="text/css">
+									dl.trn-license-data {
+										display: grid;
+										grid-template-columns: 50% 50%;
+									}
+
+									dl.trn-license-data dt {
+										font-weight: bold;
+									}
+								</style>
+								<dl class="trn-license-data">
+									<dt><?php esc_html_e( 'License Key', 'tournamatch' ); ?></dt>
+									<dd><?php echo esc_html( $license_key ); ?></dd>
+									<dt><?php esc_html_e( 'Status', 'tournamatch' ); ?></dt>
+									<dd><?php echo esc_html( ucwords( $license_status ) ); ?></dd>
+									<?php if ( 0 < strlen( $license_expires ) ) : ?>
+										<dt><?php esc_html_e( 'Expires', 'tournamatch' ); ?></dt>
+										<dd><?php echo esc_html( $license_expires ); ?></dd>
+									<?php endif; ?>
+								</dl>
+							<?php else : ?>
+								<style type="text/css">
+									.text-danger {
+										color: #dc3545;
+									}
+									input.text-danger {
+										color: #dc3545;
+										border-color: #dc3545;
+									}
+									input.text-danger:focus {
+										border-color: #dc3545;
+										box-shadow: 0 0 0 1px #dc3545
+									}
+								</style>
+								<form class="trn-license-form" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>" method="post">
+									<table class="form-table" role="presentation">
+										<tr class="form-field">
+											<th scope="row">
+												<label for="license_key"><?php esc_html_e( 'License Key', 'tournamatch' ); ?></label>
+											</th>
+											<td>
+												<input
+													name="license_key"
+													id="license_key"
+													type="text"
+													value="<?php echo esc_html( $license_key ); ?>"
+													required
+													<?php
+													if ( 0 < strlen( $response ) ) {
+														echo ' class="text-danger"';
+													}
+													?>
+												>
+												<?php if ( 0 < strlen( $response ) ) : ?>
+													<p class="text-danger"><?php echo esc_html( $response ); ?></p>
+												<?php endif; ?>
+											</td>
+										</tr>
+									</table>
+
+									<p class="submit">
+										<input type="hidden" name="action" value="trn-activate-license"/>
+										<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'tournamatch-activate-license' ) ); ?>"/>
+										<input type="submit" value="<?php esc_html_e( 'Activate', 'tournamatch' ); ?>"
+												class="button button-primary" id="trn-activate-button"/>
+									</p>
+								</form>
 							<?php endif; ?>
-						</dl>
-					<?php else : ?>
-						<style type="text/css">
-							.text-danger {
-								color: #dc3545;
-							}
-							input.text-danger {
-								color: #dc3545;
-								border-color: #dc3545;
-							}
-							input.text-danger:focus {
-								border-color: #dc3545;
-								box-shadow: 0 0 0 1px #dc3545
-							}
-						</style>
-						<form class="trn-license-form" action="<?php echo esc_attr( admin_url( 'admin-post.php' ) ); ?>" method="post">
-							<table class="form-table" role="presentation">
-								<tr class="form-field">
-									<th scope="row">
-										<label for="license_key"><?php esc_html_e( 'License Key', 'tournamatch' ); ?></label>
-									</th>
-									<td>
-										<input name="license_key" id="license_key" type="text" value="<?php echo esc_html( $license_key ); ?>" required <?php if ( 0 < strlen( $response ) ) echo 'class="text-danger"'; ?>>
-										<?php if ( 0 < strlen( $response ) ) : ?>
-											<p class="text-danger"><?php echo esc_html( $response ); ?></p>
-										<?php endif; ?>
-									</td>
-								</tr>
-							</table>
-
-							<p class="submit">
-								<input type="hidden" name="action" value="trn-activate-license"/>
-								<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'tournamatch-activate-license' ) ); ?>"/>
-								<input type="submit" value="<?php esc_html_e( 'Activate', 'tournamatch' ); ?>"
-										class="button button-primary" id="trn-activate-button"/>
-							</p>
-						</form>
+						</div>
 					<?php endif; ?>
-				</div>
+				<?php endif; ?>
 			</div>
 		</div>
 		<?php

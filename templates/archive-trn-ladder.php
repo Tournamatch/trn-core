@@ -26,7 +26,8 @@ trn_get_header();
 ?>
 	<h1 class="trn-mb-4"><?php esc_html_e( 'Ladders', 'tournamatch' ); ?></h1>
 	<div class="trn-row" id="ladders">
-		<?php foreach ( $ladders as $ladder ) :
+		<?php
+		foreach ( $ladders as $ladder ) :
 			$ladder = trn_the_ladder( $ladder );
 			?>
 			<div class="trn-col-sm-6">

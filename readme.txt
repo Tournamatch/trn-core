@@ -55,8 +55,13 @@ You should add links to your menu for the following pages (replace example.com w
 == Changelog ==
 
 = 4.3.0 =
+* Redesigned the following templates: single player, single team, single ladder, single tournament, and single match. These pages now feature a header banner and better organized information.
+* Touched up the following templates: archive games, archive ladders, and archive tournaments. These pages have minor appearance tweaks, more information, and less action buttons.
+* Added support for player and team banner images for profile pages.
+* Added support for dynamic ladder, tournament, and ladder competitor fields.
+* Replaced the thumbnail upload in the Games backend with the WordPress media selector, and also added a field for selecting a banner image.
 * Advancing a competitor or clearing a reported result while viewing the brackets will correctly redirect you back to the brackets.
-* Updated some plugin description.
+* Updated plugin description.
 
 = 4.2.2 =
 * Fixed spelling error of the South African flag. It is now displayed correctly as 'South Africa'.

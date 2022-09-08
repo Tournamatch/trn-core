@@ -601,12 +601,12 @@ class Shortcodes {
 					'_wpnonce'  => '{NONCE}',
 				)
 			),
-			'clear_nonce'    => wp_create_nonce( 'tournamatch-bulk-matches' ),
-			'clear_url'      => trn_route(
+			'clear_nonce'      => wp_create_nonce( 'tournamatch-bulk-matches' ),
+			'clear_url'        => trn_route(
 				'admin.tournaments.clear-match',
 				array(
-					'id'        => '{ID}',
-					'_wpnonce'  => '{NONCE}',
+					'id'       => '{ID}',
+					'_wpnonce' => '{NONCE}',
 				)
 			),
 			'site_url'         => site_url(),
