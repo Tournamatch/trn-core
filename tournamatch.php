@@ -1050,8 +1050,8 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 	 * @since 4.0.0
 	 */
 	function trn_register_scripts() {
-		wp_register_script( 'tournamatch', plugins_url( '/dist/js/tournamatch.js', __FILE__ ), array(), '3.25.0', true );
-		wp_register_script( 'trn-confirm-action', plugins_url( '/dist/js/confirm-action.js', __FILE__ ), array(), '3.25.0', true );
+		wp_register_script( 'tournamatch', plugins_url( '/dist/js/tournamatch.js', __FILE__ ), array(), '4.3.0', true );
+		wp_register_script( 'trn-confirm-action', plugins_url( '/dist/js/confirm-action.js', __FILE__ ), array(), '4.3.0', true );
 		wp_localize_script(
 			'trn-confirm-action',
 			'trn_confirm_action_options',
@@ -1077,7 +1077,7 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 		wp_register_style( 'trn_font_awesome_css', plugins_url( '/dist/css/fontawesome.5.14.0.css', __FILE__ ), array(), '5.14.0' );
 		wp_enqueue_style( 'trn_font_awesome_css' );
 
-		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '3.0.0' );
+		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '4.3.0' );
 		wp_enqueue_style( 'trn_components_css' );
 
 		wp_register_style( 'datatables', plugins_url( '/dist/css/trn.datatable.bootstrap4.css', __FILE__ ), array(), '1.10.19' );
