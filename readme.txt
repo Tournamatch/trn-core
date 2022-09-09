@@ -2,7 +2,7 @@
 Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
-Tested up to: 6.0.1
+Tested up to: 6.0.2
 Stable tag: 4.3.0
 Requires PHP: 5.6.20
 License: GPLv2
