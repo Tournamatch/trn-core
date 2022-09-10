@@ -64,9 +64,10 @@ trn_get_header();
 				</div>
 			</div>
 			<div class="trn-form-group d-none" id="trn-challenge-form-match-time-group">
-				<label for="match_time"class="trn-col-sm-3"><?php esc_html_e( 'Match Time', 'tournamatch' ); ?>:</label>
+				<label for="match_time_field"class="trn-col-sm-3"><?php esc_html_e( 'Match Time', 'tournamatch' ); ?>:</label>
 				<div class="trn-col-sm-4">
-					<input id="match_time" name="match_time" type='datetime-local' required class="trn-form-control" autocomplete="off" disabled>
+					<input id="match_time_field" name="match_time_field" type="datetime-local" required class="trn-form-control" autocomplete="off" disabled>
+					<input id="match_time" name="match_time" type="hidden" >
 				</div>
 			</div>
 			<div class="trn-form-group">
