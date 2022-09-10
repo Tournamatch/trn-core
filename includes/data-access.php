@@ -153,7 +153,7 @@ FROM {$wpdb->prefix}trn_challenges AS c
   LEFT JOIN {$wpdb->prefix}trn_players_profiles AS ep ON ep.user_id = c.challengee_id AND l.competitor_type = 'players'
   LEFT JOIN {$wpdb->prefix}trn_teams AS rt ON rt.team_id = c.challenger_id AND l.competitor_type = 'teams'
   LEFT JOIN {$wpdb->prefix}trn_teams AS et ON et.team_id = c.challengee_id AND l.competitor_type = 'teams'
-WHERE (((c.accepted_state = 'pending') AND (c.match_time > NOW())) OR (c.accepted_state <> 'pending')) AND 
+WHERE (((c.accepted_state = 'pending') AND (c.match_time > UTC_TIMESTAMP())) OR (c.accepted_state <> 'pending')) AND 
    (
     (
      l.competitor_type = 'teams'
