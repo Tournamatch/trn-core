@@ -90,16 +90,6 @@ class Game {
 
 				$game_id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : null;
 				$game    = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_games` WHERE `game_id` = %d", $game_id ) );
-				$images  = trn_get_files_of_type(
-					trn_upload_dir() . '/images/games/',
-					array(
-						'gif',
-						'jpg',
-						'png',
-						'jpeg',
-					)
-				);
-
 				?>
 				<style type="text/css">
 					#trn-edit-game-form .form-field input, #trn-edit-game-form .form-field select {
@@ -143,20 +133,35 @@ class Game {
 							</tr>
 							<tr class="form-field form-required term-name-wrap">
 								<th scope="row">
-									<label for="trn-game-thumbnail"><?php esc_html_e( 'Game Image', 'tournamatch' ); ?></label>
+									<label for="trn-game-thumbnail-button"><?php esc_html_e( 'Game Thumbnail', 'tournamatch' ); ?></label>
 								</th>
 								<td>
-									<?php if ( count( $images ) > 0 ) : ?>
-										<select id="trn-game-thumbnail" name="trn-game-thumbnail">
-											<?php foreach ( $images as $image ) : ?>
-												<option value="<?php echo esc_html( $image ); ?>" <?php echo ( $game->thumbnail === $image ) ? 'selected' : ''; ?>><?php echo esc_html( $image ); ?></option>
-											<?php endforeach; ?>
-										</select>
-									<?php else : ?>
-										<?php /* translators: Opening and closing HTML anchor tags. */ ?>
-										<p class="form-control-static"><?php printf( esc_html__( 'No images currently exist. Please upload one using the %1$sUpload Game Image%2$s form first.', 'tournamatch' ), '<strong>', '</strong>' ); ?> </p>
-									<?php endif; ?>
-									<p class="description"><?php esc_html_e( 'The game image is displayed on the games list page and also the competition page.', 'tournamatch' ); ?></p>
+									<?php
+									trn_display_media_input(
+										array(
+											'id'    => 'trn-game-thumbnail',
+											'value' => $game->thumbnail_id,
+										)
+									);
+									?>
+									<p class="description"><?php esc_html_e( 'The game thumbnail is displayed on the games list page and also when no event specific thumbnail is selected.', 'tournamatch' ); ?></p>
+								</td>
+							</tr>
+							<tr class="form-field form-required term-name-wrap">
+								<th scope="row">
+									<label for="trn-game-banner-button"><?php esc_html_e( 'Game Banner', 'tournamatch' ); ?></label>
+								</th>
+								<td>
+									<?php
+									trn_display_media_input(
+										array(
+											'id'    => 'trn-game-banner',
+											'value' => $game->banner_id,
+											'width' => 400,
+										)
+									);
+									?>
+									<p class="description"><?php esc_html_e( 'The game banner is displayed when no event specific thumbnail is selected.', 'tournamatch' ); ?></p>
 								</td>
 							</tr>
 						</table>
@@ -192,138 +197,26 @@ class Game {
 					),
 				];
 
-				wp_register_script( 'trn-admin-edit-game', plugins_url( '../dist/js/edit-game.js', __FILE__ ), array( 'tournamatch' ), '3.24.0', true );
+				wp_register_script( 'trn-admin-edit-game', plugins_url( '../dist/js/edit-game.js', __FILE__ ), array( 'tournamatch' ), '4.3.0', true );
 				wp_localize_script( 'trn-admin-edit-game', 'trn_edit_game_options', $options );
 				wp_enqueue_script( 'trn-admin-edit-game' );
-				break;
-
-			case 'create':
-				$images = trn_get_files_of_type( trn_upload_dir() . '/images/games/', array( 'gif', 'jpg', 'png', 'jpeg' ) );
-
-				?>
-				<div class="wrap">
-					<h1 class="wp-heading-inline">
-						<?php esc_html_e( 'Add New Game', 'tournamatch' ); ?>
-					</h1>
-					<style type="text/css">
-						#trn-new-game-form .form-field input, #trn-new-game-form .form-field select {
-							width: 25em;
-						}
-
-						@media screen and (max-width: 782px) {
-							#trn-new-game-form .form-field input, #trn-new-game-form .form-field select {
-								width: 100%;
-							}
-						}
-					</style>
-					<form method="post" action="#" id="trn-new-game-form">
-						<h2 class="title">
-							<?php esc_html_e( 'General Game Info', 'tournamatch' ); ?>
-						</h2>
-						<div id="trn-create-game-response"></div>
-						<table class="form-table" role="presentation">
-							<tr class="form-field form-required">
-								<th scope="row">
-									<label for="trn-game-name"><?php esc_html_e( 'Name', 'tournamatch' ); ?> <span
-												class="description"><?php esc_html_e( '(required)', 'tournamatch' ); ?></span></label>
-								</th>
-								<td>
-									<input type="text" id="trn-game-name" name="trn-game-name" required/>
-									<p class="description"><?php esc_html_e( 'The title of the game as it appears on your site.', 'tournamatch' ); ?></p>
-								</td>
-							</tr>
-							<tr class="form-field form-required">
-								<th scope="row">
-									<label for="trn-game-platform"><?php esc_html_e( 'Platform', 'tournamatch' ); ?></label>
-								</th>
-								<td>
-									<input type="text" id="trn-game-platform" name="trn-game-platform" required/>
-									<p class="description"><?php esc_html_e( 'The platform of the game. Useful for organizing games by platform in the front end menu.', 'tournamatch' ); ?></p>
-								</td>
-							</tr>
-							<tr class="form-field form-required">
-								<th scope="row">
-									<label for="trn-game-thumbnail"><?php esc_html_e( 'Game Image', 'tournamatch' ); ?></label>
-								</th>
-								<td>
-									<?php if ( count( $images ) > 0 ) : ?>
-										<select id="trn-game-thumbnail" name="trn-game-thumbnail">
-											<?php foreach ( $images as $image ) : ?>
-												<option value="<?php echo esc_html( $image ); ?>"><?php echo esc_html( $image ); ?></option>
-											<?php endforeach; ?>
-										</select>
-									<?php else : ?>
-										<?php /* translators: HTML <strong> and </strong> tags. */ ?>
-										<p><?php printf( esc_html__( 'No images currently exist. Please upload one using the %1$sUpload Game Image%2$s form first.', 'tournamatch' ), '<strong>', '</strong>' ); ?> </p>
-									<?php endif; ?>
-									<p class="description"><?php esc_html_e( 'The game image is displayed on the games list page and also the competition page.', 'tournamatch' ); ?></p>
-								</td>
-							</tr>
-						</table>
-
-						<p class="submit">
-							<input id="trn-create-game-button" type="submit" class="button button-primary"
-									value="<?php esc_html_e( 'Save', 'tournamatch' ); ?>">
-						</p>
-					</form>
-
-					<form method="post" action="#" enctype="multipart/form-data" id="trn-upload-game-image-form">
-						<h2 class="title">
-							<?php esc_html_e( 'Upload Game Image', 'tournamatch' ); ?>
-						</h2>
-						<div id="trn-upload-game-image-response"></div>
-						<table class="form-table" role="presentation">
-							<tr class="form-field form-required">
-								<th scope="row">
-									<label for="trn-upload-game-image"><?php esc_html_e( 'Select File', 'tournamatch' ); ?></label>
-								</th>
-								<td>
-									<input type="file" id="trn-upload-game-image" name="trn-upload-game-image" required/>
-									<p class="description"><?php esc_html_e( 'The platform of the game. Useful for organizing games by platform in the front end menu.', 'tournamatch' ); ?></p>
-								</td>
-							</tr>
-						</table>
-						<p class="submit">
-							<input type="hidden" name="action" value="upload">
-							<input type="submit" class="button button-primary"
-									value="<?php esc_html_e( 'Upload', 'tournamatch' ); ?>">
-						</p>
-					</form>
-				</div>
-				<?php
-
-				$options = [
-					'api_url'    => site_url( 'wp-json/tournamatch/v1/' ),
-					'rest_nonce' => wp_create_nonce( 'wp_rest' ),
-					'language'   => array(
-						'failure'                => esc_html__( 'Error', 'tournamatch' ),
-						'success'                => esc_html__( 'Success', 'tournamatch' ),
-						'success_message'        => esc_html__( 'New game {0} has been created.', 'tournamatch' ),
-						'delete_message'         => esc_html__( 'The game was deleted.', 'tournamatch' ),
-						'upload_success_message' => esc_html__( 'Game image has been uploaded.', 'tournamatch' ),
-					),
-				];
-
-				wp_register_script( 'trn-admin-manage-games', plugins_url( '../dist/js/games.js', __FILE__ ), array( 'tournamatch' ), '3.25.0', true );
-				wp_localize_script( 'trn-admin-manage-games', 'trn_manage_games_options', $options );
-				wp_enqueue_script( 'trn-admin-manage-games' );
 				break;
 
 			default:
 				$list_table = new \Tournamatch_Game_List_Table();
 				$list_table->prepare_items();
-
-				$images = trn_get_files_of_type(
-					trn_upload_dir() . '/images/games/',
-					array(
-						'gif',
-						'jpg',
-						'png',
-						'jpeg',
-					)
-				);
-
 				?>
+				<style type="text/css">
+					td.trn-admin-game-thumbnail-warning {
+						border: 1px solid #ffeeba;
+						background-color: #fff3cd;
+						color: #856404;
+						font-weight: bold;
+					}
+					.d-none {
+						display: none;
+					}
+				</style>
 				<div class="wrap">
 					<h1 class="wp-heading-inline"><?php esc_html_e( 'Games', 'tournamatch' ); ?></h1>
 					<?php
@@ -342,6 +235,12 @@ class Game {
 					}
 					?>
 					<hr class="wp-header-end">
+					<div id="trn-game-thumbnail-warning" class="d-none">
+						<p class="notice notice-warning">
+							<strong><?php esc_html_e( 'Action Required!', 'tournamatch' ); ?></strong>
+							<?php esc_html_e( 'Games exist below with a thumbnail set to a string (highlighted). You should edit these games and re-select the thumbnail. Any game with a thumbnail set to a string (the highlighted ones) will stop working in 4.4.', 'tournamatch' ); ?>
+						</p>
+					</div>
 					<div id="col-container">
 						<div id="col-left">
 							<div class="col-wrap">
@@ -363,42 +262,26 @@ class Game {
 											<p><?php esc_html_e( 'The platform of the game. Useful for organizing games by platform in the front end menu.', 'tournamatch' ); ?></p>
 										</div>
 										<div class="form-field form-required">
-											<label for="trn-game-thumbnail"><?php esc_html_e( 'Game Image', 'tournamatch' ); ?></label>
-											<?php if ( count( $images ) > 0 ) : ?>
-												<select id="trn-game-thumbnail" name="trn-game-thumbnail">
-													<?php foreach ( $images as $image ) : ?>
-														<option value="<?php echo esc_html( $image ); ?>"><?php echo esc_html( $image ); ?></option>
-													<?php endforeach; ?>
-												</select>
-											<?php else : ?>
-												<?php /* translators: HTML <strong> and </strong> tags. */ ?>
-												<p><?php printf( esc_html__( 'No images currently exist. Please upload one using the %1$sUpload Game Image%2$s form first.', 'tournamatch' ), '<strong>', '</strong>' ); ?> </p>
-											<?php endif; ?>
-											<p class="description"><?php esc_html_e( 'The game image is displayed on the games list page and also the competition page.', 'tournamatch' ); ?></p>
+											<label for="trn-game-thumbnail-button"><?php esc_html_e( 'Game Thumbnail', 'tournamatch' ); ?></label>
+											<?php trn_display_media_input( array( 'id' => 'trn-game-thumbnail' ) ); ?>
+											<p class="description"><?php esc_html_e( 'The game thumbnail is displayed on the games list page and also when no event specific thumbnail is selected. Size Recommendation: 100 x 100 pixels.', 'tournamatch' ); ?></p>
+										</div>
+										<div class="form-field form-required">
+											<label for="trn-game-banner-button"><?php esc_html_e( 'Game Banner', 'tournamatch' ); ?></label>
+											<?php
+											trn_display_media_input(
+												array(
+													'id' => 'trn-game-banner',
+													'width' => 400,
+												)
+											);
+											?>
+											<p class="description"><?php esc_html_e( 'The game banner is displayed when no event specific banner is selected. Size Recommendations: An image with ratio 4-1 (width-height); the larger the better.', 'tournamatch' ); ?></p>
 										</div>
 										<p class="submit">
 											<input id="trn-create-game-button" type="submit"
 													class="button button-primary"
 													value="<?php esc_html_e( 'Save', 'tournamatch' ); ?>">
-										</p>
-									</form>
-								</div>
-								<div class="form-wrap">
-									<h2>
-										<?php esc_html_e( 'Upload Game Image', 'tournamatch' ); ?>
-									</h2>
-									<div id="trn-upload-game-image-response"></div>
-									<form method="post" action="#" enctype="multipart/form-data"
-											id="trn-upload-game-image-form">
-										<div class="form-field form-required">
-											<label for="trn-upload-game-image"><?php esc_html_e( 'Select File', 'tournamatch' ); ?></label>
-											<input type="file" id="trn-upload-game-image" name="trn-upload-game-image"
-													required>
-										</div>
-										<p class="submit">
-											<input type="hidden" name="action" value="upload">
-											<input type="submit" class="button button-primary"
-													value="<?php esc_html_e( 'Upload', 'tournamatch' ); ?>">
 										</p>
 									</form>
 								</div>
@@ -432,7 +315,7 @@ class Game {
 					),
 				];
 
-				wp_register_script( 'trn-admin-manage-games', plugins_url( '../dist/js/games.js', __FILE__ ), array( 'tournamatch' ), '3.25.0', true );
+				wp_register_script( 'trn-admin-manage-games', plugins_url( '../dist/js/games.js', __FILE__ ), array( 'tournamatch' ), '4.3.0', true );
 				wp_localize_script( 'trn-admin-manage-games', 'trn_manage_games_options', $options );
 				wp_enqueue_script( 'trn-admin-manage-games' );
 				break;

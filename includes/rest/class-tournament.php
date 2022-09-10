@@ -381,6 +381,18 @@ class Tournament extends Controller {
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'default'     => 0,
 				),
+				'thumbnail_id'    => array(
+					'description' => esc_html__( 'The image thumbnail for the tournament.', 'tournamatch' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => 0,
+				),
+				'banner_id'       => array(
+					'description' => esc_html__( 'The image banner for the tournament.', 'tournamatch' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => 0,
+				),
 				'start_date'      => array(
 					'description' => esc_html__( 'The datetime the tournament is scheduled to start.', 'tournamatch' ),
 					'type'        => 'string',

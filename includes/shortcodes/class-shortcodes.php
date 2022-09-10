@@ -396,7 +396,7 @@ class Shortcodes {
 		$user_teams = $wpdb->get_results( $wpdb->prepare( "SELECT t.team_id AS id, t.name AS name FROM {$wpdb->prefix}trn_teams AS t LEFT JOIN {$wpdb->prefix}trn_teams_members AS tm ON t.team_id = tm.team_id WHERE tm.`team_rank_id` = 1 AND tm.user_id = %d", get_current_user_id() ) );
 
 		$html  = '<div class="trn-button-group">';
-		$html .= '  <button class="trn-button trn-button-secondary trn-button-sm trn-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" id="trn-invite-dropdown">' . __( 'Invite to...', 'tournamatch' ) . '</button>';
+		$html .= '  <button class="trn-button trn-button-sm trn-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" id="trn-invite-dropdown">' . __( 'Invite to...', 'tournamatch' ) . '</button>';
 		$html .= '  <div class="trn-dropdown-menu" aria-labelledby="trn-invite-dropdown">';
 
 		if ( 0 === count( $user_teams ) ) {
@@ -601,6 +601,14 @@ class Shortcodes {
 					'_wpnonce'  => '{NONCE}',
 				)
 			),
+			'clear_nonce'      => wp_create_nonce( 'tournamatch-bulk-matches' ),
+			'clear_url'        => trn_route(
+				'admin.tournaments.clear-match',
+				array(
+					'id'       => '{ID}',
+					'_wpnonce' => '{NONCE}',
+				)
+			),
 			'site_url'         => site_url(),
 			'can_edit_matches' => current_user_can( 'manage_tournamatch' ),
 			'language'         => array(
@@ -617,7 +625,7 @@ class Shortcodes {
 		wp_register_style( 'trn-tournament-brackets-style', plugins_url( '../../dist/css/brackets.css', __FILE__ ), array(), '1.0.0' );
 		wp_enqueue_style( 'trn-tournament-brackets-style' );
 
-		wp_register_script( 'trn-tournament-brackets', plugins_url( '../../dist/js/brackets.js', __FILE__ ), array(), '1.0.0', true );
+		wp_register_script( 'trn-tournament-brackets', plugins_url( '../../dist/js/brackets.js', __FILE__ ), array(), '4.3.0', true );
 		wp_localize_script( 'trn-tournament-brackets', 'trn_brackets_options', $options );
 		wp_enqueue_script( 'trn-tournament-brackets' );
 

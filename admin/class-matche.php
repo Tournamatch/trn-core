@@ -645,7 +645,12 @@ class Matche {
 
 				$wpdb->query( $wpdb->prepare( "UPDATE `{$wpdb->prefix}trn_matches` SET `one_result` = %s, `one_ip` = %s, `two_result` = %s, `two_ip` = %s, `match_status` = %s WHERE `match_id` = %d", '', '', '', '', 'scheduled', $match_id ) );
 
-				wp_safe_redirect( trn_route( 'admin.tournaments.matches' ) );
+				$referrer = wp_get_referer();
+				if ( 0 < strlen( $referrer ) ) {
+					wp_safe_redirect( $referrer );
+				} else {
+					wp_safe_redirect( trn_route( 'admin.tournaments.matches' ) );
+				}
 				break;
 
 			case 'advance':
@@ -684,7 +689,12 @@ class Matche {
 				update_career_wins( $winner_id, $competitor_type );
 				update_career_losses( $loser_id, $competitor_type );
 
-				wp_safe_redirect( trn_route( 'admin.tournaments.matches' ) );
+				$referrer = wp_get_referer();
+				if ( 0 < strlen( $referrer ) ) {
+					wp_safe_redirect( $referrer );
+				} else {
+					wp_safe_redirect( trn_route( 'admin.tournaments.matches' ) );
+				}
 				break;
 
 			case 'delete':

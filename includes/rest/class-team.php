@@ -324,10 +324,10 @@ class Team extends Controller {
 		$files = $request->get_file_params();
 		if ( ! empty( $files ) ) {
 			foreach ( $files as $key => $file ) {
-				$request['avatar'] = trn_store_profile_avatar( $file, $team->avatar );
+				$request[ $key ] = trn_store_profile_avatar( $file, $team->avatar );
 
-				if ( is_wp_error( $request['avatar'] ) ) {
-					return $request['avatar'];
+				if ( is_wp_error( $request[ $key ] ) ) {
+					return $request[ $key ];
 				}
 			}
 		}
@@ -430,6 +430,11 @@ class Team extends Controller {
 			),
 			'avatar'      => array(
 				'description' => esc_html__( 'The avatar for the teams.', 'tournamatch' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit', 'embed' ),
+			),
+			'banner'      => array(
+				'description' => esc_html__( 'The banner for the teams.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),

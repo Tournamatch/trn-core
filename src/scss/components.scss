@@ -82,3 +82,176 @@
 .trn-accept-team-request-link, .trn-decline-team-request-link, .trn-delete-team-invitations-link {
   cursor: pointer;
 }
+
+.trn {
+  &-profile-header, &-competition-header, &-match-header {
+    position: relative;
+    margin-bottom: 1rem;
+    color: #fff;
+    padding: 30px;
+    padding-bottom: 1rem;
+    min-height: 291px;
+  }
+
+  &-match-header-competitors {
+    display: flex;
+  }
+
+  &-match-header-left, &-match-header-right {
+    flex-direction: column;
+    width: 50%;
+    position: relative;
+  }
+  &-match-header-right {
+    text-align: right;
+  }
+
+  &-profile-name {
+    color: #fff;
+    position: absolute;
+    top: 30px;
+    left: 260px;
+  }
+
+  &-competition-name {
+    color: #fff;
+    position: absolute;
+    top: 30px;
+  }
+
+  &-match-competitor {
+    color: #fff;
+    position: absolute;
+    top: 0;
+  }
+  &-match-header-left > &-match-competitor {
+    left: 190px;
+  }
+  &-match-header-right > &-match-competitor {
+    right: 190px;
+  }
+
+  &-header-avatar, &-match-header-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 0.5rem;
+    border: solid white 2px;
+  }
+
+  &-match-header-avatar {
+    width: 160px;
+    height: 160px;
+  }
+
+  &-profile-list, &-competition-list, &-match-list {
+    list-style: none;
+    position: absolute;
+    bottom: 15px;
+
+    li, &-item {
+      display: inline-block;
+      margin-left: 14px;
+    }
+
+    li:first-child, &-item:first-child {
+      margin-left: 0;
+    }
+  }
+
+  &-item-list {
+    width: 100%;
+    display: block;
+    list-style: none;
+
+    li, &-item {
+      display: inline-block;
+      margin-left: 14px;
+    }
+
+    li:first-child, &-item:first-child {
+      margin-left: 0;
+    }
+  }
+
+  &-profile-list li#{&}-profile-list-item::before,
+  &-competition-list li#{&}-competition-list-item::before,
+  &-match-list li#{&}-match-list-item::before,
+  &-item-list li#{&}-item-list-item::before {
+    font-family: "Font Awesome 5 Free";
+    margin-right: 5px;
+    font-weight: 900;
+  }
+
+  &-profile-list li#{&}-profile-list-item,
+  &-competition-list li#{&}-competition-list-item,
+  &-match-list li#{&}-match-list-item,
+  &-item-list li#{&}-item-list-item {
+    &.location::before {
+      content: '\f041';
+    }
+    &.joined::before {
+      content: '\f133';
+    }
+    &.members::before {
+      content: '\f0c0';
+    }
+    &.info::before {
+      content: '\f05a';
+    }
+    &.format::before {
+      content: '\f126';
+    }
+    &.competitor-type::before {
+      content: '\f249';
+    }
+    &.ranking::before {
+      content: '\f201';
+    }
+    &.platform::before {
+      content: '\f11b';
+    }
+  }
+
+  &-profile-record {
+    position: absolute;
+    top: 70px;
+    left: 260px;
+    opacity: .75;
+  }
+
+  &-match-result {
+    position: absolute;
+    top: 40px;
+    opacity: .75;
+  }
+  &-match-header-left > &-match-result {
+    left: 190px;
+  }
+  &-match-header-right > &-match-result {
+    right: 190px;
+  }
+
+  &-competition-game {
+    position: absolute;
+    top: 70px;
+    opacity: .75;
+  }
+
+  &-profile-actions {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+  }
+
+  &-match-actions {
+    position: absolute;
+    right: 30px;
+    bottom: 15px;
+  }
+}
+
+.trn-tab-content > #match_details > .trn-dl > .trn-dt,
+.trn-tab-content > #match_details > .trn-dl > .trn-dd {
+  width: 50%;
+  display: inline-block;
+}

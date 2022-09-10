@@ -244,7 +244,8 @@ SELECT
   `p`.`losses`, 
   `p`.`draws`, 
   `p`.`profile`, 
-  `p`.`avatar`, 
+  `p`.`avatar`,
+  `p`.`banner`,
   (SELECT COUNT(*) FROM `{$wpdb->prefix}trn_teams_members` AS `tm` WHERE `tm`.`user_id` = `p`.`user_id`) AS `teams`, 
   `u`.`user_registered` AS `joined_date` 
 FROM `{$wpdb->prefix}trn_players_profiles` AS `p` 
@@ -408,10 +409,10 @@ WHERE `user_id` = %d
 		$files = $request->get_file_params();
 		if ( ! empty( $files ) ) {
 			foreach ( $files as $key => $file ) {
-				$request['avatar'] = trn_store_profile_avatar( $file, $player->avatar );
+				$request[ $key ] = trn_store_profile_avatar( $file, $player->$key );
 
-				if ( is_wp_error( $request['avatar'] ) ) {
-					return $request['avatar'];
+				if ( is_wp_error( $request[ $key ] ) ) {
+					return $request[ $key ];
 				}
 			}
 		}
@@ -523,6 +524,11 @@ WHERE `user_id` = %d
 			),
 			'avatar'      => array(
 				'description' => esc_html__( 'The avatar for the player.', 'tournamatch' ),
+				'type'        => 'string',
+				'context'     => array( 'view', 'edit', 'embed' ),
+			),
+			'banner'      => array(
+				'description' => esc_html__( 'The banner for the player.', 'tournamatch' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),

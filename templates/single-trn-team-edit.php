@@ -65,6 +65,18 @@ $form_fields = array(
 			trn_display_avatar( $context->team_id, 'teams', $context->avatar );
 		},
 	),
+	'banner' => array(
+		'id'          => 'banner',
+		'label'       => __( 'Banner', 'tournamatch' ),
+		'type'        => 'thumbnail',
+		'description' => __( 'Only choose file if you wish to change your banner.', 'tournamatch' ),
+		'value'       => isset( $team->banner ) ? $team->banner : '',
+		'thumbnail'   => function( $context ) {
+			if ( 0 < strlen( $context->banner ) ) {
+				echo '<img width="400" height="100" class="trn-profile-edit-banner" src="' . esc_attr( trn_upload_url() . '/images/avatars/' . $context->banner ) . '"/>"';
+			}
+		},
+	),
 );
 
 $form = array(

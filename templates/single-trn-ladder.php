@@ -14,6 +14,7 @@ defined( 'ABSPATH' ) || exit;
 $ladder_id = get_query_var( 'id' );
 
 $ladder = trn_get_ladder( $ladder_id );
+$ladder = trn_the_ladder( $ladder );
 if ( is_null( $ladder ) ) {
 	wp_safe_redirect( trn_route( 'ladders.archive' ) );
 	exit;
@@ -46,16 +47,32 @@ get_header();
 trn_get_header();
 
 ?>
-	<div class="trn-row trn-mb-sm">
-		<div class="trn-col-sm-2 trn-col-xs-4 trn-text-center">
-			<img class="trn-game-thumbnail" src="<?php echo esc_url( $game_avatar_source ); ?>" alt="">
-		</div>
-		<div class="trn-col-sm-4 trn-col-xs-8">
-			<h3 id="trn-ladder-title"><?php echo esc_html( $ladder->name ); ?><br>
-				<small><?php echo esc_html( $ladder->game_name ); ?></small>
-			</h3>
-		</div>
-	</div>
+<div class="trn-competition-header"<?php trn_header_banner_style( $ladder->banner_id, $ladder->game_id ); ?>>
+	<h1 class="trn-competition-name"><?php echo esc_html( $ladder->name ); ?></h1>
+	<span class="trn-competition-game"><?php echo esc_html( $ladder->game_name ); ?></span>
+	<span class="trn-competition-actions">
+	<?php if ( is_user_logged_in() ) : ?>
+
+	<?php endif; ?>
+	</span>
+	<ul class="trn-competition-list">
+		<li class="trn-competition-list-item members">
+			<?php /* translators: number of competitors. */ ?>
+			<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', 8, 'tournamatch' ) ), 8 ); ?>
+		</li>
+		<li class="trn-competition-list-item ranking">
+			<?php echo esc_html( $ladder->ranking_mode_label ); ?>
+		</li>
+		<li class="trn-competition-list-item competitor-type">
+			<?php if ( 'players' === $ladder->competitor_type ) : ?>
+				<?php esc_html_e( 'Singles', 'tournamatch' ); ?>
+			<?php else : ?>
+				<?php /* translators: Opponent name vs opponent name. */ ?>
+				<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $ladder->team_size ) ); ?>
+			<?php endif; ?>
+		</li>
+	</ul>
+</div>
 <?php
 
 $views = array(

@@ -18,57 +18,31 @@ trn_get_header();
 $user_id = (int) get_query_var( 'id' );
 $player  = trn_get_player( $user_id );
 
-// Secondary Links.
-$secondary_links = [];
-
-if ( is_user_logged_in() ) {
-
-	// Edit profile.
-	if ( get_current_user_id() === $user_id ) {
-		$secondary_links[] = '<a class="trn-button trn-button-sm trn-button-secondary" href="' . esc_url( trn_route( 'players.single.edit', array( 'id' => $user_id ) ) ) . '">' . esc_html__( 'Edit Profile', 'tournamatch' ) . '</a>';
-	}
-
-	// Team invite.
-	if ( get_current_user_id() !== $user_id ) {
-		$secondary_links[] = do_shortcode( '[trn-invite-player-to-team user_id="' . intval( $user_id ) . '"]' );
-	}
-}
-
-$description_list = array(
-	'joined_date'   => array(
-		'term'        => __( 'Joined Date', 'tournamatch' ),
-		'description' => date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( get_user_by( 'id', $user_id )->data->user_registered ) ) ),
-	),
-	'location'      => array(
-		'term'        => __( 'Location', 'tournamatch' ),
-		'description' => $player->location,
-	),
-	'career_record' => array(
-		'term'        => __( 'Career Record', 'tournamatch' ),
-		'description' => function( $player ) {
-			echo do_shortcode( '[trn-career-record competitor_type="players" competitor_id="' . intval( $player->user_id ) . '"]' );
-		},
-	),
-);
-
-$description_list = apply_filters( 'trn_single_player_description_list', $description_list, $player );
 ?>
-<div class="trn-profile">
-	<div class="trn-profile-details">
-		<h1 class="trn-text-center"><?php echo esc_html( $player->name ); ?></h1>
-		<?php trn_single_template_description_list( $description_list, $player ); ?>
-		<?php if ( 0 < count( $secondary_links ) ) : ?>
-			<div id="trn-send-invite-response"></div>
-			<div class="trn-text-center">
-				<?php echo wp_kses_post( implode( ' &nssp; ', $secondary_links ) ); ?><br>
-			</div>
-		<?php endif; ?>
-	</div>
+<div class="trn-profile-header"<?php trn_competitor_header_banner_style( $player->banner ); ?>>
 	<div class="trn-profile-avatar">
-		<?php trn_display_avatar( $player->user_id, 'players', $player->avatar ); ?>
+		<?php trn_display_avatar( $player->user_id, 'players', $player->avatar, 'trn-header-avatar' ); ?>
 	</div>
+	<h1 class="trn-profile-name"><?php echo esc_html( $player->name ); ?></h1>
+	<span class="trn-profile-record"><?php echo do_shortcode( '[trn-career-record competitor_type="players" competitor_id="' . intval( $player->user_id ) . '"]' ); ?></span>
+	<span class="trn-profile-actions">
+	<?php if ( is_user_logged_in() ) : ?>
+		<?php if ( get_current_user_id() === $user_id ) : ?>
+			<a class="trn-button trn-button-sm" href="<?php echo esc_url( trn_route( 'players.single.edit', array( 'id' => $user_id ) ) ); ?>"><?php esc_html_e( 'Edit Profile', 'tournamatch' ); ?></a>
+		<?php else : ?>
+			<?php echo do_shortcode( '[trn-invite-player-to-team user_id="' . intval( $user_id ) . '"]' ); ?>
+		<?php endif; ?>
+	<?php endif; ?>
+	</span>
+	<ul class="trn-profile-list">
+		<li class="trn-profile-list-item joined">
+			<?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( get_user_by( 'id', $user_id )->data->user_registered ) ) ) ); ?>
+		</li>
+		<li class="trn-profile-list-item location">
+			<?php echo esc_html( $player->location ); ?>
+		</li>
+	</ul>
 </div>
-
 <?php
 
 $views = array(

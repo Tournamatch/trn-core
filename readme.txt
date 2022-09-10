@@ -2,8 +2,8 @@
 Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
-Tested up to: 6.0.1
-Stable tag: 4.2.2
+Tested up to: 6.0.2
+Stable tag: 4.3.0
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -14,9 +14,9 @@ A ladder and tournament plugin for eSports, physical sports, board games, and ot
 
 **Important**: If you are upgrading from version 3.x, please read [this page](https://www.tournamatch.com/major-version-delta/) prior to proceeding.
 
-Use this plugin to create tournaments and ladders (leader boards) on your website. Ladders track points, wins, losses, [optionally] draws, games played, win streak, and win percent. Tournaments support single elimination head-to-head competitions. It includes match challenges, player profiles, team profiles, ladder and tournament rule pages, match lists, and a player dashboard for managing everything.
+Use this plugin to create a gaming community with your own tournaments, ladders, competitor challenges, and more. Ladder standings (or "leaderboard") track points, wins, losses, [optionally] draws, games played, win streak, and win percent. Tournament brackets support single elimination head-to-head competitions. Tournamatch also includes match challenges, player profiles, team profiles, ladder and tournament rule pages, match lists, and a player dashboard for managing everything.
 
-This plugin is for active gaming communities! Registered users can create their own teams, join other teams, accept or decline join requests, drop team members, and send email or user team invitations; users can send match challenges; users or admins report, confirm, or dispute match results; ladders and tournaments will update automatically when match results are confirmed.
+Using Tournamatch, you create ladder or tournament events and allow registered users to self-serve. Registered users can create their own teams, join other teams, accept or decline join requests, drop team members, and send email or user team invitations; users can send match challenges; users or admins report, confirm, or dispute match results; ladders and tournaments will update automatically when match results are confirmed.
 
 This plugin includes many pages and shortcodes with user-facing components. You should expect to restyle those using the WordPress Backend -> Appearance, Customize -> Additional CSS page.
 
@@ -53,6 +53,15 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.3.0 =
+* Redesigned the following templates: single player, single team, single ladder, single tournament, and single match. These pages now feature a header banner and better organized information.
+* Touched up the following templates: archive games, archive ladders, and archive tournaments. These pages have minor appearance tweaks, more information, and less action buttons.
+* Added support for player and team banner images for profile pages.
+* Added support for dynamic ladder, tournament, and ladder competitor fields.
+* Replaced the thumbnail upload in the Games backend with the WordPress media selector, and also added a field for selecting a banner image.
+* Advancing a competitor or clearing a reported result while viewing the brackets will correctly redirect you back to the brackets.
+* Updated plugin description.
 
 = 4.2.2 =
 * Fixed spelling error of the South African flag. It is now displayed correctly as 'South Africa'.

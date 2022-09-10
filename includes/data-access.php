@@ -383,6 +383,26 @@ if ( ! function_exists( 'trn_get_user_ladders_with_challenges' ) ) {
 	}
 }
 
+if ( ! function_exists( 'trn_the_ladder' ) ) {
+	/**
+	 * Prepares a ladder after it is retrieved from the database and before
+	 * it is printed to the screen.
+	 *
+	 * @since 4.3.0
+	 *
+	 * @param object $ladder The ladder to prepare.
+	 *
+	 * @return mixed
+	 */
+	function trn_the_ladder( $ladder ) {
+
+		$ladder->ranking_mode_field = 'points';
+		$ladder->ranking_mode_label = __( 'Points', 'tournamatch' );
+
+		return apply_filters( 'trn_the_ladder', $ladder );
+	}
+}
+
 if ( ! function_exists( 'trn_get_ladder' ) ) {
 	/**
 	 * Retrieves a single ladder item.
@@ -602,8 +622,7 @@ FROM `{$wpdb->prefix}trn_ladders_entries` AS `le`
 WHERE `ladder_entry_id` = %d
 LIMIT 1",
 				$id
-			),
-			ARRAY_A
+			)
 		);
 	}
 }

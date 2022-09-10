@@ -158,7 +158,7 @@ class Game extends Controller {
 	public function get_items( $request ) {
 		global $wpdb;
 
-		$games = $wpdb->get_results( "SELECT `game_id`, `name`, `thumbnail`, `platform` FROM `{$wpdb->prefix}trn_games` ORDER BY `game_id` ASC" );
+		$games = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}trn_games` ORDER BY `game_id` ASC" );
 
 		$game_items = array();
 
@@ -200,7 +200,7 @@ class Game extends Controller {
 	public function create_item( $request ) {
 		global $wpdb;
 
-		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_games` VALUES (NULL, %s, %s, %s)", $request->get_param( 'name' ), $request->get_param( 'thumbnail' ), $request->get_param( 'platform' ) ) );
+		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_games` (`game_id`, `name`, `thumbnail_id`, `banner_id`, `platform`) VALUES (NULL, %s, %d, %d, %s)", $request->get_param( 'name' ), $request->get_param( 'thumbnail_id' ), $request->get_param( 'banner_id' ), $request->get_param( 'platform' ) ) );
 
 		$game = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_games` WHERE `game_id` = %d", $wpdb->insert_id ) );
 
@@ -261,8 +261,11 @@ class Game extends Controller {
 		if ( ! empty( $schema['properties']['platform'] ) && isset( $request['platform'] ) ) {
 			$data['platform'] = $request['platform'];
 		}
-		if ( ! empty( $schema['properties']['thumbnail'] ) && isset( $request['thumbnail'] ) ) {
-			$data['thumbnail'] = $request['thumbnail'];
+		if ( ! empty( $schema['properties']['thumbnail_id'] ) && isset( $request['thumbnail_id'] ) ) {
+			$data['thumbnail_id'] = $request['thumbnail_id'];
+		}
+		if ( ! empty( $schema['properties']['banner_id'] ) && isset( $request['banner_id'] ) ) {
+			$data['banner_id'] = $request['banner_id'];
 		}
 
 		if ( 0 < count( $data ) ) {
@@ -343,27 +346,39 @@ class Game extends Controller {
 			'title'      => 'games',
 			'type'       => 'object',
 			'properties' => array(
-				'game_id'   => array(
+				'game_id'      => array(
 					'description' => esc_html__( 'The id for the game.', 'tournamatch' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
-				'name'      => array(
+				'name'         => array(
 					'description' => esc_html__( 'The display name for the game.', 'tournamatch' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'required'    => true,
 				),
-				'platform'  => array(
+				'platform'     => array(
 					'description' => esc_html__( 'The platform for the game.', 'tournamatch' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),
-				'thumbnail' => array(
+				'thumbnail'    => array(
 					'description' => esc_html__( 'The image thumbnail for the game.', 'tournamatch' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
+				),
+				'thumbnail_id' => array(
+					'description' => esc_html__( 'The image thumbnail for the game.', 'tournamatch' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => 0,
+				),
+				'banner_id'    => array(
+					'description' => esc_html__( 'The image banner for the game.', 'tournamatch' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => 0,
 				),
 			),
 		);

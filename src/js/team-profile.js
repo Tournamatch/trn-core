@@ -137,7 +137,10 @@ import { trn } from './tournamatch.js';
                     content += `<p class="text-center">${options.language.error_members}</p>`;
                 }
 
-                document.getElementById('trn-team-members-list').innerHTML = content;
+                const memberList = document.getElementById('trn-team-members-list');
+                if (memberList) {
+                    memberList.innerHTML = content;
+                }
             };
 
             xhr.send();

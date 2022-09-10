@@ -121,6 +121,8 @@ CREATE TABLE `{$wpdb->prefix}trn_games` (
   `game_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) NOT NULL DEFAULT '',
   `thumbnail` varchar(191) NOT NULL DEFAULT 'blank.gif',
+  `thumbnail_id` int(10) unsigned NOT NULL,
+  `banner_id` int(10) unsigned NOT NULL,
   `platform` varchar(25) NOT NULL DEFAULT '',
   PRIMARY KEY (`game_id`)
 );
@@ -129,6 +131,8 @@ CREATE TABLE `{$wpdb->prefix}trn_ladders` (
   `ladder_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL DEFAULT '',
   `game_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `thumbnail_id` int(10) unsigned NOT NULL,
+  `banner_id` int(10) unsigned NOT NULL,
   `competitor_type` enum('players','teams') NOT NULL DEFAULT 'players',
   `team_size` tinyint(2) unsigned DEFAULT NULL,
   `win_points` tinyint(2) NOT NULL DEFAULT '0',
@@ -193,6 +197,7 @@ CREATE TABLE `{$wpdb->prefix}trn_players_profiles` (
   `draws` int(10) unsigned NOT NULL DEFAULT '0',
   `profile` text DEFAULT NULL,
   `avatar` varchar(191) NOT NULL DEFAULT 'blank.gif',
+  `banner` varchar(191) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
 );
 
@@ -203,6 +208,7 @@ CREATE TABLE `{$wpdb->prefix}trn_teams` (
   `flag` varchar(191) NOT NULL DEFAULT 'blank.gif',
   `joined_date` datetime NOT NULL,
   `avatar` varchar(191) NOT NULL DEFAULT '',
+  `banner` varchar(191) DEFAULT NULL,
   `wins` int(10) unsigned NOT NULL DEFAULT '0',
   `losses` int(10) unsigned NOT NULL DEFAULT '0',
   `draws` int(10) unsigned NOT NULL DEFAULT '0',
@@ -257,6 +263,8 @@ CREATE TABLE `{$wpdb->prefix}trn_tournaments` (
   `tournament_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(191) NOT NULL,
   `game_id` int(10) unsigned DEFAULT NULL,
+  `thumbnail_id` int(10) unsigned NOT NULL,
+  `banner_id` int(10) unsigned NOT NULL,
   `start_date` datetime NOT NULL,
   `competitor_type` enum('players','teams') NOT NULL DEFAULT 'players',
   `team_size` tinyint(2) unsigned DEFAULT NULL,
@@ -299,7 +307,7 @@ CREATE TABLE `{$wpdb->prefix}trn_tournaments_entries` (
 		foreach ( $result as $row ) {
 			$id           = $row['user_id'];
 			$display_name = $row['display_name'];
-			$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_players_profiles` VALUES (%d, %s, '', 'blank.gif', 0, 0, 0, '', 'blank.gif')", $id, $display_name ) );
+			$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_players_profiles` (`user_id`, `display_name`, `location`, `flag`, `profile`, `avatar`) VALUES (%d, %s, '', 'blank.gif', '', 'blank.gif')", $id, $display_name ) );
 		}
 		// Done migrate users into users table.
 
