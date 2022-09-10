@@ -63,3 +63,11 @@
     }
   }
 }
+
+#games {
+  .trn-item-wrapper:hover {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    background: #fff;
+    cursor: inherit;
+  }
+}
