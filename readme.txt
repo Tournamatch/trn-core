@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.2
-Stable tag: 4.3.0
+Stable tag: 4.3.1
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,14 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.3.1 =
+* Fix: Game archive should not have hand on hover.
+* Fix: Player profiles should not display location icon if field is empty.
+* Fix: Pending challenges incorrectly uses local time instead of UTC for retrieving challenges.
+* Fix: The challenge date used in emails is not formatted in the website's designated time zone and should be.
+* Fix: Challenges are incorrectly stored in local time instead of UTC time.
+* Fix: Scheduled matches should not display a result on the single match page.
 
 = 4.3.0 =
 * Redesigned the following templates: single player, single team, single ladder, single tournament, and single match. These pages now feature a header banner and better organized information.
