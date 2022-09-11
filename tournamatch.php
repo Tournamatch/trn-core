@@ -1077,7 +1077,7 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 		wp_register_style( 'trn_font_awesome_css', plugins_url( '/dist/css/fontawesome.5.14.0.css', __FILE__ ), array(), '5.14.0' );
 		wp_enqueue_style( 'trn_font_awesome_css' );
 
-		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '4.3.0' );
+		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '4.3.1' );
 		wp_enqueue_style( 'trn_components_css' );
 
 		wp_register_style( 'datatables', plugins_url( '/dist/css/trn.datatable.bootstrap4.css', __FILE__ ), array(), '1.10.19' );

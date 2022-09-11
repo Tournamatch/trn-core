@@ -97,7 +97,7 @@ if ( 0 < count( $ladders ) ) {
 		),
 	);
 
-	wp_register_script( 'trn-create-challenge', plugins_url( '../dist/js/create-challenge-form.js', __FILE__ ), array( 'tournamatch' ), '3.20.0', true );
+	wp_register_script( 'trn-create-challenge', plugins_url( '../dist/js/create-challenge-form.js', __FILE__ ), array( 'tournamatch' ), '4.3.1', true );
 	wp_localize_script( 'trn-create-challenge', 'trn_create_challenge_form_options', $options );
 	wp_enqueue_script( 'trn-create-challenge' );
 }
