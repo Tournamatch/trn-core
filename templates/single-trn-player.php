@@ -38,9 +38,11 @@ $player  = trn_get_player( $user_id );
 		<li class="trn-profile-list-item joined">
 			<?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( get_user_by( 'id', $user_id )->data->user_registered ) ) ) ); ?>
 		</li>
-		<li class="trn-profile-list-item location">
-			<?php echo esc_html( $player->location ); ?>
-		</li>
+		<?php if ( 0 < strlen( $player->location ) ) : ?>
+			<li class="trn-profile-list-item location">
+				<?php echo esc_html( $player->location ); ?>
+			</li>
+		<?php endif; ?>
 	</ul>
 </div>
 <?php

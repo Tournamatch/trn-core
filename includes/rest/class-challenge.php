@@ -192,7 +192,7 @@ class Challenge extends Controller {
 				'ladder_name'     => $ladder->name,
 				'challenger_link' => $challenger_link,
 				'challenger'      => $email_details->challenger,
-				'challenge_date'  => $email_details->challenge_date,
+				'challenge_date'  => date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $email_details->challenge_date ) ) ),
 				'challenge_link'  => trn_route( 'challenges.single', array( 'id' => $challenge->challenge_id ) ),
 			];
 

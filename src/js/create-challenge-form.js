@@ -15,7 +15,7 @@ import { trn } from './tournamatch.js';
     window.addEventListener('load', function () {
         const options = trn_create_challenge_form_options;
         const challengeButton = document.getElementById('trn-challenge-button');
-        const matchTimeInput = document.getElementById('match_time');
+        const matchTimeInput = document.getElementById('match_time_field');
         const challengerField = document.getElementById('trn-challenge-form-challenger');
         const challengeeField = document.getElementById('trn-challenge-form-challengee');
         const challengerGroup = document.getElementById('trn-challenge-form-challenger-group');
@@ -140,6 +140,10 @@ import { trn } from './tournamatch.js';
         challengeForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
+            let d = new Date(`${matchTimeInput.value}`);
+            let matchTime = document.getElementById(`match_time`);
+            matchTime.value = d.toISOString().slice(0, 19).replace('T', ' ');
+
             let xhr = new XMLHttpRequest();
             xhr.open('POST', `${options.api_url}challenges`);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -158,7 +162,7 @@ import { trn } from './tournamatch.js';
                 ladder_id: ladderId,
                 challenger_id: challengerField.getAttribute('data-competitor-id'),
                 challengee_id: challengeeField.getAttribute('data-competitor-id'),
-                match_time: matchTimeInput.value,
+                match_time: matchTime.value,
             }));
         });
     }, false);

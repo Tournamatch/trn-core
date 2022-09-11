@@ -64,9 +64,10 @@ trn_get_header();
 				</div>
 			</div>
 			<div class="trn-form-group d-none" id="trn-challenge-form-match-time-group">
-				<label for="match_time"class="trn-col-sm-3"><?php esc_html_e( 'Match Time', 'tournamatch' ); ?>:</label>
+				<label for="match_time_field"class="trn-col-sm-3"><?php esc_html_e( 'Match Time', 'tournamatch' ); ?>:</label>
 				<div class="trn-col-sm-4">
-					<input id="match_time" name="match_time" type='datetime-local' required class="trn-form-control" autocomplete="off" disabled>
+					<input id="match_time_field" name="match_time_field" type="datetime-local" required class="trn-form-control" autocomplete="off" disabled>
+					<input id="match_time" name="match_time" type="hidden" >
 				</div>
 			</div>
 			<div class="trn-form-group">
@@ -96,7 +97,7 @@ if ( 0 < count( $ladders ) ) {
 		),
 	);
 
-	wp_register_script( 'trn-create-challenge', plugins_url( '../dist/js/create-challenge-form.js', __FILE__ ), array( 'tournamatch' ), '3.20.0', true );
+	wp_register_script( 'trn-create-challenge', plugins_url( '../dist/js/create-challenge-form.js', __FILE__ ), array( 'tournamatch' ), '4.3.1', true );
 	wp_localize_script( 'trn-create-challenge', 'trn_create_challenge_form_options', $options );
 	wp_enqueue_script( 'trn-create-challenge' );
 }
