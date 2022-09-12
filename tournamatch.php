@@ -2620,7 +2620,7 @@ if ( ! function_exists( 'trn_user_register' ) ) {
 
 		$display_name = get_userdata( $user_id )->user_login;
 
-		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_players_profiles` VALUES (%d, %s, '', 'blank.gif', 0, 0, 0, '', 'blank.gif')", $user_id, $display_name ) );
+		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_players_profiles` (`user_id`, `display_name`, `location`, `flag`, `profile`, `avatar`) VALUES (%d, %s, '', 'blank.gif', '', 'blank.gif')", $user_id, $display_name ) );
 	}
 }
 
@@ -3605,6 +3605,10 @@ CREATE TABLE `{$wpdb->prefix}trn_tournaments` (
 
 			dbDelta( $upgrade_sql, true );
 		}
+
+		if ( version_compare( $version, '4.3.2', '<' ) ) {
+			trn_migrate_users();
+		}
 	}
 }
 
@@ -3840,3 +3844,21 @@ add_action(
 		echo '</div></div>';
 	}
 );
+
+if ( ! function_exists( 'trn_migrate_users' ) ) {
+	/**
+	 * Inserts a record into the Tournamatch player table for each WordPress user.
+	 *
+	 * @since 4.3.2
+	 */
+	function trn_migrate_users() {
+		global $wpdb;
+
+		$result = $wpdb->get_results( "SELECT pu.ID AS user_id, pu.user_login AS display_name, pu.user_email AS email, pu.user_registered AS registered_at, pu.user_url AS homepage FROM {$wpdb->users} as pu WHERE pu.ID NOT IN (SELECT user_id FROM `{$wpdb->prefix}trn_players_profiles`)", ARRAY_A );
+		foreach ( $result as $row ) {
+			$id           = $row['user_id'];
+			$display_name = $row['display_name'];
+			$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_players_profiles` (`user_id`, `display_name`, `location`, `flag`, `profile`, `avatar`) VALUES (%d, %s, '', 'blank.gif', '', 'blank.gif')", $id, $display_name ) );
+		}
+	}
+}
