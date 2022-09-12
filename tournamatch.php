@@ -128,6 +128,19 @@ require_once __TRNPATH . 'includes/widgets/class-newest-teams.php';
 require_once __TRNPATH . 'includes/widgets/class-online-statistics.php';
 require_once __TRNPATH . 'includes/widgets/class-upcoming-matches.php';
 
+register_deactivation_hook( __FILE__, 'tournamatch_deactivate' );
+
+if ( ! function_exists( 'tournamatch_deactivate' ) ) {
+	/**
+	 * Calls the code that runs during plugin deactivation.
+	 *
+	 * @since 4.3.2
+	 */
+	function tournamatch_deactivate() {
+		flush_rewrite_rules();
+	}
+}
+
 register_activation_hook( __FILE__, 'tournamatch_activate' );
 
 if ( ! function_exists( 'tournamatch_activate' ) ) {
@@ -138,6 +151,9 @@ if ( ! function_exists( 'tournamatch_activate' ) ) {
 	 */
 	function tournamatch_activate() {
 		require_once __DIR__ . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'class-tournamatch-activator.php';
+
+		trn_add_rewrite_rules();
+		flush_rewrite_rules();
 	}
 }
 
@@ -2008,10 +2024,10 @@ if ( ! function_exists( 'trn_add_rewrite_rules' ) ) {
 		add_rewrite_rule( 'report[/]?$', 'index.php?pagename=trn_report_dashboard_page', 'top' );
 		add_rewrite_rule( 'confirm/([A-Za-z0-9]+)[/]?$', 'index.php?pagename=trn_magic_link_page&confirm_hash=$matches[1]', 'top' );
 
-		flush_rewrite_rules();
+//		flush_rewrite_rules();
 	}
 
-	add_action( 'init', 'trn_add_rewrite_rules' );
+	//add_action( 'init', 'trn_add_rewrite_rules' );
 }
 
 if ( ! function_exists( 'trn_add_query_var' ) ) {
