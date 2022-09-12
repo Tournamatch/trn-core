@@ -27,7 +27,7 @@ import { trn } from './../tournamatch.js';
                     console.log(xhr);
                     if (xhr.status === 201) {
                         // reset form, trigger ladder list change in the future.
-                        window.location.href = window.location.href + `&new_ladder_id=${JSON.parse(xhr.response).ladder_id}`;
+                        window.location.href = options.redirect_url + `&new_ladder_id=${JSON.parse(xhr.response).ladder_id}`;
                     } else if ( xhr.status === 200 ) {
                         // updated, do nothing except update message
                         document.getElementById('trn-admin-manage-ladder-response').innerHTML = `<p class="notice notice-success"><strong>${options.language.success}:</strong> ${options.language.success_message}</p>`;
