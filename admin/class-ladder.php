@@ -432,10 +432,10 @@ class Ladder {
 		trn_admin_form( $form, $ladder );
 
 		$options = array(
-			'api_url'    => isset( $ladder ) ? site_url( "wp-json/tournamatch/v1/ladders/{$ladder->ladder_id}" ) : site_url( 'wp-json/tournamatch/v1/ladders/' ),
-			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
+			'api_url'      => isset( $ladder ) ? site_url( "wp-json/tournamatch/v1/ladders/{$ladder->ladder_id}" ) : site_url( 'wp-json/tournamatch/v1/ladders/' ),
+			'rest_nonce'   => wp_create_nonce( 'wp_rest' ),
 			'redirect_url' => trn_route( 'admin.ladders' ),
-			'language'   => array(
+			'language'     => array(
 				'failure'         => esc_html__( 'Error', 'tournamatch' ),
 				'success'         => esc_html__( 'Success', 'tournamatch' ),
 				'success_message' => esc_html__( 'The ladder has been updated.', 'tournamatch' ),
