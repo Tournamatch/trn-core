@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.2
-Stable tag: 4.3.1
+Stable tag: 4.3.2
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,12 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.3.2 =
+* Fix: You are now redirected to the All Ladders screen after successfully creating a new ladder.
+* Fix: Flush URL rewrite should only be called on plugin activation and deactivation.
+* Fix: Profiles for new users are not created as expected.
+* Fix: All new users since 4.3.1 will correctly have their profiles created.
 
 = 4.3.1 =
 * Fix: Game archive should not have hand on hover.
