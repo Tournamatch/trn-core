@@ -442,7 +442,7 @@ class Ladder {
 			),
 		);
 
-		wp_register_script( 'trn-ladder-form', plugins_url( '../dist/js/ladder-form.js', __FILE__ ), array( 'tournamatch' ), '3.24.0', true );
+		wp_register_script( 'trn-ladder-form', plugins_url( '../dist/js/ladder-form.js', __FILE__ ), array( 'tournamatch' ), '4.3.2', true );
 		wp_localize_script( 'trn-ladder-form', 'trn_admin_ladder_form_options', $options );
 		wp_enqueue_script( 'trn-ladder-form' );
 	}
