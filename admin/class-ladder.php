@@ -432,16 +432,17 @@ class Ladder {
 		trn_admin_form( $form, $ladder );
 
 		$options = array(
-			'api_url'    => isset( $ladder ) ? site_url( "wp-json/tournamatch/v1/ladders/{$ladder->ladder_id}" ) : site_url( 'wp-json/tournamatch/v1/ladders/' ),
-			'rest_nonce' => wp_create_nonce( 'wp_rest' ),
-			'language'   => array(
+			'api_url'      => isset( $ladder ) ? site_url( "wp-json/tournamatch/v1/ladders/{$ladder->ladder_id}" ) : site_url( 'wp-json/tournamatch/v1/ladders/' ),
+			'rest_nonce'   => wp_create_nonce( 'wp_rest' ),
+			'redirect_url' => trn_route( 'admin.ladders' ),
+			'language'     => array(
 				'failure'         => esc_html__( 'Error', 'tournamatch' ),
 				'success'         => esc_html__( 'Success', 'tournamatch' ),
 				'success_message' => esc_html__( 'The ladder has been updated.', 'tournamatch' ),
 			),
 		);
 
-		wp_register_script( 'trn-ladder-form', plugins_url( '../dist/js/ladder-form.js', __FILE__ ), array( 'tournamatch' ), '3.24.0', true );
+		wp_register_script( 'trn-ladder-form', plugins_url( '../dist/js/ladder-form.js', __FILE__ ), array( 'tournamatch' ), '4.3.2', true );
 		wp_localize_script( 'trn-ladder-form', 'trn_admin_ladder_form_options', $options );
 		wp_enqueue_script( 'trn-ladder-form' );
 	}
