@@ -2024,6 +2024,7 @@ if ( ! function_exists( 'trn_add_rewrite_rules' ) ) {
 		add_rewrite_rule( 'report[/]?$', 'index.php?pagename=trn_report_dashboard_page', 'top' );
 		add_rewrite_rule( 'confirm/([A-Za-z0-9]+)[/]?$', 'index.php?pagename=trn_magic_link_page&confirm_hash=$matches[1]', 'top' );
 	}
+	add_action( 'init', 'trn_add_rewrite_rules' );
 }
 
 if ( ! function_exists( 'trn_add_query_var' ) ) {
