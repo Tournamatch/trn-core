@@ -54,6 +54,9 @@ You should add links to your menu for the following pages (replace example.com w
 
 == Changelog ==
 
+= 4.3.3 =
+* Critical: Saving permalinks or changing templates causes you to lose Tournamatch custom rewrite rules.
+
 = 4.3.2 =
 * Fix: You are now redirected to the All Ladders screen after successfully creating a new ladder.
 * Fix: Flush URL rewrite should only be called on plugin activation and deactivation.
