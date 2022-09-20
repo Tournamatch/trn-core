@@ -30,16 +30,31 @@ $team_owner = trn_get_team_owner( $team_id );
 	<div class="trn-profile-avatar">
 		<?php trn_display_avatar( $team->team_id, 'teams', $team->avatar, 'trn-header-avatar' ); ?>
 	</div>
-	<h1 class="trn-profile-name"><?php echo esc_html( $team->name ); ?></h1>
-	<span class="trn-profile-record"><?php echo do_shortcode( '[trn-career-record competitor_type="teams" competitor_id="' . intval( $team->team_id ) . '"]' ); ?></span>
-	<span class="trn-profile-actions">
-	<?php if ( is_user_logged_in() ) : ?>
-		<a class="trn-button trn-button-sm" id="trn-edit-team-button" style="display:none" href="<?php trn_esc_route_e( 'teams.single.edit', array( 'id' => $team_id ) ); ?>"><?php esc_html_e( 'Edit Team', 'tournamatch' ); ?></a>
-		<button class="trn-button trn-button-sm trn-button-danger" id="trn-delete-team-button" style="display:none"><?php esc_html_e( 'Delete Team', 'tournamatch' ); ?></button>
-		<button class="trn-button trn-button-sm" id="trn-leave-team-button" style="display:none"><?php esc_html_e( 'Leave Team', 'tournamatch' ); ?></button>
-		<button class="trn-button trn-button-sm" id="trn-join-team-button" style="display:none" data-team-id="<?php echo intval( $team_id ); ?>" data-user-id="<?php echo intval( get_current_user_id() ); ?>"><?php esc_html_e( 'Join Team', 'tournamatch' ); ?></button>
-	<?php endif; ?>
-	</span>
+	<div class="trn-profile-details">
+		<h1 class="trn-profile-name"><?php echo esc_html( $team->name ); ?></h1>
+		<?php if ( trn_is_plugin_active( 'trn-profile-social-icons' ) ) :
+			$social_icons = trn_get_team_icon_fields();
+
+			if ( is_array( $social_icons ) && ( 0 < count( $social_icons ) ) ) : ?>
+				<ul class="trn-list-inline">
+					<?php foreach( $social_icons as $icon => $data ) : $key = 'psi_icon_' . $icon; ?>
+						<?php if ( isset( $team->$key ) && ( 0 < strlen( $team->$key ) ) ) : ?>
+							<li class="trn-list-inline-item"><a href="<?php echo esc_url( $team->$key ); ?>" target="_blank"><i class="<?php echo esc_attr( $data['icon'] ); ?>"></i></a></li>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+		<?php endif; ?>
+		<span class="trn-profile-record"><?php echo do_shortcode( '[trn-career-record competitor_type="teams" competitor_id="' . intval( $team->team_id ) . '"]' ); ?></span>
+	</div>
+	<div class="trn-profile-actions">
+		<?php if ( is_user_logged_in() ) : ?>
+			<a class="trn-button trn-button-sm" id="trn-edit-team-button" style="display:none" href="<?php trn_esc_route_e( 'teams.single.edit', array( 'id' => $team_id ) ); ?>"><?php esc_html_e( 'Edit Team', 'tournamatch' ); ?></a>
+			<button class="trn-button trn-button-sm trn-button-danger" id="trn-delete-team-button" style="display:none"><?php esc_html_e( 'Delete Team', 'tournamatch' ); ?></button>
+			<button class="trn-button trn-button-sm" id="trn-leave-team-button" style="display:none"><?php esc_html_e( 'Leave Team', 'tournamatch' ); ?></button>
+			<button class="trn-button trn-button-sm" id="trn-join-team-button" style="display:none" data-team-id="<?php echo intval( $team_id ); ?>" data-user-id="<?php echo intval( get_current_user_id() ); ?>"><?php esc_html_e( 'Join Team', 'tournamatch' ); ?></button>
+		<?php endif; ?>
+	</div>
 	<ul class="trn-profile-list">
 		<li class="trn-profile-list-item joined">
 			<?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( get_date_from_gmt( $team->joined_date ) ) ) ); ?>

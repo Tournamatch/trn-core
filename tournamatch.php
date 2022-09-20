@@ -3609,6 +3609,27 @@ CREATE TABLE `{$wpdb->prefix}trn_tournaments` (
 	}
 }
 
+if ( ! function_exists( 'trn_is_plugin_active' ) ) {
+	/**
+	 * Evaluates whether a plugin with the given name is active.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param string $name The name of the plugin to find.
+	 *
+	 * @return bool True if active, false otherwise.
+	 */
+	function trn_is_plugin_active( $name ) {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+		if ( false === strrpos( $name, '/' ) ) {
+			$name = $name . '/' . $name . '.php';
+		}
+
+		return is_plugin_active( $name );
+	}
+}
+
 if ( ! function_exists( 'trn_store_profile_avatar' ) ) {
 	/**
 	 * Stores a profile (player or team) avatar and moves the file to the appropriate location.

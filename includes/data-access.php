@@ -654,6 +654,22 @@ WHERE `user_id` = %d",
 	}
 }
 
+if ( ! function_exists( 'trn_the_player' ) ) {
+	/**
+	 * Prepares a player after it is retrieved from the database and before
+	 * it is printed to the screen.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param object $player The player to prepare.
+	 *
+	 * @return mixed
+	 */
+	function trn_the_player( $player ) {
+		return apply_filters( 'trn_the_player', $player );
+	}
+}
+
 if ( ! function_exists( 'trn_get_tournaments' ) ) {
 	/**
 	 * Retrieves many tournament items.
