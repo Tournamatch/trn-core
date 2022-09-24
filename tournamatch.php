@@ -3782,7 +3782,7 @@ if ( ! function_exists( 'trn_header_banner_style' ) ) {
 		$src = null;
 
 		if ( isset( $banner_id ) && ( 0 < $banner_id ) ) {
-			$src = wp_get_attachment_image_src( $banner_id );
+			$src = wp_get_attachment_image_src( $banner_id, 'full' );
 			if ( is_array( $src ) ) {
 				$src = $src[0];
 			}
@@ -3790,7 +3790,7 @@ if ( ! function_exists( 'trn_header_banner_style' ) ) {
 			$game = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_games` WHERE `game_id` = %d", $game_id ) );
 
 			if ( ! is_null( $game ) && ( 0 < $game->banner_id ) ) {
-				$src = wp_get_attachment_image_src( $game->banner_id );
+				$src = wp_get_attachment_image_src( $game->banner_id, 'full' );
 				if ( is_array( $src ) ) {
 					$src = $src[0];
 				}
