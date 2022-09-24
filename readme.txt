@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.2
-Stable tag: 4.3.3
+Stable tag: 4.3.4
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,9 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.3.4 =
+* Fix: Banner images are now correctly displayed in full size.
 
 = 4.3.3 =
 * Critical: Saving permalinks or changing templates causes you to lose Tournamatch custom rewrite rules.

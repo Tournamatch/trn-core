@@ -11,7 +11,7 @@
  * Plugin Name: Tournamatch
  * Plugin URI: https://www.tournamatch.com/
  * Description: Ladder and tournament plugin for eSports and online gaming leagues.
- * Version: 4.3.3
+ * Version: 4.3.4
  * Author: Tournamatch
  * Author URI: https://www.tournamatch.com
  * Text Domain: tournamatch
@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.3.3' );
+define( 'TOURNAMATCH_VERSION', '4.3.4' );
 define( 'TOURNAMATCH_API_VERSION', '4.3.0' );
 define( 'TOURNAMATCH_API', 'https://www.tournamatch.com/api' );
 define( 'TOURNAMATCH_ADD_ONS_ENABLED', false );
