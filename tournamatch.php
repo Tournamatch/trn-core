@@ -1857,7 +1857,7 @@ if ( ! function_exists( 'trn_route' ) ) {
 			'admin.tournamatch.settings'       => 'admin.php?page=trn-settings',
 			'admin.tournamatch.save-settings'  => 'admin-post.php?action=trn-save-settings',
 			'admin.tools'                      => 'admin.php?page=tools',
-			'admin.clear-data'                 => 'admin.php?page=tools&action=clear-data',
+			'admin.clear-data'                 => 'admin.php?page=trn-tools&action=clear-data',
 			'admin.purge-data'                 => 'admin.php?page=tools&action=purge-data',
 		];
 
