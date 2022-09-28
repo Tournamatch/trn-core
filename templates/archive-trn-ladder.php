@@ -43,7 +43,7 @@ trn_get_header();
 					<ul class="trn-item-list">
 						<li class="trn-item-list-item members">
 							<?php /* translators: number of competitors. */ ?>
-							<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', 8, 'tournamatch' ) ), 8 ); ?>
+							<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', $ladder->competitors, 'tournamatch' ) ), $ladder->competitors ); ?>
 						</li>
 						<li class="trn-item-list-item ranking">
 							<?php echo esc_html( $ladder->ranking_mode_label ); ?>

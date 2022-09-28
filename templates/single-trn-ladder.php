@@ -50,15 +50,10 @@ trn_get_header();
 <div class="trn-competition-header"<?php trn_header_banner_style( $ladder->banner_id, $ladder->game_id ); ?>>
 	<h1 class="trn-competition-name"><?php echo esc_html( $ladder->name ); ?></h1>
 	<span class="trn-competition-game"><?php echo esc_html( $ladder->game_name ); ?></span>
-	<span class="trn-competition-actions">
-	<?php if ( is_user_logged_in() ) : ?>
-
-	<?php endif; ?>
-	</span>
 	<ul class="trn-competition-list">
 		<li class="trn-competition-list-item members">
 			<?php /* translators: number of competitors. */ ?>
-			<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', 8, 'tournamatch' ) ), 8 ); ?>
+			<?php echo sprintf( esc_html( _n( '%s Competitor', '%s Competitors', $ladder->competitors, 'tournamatch' ) ), $ladder->competitors ); ?>
 		</li>
 		<li class="trn-competition-list-item ranking">
 			<?php echo esc_html( $ladder->ranking_mode_label ); ?>
