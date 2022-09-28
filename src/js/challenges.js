@@ -18,7 +18,7 @@ import { trn } from './tournamatch.js';
     function handleDeleteConfirm() {
         let links = document.getElementsByClassName('trn-confirm-action-link');
         Array.prototype.forEach.call(links, function (link) {
-            link.addEventListener('trn.confirmed.action', function (event) {
+            link.addEventListener('trn.confirmed.action.delete-challenge', function (event) {
                 event.preventDefault();
 
                 console.log(`modal was confirmed for link ${link.dataset.challengeId}`);
@@ -103,7 +103,7 @@ import { trn } from './tournamatch.js';
                     let content = `<a href="${row.link}"><i class="fa fa-info" aria-hidden="true"></i></a>`;
 
                     if ( options.user_capability ) {
-                        content += ` <a class="trn-delete-challenge-action trn-confirm-action-link" data-challenge-id="${row.challenge_id}" data-confirm-title="${options.language.delete_challenge}" data-confirm-message="${options.language.delete_confirm.format(row.challenge_id)}" href="${options.challenge_url}${row.challenge_id}" title="${options.language.delete_challenge}"><i class="fa fa-trash"></i></a>`;
+                        content += ` <a class="trn-delete-challenge-action trn-confirm-action-link" data-challenge-id="${row.challenge_id}" data-modal-id="delete-challenge" data-confirm-title="${options.language.delete_challenge}" data-confirm-message="${options.language.delete_confirm.format(row.challenge_id)}" href="${options.challenge_url}${row.challenge_id}" title="${options.language.delete_challenge}"><i class="fa fa-trash"></i></a>`;
                     }
 
                     return content;

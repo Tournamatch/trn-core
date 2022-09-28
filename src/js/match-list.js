@@ -16,7 +16,7 @@ import { trn } from './tournamatch.js';
     function handleDeleteConfirm() {
         let links = document.getElementsByClassName('trn-confirm-action-link');
         Array.prototype.forEach.call(links, function (link) {
-            link.addEventListener('trn.confirmed.action', function (event) {
+            link.addEventListener('trn.confirmed.action.delete-match', function (event) {
                 event.preventDefault();
 
                 console.log(`modal was confirmed for link ${link.dataset.matchId}`);
@@ -89,7 +89,7 @@ import { trn } from './tournamatch.js';
                     if (options.user_capability) {
                         if (row.competition_type === 'ladders') {
                             links.push(`<a href="${options.ladder_edit}${row.match_id}" title="${options.language.edit_match}"><i class="fa fa-edit"></i></a>`);
-                            links.push(`<a class="trn-confirm-action-link trn-delete-match-action" data-match-id="${row.match_id}" data-confirm-title="${options.language.delete_match}" data-confirm-message="${options.language.delete_confirm.format(row.match_id)}" href="#" title="${options.language.delete_match}"><i class="fa fa-times"></i></a>`);
+                            links.push(`<a class="trn-confirm-action-link trn-delete-match-action" data-match-id="${row.match_id}" data-modal-id="delete-match" data-confirm-title="${options.language.delete_match}" data-confirm-message="${options.language.delete_confirm.format(row.match_id)}" href="#" title="${options.language.delete_match}"><i class="fa fa-times"></i></a>`);
                         }
                     }
 

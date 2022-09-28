@@ -1067,7 +1067,7 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 	 */
 	function trn_register_scripts() {
 		wp_register_script( 'tournamatch', plugins_url( '/dist/js/tournamatch.js', __FILE__ ), array(), '4.3.0', true );
-		wp_register_script( 'trn-confirm-action', plugins_url( '/dist/js/confirm-action.js', __FILE__ ), array(), '4.3.0', true );
+		wp_register_script( 'trn-confirm-action', plugins_url( '/dist/js/confirm-action.js', __FILE__ ), array(), '4.3.5', true );
 		wp_localize_script(
 			'trn-confirm-action',
 			'trn_confirm_action_options',
@@ -1087,7 +1087,7 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 			),
 		);
 
-		wp_register_script( 'trn-delete-match', plugins_url( '/dist/js/delete-match.js', __FILE__ ), array( 'tournamatch' ), '3.11.0', true );
+		wp_register_script( 'trn-delete-match', plugins_url( '/dist/js/delete-match.js', __FILE__ ), array( 'tournamatch' ), '4.3.5', true );
 		wp_localize_script( 'trn-delete-match', 'trn_delete_match_options', $delete_options );
 
 		wp_register_style( 'trn_font_awesome_css', plugins_url( '/dist/css/fontawesome.5.14.0.css', __FILE__ ), array(), '5.14.0' );
@@ -2386,6 +2386,7 @@ if ( ! function_exists( 'dropdown' ) ) {
 							data-match-id="<?php echo intval( $match_id ); ?>"
 							data-confirm-title="<?php esc_html_e( 'Confirm Clear', 'tournamatch' ); ?>"
 							data-confirm-message="<?php esc_html_e( 'Are you sure you want to clear the result? All pending reports and disputes will be erased.', 'tournamatch' ); ?>"
+							data-modal-id="clear-match"
 					><?php esc_html_e( 'Clear Result', 'tournamatch' ); ?></a>
 				<?php endif; ?>
 

@@ -166,7 +166,9 @@ trn_get_header();
 								href="#"
 								data-match-id="<?php echo intval( $match->match_id ); ?>"
 								data-confirm-title="<?php esc_html_e( 'Delete Match', 'tournamatch' ); ?>"
-								data-confirm-message="<?php esc_html_e( 'Are you sure you want to delete this match?', 'tournamatch' ); ?>">
+								data-confirm-message="<?php esc_html_e( 'Are you sure you want to delete this match?', 'tournamatch' ); ?>"
+								data-modal-id="delete-match"
+						>
 							<?php esc_html_e( 'Delete', 'tournamatch' ); ?>
 						</a>
 						<?php if ( 'test' === TOURNAMATCH_ENV ) : ?>
@@ -243,7 +245,7 @@ $options = array(
 );
 
 wp_enqueue_script( 'trn-delete-match' );
-wp_register_script( 'trn-report-dashboard', plugins_url( '../dist/js/report-dashboard.js', __FILE__ ), array( 'tournamatch' ), '3.11.0', true );
+wp_register_script( 'trn-report-dashboard', plugins_url( '../dist/js/report-dashboard.js', __FILE__ ), array( 'tournamatch' ), '4.3.5', true );
 wp_localize_script( 'trn-report-dashboard', 'trn_report_dashboard_options', $options );
 wp_enqueue_script( 'trn-report-dashboard' );
 

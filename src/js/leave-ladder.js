@@ -17,7 +17,7 @@ import { trn } from './tournamatch.js';
     window.addEventListener('load', function () {
         let leaveLinks = document.getElementsByClassName('trn-leave-ladder-link');
         Array.prototype.forEach.call(leaveLinks, function (link) {
-            link.addEventListener('trn.confirmed.action', function (event) {
+            link.addEventListener('trn.confirmed.action.leave-ladder', function (event) {
                 event.preventDefault();
 
                 console.log(`modal was confirmed for link ${link.dataset.competitorId}`);

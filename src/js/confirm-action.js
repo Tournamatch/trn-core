@@ -22,7 +22,7 @@ import { trn } from './tournamatch.js';
         event.preventDefault();
 
         const clickListener = () => {
-            this.dispatchEvent(new Event('trn.confirmed.action'));
+            this.dispatchEvent(new Event(`trn.confirmed.action.${this.dataset.modalId}` ));
             jQuery('#trn-confirm-modal').modal('hide');
         };
 

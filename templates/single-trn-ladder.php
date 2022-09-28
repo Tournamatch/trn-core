@@ -154,6 +154,7 @@ if ( $can_leave ) {
 							data-competitor-id="<?php echo intval( $competitor->ladder_entry_id ); ?>"
 							data-confirm-title="<?php esc_html_e( 'Leave Ladder', 'tournamatch' ); ?>"
 							data-confirm-message="<?php esc_html_e( 'Are you sure you want to leave this ladder?', 'tournamatch' ); ?>"
+							data-modal-id="leave-ladder"
 					>
 						<?php esc_html_e( 'Leave', 'tournamatch' ); ?>
 					</a>
@@ -177,7 +178,7 @@ if ( $can_leave ) {
 		array(
 			'tournamatch',
 		),
-		'3.26.0',
+		'4.3.5',
 		true
 	);
 	wp_localize_script( 'leave-ladder', 'trn_leave_ladder_options', $options );
