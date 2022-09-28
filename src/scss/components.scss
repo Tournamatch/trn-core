@@ -31,14 +31,14 @@
 @import './modals.scss';
 @import './conditional-columns.scss';
 
-.trn-profile {
-  display: flex;
-  flex-wrap: wrap;
-
-  &-details, &-avatar {
-    width: 50%;
-  }
-}
+//.trn-profile {
+//  display: flex;
+//  flex-wrap: wrap;
+//
+//  &-details, &-avatar {
+//    width: 50%;
+//  }
+//}
 
 .trn-profile-picture {
   max-height: 300px;
@@ -88,47 +88,70 @@
     position: relative;
     margin-bottom: 1rem;
     color: #fff;
-    padding: 30px;
-    padding-bottom: 1rem;
+    padding: 30px 30px 1rem;
     min-height: 291px;
+    display: grid;
   }
 
-  &-match-header-competitors {
-    display: flex;
+  &-profile-header, &-competition-header {
+    grid-template-rows: auto min-content;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+            "avatar details actions"
+            "list list list"
   }
 
-  &-match-header-left, &-match-header-right {
-    flex-direction: column;
-    width: 50%;
-    position: relative;
+  &-profile-avatar {
+    grid-area: avatar;
   }
-  &-match-header-right {
+  &-competition-details {
+    grid-area: details;
+  }
+  &-profile-details {
+    grid-area: details;
+    padding-left: 30px;
+  }
+  &-profile-details > &-list-inline a {
+    color: white;
+  }
+
+  &-profile-name, &-competition-name, &-match-competitor {
+    color: #fff;
+  }
+
+
+
+  &-match-header {
+    grid-template-rows: auto min-content;
+    grid-template-columns: auto 1fr auto 1fr auto;
+    grid-template-areas:
+            "avatar1 name1 empty name2 avatar2"
+            "list list list list list"
+  }
+
+
+  &-match-header-right-details {
     text-align: right;
   }
 
-  &-profile-name {
-    color: #fff;
-    position: absolute;
-    top: 30px;
-    left: 260px;
+  &-match-header-left-details {
+    grid-area: name1;
+    padding-left: 30px;
+  }
+  &-match-header-right-details {
+    grid-area: name2;
+    padding-right: 30px;
   }
 
-  &-competition-name {
-    color: #fff;
-    position: absolute;
-    top: 30px;
+  &-profile-record, &-competition-game, &-match-result {
+    opacity: .75;
   }
 
-  &-match-competitor {
-    color: #fff;
-    position: absolute;
-    top: 0;
+  &-match-header-left-avatar {
+    grid-area: avatar1;
   }
-  &-match-header-left > &-match-competitor {
-    left: 190px;
-  }
-  &-match-header-right > &-match-competitor {
-    right: 190px;
+  &-match-header-right-avatar {
+    grid-area: avatar2;
   }
 
   &-header-avatar, &-match-header-avatar {
@@ -145,8 +168,7 @@
 
   &-profile-list, &-competition-list, &-match-list {
     list-style: none;
-    position: absolute;
-    bottom: 15px;
+    grid-area: list;
 
     li, &-item {
       display: inline-block;
@@ -212,31 +234,6 @@
     }
   }
 
-  &-profile-record {
-    position: absolute;
-    top: 70px;
-    left: 260px;
-    opacity: .75;
-  }
-
-  &-match-result {
-    position: absolute;
-    top: 40px;
-    opacity: .75;
-  }
-  &-match-header-left > &-match-result {
-    left: 190px;
-  }
-  &-match-header-right > &-match-result {
-    right: 190px;
-  }
-
-  &-competition-game {
-    position: absolute;
-    top: 70px;
-    opacity: .75;
-  }
-
   &-profile-actions {
     position: absolute;
     right: 30px;
@@ -244,9 +241,7 @@
   }
 
   &-match-actions {
-    position: absolute;
-    right: 30px;
-    bottom: 15px;
+    grid-area: list;
   }
 }
 

@@ -41,12 +41,13 @@ get_header();
 trn_get_header();
 ?>
 <div class="trn-match-header"<?php trn_header_banner_style( $competition->banner_id, $competition->game_id ); ?>>
-	<div class="trn-match-header-competitors">
-		<div class="trn-match-header-left">
-			<?php trn_display_avatar( $match->one_competitor_id, $competition->competitor_type, $one_row->avatar, 'trn-match-header-avatar' ); ?>
-			<h1 class="trn-match-competitor"><?php echo esc_html( $one_row->name ); ?></h1>
-			<?php if ( 'confirmed' === $match->match_status ) : ?>
-				<span class="trn-match-result">
+	<div class="trn-match-header-left-avatar">
+		<?php trn_display_avatar( $match->one_competitor_id, $competition->competitor_type, $one_row->avatar, 'trn-match-header-avatar' ); ?>
+	</div>
+	<div class="trn-match-header-left-details">
+		<h1 class="trn-match-competitor"><?php echo esc_html( $one_row->name ); ?></h1>
+		<?php if ( 'confirmed' === $match->match_status ) : ?>
+			<span class="trn-match-result">
 					<?php
 					if ( 'won' === $match->one_result ) {
 						echo esc_html__( 'Winner', 'tournamatch' );
@@ -57,13 +58,15 @@ trn_get_header();
 					}
 					?>
 				</span>
-			<?php endif; ?>
-		</div>
-		<div class="trn-match-header-right">
-			<?php trn_display_avatar( $match->two_competitor_id, $competition->competitor_type, $two_row->avatar, 'trn-match-header-avatar' ); ?>
-			<h1 class="trn-match-competitor"><?php echo esc_html( $two_row->name ); ?></h1>
-			<?php if ( 'confirmed' === $match->match_status ) : ?>
-				<span class="trn-match-result">
+		<?php endif; ?>
+	</div>
+	<div class="trn-match-header-right-avatar">
+		<?php trn_display_avatar( $match->two_competitor_id, $competition->competitor_type, $two_row->avatar, 'trn-match-header-avatar' ); ?>
+	</div>
+	<div class="trn-match-header-right-details">
+		<h1 class="trn-match-competitor"><?php echo esc_html( $two_row->name ); ?></h1>
+		<?php if ( 'confirmed' === $match->match_status ) : ?>
+			<span class="trn-match-result">
 					<?php
 					if ( 'won' === $match->two_result ) {
 						echo esc_html__( 'Winner', 'tournamatch' );
@@ -74,8 +77,7 @@ trn_get_header();
 					}
 					?>
 				</span>
-			<?php endif; ?>
-		</div>
+		<?php endif; ?>
 	</div>
 	<div class="trn-match-actions">
 		<div class="trn-pull-right">

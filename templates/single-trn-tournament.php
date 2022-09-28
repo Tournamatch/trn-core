@@ -34,13 +34,10 @@ trn_get_header();
 
 ?>
 <div class="trn-competition-header"<?php trn_header_banner_style( $tournament->banner_id, $tournament->game_id ); ?>>
-	<h1 class="trn-competition-name"><?php echo esc_html( $tournament->name ); ?></h1>
-	<span class="trn-competition-game"><?php echo esc_html( $tournament->game_name ); ?></span>
-	<span class="trn-competition-actions">
-	<?php if ( is_user_logged_in() ) : ?>
-
-	<?php endif; ?>
-	</span>
+	<div class="trn-competition-details">
+		<h1 class="trn-competition-name"><?php echo esc_html( $tournament->name ); ?></h1>
+		<span class="trn-competition-game"><?php echo esc_html( $tournament->game_name ); ?></span>
+	</div>
 	<ul class="trn-competition-list">
 		<li class="trn-competition-list-item joined">
 			<?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( get_date_from_gmt( $tournament->start_date ) ) ) ); ?>
