@@ -1805,9 +1805,9 @@ if ( ! function_exists( 'trn_route' ) ) {
 
 			'tournament.clear'                 => 'report/?&mode=clear&match_id={match_id}',
 
-			// Magic link TODO.
-			'accept-invitation'                => 'teams/?&mode=acceptInvitation&code={join_code}',
-			'confirm-email-result'             => 'report/?&mode=confirm_e_results&type={competition_type}&match_id={match_id}&mrf={reference_id}',
+			// Magic email links.
+			'magic.accept-team-invitation'     => 'teams/accept/{join_code}',
+			'magic.match-confirm-result'       => 'confirm/{reference_id}',
 
 			// Begin admin routes.
 			'admin.games'                      => 'admin.php?page=trn-games',
@@ -2017,6 +2017,7 @@ if ( ! function_exists( 'trn_add_rewrite_rules' ) ) {
 		add_rewrite_rule( 'teams/create[/]?$', 'index.php?pagename=trn_teams_single_create', 'top' );
 		add_rewrite_rule( 'teams/([0-9]+)[/]?$', 'index.php?pagename=trn_teams_single&id=$matches[1]', 'top' );
 		add_rewrite_rule( 'teams/([0-9]+)/edit[/]?', 'index.php?pagename=trn_teams_single_edit&id=$matches[1]', 'top' );
+		add_rewrite_rule( 'teams/accept/([A-Za-z0-9]+)[/]?$', 'index.php?pagename=trn_magic_link_page&confirm_hash=$matches[1]', 'top' );
 		add_rewrite_rule( 'tournaments[/]?$', 'index.php?pagename=trn_tournaments_archive', 'top' );
 		add_rewrite_rule( 'tournaments/([0-9]+)[/]?$', 'index.php?pagename=trn_tournaments_single&id=$matches[1]', 'top' );
 		add_rewrite_rule( 'tournaments/([0-9]+)/replace[/]?$', 'index.php?pagename=trn_tournaments_single_replace&id=$matches[1]', 'top' );
@@ -2040,6 +2041,9 @@ if ( ! function_exists( 'trn_add_query_var' ) ) {
 	function trn_add_query_var( $vars ) {
 		$vars[] = 'id';
 		$vars[] = 'confirm_hash';
+		$vars[] = 'mode';
+		$vars[] = 'code';
+		$vars[] = 'mrf';
 
 		return $vars;
 	}
@@ -2268,17 +2272,28 @@ add_action(
 
 		echo '<h1 class="trn-mb-4">' . esc_html__( 'Join Team', 'tournamatch' ) . '</h1>';
 		if ( $row['team_member_invitation_id'] ) {
-			$user_id = $row['user_id'];
-			$exists  = $wpdb->get_row( $wpdb->prepare( "SELECT `team_member_id` FROM `{$wpdb->prefix}trn_teams_members` WHERE `team_id` = %d AND `user_id` = %d", $row['team_id'], $user_id ), ARRAY_A );
-
-			if ( ! $exists['team_member_id'] ) {
-				$wpdb->query( $wpdb->prepare( "UPDATE `{$wpdb->prefix}trn_teams` SET `members` = `members` + 1 WHERE `team_id` = %d", $row['team_id'] ) );
-				$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_teams_members` (`team_member_id`, `team_id`, `user_id`, `joined_date`, `team_rank_id`) VALUES (NULL, %d, %d, UTC_TIMESTAMP(), 2)", $row['team_id'], $user_id ) );
-				$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_teams_members_invitations` WHERE `team_member_invitation_id` = %d LIMIT 1", $row['team_member_invitation_id'] ) );
+			if ( ( 'email' === $row['invitation_type'] ) && ! is_user_logged_in() ) {
+				$login_url    = wp_login_url( trn_route( 'magic.accept-team-invitation', array( 'join_code' => $confirm_hash ) ) );
+				$register_url = wp_registration_url();
 				/* translators: Closing and opening URL tags. */
-				echo '<p>' . sprintf( esc_html__( 'You have been added to the team. %1$sClick here%2$s to view the team profile.', 'tournamatch' ), '<a href="' . esc_url( trn_route( 'teams.single', array( 'id' => $row['team_id'] ) ) ) . '">', '</a>' ) . '</p>';
+				echo '<p>' . sprintf( esc_html__( 'You must %1$slogin%2$s or %3$screate an account%4$s before accepting an invitation to join a team.', 'tournamatch' ), '<a href="' . esc_url( $login_url ) . '">', '</a>', '<a href="' . esc_url( $register_url ) . '">', '</a>') . '</p>';
 			} else {
-				echo '<p>' . esc_html__( 'You are already a member of this team.', 'tournamatch' ) . '</p>';
+				if ( 'email' === $row['invitation_type'] ) {
+					$user_id = get_current_user_id();
+				} else {
+					$user_id = $row['user_id'];
+				}
+				$exists  = $wpdb->get_row( $wpdb->prepare( "SELECT `team_member_id` FROM `{$wpdb->prefix}trn_teams_members` WHERE `team_id` = %d AND `user_id` = %d", $row['team_id'], $user_id ), ARRAY_A );
+
+				if ( ! $exists['team_member_id'] ) {
+					$wpdb->query( $wpdb->prepare( "UPDATE `{$wpdb->prefix}trn_teams` SET `members` = `members` + 1 WHERE `team_id` = %d", $row['team_id'] ) );
+					$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_teams_members` (`team_member_id`, `team_id`, `user_id`, `joined_date`, `team_rank_id`) VALUES (NULL, %d, %d, UTC_TIMESTAMP(), 2)", $row['team_id'], $user_id ) );
+					$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_teams_members_invitations` WHERE `team_member_invitation_id` = %d LIMIT 1", $row['team_member_invitation_id'] ) );
+					/* translators: Closing and opening URL tags. */
+					echo '<p>' . sprintf( esc_html__( 'You have been added to the team. %1$sClick here%2$s to view the team profile.', 'tournamatch' ), '<a href="' . esc_url( trn_route( 'teams.single', array( 'id' => $row['team_id'] ) ) ) . '">', '</a>' ) . '</p>';
+				} else {
+					echo '<p>' . esc_html__( 'You are already a member of this team.', 'tournamatch' ) . '</p>';
+				}
 			}
 		} else {
 			echo '<p>' . esc_html__( 'The invitation no longer exists. The team owner either deleted it or this code has already been used.', 'tournamatch' ) . '</p>';

@@ -227,7 +227,7 @@ class Team_Invitation extends Controller {
 		$data      = [
 			'team_link'   => trn_route( 'teams.single', [ 'id' => $team_id ] ),
 			'team_name'   => $team_name,
-			'accept_link' => trn_route( 'accept-invitation', [ 'join_code' => $accept_hash ] ),
+			'accept_link' => trn_route( 'magic.accept-team-invitation', [ 'join_code' => $accept_hash ] ),
 		];
 
 		do_action( 'trn_notify_membership_invited', $email, __( 'Team Membership Invitation', 'tournamatch' ), $data );
