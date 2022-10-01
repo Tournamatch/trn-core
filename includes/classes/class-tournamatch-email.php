@@ -513,11 +513,15 @@ All at ###SITENAME###
 		 */
 		public function membership_invited( $email, $data ) {
 			$email['message'] = esc_html__(
-				'You have been invited to join team ###TEAM_NAME###.
+				'You have been invited to join team ###TEAM_NAME###. If you do not have an account, you should first register for one.
 
 Click the link below to accept this invitation:
 
 ###ACCEPT_URL###
+
+Click the link below to create an account:
+
+###REGISTER_URL###
 
 Regards,
 All at ###SITENAME###
@@ -529,6 +533,7 @@ All at ###SITENAME###
 
 			$email['message'] = str_replace( '###TEAM_NAME###', $data['team_name'], $email['message'] );
 			$email['message'] = str_replace( '###ACCEPT_URL###', $data['accept_link'], $email['message'] );
+			$email['message'] = str_replace( '###REGISTER_URL###', site_url('/wp-login.php?action=register'), $email['message'] );
 			$email['message'] = str_replace( '###SITENAME###', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $email['message'] );
 			$email['message'] = str_replace( '###SITEURL###', esc_url_raw( home_url() ), $email['message'] );
 
