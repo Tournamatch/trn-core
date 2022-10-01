@@ -11,6 +11,12 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+// Add backwards compatibility for old team accept invitation URLs (3.x and <= 4.3.4).
+if ( 'acceptInvitation' === get_query_var( 'mode' ) ) {
+	wp_safe_redirect( trn_route( 'magic.accept-team-invitation', array( 'join_code' => get_query_var( 'code' ) ) ) );
+	exit;
+}
+
 get_header();
 
 trn_get_header();

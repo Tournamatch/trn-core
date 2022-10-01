@@ -11,6 +11,12 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+// Add backwards compatibility for old email match confirmation URLs (3.x and <= 4.3.4).
+if ( 'confirm_e_results' === get_query_var( 'mode' ) ) {
+	wp_safe_redirect( trn_route( 'magic.match-confirm-result', array( 'reference_id' => get_query_var( 'mrf' ) ) ) );
+	exit;
+}
+
 if ( ! is_user_logged_in() ) {
 	wp_safe_redirect( wp_login_url( trn_route( 'report.page' ) ) );
 	exit;
