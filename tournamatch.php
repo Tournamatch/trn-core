@@ -676,7 +676,7 @@ if ( ! function_exists( 'update_ladder' ) ) {
 					case 'won':
 						$wpdb->query(
 							$wpdb->prepare(
-								"UPDATE `{$wpdb->prefix}trn_ladders_entries` SET `time` = %s, `wins` = `wins` + 1, `points` = `points` + %d WHERE `competitor_id` = %d AND `ladder_id` = %d",
+								"UPDATE `{$wpdb->prefix}trn_ladders_entries` SET `time` = %s, `wins` = `wins` + 1, `points` = `points` + %d, `streak` = GREATEST(1, `streak` + 1), `best_streak` = LEAST(`best_streak` + 1, GREATEST(1, `streak` + 1)) WHERE `competitor_id` = %d AND `ladder_id` = %d",
 								$time,
 								$ladder->win_points,
 								$competitor_id,
@@ -688,7 +688,7 @@ if ( ! function_exists( 'update_ladder' ) ) {
 					case 'lost':
 						$wpdb->query(
 							$wpdb->prepare(
-								"UPDATE `{$wpdb->prefix}trn_ladders_entries` SET `time` = %s, `losses` = `losses`  + 1, `points` = `points` + %d WHERE `competitor_id` = %d AND `ladder_id` = %d",
+								"UPDATE `{$wpdb->prefix}trn_ladders_entries` SET `time` = %s, `losses` = `losses`  + 1, `points` = `points` + %d, `streak` = LEAST(-1, `streak` - 1), `worst_streak` = GREATEST(`worst_streak` - 1, LEAST(-1, `streak` - 1)) WHERE `competitor_id` = %d AND `ladder_id` = %d",
 								$time,
 								$ladder->loss_points,
 								$competitor_id,
@@ -700,7 +700,7 @@ if ( ! function_exists( 'update_ladder' ) ) {
 					case 'draw':
 						$wpdb->query(
 							$wpdb->prepare(
-								"UPDATE `{$wpdb->prefix}trn_ladders_entries` SET `time` = %s, `draws` = `draws` + 1, `points` = `points` + %d WHERE `competitor_id` = %d AND `ladder_id` = %d",
+								"UPDATE `{$wpdb->prefix}trn_ladders_entries` SET `time` = %s, `draws` = `draws` + 1, `points` = `points` + %d, `streak` = 0 WHERE `competitor_id` = %d AND `ladder_id` = %d",
 								$time,
 								$ladder->draw_points,
 								$competitor_id,
