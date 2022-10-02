@@ -533,7 +533,7 @@ All at ###SITENAME###
 
 			$email['message'] = str_replace( '###TEAM_NAME###', $data['team_name'], $email['message'] );
 			$email['message'] = str_replace( '###ACCEPT_URL###', $data['accept_link'], $email['message'] );
-			$email['message'] = str_replace( '###REGISTER_URL###', site_url('/wp-login.php?action=register'), $email['message'] );
+			$email['message'] = str_replace( '###REGISTER_URL###', site_url( '/wp-login.php?action=register' ), $email['message'] );
 			$email['message'] = str_replace( '###SITENAME###', wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES ), $email['message'] );
 			$email['message'] = str_replace( '###SITEURL###', esc_url_raw( home_url() ), $email['message'] );
 

@@ -2276,14 +2276,14 @@ add_action(
 				$login_url    = wp_login_url( trn_route( 'magic.accept-team-invitation', array( 'join_code' => $confirm_hash ) ) );
 				$register_url = wp_registration_url();
 				/* translators: Closing and opening URL tags. */
-				echo '<p>' . sprintf( esc_html__( 'You must %1$slogin%2$s or %3$screate an account%4$s before accepting an invitation to join a team.', 'tournamatch' ), '<a href="' . esc_url( $login_url ) . '">', '</a>', '<a href="' . esc_url( $register_url ) . '">', '</a>') . '</p>';
+				echo '<p>' . sprintf( esc_html__( 'You must %1$slogin%2$s or %3$screate an account%4$s before accepting an invitation to join a team.', 'tournamatch' ), '<a href="' . esc_url( $login_url ) . '">', '</a>', '<a href="' . esc_url( $register_url ) . '">', '</a>' ) . '</p>';
 			} else {
 				if ( 'email' === $row['invitation_type'] ) {
 					$user_id = get_current_user_id();
 				} else {
 					$user_id = $row['user_id'];
 				}
-				$exists  = $wpdb->get_row( $wpdb->prepare( "SELECT `team_member_id` FROM `{$wpdb->prefix}trn_teams_members` WHERE `team_id` = %d AND `user_id` = %d", $row['team_id'], $user_id ), ARRAY_A );
+				$exists = $wpdb->get_row( $wpdb->prepare( "SELECT `team_member_id` FROM `{$wpdb->prefix}trn_teams_members` WHERE `team_id` = %d AND `user_id` = %d", $row['team_id'], $user_id ), ARRAY_A );
 
 				if ( ! $exists['team_member_id'] ) {
 					$wpdb->query( $wpdb->prepare( "UPDATE `{$wpdb->prefix}trn_teams` SET `members` = `members` + 1 WHERE `team_id` = %d", $row['team_id'] ) );
