@@ -72,7 +72,7 @@ import { trn } from './tournamatch.js';
     function attachListeners() {
         let links = document.getElementsByClassName('trn-drop-player-action');
         Array.prototype.forEach.call(links, function (link) {
-            link.addEventListener('trn.confirmed.action', confirmRemove);
+            link.addEventListener('trn.confirmed.action.drop-player', confirmRemove);
         });
         let ranks = document.getElementsByClassName('trn-change-rank-dropdown');
         Array.prototype.forEach.call(ranks, function (rank) {
@@ -172,7 +172,7 @@ import { trn } from './tournamatch.js';
                 className: 'trn-team-roster-options',
                 render: function(data, type, row) {
                     if ((options.can_edit_roster) && (row._embedded.rank[0].weight != '1')) {
-                        return `<a class="trn-drop-player-action trn-button trn-button-sm trn-button-secondary trn-confirm-action-link" data-team-member-id="${row.team_member_id}" data-confirm-title="${options.language.drop_team_member}" data-confirm-message="${options.language.drop_confirm.format(row._embedded.player[0].name)}" href="#">${options.language.drop_player}</a>`;
+                        return `<a class="trn-drop-player-action trn-button trn-button-sm trn-button-secondary trn-confirm-action-link" data-team-member-id="${row.team_member_id}" data-confirm-title="${options.language.drop_team_member}" data-confirm-message="${options.language.drop_confirm.format(row._embedded.player[0].name)}" data-modal-id="drop-player" href="#">${options.language.drop_player}</a>`;
                     } else {
                         return '';
                     }

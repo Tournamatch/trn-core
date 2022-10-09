@@ -41,7 +41,7 @@ import { trn } from './tournamatch.js';
     function handleDeleteConfirm() {
         let links = document.getElementsByClassName('trn-remove-competitor-link');
         Array.prototype.forEach.call(links, function (link) {
-            link.addEventListener('trn.confirmed.action', function (event) {
+            link.addEventListener('trn.confirmed.action.delete-competitor', function (event) {
                 event.preventDefault();
 
                 console.log(`modal was confirmed for link ${link.dataset.competitorId}`);
@@ -230,7 +230,7 @@ import { trn } from './tournamatch.js';
                         } else {
                             competitor_name = options.language.confirm_delete_message.format(row._embedded.competitor[0].name);
                         }
-                        links.push(`<a class="trn-remove-competitor-link trn-confirm-action-link" href="#" title="${options.language.remove_link_title}" data-competitor-id="${row.ladder_competitor_id}" data-confirm-title="${options.language.confirm_delete_title}" data-confirm-message="${competitor_name}"><i class="fa fa-trash" aria-hidden="true"></i></a>`);
+                        links.push(`<a class="trn-remove-competitor-link trn-confirm-action-link" href="#" title="${options.language.remove_link_title}" data-competitor-id="${row.ladder_entry_id}" data-confirm-title="${options.language.confirm_delete_title}" data-confirm-message="${competitor_name}" data-modal-id="delete-competitor"><i class="fa fa-trash" aria-hidden="true"></i></a>`);
                         if (options.can_promote && 1 !== row.rank) {
                            links.push(`<a class="trn-promote-competitor-link" href="#" title="${options.language.promote_link_title}" data-competitor-id="${row.ladder_competitor_id}"><i class="fa fa-long-arrow-alt-up" aria-hidden="true"></i></a>`);
                         }

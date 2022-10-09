@@ -64,7 +64,7 @@ trn_get_header();
 
 		?>
 		<div class="trn-col-sm-6 tournament" data-filter="<?php echo esc_html( $filter ); ?>" id="trn-tournament-<?php echo intval( $tournament->id ); ?>-details">
-			<div class="trn-item-wrapper" onclick="window.location.href = '<?php trn_esc_route_e( 'tournaments.single.rules', array( 'id' => intval( $tournament->id ) ) ); ?>'">
+			<div class="trn-item-wrapper" onclick="window.location.href = '<?php trn_esc_route_e( 'tournaments.single', array( 'id' => intval( $tournament->id ) ) ); ?>'">
 				<div class="trn-item-group">
 					<div class="trn-item-thumbnail">
 						<?php trn_game_thumbnail( $tournament ); ?>

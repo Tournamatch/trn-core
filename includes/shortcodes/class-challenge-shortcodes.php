@@ -132,7 +132,7 @@ class Challenge_Shortcodes {
 			),
 		);
 
-		wp_register_script( 'trn_delete_challenge_button', plugins_url( '../../dist/js/delete-challenge-button.js', __FILE__ ), array( 'tournamatch', 'trn-confirm-action' ), '3.15.0', true );
+		wp_register_script( 'trn_delete_challenge_button', plugins_url( '../../dist/js/delete-challenge-button.js', __FILE__ ), array( 'tournamatch', 'trn-confirm-action' ), '4.3.5', true );
 		wp_localize_script( 'trn_delete_challenge_button', 'trn_delete_challenge_button_options', $options );
 		wp_enqueue_script( 'trn_delete_challenge_button' );
 
@@ -142,6 +142,7 @@ class Challenge_Shortcodes {
 		  data-challenge-id="' . intval( $atts['id'] ) . '" 
 		  data-confirm-title="' . esc_html__( 'Delete Challenge', 'tournamatch' ) . '" 
 		  data-confirm-message="' . esc_html__( 'Are you sure you want to delete this challenge?', 'tournamatch' ) . '"
+		  data-modal-id="delete-challenge"
 		>' . esc_html__( 'Delete', 'tournamatch' ) . '</a>';
 	}
 

@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.2
-Stable tag: 4.3.3
+Stable tag: 4.3.5
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -53,6 +53,19 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.3.5 =
+* Fix: Ladder competitor streak is not working correctly.
+* Fix: If the first competitor chosen when reporting a match on the backend is recorded as a loss, both competitors incorrectly appear as a loss.
+* Fix: The magic links in team invitation and match confirmation emails do not work.
+* Fix: Clear data under tools does not work as expected.
+* Fix: The number of ladder competitors displayed on the ladder archive and ladder single templates is not accurate.
+* Fix: Email magic links are now backwards compatible to version 3 to now.
+* Fix: Tab navigation does not work correctly if the URL contains a pound sign.
+* Fix: Confirmation windows can leak into other confirmation-required actions on the front end.
+
+= 4.3.4 =
+* Fix: Banner images are now correctly displayed in full size.
 
 = 4.3.3 =
 * Critical: Saving permalinks or changing templates causes you to lose Tournamatch custom rewrite rules.
