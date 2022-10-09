@@ -112,7 +112,7 @@ class Table_Shortcodes {
 			'user_capability' => current_user_can( 'manage_tournamatch' ),
 		);
 
-		wp_register_script( 'trn-teams-list-table', plugins_url( '../../dist/js/teams.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '3.21.1', true );
+		wp_register_script( 'trn-teams-list-table', plugins_url( '../../dist/js/teams.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '4.3.5', true );
 		wp_localize_script( 'trn-teams-list-table', 'trn_teams_list_table_options', $options );
 		wp_enqueue_script( 'trn-teams-list-table' );
 
@@ -262,7 +262,7 @@ class Table_Shortcodes {
 			'is_admin'        => current_user_can( 'manage_tournamatch' ),
 		);
 
-		wp_register_script( 'challenges', plugins_url( '../../dist/js/challenges.js', __FILE__ ), array( 'jquery', 'datatables', 'tournamatch' ), '3.25.0', true );
+		wp_register_script( 'challenges', plugins_url( '../../dist/js/challenges.js', __FILE__ ), array( 'jquery', 'datatables', 'tournamatch' ), '4.3.5', true );
 		wp_localize_script( 'challenges', 'trn_end_scripts', $options );
 		wp_enqueue_script( 'challenges' );
 
@@ -341,7 +341,7 @@ class Table_Shortcodes {
 		);
 
 		wp_enqueue_script( 'trn-delete-match' );
-		wp_register_script( 'trn-match-list', plugins_url( '../../dist/js/match-list.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '3.25.0', true );
+		wp_register_script( 'trn-match-list', plugins_url( '../../dist/js/match-list.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '4.3.5', true );
 		wp_localize_script( 'trn-match-list', 'trn_match_list_options', $options );
 		wp_enqueue_script( 'trn-match-list' );
 
@@ -434,7 +434,7 @@ class Table_Shortcodes {
 				'jquery',
 				'datatables',
 			),
-			'3.25.0',
+			'4.3.5',
 			true
 		);
 		wp_localize_script( 'trn-ladder-matches', 'trn_ladder_matches_options', $options );
@@ -555,7 +555,7 @@ class Table_Shortcodes {
 				'jquery',
 				'datatables',
 			),
-			'3.28.0',
+			'4.3.5',
 			true
 		);
 		wp_localize_script( 'standings', 'trn_ladder_standings_options', $options );
@@ -1057,7 +1057,7 @@ class Table_Shortcodes {
 			'flag_directory'  => plugins_url( 'tournamatch' ) . '/dist/images/flags/',
 		);
 
-		wp_register_script( 'trn-team-roster-table', plugins_url( '../../dist/js/team-roster-table.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '3.27.0', true );
+		wp_register_script( 'trn-team-roster-table', plugins_url( '../../dist/js/team-roster-table.js', __FILE__ ), array( 'tournamatch', 'jquery', 'datatables' ), '4.3.5', true );
 		wp_localize_script( 'trn-team-roster-table', 'trn_team_roster_table_options', $options );
 		wp_enqueue_script( 'trn-team-roster-table' );
 

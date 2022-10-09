@@ -382,7 +382,7 @@ WHERE  `m`.`match_status` != %s",
 				'result'           => $result,
 				'competition_type' => 'ladder',
 				'confirm_link'     => trn_route(
-					'confirm-email-result',
+					'magic.match-confirm-result',
 					[
 						'match_id'         => $match->match_id,
 						'reference_id'     => $match->confirm_hash,
@@ -614,7 +614,7 @@ WHERE  `m`.`match_status` != %s",
 				'result'           => $result,
 				'competition_type' => $competition_type,
 				'confirm_link'     => trn_route(
-					'confirm-email-result',
+					'magic.match-confirm-result',
 					[
 						'match_id'         => $match->match_id,
 						'reference_id'     => $match->confirm_hash,

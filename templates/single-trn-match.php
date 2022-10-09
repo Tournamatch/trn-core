@@ -91,7 +91,14 @@ trn_get_header();
 				<a class="trn-button" href=""><?php esc_html_e( 'Report', 'tournamatch' ); ?></a>
 			<?php endif; ?>
 			<?php if ( $can_delete ) : ?>
-				<a class="trn-button trn-button-danger trn-confirm-action-link trn-delete-match-action" href="#" data-match-id="<?php echo intval( $match->match_id ); ?>" data-confirm-title="<?php esc_html_e( 'Delete Match', 'tournamatch' ); ?>" data-confirm-message="<?php esc_html_e( 'Are you sure you want to delete this match?', 'tournamatch' ); ?>"><?php esc_html_e( 'Delete', 'tournamatch' ); ?></a>
+				<a
+						class="trn-button trn-button-danger trn-confirm-action-link trn-delete-match-action"
+						href="#"
+						data-match-id="<?php echo intval( $match->match_id ); ?>"
+						data-confirm-title="<?php esc_html_e( 'Delete Match', 'tournamatch' ); ?>"
+						data-confirm-message="<?php esc_html_e( 'Are you sure you want to delete this match?', 'tournamatch' ); ?>"
+						data-modal-id="delete-match"
+				><?php esc_html_e( 'Delete', 'tournamatch' ); ?></a>
 			<?php endif; ?>
 			<?php if ( $can_clear ) : ?>
 				<a class="trn-button trn-button-danger" href="

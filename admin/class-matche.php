@@ -174,7 +174,6 @@ class Matche {
 		$one_result     = isset( $_REQUEST['one_result'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['one_result'] ) ) : null;
 		$one_comment    = isset( $_REQUEST['one_comment'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['one_comment'] ) ) : null;
 		$two_id         = isset( $_REQUEST['two_id'] ) ? intval( $_REQUEST['two_id'] ) : null;
-		$two_result     = isset( $_REQUEST['two_result'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['two_result'] ) ) : null;
 		$two_comment    = isset( $_REQUEST['two_comment'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['two_comment'] ) ) : null;
 
 		$ladder = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders` WHERE `ladder_id` = %d", $competition_id ) );
@@ -191,7 +190,6 @@ class Matche {
 			'two_competitor_id'   => $two_id,
 			'two_competitor_type' => $ladder->competitor_type,
 			'two_ip'              => '',
-			'two_result'          => $two_result,
 			'two_comment'         => $two_comment,
 			'match_date'          => $wpdb->get_var( 'SELECT UTC_TIMESTAMP()' ),
 			'match_status'        => 'reported',

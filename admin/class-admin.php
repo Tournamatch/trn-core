@@ -338,7 +338,7 @@ class Admin {
 										<?php esc_html_e( 'This action is irreversible. All data not backed up will be lost.', 'tournamatch' ); ?>
 									</p>
 								</div>
-								<form method="post" action="<?php trn_esc_route_e( 'admin.clear-data' ); ?>">
+								<form method="post" action="<?php trn_esc_route_e( 'admin.clear-data', array( '_wpnonce' => wp_create_nonce( 'tournamatch-admin-tools' ) ) ); ?>">
 									<p>
 										<?php esc_html_e( 'Use this form to clear all ladder, tournament, teams, challenge, and match history.', 'tournamatch' ); ?>
 										<?php /* translators: HTML <strong> and </strong> tags. */ ?>

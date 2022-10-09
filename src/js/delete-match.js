@@ -17,7 +17,7 @@ import { trn } from './tournamatch.js';
 
         let targets = document.getElementsByClassName('trn-delete-match-action');
         Array.prototype.forEach.call(targets, function (target) {
-            target.addEventListener('trn.confirmed.action', function (event) {
+            target.addEventListener('trn.confirmed.action.delete-match', function (event) {
                 event.preventDefault();
 
                 console.log(`modal was confirmed for link ${target.dataset.matchId}`);

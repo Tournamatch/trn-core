@@ -395,7 +395,9 @@ if ( ! function_exists( 'trn_the_ladder' ) ) {
 	 * @return mixed
 	 */
 	function trn_the_ladder( $ladder ) {
+		global $wpdb;
 
+		$ladder->competitors        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->prefix}trn_ladders_entries` WHERE `ladder_id` = %d", $ladder->ladder_id ) );
 		$ladder->ranking_mode_field = 'points';
 		$ladder->ranking_mode_label = __( 'Points', 'tournamatch' );
 

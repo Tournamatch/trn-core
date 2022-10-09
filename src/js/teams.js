@@ -18,7 +18,7 @@ import { trn } from './tournamatch.js';
     function handleDeleteConfirm() {
         let links = document.getElementsByClassName('trn-confirm-action-link');
         Array.prototype.forEach.call(links, function (link) {
-            link.addEventListener('trn.confirmed.action', function (event) {
+            link.addEventListener('trn.confirmed.action.delete-team', function (event) {
                 event.preventDefault();
 
                 console.log(`modal was confirmed for link ${link.dataset.teamId}`);
@@ -81,7 +81,7 @@ import { trn } from './tournamatch.js';
                     render: function(data, type, row) {
                         const message = options.language.delete_confirm.format(row.name);
                         return `<a href="${row.link}/edit"><i class="fa fa-edit"></i></a> ` +
-                            `<a class="trn-delete-team-action trn-confirm-action-link" data-team-id="${row.team_id}" data-confirm-title="${options.language.delete_team}" data-confirm-message="${message}" href="#" title="${options.language.delete_team}"><i class="fa fa-trash"></i></a>`;
+                            `<a class="trn-delete-team-action trn-confirm-action-link" data-team-id="${row.team_id}" data-modal-id="delete-team" data-confirm-title="${options.language.delete_team}" data-confirm-message="${message}" href="#" title="${options.language.delete_team}"><i class="fa fa-trash"></i></a>`;
                     },
                     orderable: false,
                 },
