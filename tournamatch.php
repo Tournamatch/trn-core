@@ -11,7 +11,7 @@
  * Plugin Name: Tournamatch
  * Plugin URI: https://www.tournamatch.com/
  * Description: Ladder and tournament plugin for eSports and online gaming leagues.
- * Version: 4.3.5
+ * Version: 4.4.0
  * Author: Tournamatch
  * Author URI: https://www.tournamatch.com
  * Text Domain: tournamatch
@@ -32,10 +32,10 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.3.5' );
+define( 'TOURNAMATCH_VERSION', '4.4.0' );
 define( 'TOURNAMATCH_API_VERSION', '4.3.0' );
 define( 'TOURNAMATCH_API', 'https://www.tournamatch.com/api' );
-define( 'TOURNAMATCH_ADD_ONS_ENABLED', false );
+define( 'TOURNAMATCH_ADD_ONS_ENABLED', true );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -48,6 +48,7 @@ if ( file_exists( __TRNPATH . 'tournamatch.dev.php' ) ) {
 
 // Common includes.
 require_once __TRNPATH . 'includes/data-access.php';
+require_once __TRNPATH . 'includes/add-ons.php';
 require_once __TRNPATH . 'includes/classes/class-tournamatch-email.php';
 require_once __TRNPATH . 'includes/classes/class-tournamatch-online-users.php';
 
@@ -1093,7 +1094,7 @@ if ( ! function_exists( 'trn_register_scripts' ) ) {
 		wp_register_style( 'trn_font_awesome_css', plugins_url( '/dist/css/fontawesome.5.14.0.css', __FILE__ ), array(), '5.14.0' );
 		wp_enqueue_style( 'trn_font_awesome_css' );
 
-		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '4.3.1' );
+		wp_register_style( 'trn_components_css', plugins_url( '/dist/css/components.css', __FILE__ ), array(), '4.4.0' );
 		wp_enqueue_style( 'trn_components_css' );
 
 		wp_register_style( 'datatables', plugins_url( '/dist/css/trn.datatable.bootstrap4.css', __FILE__ ), array(), '1.10.19' );

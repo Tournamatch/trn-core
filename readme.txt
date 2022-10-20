@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.2
-Stable tag: 4.3.5
+Stable tag: 4.4.0
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -11,8 +11,6 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 A ladder and tournament plugin for eSports, physical sports, board games, and other online gaming leagues.
 
 == Description ==
-
-**Important**: If you are upgrading from version 3.x, please read [this page](https://www.tournamatch.com/major-version-delta/) prior to proceeding.
 
 Use this plugin to create a gaming community with your own tournaments, ladders, competitor challenges, and more. Ladder standings (or "leaderboard") track points, wins, losses, [optionally] draws, games played, win streak, and win percent. Tournament brackets support single elimination head-to-head competitions. Tournamatch also includes match challenges, player profiles, team profiles, ladder and tournament rule pages, match lists, and a player dashboard for managing everything.
 
@@ -53,6 +51,13 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.4.0 =
+* Tweak: Updated the HTML structure and CSS for the single page templates.
+* New: Added support for the [Profile Social Icons](https://www.tournamatch.com/add-ons/trn-profile-social-icons/) plugin add on.
+* New: Added support for the [Custom Team Ranks](https://www.tournamatch.com/add-ons/trn-team-ranks/) plugin add on.
+* New: Added support for the [Manually Seed Tournaments](https://www.tournamatch.com/add-ons/trn-manual-seeding/) plugin add on.
+* New: Added support for the [Auto-Start Tournaments](https://www.tournamatch.com/add-ons/trn-auto-start/) plugin add on.
 
 = 4.3.5 =
 * Fix: Ladder competitor streak is not working correctly.
