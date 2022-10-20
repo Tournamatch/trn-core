@@ -32,12 +32,17 @@ $team_owner = trn_get_team_owner( $team_id );
 	</div>
 	<div class="trn-profile-details">
 		<h1 class="trn-profile-name"><?php echo esc_html( $team->name ); ?></h1>
-		<?php if ( trn_is_plugin_active( 'trn-profile-social-icons' ) ) :
+		<?php
+		if ( trn_is_plugin_active( 'trn-profile-social-icons' ) ) :
 			$social_icons = trn_get_team_icon_fields();
 
-			if ( is_array( $social_icons ) && ( 0 < count( $social_icons ) ) ) : ?>
+			if ( is_array( $social_icons ) && ( 0 < count( $social_icons ) ) ) :
+				?>
 				<ul class="trn-list-inline">
-					<?php foreach( $social_icons as $icon => $data ) : $key = 'psi_icon_' . $icon; ?>
+					<?php
+					foreach ( $social_icons as $icon => $data ) :
+						$key = 'psi_icon_' . $icon;
+						?>
 						<?php if ( isset( $team->$key ) && ( 0 < strlen( $team->$key ) ) ) : ?>
 							<li class="trn-list-inline-item"><a href="<?php echo esc_url( $team->$key ); ?>" target="_blank"><i class="<?php echo esc_attr( $data['icon'] ); ?>"></i></a></li>
 						<?php endif; ?>
