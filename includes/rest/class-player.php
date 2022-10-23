@@ -144,15 +144,7 @@ class Player extends Controller {
 
 		$sql = "
 SELECT 
-  `p`.`user_id`, 
-  `p`.`display_name`, 
-  `p`.`location`, 
-  `p`.`flag`, 
-  `p`.`wins`, 
-  `p`.`losses`, 
-  `p`.`draws`, 
-  `p`.`profile`, 
-  `p`.`avatar`, 
+  `p`.`*`, 
   (SELECT COUNT(*) FROM `{$wpdb->prefix}trn_teams_members` AS `tm` WHERE `tm`.`user_id` = `p`.`user_id`) AS `teams`, 
   `u`.`user_registered` AS `joined_date` 
 FROM `{$wpdb->prefix}trn_players_profiles` AS `p` 
@@ -236,16 +228,7 @@ WHERE 1 = 1 ";
 			$wpdb->prepare(
 				"
 SELECT 
-  `p`.`user_id`, 
-  `p`.`display_name`, 
-  `p`.`location`, 
-  `p`.`flag`, 
-  `p`.`wins`, 
-  `p`.`losses`, 
-  `p`.`draws`, 
-  `p`.`profile`, 
-  `p`.`avatar`,
-  `p`.`banner`,
+  `p`.`*`, 
   (SELECT COUNT(*) FROM `{$wpdb->prefix}trn_teams_members` AS `tm` WHERE `tm`.`user_id` = `p`.`user_id`) AS `teams`, 
   `u`.`user_registered` AS `joined_date` 
 FROM `{$wpdb->prefix}trn_players_profiles` AS `p` 
