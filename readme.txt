@@ -3,7 +3,7 @@ Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable tag: 4.4.1
+Stable tag: 4.4.2
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,9 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.4.2 =
+* Fix: Fixed an issue that causes a NULL player name on some versions of MySql.
 
 = 4.4.1 =
 * Fix: Social icon fields are missing from REST queries.
