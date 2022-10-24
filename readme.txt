@@ -2,7 +2,7 @@
 Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
-Tested up to: 6.0.2
+Tested up to: 6.0.3
 Stable tag: 4.4.1
 Requires PHP: 5.6.20
 License: GPLv2
@@ -54,6 +54,7 @@ You should add links to your menu for the following pages (replace example.com w
 
 = 4.4.1 =
 * Fix: Social icon fields are missing from REST queries.
+* Fix: WordPress backend search for tournaments, ladders, and games now works as expected.
 
 = 4.4.0 =
 * Tweak: Updated the HTML structure and CSS for the single page templates.
