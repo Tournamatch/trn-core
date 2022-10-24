@@ -1643,59 +1643,59 @@ msgstr ""
 msgid "Competitor two ip address for the match."
 msgstr ""
 
-#: includes/rest/class-player.php:449
+#: includes/rest/class-player.php:432
 msgid "The user id for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:455
+#: includes/rest/class-player.php:438
 msgid "The display name for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:465
+#: includes/rest/class-player.php:448
 msgid "The date the player registered on the website."
 msgstr ""
 
-#: includes/rest/class-player.php:479
+#: includes/rest/class-player.php:462
 msgid "The date the player registered on the website, as it exists in the database."
 msgstr ""
 
-#: includes/rest/class-player.php:485
+#: includes/rest/class-player.php:468
 msgid "The date the player registered on the website, transformed for display."
 msgstr ""
 
-#: includes/rest/class-player.php:493
+#: includes/rest/class-player.php:476
 msgid "The location for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:498
+#: includes/rest/class-player.php:481
 msgid "The country flag for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:503
+#: includes/rest/class-player.php:486
 msgid "The number of individual wins for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:509
+#: includes/rest/class-player.php:492
 msgid "The number of individual losses for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:515
+#: includes/rest/class-player.php:498
 msgid "The number of individual draws for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:521
+#: includes/rest/class-player.php:504
 msgid "The long text bio for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:526
+#: includes/rest/class-player.php:509
 msgid "The avatar for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:531
+#: includes/rest/class-player.php:514
 msgid "The banner for the player."
 msgstr ""
 
-#: includes/rest/class-player.php:536
+#: includes/rest/class-player.php:519
 msgid "The number of teams the player is a member of."
 msgstr ""
 
