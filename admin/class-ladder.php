@@ -159,7 +159,7 @@ class Ladder {
 						$list_table->views();
 						$list_table->search_box( esc_html__( 'Search Ladders', 'tournamatch' ), 'trn_search_ladders_input' );
 						?>
-						<input type="hidden" name="page" value="ladders"/>
+						<input type="hidden" name="page" value="trn-ladders"/>
 						<?php
 						$list_table->display();
 						?>

@@ -182,7 +182,7 @@ class Tournament {
 						$list_table->views();
 						$list_table->search_box( esc_html__( 'Search Tournaments', 'tournamatch' ), 'trn_search_tournaments_input' );
 						?>
-						<input type="hidden" name="page" value="tournaments"/>
+						<input type="hidden" name="page" value="trn-tournaments"/>
 						<?php
 						$list_table->display();
 						?>

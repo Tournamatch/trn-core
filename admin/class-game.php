@@ -294,7 +294,7 @@ class Game {
 								$list_table->views();
 								$list_table->search_box( esc_html__( 'Search Games', 'tournamatch' ), 'trn_search_games_input' );
 								?>
-								<input type="hidden" name="page" value="games"/>
+								<input type="hidden" name="page" value="trn-games"/>
 								<?php
 								$list_table->display();
 								?>
