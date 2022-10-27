@@ -3897,3 +3897,21 @@ if ( ! function_exists( 'trn_migrate_users' ) ) {
 		}
 	}
 }
+
+if ( ! function_exists( 'trn_get_rest_image_property' ) ) {
+	/**
+	 * Inserts a record into the Tournamatch player table for each WordPress user.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param int    $image_id The attachment id of the image.
+	 * @param string $size The size of the image.
+	 *
+	 * @return false|array False if the attachment is not found or an array.
+	 */
+	function trn_get_rest_image_property( $image_id, $size = 'thumbnail' ) {
+		$source = wp_get_attachment_image_src( $image_id, $size );
+
+		return ! $source ? null : array_combine( array( 'source', 'width', 'height', 'resized' ), $source );
+	}
+}
