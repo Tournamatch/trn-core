@@ -277,6 +277,8 @@ class Ladder extends Controller {
 			$rules[] = new Cannot_Change_Ladder_Competition( $request['id'], $request['competitor_type'] );
 		}
 
+		$rules = apply_filters( 'trn_rest_ladder_update_rules', $rules, $ladder, $request );
+
 		// Verify business rules.
 		if ( 0 < count( $rules ) ) {
 			$this->verify_business_rules( $rules );
