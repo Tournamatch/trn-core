@@ -72,6 +72,7 @@ $team_owner = trn_get_team_owner( $team_id );
 </div>
 <div id="trn-leave-team-response"></div>
 <div id="trn-join-team-response"></div>
+<div id="trn-delete-team-member-response"></div>
 <?php
 
 $options = array(

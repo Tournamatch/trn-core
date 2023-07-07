@@ -238,7 +238,7 @@ class Game {
 					<div id="trn-game-thumbnail-warning" class="d-none">
 						<p class="notice notice-warning">
 							<strong><?php esc_html_e( 'Action Required!', 'tournamatch' ); ?></strong>
-							<?php esc_html_e( 'Games exist below with a thumbnail set to a string (highlighted). You should edit these games and re-select the thumbnail. Any game with a thumbnail set to a string (the highlighted ones) will stop working in 4.4.', 'tournamatch' ); ?>
+							<?php esc_html_e( 'Games exist below with a thumbnail set to a string (highlighted). You should edit these games and re-select the thumbnail. Any game with a thumbnail set to a string (the highlighted ones) will stop working in a future update.', 'tournamatch' ); ?>
 						</p>
 					</div>
 					<div id="col-container">

@@ -183,6 +183,8 @@ class Team_Request extends Controller {
 			array_splice( $rules, 1, 0, array( new One_Team_Per_User( $user_id ) ) );
 		}
 
+		$rules = apply_filters( 'trn_rest_accept_team_request_rules', $rules, $request, $team_request );
+
 		// Verify business rules.
 		$this->verify_business_rules( $rules );
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Defines functions to support Tournamatch add-ons.
+ * Defines functions to support Tournamatch extensions.
  *
  * @link       https://www.tournamatch.com
  * @since      4.4.0
@@ -30,9 +30,12 @@ if ( ! function_exists( 'trn_check_for_plugin_update' ) ) {
 		$license_status = trn_get_option( 'license_status', '' );
 
 		if ( 'valid' === $license_status ) {
-			$license_key = trn_get_option( 'license_key', '' );
-
 			$plugins = apply_filters( 'trn_filter_plugin_update_list', array() );
+
+			if ( 0 === count( $plugins ) ) {
+				return $checked_data;
+			}
+
 			$plugins = array_map(
 				function( $slug ) use ( $checked_data ) {
 					return array(
@@ -44,12 +47,7 @@ if ( ! function_exists( 'trn_check_for_plugin_update' ) ) {
 			);
 
 			$arguments = array(
-				'headers'    => array(
-					'Content-Type'    => 'application/json; charset=utf-8',
-					'Accept'          => 'application/json; charset=utf-8',
-					'Api-Version'     => TOURNAMATCH_API_VERSION,
-					'Api-License-Key' => $license_key,
-				),
+				'headers'    => trn_get_api_headers(),
 				'timeout'    => 5,
 				'user-agent' => 'WordPress/' . $wp_version . '; ' . get_bloginfo( 'url' ),
 				'body'       => wp_json_encode( $plugins ),
@@ -76,8 +74,8 @@ if ( ! function_exists( 'trn_check_for_plugin_update' ) ) {
 		return $checked_data;
 	}
 
-	if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) {
-		if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) {
+	if ( defined( 'TOURNAMATCH_EXTENSIONS_ENABLED' ) ) {
+		if ( true === TOURNAMATCH_EXTENSIONS_ENABLED ) {
 			add_filter( 'pre_set_site_transient_update_plugins', 'trn_check_for_plugin_update' );
 		}
 	}
@@ -139,9 +137,33 @@ if ( ! function_exists( 'trn_plugin_api_call' ) ) {
 		}
 	}
 
-	if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) {
-		if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) {
+	if ( defined( 'TOURNAMATCH_EXTENSIONS_ENABLED' ) ) {
+		if ( true === TOURNAMATCH_EXTENSIONS_ENABLED ) {
 			add_filter( 'plugins_api', 'trn_plugin_api_call', 10, 3 );
 		}
+	}
+}
+
+if ( ! function_exists( 'trn_get_api_headers' ) ) {
+	/**
+	 * Defines headers needed for Tournamatch REST API calls.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @return array
+	 */
+	function trn_get_api_headers() {
+		$license_key = trn_get_option( 'license_key', '' );
+		$http_host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
+
+		$headers = array(
+			'Content-Type'    => 'application/json; charset=utf-8',
+			'Accept'          => 'application/json; charset=utf-8',
+			'Api-Version'     => TOURNAMATCH_API_VERSION,
+			'Api-License-Key' => $license_key,
+			'Api-Host'        => $http_host,
+		);
+
+		return $headers;
 	}
 }

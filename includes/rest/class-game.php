@@ -385,7 +385,7 @@ class Game extends Controller {
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'default'     => 0,
 				),
-				'banner'    => array(
+				'banner'       => array(
 					'description' => esc_html__( 'The image banner for the game.', 'tournamatch' ),
 					'type'        => 'string',
 					'trn-subtype' => 'callable',

@@ -66,6 +66,7 @@ $player  = trn_the_player( $player );
 		<?php endif; ?>
 	</ul>
 </div>
+<div id="trn-send-invite-response"></div>
 <?php
 
 $views = array(

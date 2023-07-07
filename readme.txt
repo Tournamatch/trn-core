@@ -2,8 +2,8 @@
 Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
-Tested up to: 6.0.3
-Stable tag: 4.4.2
+Tested up to: 6.2.2
+Stable tag: 4.5.0
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -52,6 +52,16 @@ You should add links to your menu for the following pages (replace example.com w
 
 == Changelog ==
 
+= 4.5.0 =
+* New: Added a filter to rename or move routes to a sub-directory.
+* New: Added support for the Trophies extension.
+* New: Added numerous actions and filters to Tournamatch REST classes and services.
+* Tweak: Added thumbnail and banner image details to game REST route.
+* Fix: Users can (but should not be able to) report new matches for inactive ladders.
+* Fix: Tournament started email does not send.
+* Fix: Tournament eliminated email does not send.
+* Fix: Display name is not updated when editing player profile.
+
 = 4.4.2 =
 * Fix: Fixed an issue that causes a NULL player name on some versions of MySql.
 
@@ -61,10 +71,10 @@ You should add links to your menu for the following pages (replace example.com w
 
 = 4.4.0 =
 * Tweak: Updated the HTML structure and CSS for the single page templates.
-* New: Added support for the [Profile Social Icons](https://www.tournamatch.com/add-ons/trn-profile-social-icons/) plugin add on.
-* New: Added support for the [Custom Team Ranks](https://www.tournamatch.com/add-ons/trn-team-ranks/) plugin add on.
-* New: Added support for the [Manually Seed Tournaments](https://www.tournamatch.com/add-ons/trn-manual-seeding/) plugin add on.
-* New: Added support for the [Auto-Start Tournaments](https://www.tournamatch.com/add-ons/trn-auto-start/) plugin add on.
+* New: Added support for the [Profile Social Icons](https://www.tournamatch.com/extensions/trn-profile-social-icons/) plugin add on.
+* New: Added support for the [Custom Team Ranks](https://www.tournamatch.com/extensions/trn-team-ranks/) plugin add on.
+* New: Added support for the [Manually Seed Tournaments](https://www.tournamatch.com/extensions/trn-manual-seeding/) plugin add on.
+* New: Added support for the [Auto-Start Tournaments](https://www.tournamatch.com/extensions/trn-auto-start/) plugin add on.
 
 = 4.3.5 =
 * Fix: Ladder competitor streak is not working correctly.

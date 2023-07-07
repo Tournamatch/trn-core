@@ -28,7 +28,7 @@ $user_id = get_current_user_id();
 
 // Verify this user is a member of this ladder.
 $competitor = trn_get_user_ladder( $user_id, $ladder_id );
-if ( is_null( $competitor ) ) {
+if ( is_null( $competitor ) || ( 'inactive' === $ladder->status ) ) {
 	wp_safe_redirect( trn_route( 'ladders.single', array( 'id' => $ladder_id ) ) );
 	exit;
 }

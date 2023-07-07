@@ -60,6 +60,11 @@ trn_get_header();
 		}
 		?>
 	</dd>
+	<?php if ( trn_is_plugin_active( 'trn-mycred' ) ) : ?>
+		<dt><?php esc_html_e( 'Wager', 'tournamatch' ); ?>:</dt>
+		<?php /* translators: An integer number of tokens. */ ?>
+		<dd><?php echo sprintf( esc_html__( '%d Tokens', 'tournamatch' ), intval( $challenge->mycred_wager_amount ) ); ?></dd>
+	<?php endif; ?>
 	<dt><?php esc_html_e( 'Status', 'tournamatch' ); ?>:</dt>
 	<dd id="trn-challenge-status"><?php echo esc_html( ucwords( $challenge->accepted_state ) ); ?></dd>
 </dl>

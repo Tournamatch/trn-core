@@ -90,73 +90,67 @@ class Admin {
 			array( $this, 'settings' )
 		);
 
-		if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) {
-			if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) {
+		if ( defined( 'TOURNAMATCH_EXTENSIONS_ENABLED' ) ) {
+			if ( true === TOURNAMATCH_EXTENSIONS_ENABLED ) {
 				add_submenu_page(
 					'tournamatch',
-					esc_html__( 'Add-ons', 'tournamatch' ),
-					esc_html__( 'Add-ons', 'tournamatch' ),
+					esc_html__( 'Extensions', 'tournamatch' ),
+					esc_html__( 'Extensions', 'tournamatch' ),
 					'manage_tournamatch',
-					'trn-add-ons',
-					array( $this, 'add_ons' )
+					'trn-extensions',
+					array( $this, 'extensions' )
 				);
 			}
 		}
 	}
 
 	/**
-	 * Displays the add-ons page.
+	 * Displays the extensions page.
 	 *
 	 * @since 4.3.0
 	 */
-	public function add_ons() {
+	public function extensions() {
 		$license_status = trn_get_option( 'license_status', '' );
-		$http_host      = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
 
 		$arguments     = array(
 			'method'  => 'GET',
-			'headers' => array(
-				'Content-Type' => 'application/json; charset=utf-8',
-				'Accept'       => 'application/json; charset=utf-8',
-				'Api-Version'  => TOURNAMATCH_API_VERSION,
-				'Api-License'  => str_replace( 'www.', '', $http_host ),
-			),
+			'headers' => trn_get_api_headers(),
 			'timeout' => 5,
 		);
-		$response      = wp_remote_post( trn_api_address( 'add-ons.php' ), $arguments );
+		$response      = wp_remote_post( trn_api_address( 'extensions.php' ), $arguments );
 		$response_code = wp_remote_retrieve_response_code( $response );
 
-		$add_ons = null;
+		$extensions = null;
 		if ( 200 === intval( $response_code ) ) {
-			$add_ons = json_decode( wp_remote_retrieve_body( $response ) );
+			$extensions = json_decode( wp_remote_retrieve_body( $response ) );
 		}
 
 		?>
 		<div class="wrap">
 			<?php /* translators: First parameter is always Tournamatch */ ?>
-			<h1 class="wp-heading-inline"><?php printf( esc_html__( '%s Add-ons', 'tournamatch' ), 'Tournamatch' ); ?></h1>
+			<h1 class="wp-heading-inline"><?php printf( esc_html__( '%s Extensions', 'tournamatch' ), 'Tournamatch' ); ?></h1>
 			<?php if ( 'valid' !== $license_status ) : ?>
 			<div class="notice notice-info">
 				<p>
-					<?php esc_html_e( 'Please purchase a Tournamatch license to get access to add-on automatic updates and premium support.', 'tournamatch' ); ?>
+					<?php esc_html_e( 'Please purchase a Tournamatch license to get access to extension automatic updates and premium support.', 'tournamatch' ); ?>
 				</p>
 			</div>
 			<?php endif; ?>
-			<?php if ( is_null( $add_ons ) ) : ?>
+			<?php if ( is_null( $extensions ) ) : ?>
 				<p>
-					<?php esc_html_e( 'There was an issue retrieving Tournamatch add-ons.', 'tournamatch' ); ?>
+					<?php esc_html_e( 'There was an issue retrieving Tournamatch extensions.', 'tournamatch' ); ?>
 					<?php /* translators: First and second parameter are html anchor elements. */ ?>
-					<?php printf( esc_html__( 'Please visit the Tournamatch %1$sadd-ons%2$s page directly to see a list of add-ons.', 'tournamatch' ), '<a href="https://www.tournamatch.com/add-ons" target="_blank">', '</a>' ); ?>
+					<?php printf( esc_html__( 'Please visit the Tournamatch %1$sextensions%2$s page directly to see a list of extensions.', 'tournamatch' ), '<a href="https://www.tournamatch.com/extensions" target="_blank">', '</a>' ); ?>
 				</p>
 			<?php else : ?>
 				<style type="text/css">
-					.trn-admin-add-ons {
+					.trn-admin-extensions {
 						display: grid;
 						grid-template-columns: 1fr 1fr 1fr 1fr;
 						row-gap: 20px;
 						column-gap: 20px;
 					}
-					.trn-admin-add-on-card {
+					.trn-admin-extension-card {
 						display: inline-block;
 						border: 1px solid #ccc;
 						border-radius: 3px;
@@ -164,11 +158,11 @@ class Admin {
 						position: relative;
 						height: 250px
 					}
-					.trn-admin-add-on-card-body {
+					.trn-admin-extension-card-body {
 						padding: 10px;
 
 					}
-					.trn-admin-add-on-card-footer {
+					.trn-admin-extension-card-footer {
 						padding: 10px;
 						position: absolute;
 						right: 0;
@@ -179,15 +173,15 @@ class Admin {
 						text-align: center;
 					}
 				</style>
-				<div class="trn-admin-add-ons">
-				<?php foreach ( $add_ons as $add_on ) : ?>
-					<div class="trn-admin-add-on-card">
-						<div class="trn-admin-add-on-card-body">
+				<div class="trn-admin-extensions">
+				<?php foreach ( $extensions as $add_on ) : ?>
+					<div class="trn-admin-extension-card">
+						<div class="trn-admin-extension-card-body">
 							<h3><?php echo esc_html( $add_on->title ); ?></h3>
 							<p><?php echo esc_html( $add_on->summary ); ?></p>
 						</div>
-						<div class="trn-admin-add-on-card-footer">
-							<a class="button button-primary" href="<?php echo esc_attr( $add_on->url ); ?>"><?php esc_html_e( 'Get This Add-on', 'tournamatch' ); ?></a>
+						<div class="trn-admin-extension-card-footer">
+							<a class="button button-primary" href="<?php echo esc_attr( $add_on->url ); ?>"><?php esc_html_e( 'Get This Extension', 'tournamatch' ); ?></a>
 						</div>
 					</div>
 				<?php endforeach; ?>
@@ -374,20 +368,18 @@ class Admin {
 	 * @since 4.3.0
 	 */
 	public function activate_license() {
+		global $wp_version;
+
 		check_admin_referer( 'tournamatch-activate-license' );
 
 		$license_key = isset( $_POST['license_key'] ) ? sanitize_text_field( wp_unslash( $_POST['license_key'] ) ) : '';
 
 		if ( 0 < strlen( $license_key ) ) {
 			$arguments = array(
-				'method'  => 'POST',
-				'headers' => array(
-					'Content-Type'    => 'application/json; charset=utf-8',
-					'Accept'          => 'application/json; charset=utf-8',
-					'Api-Version'     => TOURNAMATCH_API_VERSION,
-					'Api-License-Key' => $license_key,
-				),
-				'timeout' => 5,
+				'method'     => 'POST',
+				'headers'    => trn_get_api_headers(),
+				'timeout'    => 5,
+				'user-agent' => 'WordPress/' . $wp_version . '; ' . get_bloginfo( 'url' ),
 			);
 
 			$response      = wp_remote_post( trn_api_address( 'activate.php' ), $arguments );
@@ -501,8 +493,8 @@ class Admin {
 						data-tab="tournament"><?php esc_html_e( 'Tournament', 'tournamatch' ); ?></a>
 				<a href="#team" class="nav-tab" data-tab="team"><?php esc_html_e( 'Team', 'tournamatch' ); ?></a>
 				<a href="#other" class="nav-tab" data-tab="other"><?php esc_html_e( 'Other', 'tournamatch' ); ?></a>
-				<?php if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) : ?>
-					<?php if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) : ?>
+				<?php if ( defined( 'TOURNAMATCH_EXTENSIONS_ENABLED' ) ) : ?>
+					<?php if ( true === TOURNAMATCH_EXTENSIONS_ENABLED ) : ?>
 						<a href="#license" class="nav-tab" data-tab="license"><?php esc_html_e( 'License', 'tournamatch' ); ?></a>
 					<?php endif; ?>
 				<?php endif; ?>
@@ -707,11 +699,11 @@ class Admin {
 						</p>
 					</form>
 				</div>
-				<?php if ( defined( 'TOURNAMATCH_ADD_ONS_ENABLED' ) ) : ?>
-					<?php if ( true === TOURNAMATCH_ADD_ONS_ENABLED ) : ?>
+				<?php if ( defined( 'TOURNAMATCH_EXTENSIONS_ENABLED' ) ) : ?>
+					<?php if ( true === TOURNAMATCH_EXTENSIONS_ENABLED ) : ?>
 						<div class="tab-pane" id="license">
 							<h2><?php esc_html_e( 'License', 'tournamatch' ); ?></h2>
-							<p><?php esc_html_e( 'A license provides access to add-on automatic updates and premium support.' ); ?></p>
+							<p><?php esc_html_e( 'A license provides access to extension automatic updates and premium support.' ); ?></p>
 							<?php
 
 							//phpcs:ignore WordPress.Security.NonceVerification.Recommended

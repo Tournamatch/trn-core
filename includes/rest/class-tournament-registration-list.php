@@ -11,6 +11,8 @@
 namespace Tournamatch\Rest;
 
 // Exit if accessed directly.
+use Tournamatch\Rules\One_Competitor_Per_Tournament;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -88,13 +90,35 @@ class Tournament_Registration_List extends Controller {
 			// This is a singles tournament. Just verify each user id is registered.
 			array_walk(
 				$competitors,
-				function( &$competitor ) use ( $wpdb, $tournament_id ) {
+				function( &$competitor ) use ( $request, $tournament ) {
+					global $wpdb;
+
 					$competitor['user_id'] = email_exists( $competitor['text'] );
 
 					if ( $competitor['user_id'] ) {
-						$found = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_id` = %d AND `competitor_id` = %d", $tournament_id, $competitor['user_id'] ) );
-						if ( '0' === $found ) {
-							$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_tournaments_entries` VALUES (NULL, %d, %d, 'players', UTC_TIMESTAMP(), NULL)", $tournament_id, $competitor['user_id'] ) );
+						$rules = array(
+							new One_Competitor_Per_Tournament( $tournament->tournament_id, $competitor['user_id'] ),
+						);
+
+						$rules = apply_filters(
+							'trn_rest_create_tournament_competitor_rules',
+							$rules,
+							array(
+								'tournament_id' => $tournament->tournament_id,
+								'competitor_id' => $competitor['user_id'],
+							)
+						);
+
+						$passes = array_reduce(
+							$rules,
+							function( $carry, $rule ) {
+								return $carry && $rule->passes();
+							},
+							true
+						);
+
+						if ( $passes ) {
+							$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_tournaments_entries` VALUES (NULL, %d, %d, 'players', UTC_TIMESTAMP(), NULL)", $tournament->tournament_id, $competitor['user_id'] ) );
 						}
 						$competitor['result'] = 'registered';
 					} else {

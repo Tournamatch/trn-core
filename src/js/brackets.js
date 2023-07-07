@@ -139,10 +139,13 @@
                 content += `<div class="trn-brackets-horizontal-line"></div>`;
                 content += `<div class="trn-brackets-match-body">`;
 
+
+
                 if (tournament.matches[match_id] && tournament.matches[match_id].one_competitor_id !== null && tournament.matches[match_id].one_competitor_id !== 0) {
                     const one_id = tournament.matches[match_id].one_competitor_id;
                     const one_name = tournament.competitors[one_id] ? tournament.competitors[one_id].name : '&nbsp;';
-                    const one_url = tournament.competitors[one_id] ? `${options.site_url}/${tournament.competitors[one_id].competitor_type}/${one_id}` : "#";
+                    const competitor_url_prefix = 'players' === tournament.matches[match_id].one_competitor_type ? options.routes.players : options.routes.teams;
+                    const one_url = tournament.competitors[one_id] ? `${options.site_url}/${competitor_url_prefix}/${one_id}` : "#";
                     content += `<span id="trn_spot_${match_id}_one" class="trn-brackets-competitor trn-brackets-competitor-${one_id}" data-competitor-id="${one_id}"><a href="${one_url}">${one_name}</a></span>`;
                 } else {
                     content += `<span id="trn_spot_${match_id}_one" class="trn-brackets-competitor">${undecided}</span>`;
@@ -151,7 +154,8 @@
                 if (tournament.matches[match_id] && tournament.matches[match_id].two_competitor_id !== null && tournament.matches[match_id].two_competitor_id !== 0) {
                     const two_id = tournament.matches[match_id].two_competitor_id;
                     const two_name = tournament.competitors[two_id] ? tournament.competitors[two_id].name : '&nbsp;';
-                    const two_url = tournament.competitors[two_id] ? `${options.site_url}/${tournament.competitors[two_id].competitor_type}/${two_id}` : "#";
+                    const competitor_url_prefix = 'players' === tournament.matches[match_id].two_competitor_type ? options.routes.players : options.routes.teams;
+                    const two_url = tournament.competitors[two_id] ? `${options.site_url}/${competitor_url_prefix}/${two_id}` : "#";
                     content += `<span id="trn_spot_${match_id}_two" class="trn-brackets-competitor trn-brackets-competitor-${two_id}" data-competitor-id="${two_id}"><a href="${two_url}">${two_name}</a></span>`;
                 } else {
                     content += `<span id="trn_spot_${match_id}_two" class="trn-brackets-competitor">${undecided}</span>`;
