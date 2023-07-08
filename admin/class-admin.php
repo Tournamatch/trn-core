@@ -377,7 +377,7 @@ class Admin {
 		if ( 0 < strlen( $license_key ) ) {
 			$arguments = array(
 				'method'     => 'POST',
-				'headers'    => trn_get_api_headers(),
+				'headers'    => trn_get_api_headers( $license_key ),
 				'timeout'    => 5,
 				'user-agent' => 'WordPress/' . $wp_version . '; ' . get_bloginfo( 'url' ),
 			);

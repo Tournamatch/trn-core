@@ -150,10 +150,12 @@ if ( ! function_exists( 'trn_get_api_headers' ) ) {
 	 *
 	 * @since 4.5.0
 	 *
+	 * @param string $license_key An optional license key to send.
+	 *
 	 * @return array
 	 */
-	function trn_get_api_headers() {
-		$license_key = trn_get_option( 'license_key', '' );
+	function trn_get_api_headers( $license_key = '' ) {
+		$license_key = strlen( $license_key ) > 0 ? $license_key : trn_get_option( 'license_key', '' );
 		$http_host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
 
 		$headers = array(
