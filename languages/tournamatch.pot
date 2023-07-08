@@ -17,11 +17,11 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin/class-admin.php:78, admin/class-admin.php:79, admin/class-admin.php:330
+#: admin/class-admin.php:78, admin/class-admin.php:79, admin/class-admin.php:324
 msgid "Tools"
 msgstr ""
 
-#: admin/class-admin.php:86, admin/class-admin.php:87, admin/class-admin.php:496
+#: admin/class-admin.php:86, admin/class-admin.php:87, admin/class-admin.php:488
 msgid "Settings"
 msgstr ""
 
@@ -30,282 +30,282 @@ msgid "Extensions"
 msgstr ""
 
 #. translators: First parameter is always Tournamatch
-#: admin/class-admin.php:137
+#: admin/class-admin.php:131
 msgid "%s Extensions"
 msgstr ""
 
-#: admin/class-admin.php:141
+#: admin/class-admin.php:135
 msgid "Please purchase a Tournamatch license to get access to extension automatic updates and premium support."
 msgstr ""
 
-#: admin/class-admin.php:190
+#: admin/class-admin.php:184
 msgid "Get This Extension"
 msgstr ""
 
-#: admin/class-admin.php:147
+#: admin/class-admin.php:141
 msgid "There was an issue retrieving Tournamatch extensions."
 msgstr ""
 
-#: admin/class-admin.php:149
+#: admin/class-admin.php:143
 msgid "Please visit the Tournamatch %1$sextensions%2$s page directly to see a list of extensions."
 msgstr ""
 
-#: admin/class-admin.php:210, templates/archive-trn-challenge.php:20
+#: admin/class-admin.php:204, templates/archive-trn-challenge.php:20
 msgid "Challenges"
 msgstr ""
 
-#: admin/class-admin.php:214, admin/class-game.php:50, admin/class-game.php:51, admin/class-game.php:221
+#: admin/class-admin.php:208, admin/class-game.php:50, admin/class-game.php:51, admin/class-game.php:221
 msgid "Games"
 msgstr ""
 
-#: admin/class-admin.php:218, templates/archive-trn-player.php:19
+#: admin/class-admin.php:212, templates/archive-trn-player.php:19
 msgid "Players"
 msgstr ""
 
-#: admin/class-admin.php:222, admin/class-ladder.php:324, admin/class-tournament.php:301, includes/shortcodes/class-table-shortcodes.php:141, templates/archive-trn-team.php:26, templates/single-trn-player.php:74
+#: admin/class-admin.php:216, admin/class-ladder.php:324, admin/class-tournament.php:301, includes/shortcodes/class-table-shortcodes.php:141, templates/archive-trn-team.php:26, templates/single-trn-player.php:74
 msgid "Teams"
 msgstr ""
 
-#: admin/class-admin.php:226, admin/class-matche.php:57, admin/class-matche.php:58, admin/class-matche.php:66, admin/class-matche.php:67, templates/archive-trn-match.php:19, templates/single-trn-ladder.php:104, templates/single-trn-tournament.php:86
+#: admin/class-admin.php:220, admin/class-matche.php:57, admin/class-matche.php:58, admin/class-matche.php:66, admin/class-matche.php:67, templates/archive-trn-match.php:19, templates/single-trn-ladder.php:104, templates/single-trn-tournament.php:86
 msgid "Matches"
 msgstr ""
 
-#: admin/class-admin.php:230, admin/class-ladder.php:59, admin/class-ladder.php:60, admin/class-ladder.php:138, templates/archive-trn-ladder.php:27, templates/single-trn-player.php:80, templates/single-trn-team.php:142
+#: admin/class-admin.php:224, admin/class-ladder.php:59, admin/class-ladder.php:60, admin/class-ladder.php:138, templates/archive-trn-ladder.php:27, templates/single-trn-player.php:80, templates/single-trn-team.php:142
 msgid "Ladders"
 msgstr ""
 
-#: admin/class-admin.php:234, admin/class-tournament.php:59, admin/class-tournament.php:60, admin/class-tournament.php:159, templates/archive-trn-tournament.php:35, templates/single-trn-player.php:86, templates/single-trn-team.php:148
+#: admin/class-admin.php:228, admin/class-tournament.php:59, admin/class-tournament.php:60, admin/class-tournament.php:159, templates/archive-trn-tournament.php:35, templates/single-trn-player.php:86, templates/single-trn-team.php:148
 msgid "Tournaments"
 msgstr ""
 
-#: admin/class-admin.php:238
+#: admin/class-admin.php:232
 msgid "User Dashboard"
 msgstr ""
 
-#: admin/class-admin.php:242, templates/page-trn-report-dashboard.php:34
+#: admin/class-admin.php:236, templates/page-trn-report-dashboard.php:34
 msgid "Results Dashboard"
 msgstr ""
 
-#: admin/class-admin.php:249
+#: admin/class-admin.php:243
 msgid "Quick Start"
 msgstr ""
 
 #. translators: Opening and closing anchor tags.
-#: admin/class-admin.php:252
+#: admin/class-admin.php:246
 msgid "Create a %1$sgame%2$s or two for organizing ladder and tournament events."
 msgstr ""
 
 #. translators: Opening and closing anchor tags.
-#: admin/class-admin.php:254
+#: admin/class-admin.php:248
 msgid "Update your %1$smain menu%2$s with links to the pages created in the previous step."
 msgstr ""
 
 #. translators: Opening and closing anchor tags.
-#: admin/class-admin.php:256
+#: admin/class-admin.php:250
 msgid "Continue on creating your first %1$stournament%2$s or %3$sladder%4$s."
 msgstr ""
 
-#: admin/class-admin.php:258
+#: admin/class-admin.php:252
 msgid "Support"
 msgstr ""
 
 #. translators: Opening and closing anchor tags.
-#: admin/class-admin.php:260
+#: admin/class-admin.php:254
 msgid "For support, please email us at support@tournamatch.com or %1$sopen a support%2$s ticket."
 msgstr ""
 
-#: admin/class-admin.php:261
+#: admin/class-admin.php:255
 msgid "Version"
 msgstr ""
 
 #. translators: Semantic version number such as 10.9.86.
-#: admin/class-admin.php:263
+#: admin/class-admin.php:257
 msgid "You are using Tournamatch version %s."
 msgstr ""
 
-#: admin/class-admin.php:264
+#: admin/class-admin.php:258
 msgid "Shortcuts"
 msgstr ""
 
-#: admin/class-admin.php:265
+#: admin/class-admin.php:259
 msgid "You should consider adding links to the following front end (user-facing) pages."
 msgstr ""
 
-#: admin/class-admin.php:335, admin/class-admin.php:359
+#: admin/class-admin.php:329, admin/class-admin.php:353
 msgid "Clear Data"
 msgstr ""
 
-#: admin/class-admin.php:338
+#: admin/class-admin.php:332
 msgid "This action is irreversible. All data not backed up will be lost."
 msgstr ""
 
-#: admin/class-admin.php:343
+#: admin/class-admin.php:337
 msgid "Use this form to clear all ladder, tournament, teams, challenge, and match history."
 msgstr ""
 
 #. translators: HTML <strong> and </strong> tags.
-#: admin/class-admin.php:345
+#: admin/class-admin.php:339
 msgid "This will %1$s not %2$s clear your current settings or games."
 msgstr ""
 
-#: admin/class-admin.php:346
+#: admin/class-admin.php:340
 msgid "You will need to manually delete game data or reinstall to reset everything."
 msgstr ""
 
 #. translators: HTML <strong> and </strong> tags.
-#: admin/class-admin.php:350
+#: admin/class-admin.php:344
 msgid "Enter the word %1$s DELETE %2$s in the 'Confirm' box below to proceed."
 msgstr ""
 
-#: admin/class-admin.php:353, admin/class-tournament.php:122, includes/classes/class-tournamatch-match-list-table.php:474, templates/page-trn-report-dashboard.php:104, templates/single-trn-match-confirm.php:95, templates/single-trn-match.php:85
+#: admin/class-admin.php:347, admin/class-tournament.php:122, includes/classes/class-tournamatch-match-list-table.php:474, templates/page-trn-report-dashboard.php:104, templates/single-trn-match-confirm.php:95, templates/single-trn-match.php:85
 msgid "Confirm"
 msgstr ""
 
-#: admin/class-admin.php:499, includes/shortcodes/class-table-shortcodes.php:213, includes/shortcodes/class-table-shortcodes.php:681, templates/single-trn-challenge-create.php:43, templates/single-trn-challenge.php:39, templates/single-trn-ladder-join.php:52, templates/single-trn-match-confirm.php:30, templates/single-trn-player-dashboard.php:82
+#: admin/class-admin.php:491, includes/shortcodes/class-table-shortcodes.php:213, includes/shortcodes/class-table-shortcodes.php:681, templates/single-trn-challenge-create.php:43, templates/single-trn-challenge.php:39, templates/single-trn-ladder-join.php:52, templates/single-trn-match-confirm.php:30, templates/single-trn-player-dashboard.php:82
 msgid "Ladder"
 msgstr ""
 
-#: admin/class-admin.php:501, admin/tournament-registrations.php:76, includes/shortcodes/class-table-shortcodes.php:772, templates/single-trn-match-confirm.php:33, templates/single-trn-tournament-register.php:44, templates/single-trn-tournament-replace.php:44
+#: admin/class-admin.php:493, admin/tournament-registrations.php:76, includes/shortcodes/class-table-shortcodes.php:772, templates/single-trn-match-confirm.php:33, templates/single-trn-tournament-register.php:44, templates/single-trn-tournament-replace.php:44
 msgid "Tournament"
 msgstr ""
 
-#: admin/class-admin.php:502, includes/shortcodes/class-table-shortcodes.php:683, includes/shortcodes/class-table-shortcodes.php:774, templates/single-trn-ladder-join.php:73, templates/single-trn-tournament-register.php:65
+#: admin/class-admin.php:494, includes/shortcodes/class-table-shortcodes.php:683, includes/shortcodes/class-table-shortcodes.php:774, templates/single-trn-ladder-join.php:73, templates/single-trn-tournament-register.php:65
 msgid "Team"
 msgstr ""
 
-#: admin/class-admin.php:503
+#: admin/class-admin.php:495
 msgid "Other"
 msgstr ""
 
-#: admin/class-admin.php:506, admin/class-admin.php:713
+#: admin/class-admin.php:498, admin/class-admin.php:705
 msgid "License"
 msgstr ""
 
-#: admin/class-admin.php:513
+#: admin/class-admin.php:505
 msgid "Ladder Settings"
 msgstr ""
 
-#: admin/class-admin.php:517
+#: admin/class-admin.php:509
 msgid "Draw Results"
 msgstr ""
 
-#: admin/class-admin.php:522, admin/class-admin.php:538, admin/class-admin.php:557, admin/class-admin.php:600, admin/class-admin.php:633, admin/class-admin.php:649, admin/class-admin.php:679, admin/class-admin.php:695, admin/class-ladder.php:354
+#: admin/class-admin.php:514, admin/class-admin.php:530, admin/class-admin.php:549, admin/class-admin.php:592, admin/class-admin.php:625, admin/class-admin.php:641, admin/class-admin.php:671, admin/class-admin.php:687, admin/class-ladder.php:354
 msgid "Disabled"
 msgstr ""
 
-#: admin/class-admin.php:525, admin/class-admin.php:541, admin/class-admin.php:554, admin/class-admin.php:597, admin/class-admin.php:630, admin/class-admin.php:646, admin/class-admin.php:676, admin/class-admin.php:692, admin/class-ladder.php:350
+#: admin/class-admin.php:517, admin/class-admin.php:533, admin/class-admin.php:546, admin/class-admin.php:589, admin/class-admin.php:622, admin/class-admin.php:638, admin/class-admin.php:668, admin/class-admin.php:684, admin/class-ladder.php:350
 msgid "Enabled"
 msgstr ""
 
-#: admin/class-admin.php:528
+#: admin/class-admin.php:520
 msgid "Toggles the display of draws on report results, ladder standings, and win-loss records."
 msgstr ""
 
-#: admin/class-admin.php:533
+#: admin/class-admin.php:525
 msgid "Open Play"
 msgstr ""
 
-#: admin/class-admin.php:544
+#: admin/class-admin.php:536
 msgid "Toggles whether competitors may report matches without first creating a challenge."
 msgstr ""
 
-#: admin/class-admin.php:549
+#: admin/class-admin.php:541
 msgid "Can Leave Ladder"
 msgstr ""
 
-#: admin/class-admin.php:560
+#: admin/class-admin.php:552
 msgid "Permits a player or team to leave a ladder."
 msgstr ""
 
-#: admin/class-admin.php:561
+#: admin/class-admin.php:553
 msgid "When a player or team (competitor) leaves a ladder, the standings data associated with this competitor is also erased. A competitor could use this ability to leave a ladder and rejoin to reset his or her rating or points."
 msgstr ""
 
-#: admin/class-admin.php:567, admin/class-admin.php:609, admin/class-admin.php:658, admin/class-admin.php:703, admin/class-game.php:284, admin/class-matche.php:298, templates/single-trn-ladder-competitor-edit.php:91, templates/single-trn-player-edit.php:102, templates/single-trn-team-edit.php:93
+#: admin/class-admin.php:559, admin/class-admin.php:601, admin/class-admin.php:650, admin/class-admin.php:695, admin/class-game.php:284, admin/class-matche.php:298, templates/single-trn-ladder-competitor-edit.php:91, templates/single-trn-player-edit.php:102, templates/single-trn-team-edit.php:93
 msgid "Save"
 msgstr ""
 
-#: admin/class-admin.php:569, admin/class-admin.php:611, admin/class-admin.php:660, admin/class-admin.php:705, admin/class-matche.php:299
+#: admin/class-admin.php:561, admin/class-admin.php:603, admin/class-admin.php:652, admin/class-admin.php:697, admin/class-matche.php:299
 msgid "Cancel"
 msgstr ""
 
-#: admin/class-admin.php:576
+#: admin/class-admin.php:568
 msgid "Tournament Settings"
 msgstr ""
 
-#: admin/class-admin.php:581
+#: admin/class-admin.php:573
 msgid "Tournament Undecided Display"
 msgstr ""
 
-#: admin/class-admin.php:587
+#: admin/class-admin.php:579
 msgid "Enter the text displayed on brackets when a competitor is undecided."
 msgstr ""
 
-#: admin/class-admin.php:592
+#: admin/class-admin.php:584
 msgid "Bracket Seeds"
 msgstr ""
 
-#: admin/class-admin.php:603
+#: admin/class-admin.php:595
 msgid "Display the numeric seed on brackets."
 msgstr ""
 
-#: admin/class-admin.php:618
+#: admin/class-admin.php:610
 msgid "Team Settings"
 msgstr ""
 
-#: admin/class-admin.php:620
+#: admin/class-admin.php:612
 msgid "Carefully consider the consequence of the below team options. If you only permit users to create one team and you host events with various sizes, such as a 2v2 and 4v4, enabling both features may have unintended results. A team signing up for the 2v2 would need four players if the same team was also signed up for the 4v4 (because enforce team minimum required four team members). In addition, enforce team minimum only filters the team when registering for an event. A team may drop players or add new players afterwards."
 msgstr ""
 
-#: admin/class-admin.php:625
+#: admin/class-admin.php:617
 msgid "One Team per Player"
 msgstr ""
 
-#: admin/class-admin.php:636
+#: admin/class-admin.php:628
 msgid "When enabled, players may be a member of only one team at a time."
 msgstr ""
 
-#: admin/class-admin.php:641
+#: admin/class-admin.php:633
 msgid "Enforce Team Minimum"
 msgstr ""
 
-#: admin/class-admin.php:652
+#: admin/class-admin.php:644
 msgid "A team must meet the minimum team size to join an event."
 msgstr ""
 
-#: admin/class-admin.php:667
+#: admin/class-admin.php:659
 msgid "Additional Settings"
 msgstr ""
 
-#: admin/class-admin.php:671
+#: admin/class-admin.php:663
 msgid "Include Bootstrap Scripts"
 msgstr ""
 
-#: admin/class-admin.php:682
+#: admin/class-admin.php:674
 msgid "Recommended if your template doesn't use Bootstrap. This will include Bootstrap 4 sandboxed to the #trn CSS namespace."
 msgstr ""
 
-#: admin/class-admin.php:687
+#: admin/class-admin.php:679
 msgid "Display User Email Addresses"
 msgstr ""
 
-#: admin/class-admin.php:698
+#: admin/class-admin.php:690
 msgid "Enable or disable displaying users' email addresses."
 msgstr ""
 
-#: admin/class-admin.php:767, admin/class-admin.php:740
+#: admin/class-admin.php:759, admin/class-admin.php:732
 msgid "License Key"
 msgstr ""
 
-#: admin/class-admin.php:792
+#: admin/class-admin.php:784
 msgid "Activate"
 msgstr ""
 
-#: admin/class-admin.php:742, admin/class-ladder.php:390, includes/classes/class-tournamatch-match-list-table.php:57, includes/classes/class-tournamatch-tournament-list-table.php:35, includes/shortcodes/class-table-shortcodes.php:217, templates/single-trn-challenge.php:68, templates/single-trn-match.php:137, templates/single-trn-player-dashboard.php:86
+#: admin/class-admin.php:734, admin/class-ladder.php:390, includes/classes/class-tournamatch-match-list-table.php:57, includes/classes/class-tournamatch-tournament-list-table.php:35, includes/shortcodes/class-table-shortcodes.php:217, templates/single-trn-challenge.php:68, templates/single-trn-match.php:137, templates/single-trn-player-dashboard.php:86
 msgid "Status"
 msgstr ""
 
-#: admin/class-admin.php:745
+#: admin/class-admin.php:737
 msgid "Expires"
 msgstr ""
 
@@ -590,7 +590,7 @@ msgstr ""
 msgid "The ladder has been updated."
 msgstr ""
 
-#: admin/class-matche.php:206, admin/class-matche.php:784, includes/services/class-matche.php:72
+#: admin/class-matche.php:206, admin/class-matche.php:791, includes/services/class-matche.php:72
 msgid "Admin confirmed"
 msgstr ""
 
