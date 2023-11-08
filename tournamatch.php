@@ -4,14 +4,14 @@
  *
  * @package     tournamatch
  * @author      Tournamatch
- * @copyright   2022 MessyHair, LLC
+ * @copyright   2023 MessyHair, LLC
  * @license     GPL-2.0+
  *
  * @wordpress-plugin
  * Plugin Name: Tournamatch
  * Plugin URI: https://www.tournamatch.com/
  * Description: Ladder and tournament plugin for eSports and online gaming leagues.
- * Version: 4.5.0
+ * Version: 4.6.0
  * Author: Tournamatch
  * Author URI: https://www.tournamatch.com
  * Text Domain: tournamatch
@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.5.0' );
+define( 'TOURNAMATCH_VERSION', '4.6.0' );
 define( 'TOURNAMATCH_API_VERSION', '4.5.0' );
 define( 'TOURNAMATCH_API', 'https://www.tournamatch.com/api' );
 define( 'TOURNAMATCH_EXTENSIONS_ENABLED', true );
