@@ -46,7 +46,7 @@ import { trn } from './tournamatch.js';
 
                 console.log(`modal was confirmed for link ${link.dataset.competitorId}`);
                 let xhr = new XMLHttpRequest();
-                xhr.open('DELETE', `${options.api_url}ladder-competitors/${link.dataset.competitorId}`);
+                xhr.open('DELETE', `${options.api_url}ladder-competitors/${link.dataset.competitorId}?admin=1`);
                 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 xhr.setRequestHeader('X-WP-Nonce', options.rest_nonce);
                 xhr.onload = function () {

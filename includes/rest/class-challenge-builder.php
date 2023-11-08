@@ -122,11 +122,13 @@ class Challenge_Builder extends Controller {
 			}
 		}
 
-		$response = array(
+		$data = array(
 			'ladder_id'   => $ladder_id,
 			'challenger'  => $challengers,
 			'competitors' => $competitors,
 		);
+
+		$response = $this->prepare_item_for_response( (object) $data, $request );
 
 		return rest_ensure_response( $response );
 	}

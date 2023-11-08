@@ -699,10 +699,16 @@ class Matche {
 				check_admin_referer( 'tournamatch-bulk-matches' );
 
 				$match_id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : null;
+				$match    = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}trn_matches WHERE match_id = %d", $match_id ) );
 
 				$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_matches` WHERE `match_id` = %d LIMIT 1", $match_id ) );
 
 				// TODO update the player or team wins, losses, draws, and ladder entry table.
+
+				/**
+				 * Fires when a match is deleted.
+				 */
+				do_action( 'trn_match_deleted', $match );
 
 				wp_safe_redirect( trn_route( 'admin.ladders.matches' ) );
 				break;
@@ -732,6 +738,13 @@ class Matche {
 				}
 
 				$wpdb->query( $wpdb->prepare( "UPDATE `{$wpdb->prefix}trn_matches` SET `one_result` = %s, `two_result` = %s, `match_status` = %s WHERE `match_id` = %d", $one_result, $two_result, 'confirmed', $match_id ) );
+
+				$match_for_action = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_matches` WHERE `match_id` = %d", $match_id ) );
+
+				/**
+				 * Fires when a match is confirmed.
+				 */
+				do_action( 'trn_rest_match_confirmed', $match_for_action );
 
 				if ( 'ladders' === $match['competition_type'] ) {
 					$arguments = array(

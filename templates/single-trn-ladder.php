@@ -21,7 +21,7 @@ if ( is_null( $ladder ) ) {
 }
 
 $competitor_type = $ladder->competitor_type;
-$can_join        = is_user_logged_in();
+$can_join        = is_user_logged_in() && ( 'active' === $ladder->status );
 $can_report      = false;
 $can_leave       = false;
 $competitor      = null;
@@ -34,7 +34,7 @@ if ( is_user_logged_in() ) {
 	}
 
 	if ( ! is_null( $competitor ) ) {
-		$can_report = true;
+		$can_report = ( 'active' === $ladder->status );
 		$can_join   = false;
 	}
 }
@@ -68,6 +68,11 @@ trn_get_header();
 				<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $ladder->team_size ) ); ?>
 			<?php endif; ?>
 		</li>
+		<?php if ( trn_is_plugin_active( 'trn-mycred' ) ) : ?>
+			<li class="trn-competition-list-item entry-fee">
+				<?php echo intval( $ladder->mycred_entry_fee ); ?>
+			</li>
+		<?php endif; ?>
 	</ul>
 </div>
 <?php

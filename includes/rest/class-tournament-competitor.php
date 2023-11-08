@@ -116,11 +116,18 @@ class Tournament_Competitor extends Controller {
 			$rules[] = new Requires_Minimum_Members( $request['competitor_id'], $request['tournament_id'], 'tournament' );
 		}
 
+		$rules = apply_filters( 'trn_rest_create_tournament_competitor_rules', $rules, $request );
+
 		$this->verify_business_rules( $rules );
 
 		$wpdb->query( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}trn_tournaments_entries (`tournament_entry_id`, `tournament_id`, `competitor_id`, `competitor_type`, `joined_date`, `seed`) VALUES (NULL, %d, %d, %s, UTC_TIMESTAMP(), NULL)", $request['tournament_id'], $request['competitor_id'], $request['competitor_type'] ) );
 
 		$competitor = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_entry_id` = %d", $wpdb->insert_id ) );
+
+		/**
+		 * Fires when a tournament competitor has been created (a tournament registration).
+		 */
+		do_action( 'trn_rest_tournament_competitor_created', $competitor );
 
 		$request->set_param( 'context', 'edit' );
 

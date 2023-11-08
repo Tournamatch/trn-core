@@ -258,12 +258,21 @@ WHERE 1 = 1 ";
 	public function create_item( $request ) {
 		global $wpdb;
 
-		// one competitor per event.
-		$this->verify_business_rules(
-			array(
-				new One_Competitor_Per_Tournament( $request->get_param( 'tournament_id' ), $request->get_param( 'competitor_id' ) ),
-			)
+		$tournament = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments` WHERE `tournament_id` = %d", $request['tournament_id'] ) );
+		if ( ! $tournament ) {
+			return new \WP_Error( 'rest_custom_error', esc_html__( 'Tournament does not exist.', 'tournamatch' ), array( 'status' => 404 ) );
+		}
+
+		$rules = array(
+			new One_Competitor_Per_Tournament( $request->get_param( 'tournament_id' ), $request->get_param( 'competitor_id' ) ),
 		);
+
+		$rules = apply_filters( 'trn_rest_create_tournament_registration_rules', $rules, $request );
+
+		// Verify business rules.
+		if ( 0 < count( $rules ) ) {
+			$this->verify_business_rules( $rules );
+		}
 
 		$data = array(
 			'tournament_id'   => $request->get_param( 'tournament_id' ),
@@ -275,6 +284,11 @@ WHERE 1 = 1 ";
 		$wpdb->insert( $wpdb->prefix . 'trn_tournaments_entries', $data );
 
 		$registration = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_entry_id` = %d", $wpdb->insert_id ) );
+
+		/**
+		 * Fires when a tournament competitor has been created (a tournament registration).
+		 */
+		do_action( 'trn_rest_tournament_registration_created', $registration );
 
 		$request->set_param( 'context', 'edit' );
 
@@ -324,6 +338,11 @@ WHERE 1 = 1 ";
 		}
 
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_entry_id` = %d", $registration->tournament_entry_id ) );
+
+		/**
+		 * Fires when a tournament competitor has been removed (a tournament registration).
+		 */
+		do_action( 'trn_rest_tournament_registration_deleted', $registration );
 
 		return new \WP_REST_Response(
 			array(

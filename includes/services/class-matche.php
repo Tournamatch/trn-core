@@ -117,12 +117,17 @@ class Matche {
 
 		$wpdb->update( $wpdb->prefix . 'trn_matches', $data, array( 'match_id' => $id ) );
 
-		if ( 'ladders' === $row['competition_type'] ) {
-			$updated_match = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_matches` WHERE `match_id` = %d", $id ), ARRAY_A );
+		$match = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_matches` WHERE `match_id` = %d", $id ) );
 
+		/**
+		 * Fires when a match is confirmed.
+		 */
+		do_action( 'trn_rest_match_confirmed', $match );
+
+		if ( 'ladders' === $row['competition_type'] ) {
 			$arguments = array(
-				$row['one_competitor_id'] => $updated_match['one_result'],
-				$row['two_competitor_id'] => $updated_match['two_result'],
+				$row['one_competitor_id'] => $match->one_result,
+				$row['two_competitor_id'] => $match->two_result,
 			);
 			update_ladder( $row['competition_id'], $arguments );
 		} else {

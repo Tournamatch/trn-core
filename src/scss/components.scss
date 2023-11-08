@@ -232,6 +232,9 @@
     &.platform::before {
       content: '\f11b';
     }
+    &.entry-fee::before {
+      content: '\f51e'; //use f51e for coin // f155 for dollar sign
+    }
   }
 
   &-profile-actions {

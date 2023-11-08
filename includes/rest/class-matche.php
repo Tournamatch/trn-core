@@ -676,6 +676,11 @@ WHERE  `m`.`match_status` != %s",
 
 			$match = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_matches` WHERE `match_id` = %d", $match->match_id ) );
 
+			/**
+			 * Fires when a match is confirmed.
+			 */
+			do_action( 'trn_rest_match_confirmed', $match );
+
 			if ( 'ladders' === $match->competition_type ) {
 				update_ladder(
 					$match->competition_id,
@@ -732,6 +737,11 @@ WHERE  `m`.`match_status` != %s",
 		} else {
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}trn_matches SET one_result = %s, one_ip = %s, two_result = %s, two_ip = %s, match_status = %s WHERE match_id = %d", '', '', '', '', 'scheduled', $match_id ) );
 		}
+
+		/**
+		 * Fires when a match is deleted.
+		 */
+		do_action( 'trn_rest_match_deleted', $match );
 
 		return new \WP_REST_Response(
 			array(

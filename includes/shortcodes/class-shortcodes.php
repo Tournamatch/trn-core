@@ -609,6 +609,10 @@ class Shortcodes {
 					'_wpnonce' => '{NONCE}',
 				)
 			),
+			'routes'           => array(
+				'players' => trn_get_route_roots()['players'],
+				'teams'   => trn_get_route_roots()['teams'],
+			),
 			'site_url'         => site_url(),
 			'can_edit_matches' => current_user_can( 'manage_tournamatch' ),
 			'language'         => array(

@@ -55,6 +55,19 @@ trn_get_header();
 				<input type="hidden" name="ladder_id" id="ladder_id" value="<?php echo intval( $ladder->ladder_id ); ?>">
 			</div>
 		</div>
+		<?php if ( trn_is_plugin_active( 'trn-mycred' ) ) : ?>
+			<?php if ( 0 < intval( $ladder->mycred_entry_fee ) ) : ?>
+				<div class="trn-form-group">
+					<label class="trn-col-sm-3" for="mycred_entry_fee"><?php esc_html_e( 'Entry Fee', 'tournamatch' ); ?>:</label>
+					<div class="trn-col-sm-4">
+						<p class="trn-form-control-static">
+							<?php /* translators: An integer number of tokens. */ ?>
+							<?php echo sprintf( esc_html__( '%d Tokens', 'tournamatch' ), intval( $ladder->mycred_entry_fee ) ); ?>
+						</p>
+					</div>
+				</div>
+			<?php endif; ?>
+		<?php endif; ?>
 		<?php if ( 'teams' === $ladder->competitor_type ) : ?>
 			<div class="trn-form-group">
 				<label class="trn-col-sm-3" for="competitor_id"><?php esc_html_e( 'Team', 'tournamatch' ); ?>:</label>

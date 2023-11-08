@@ -325,7 +325,7 @@ WHERE 1 = 1 ";
 	}
 
 	/**
-	 * Creates a single game item.
+	 * Creates a single team member item.
 	 *
 	 * @since 3.19.0
 	 *
@@ -410,12 +410,14 @@ WHERE `tm`.`team_id` = %d
 			return new \WP_Error( 'rest_custom_error', esc_html__( 'Team member does not exist.', 'tournamatch' ), array( 'status' => 404 ) );
 		}
 
-		// Verify business rules.
-		$this->verify_business_rules(
-			array(
-				new Must_Promote_Before_Leaving( $team_member->team_id, $team_member->user_id ),
-			)
+		$rules = array(
+			new Must_Promote_Before_Leaving( $team_member->team_id, $team_member->user_id ),
 		);
+
+		$rules = apply_filters( 'trn_rest_delete_team_member_rules', $rules, $request, $team_member );
+
+		// Verify business rules.
+		$this->verify_business_rules( $rules );
 
 		$members = $wpdb->get_var( $wpdb->prepare( "SELECT `members` FROM `{$wpdb->prefix}trn_teams` WHERE `team_id` = %d", $team_member->team_id ) );
 

@@ -47,6 +47,19 @@ trn_get_header();
 				<input type="hidden" name="tournament_id" id="tournament_id" value="<?php echo intval( $tournament->tournament_id ); ?>">
 			</div>
 		</div>
+		<?php if ( trn_is_plugin_active( 'trn-mycred' ) ) : ?>
+			<?php if ( 0 < intval( $tournament->mycred_entry_fee ) ) : ?>
+				<div class="trn-form-group">
+					<label class="trn-col-sm-3" for="mycred_entry_fee"><?php esc_html_e( 'Entry Fee', 'tournamatch' ); ?>:</label>
+					<div class="trn-col-sm-4">
+						<p class="trn-form-control-static">
+							<?php /* translators: An integer number of tokens. */ ?>
+							<?php echo sprintf( esc_html__( '%d Tokens', 'tournamatch' ), intval( $tournament->mycred_entry_fee ) ); ?>
+						</p>
+					</div>
+				</div>
+			<?php endif; ?>
+		<?php endif; ?>
 		<?php if ( 'teams' === $tournament->competitor_type ) : ?>
 			<div class="trn-form-group">
 				<label class="trn-col-sm-3" for="competitor_id"><?php esc_html_e( 'Team', 'tournamatch' ); ?>:</label>

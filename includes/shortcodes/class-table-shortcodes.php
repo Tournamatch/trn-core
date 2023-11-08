@@ -543,7 +543,7 @@ class Table_Shortcodes {
 			'current_user_id' => get_current_user_id(),
 			'is_admin'        => current_user_can( 'manage_tournamatch' ),
 			'flag_path'       => plugins_url( 'tournamatch' ) . '/dist/images/flags/',
-			'challenge_url'   => site_url( 'challenges/create?ladder_id=' . $ladder->ladder_id . '&challengee_id=' ),
+			'challenge_url'   => site_url( trn_get_route_roots()['challenges'] . '/create?ladder_id=' . $ladder->ladder_id . '&challengee_id=' ),
 			'can_promote'     => false,
 		);
 

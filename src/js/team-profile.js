@@ -119,17 +119,17 @@ import { trn } from './tournamatch.js';
                 let content = '';
                 if (xhr.status === 200) {
                     let response = JSON.parse(xhr.response);
-                    let memberLinks = [];
+                    // let memberLinks = [];
 
-                    if (response !== null && response.length > 0) {
-                        Array.prototype.forEach.call(response, function (member) {
-                            memberLinks.push(`<a href="../players/${member.user_id}">${member._embedded.player[0].name}</a>`);
-                        });
-
-                        content += memberLinks.join(', ');
-                    } else {
-                        content += `<p class="trn-text-center">${options.language.zero_members}</p>`;
-                    }
+                    // if (response !== null && response.length > 0) {
+                    //     Array.prototype.forEach.call(response, function (member) {
+                    //         memberLinks.push(`<a href="../players/${member.user_id}">${member._embedded.player[0].name}</a>`);
+                    //     });
+                    //
+                    //     content += memberLinks.join(', ');
+                    // } else {
+                    //     content += `<p class="trn-text-center">${options.language.zero_members}</p>`;
+                    // }
                     if (options.is_logged_in) {
                         evaluateButtonStates(response);
                     }

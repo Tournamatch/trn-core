@@ -11,7 +11,7 @@
  * Plugin Name: Tournamatch
  * Plugin URI: https://www.tournamatch.com/
  * Description: Ladder and tournament plugin for eSports and online gaming leagues.
- * Version: 4.4.2
+ * Version: 4.5.0
  * Author: Tournamatch
  * Author URI: https://www.tournamatch.com
  * Text Domain: tournamatch
@@ -32,10 +32,10 @@ defined( 'ABSPATH' ) || exit;
  *  - MINOR version when you add-functionality in a backwards-compatible manner.
  *  - PATCH version when you make backwards-compatible bug fixes.
  */
-define( 'TOURNAMATCH_VERSION', '4.4.2' );
-define( 'TOURNAMATCH_API_VERSION', '4.3.0' );
+define( 'TOURNAMATCH_VERSION', '4.5.0' );
+define( 'TOURNAMATCH_API_VERSION', '4.5.0' );
 define( 'TOURNAMATCH_API', 'https://www.tournamatch.com/api' );
-define( 'TOURNAMATCH_ADD_ONS_ENABLED', true );
+define( 'TOURNAMATCH_EXTENSIONS_ENABLED', true );
 
 /* setup path variables, database, and includes */
 define( '__TRNPATH', plugin_dir_path( __FILE__ ) );
@@ -48,7 +48,7 @@ if ( file_exists( __TRNPATH . 'tournamatch.dev.php' ) ) {
 
 // Common includes.
 require_once __TRNPATH . 'includes/data-access.php';
-require_once __TRNPATH . 'includes/add-ons.php';
+require_once __TRNPATH . 'includes/extensions.php';
 require_once __TRNPATH . 'includes/classes/class-tournamatch-email.php';
 require_once __TRNPATH . 'includes/classes/class-tournamatch-online-users.php';
 
@@ -115,6 +115,7 @@ require_once __TRNPATH . 'includes/rules/class-team-name-required.php';
 require_once __TRNPATH . 'includes/rules/class-must-promote-before-leaving.php';
 require_once __TRNPATH . 'includes/rules/class-unique-player-name.php';
 require_once __TRNPATH . 'includes/rules/class-password-must-match.php';
+require_once __TRNPATH . 'includes/rules/class-exact-team-size-required.php';
 
 require_once __TRNPATH . 'includes/services/class-matche.php';
 
@@ -381,7 +382,7 @@ if ( ! function_exists( 'email_eliminated' ) ) {
 				'email' => $loser->email,
 				'name'  => $loser->display_name,
 			],
-			__( 'Eliminated from Tournament', 'tournamatch' ),
+			esc_html__( 'Eliminated from Tournament', 'tournamatch' ),
 			$data
 		);
 	}
@@ -712,6 +713,14 @@ if ( ! function_exists( 'update_ladder' ) ) {
 				}
 			}
 		);
+
+		$arguments = array(
+			'ladder'      => $ladder,
+			'update_time' => $time,
+			'results'     => $competitor_ids,
+		);
+
+		do_action( 'trn_update_ladder_competitors', $arguments );
 	}
 }
 
@@ -746,9 +755,9 @@ if ( ! function_exists( 'update_tournament' ) ) {
 		$match_count           = 0;
 		$next_spots            = array();
 
-		for ( $round = 0; $round < $total_rounds; $round++ ) {
+		for ( $round = 0; $round < $total_rounds; $round ++ ) {
 
-			for ( $spot = 1; $spot <= $current_round_matches; $spot++ ) {
+			for ( $spot = 1; $spot <= $current_round_matches; $spot ++ ) {
 				$next_spots[ $spot + $match_count ] = (int) ( $match_count + $current_round_matches + ceil( $spot / 2 ) );
 			}
 
@@ -785,6 +794,8 @@ if ( ! function_exists( 'update_tournament' ) ) {
 			}
 		}
 
+		email_eliminated( $tournament_id, $match->spot );
+
 	}
 }
 
@@ -802,7 +813,7 @@ if ( ! function_exists( 'initialize_tournament' ) ) {
 		global $wpdb;
 
 		$tournament    = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments` WHERE `tournament_id` = %d", $tournament_id ) );
-		$competitors   = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE tournament_id = %d ORDER BY tournament_entry_id", $tournament_id ) );
+		$competitors   = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_id` = %d ORDER BY `tournament_entry_id`", $tournament_id ) );
 		$required_size = intval( $tournament->bracket_size );
 
 		if ( count( $competitors ) < $required_size ) {
@@ -840,6 +851,33 @@ if ( ! function_exists( 'initialize_tournament' ) ) {
 		}
 
 		$wpdb->update( $wpdb->prefix . 'trn_tournaments', array( 'status' => 'in_progress' ), array( 'tournament_id' => $tournament_id ) );
+
+		if ( 'players' === $tournament->competitor_type ) {
+			$user_ids = array_column( $competitors, 'competitor_id' );
+		} else {
+			$team_ids = array_column( $competitors, 'competitor_id' );
+			$team_ids = array_map( 'intval', $team_ids );
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$user_ids = $wpdb->get_col( "SELECT `user_id` FROM `{$wpdb->prefix}trn_teams_members` WHERE `team_id` IN (" . implode( ', ', $team_ids ) . ')', $tournament_id );
+		}
+
+		$user_ids = array_map( 'intval', $user_ids );
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$email_list = $wpdb->get_results( "SELECT * FROM `{$wpdb->prefix}users` WHERE `ID` IN (" . implode( ', ', $user_ids ) . ')' );
+		foreach ( $email_list as $user ) {
+			do_action(
+				'trn_notify_tournament_started',
+				[
+					'email' => $user->user_email,
+					'name'  => $user->display_name,
+				],
+				esc_html__( 'Tournament Started', 'tournamatch' ),
+				array(
+					'tournament_name' => esc_html( $tournament->name ),
+					'brackets_link'   => trn_route( 'tournaments.single.brackets', array( 'id' => $tournament_id ) ),
+				)
+			);
+		}
 
 		return true;
 	}
@@ -1752,6 +1790,75 @@ if ( ! function_exists( 'trn_esc_route_e' ) ) {
 	}
 }
 
+if ( ! function_exists( 'trn_get_route_roots' ) ) {
+	/**
+	 * Returns a collection of route roots for each Tournamatch page.
+	 *
+	 * @return array
+	 */
+	function trn_get_route_roots() {
+		static $route_roots;
+
+		if ( is_null( $route_roots ) ) {
+			$required = array(
+				'challenges',
+				'games',
+				'ladders',
+				'ladder-competitors',
+				'matches',
+				'players',
+				'report',
+				'teams',
+				'tournaments',
+			);
+
+			$required = array_combine( $required, $required );
+
+			/**
+			 * Filters the collection of Tournamatch route roots.
+			 *
+			 * @since 4.5.0
+			 *
+			 * @param array $required The array of strings representing the root route paths.
+			 */
+			$route_roots = apply_filters( 'trn_route_roots', $required );
+
+			$route_roots = array_unique( $route_roots );
+			$route_roots = array_merge( $required, $route_roots );
+		}
+
+		return $route_roots;
+	}
+}
+
+if ( ! function_exists( 'trn_build_routes_from_array' ) ) {
+	/**
+	 * Recursively builds a list of routes from the given route data.
+	 *
+	 * @param string $route_prefix The current URL prefix for this route data.
+	 * @param string $route_group The current route name for this route data.
+	 * @param array  $route_data The route data to process.
+	 *
+	 * @return array Tournamatch routes.
+	 */
+	function trn_build_routes_from_array( $route_prefix, $route_group, $route_data ) {
+		$routes = array();
+		foreach ( $route_data as $name => $path ) {
+			if ( is_array( $path ) ) {
+				$routes = array_merge( $routes, trn_build_routes_from_array( $route_prefix, "{$route_group}.{$name}", $path ) );
+			} else {
+				$name = ( 0 === strlen( $name ) ) ? $route_group : "{$route_group}.{$name}";
+				if ( 0 === strlen( $path ) ) {
+					$routes = array_merge( $routes, array( $name => "{$route_prefix}" ) );
+				} else {
+					$routes = array_merge( $routes, array( $name => "{$route_prefix}/{$path}" ) );
+				}
+			}
+		}
+		return $routes;
+	};
+}
+
 if ( ! function_exists( 'trn_route' ) ) {
 	/**
 	 * Retrieves the link for the corresponding route name. Any necessary named place holders must be included in the
@@ -1768,99 +1875,149 @@ if ( ! function_exists( 'trn_route' ) ) {
 	 * @return string The formatted url.
 	 */
 	function trn_route( $name, $parameters = null ) {
-		$routes = [
-			'challenges.archive'               => 'challenges',
-			'challenges.single'                => 'challenges/{id}',
-			'challenges.single.create'         => 'challenges/create',
-			'games.archive'                    => 'games',
-			'ladder-competitors.single.edit'   => 'ladder-competitors/{id}/edit',
-			'ladders.archive'                  => 'ladders',
-			'ladders.single'                   => 'ladders/{id}',
-			'ladders.single.matches'           => 'ladders/{id}#matches',
-			'ladders.single.rules'             => 'ladders/{id}#rules',
-			'ladders.single.standings'         => 'ladders/{id}#standings',
-			'ladders.single.join'              => 'ladders/{id}/join',
-			'matches.archive'                  => 'matches',
-			'matches.single'                   => 'matches/{id}',
-			'matches.single.create'            => 'matches/create',
-			'matches.single.confirm'           => 'matches/{id}/confirm',
-			'matches.single.report'            => 'matches/{id}/report',
-			'players.archive'                  => 'players',
-			'players.single'                   => 'players/{id}',
-			'players.single.edit'              => 'players/{id}/edit',
-			'players.single.dashboard'         => 'players/dashboard',
-			'report.page'                      => 'report',
-			'teams.archive'                    => 'teams',
-			'teams.single'                     => 'teams/{id}',
-			'teams.single.create'              => 'teams/create',
-			'teams.single.edit'                => 'teams/{id}/edit',
-			'tournaments.archive'              => 'tournaments',
-			'tournaments.single'               => 'tournaments/{id}',
-			'tournaments.single.brackets'      => 'tournaments/{id}#brackets',
-			'tournaments.single.matches'       => 'tournaments/{id}#matches',
-			'tournaments.single.registered'    => 'tournaments/{id}#registered',
-			'tournaments.single.rules'         => 'tournaments/{id}#rules',
-			'tournaments.single.seeding'       => 'tournaments/{id}#seeding',
-			'tournaments.single.register'      => 'tournaments/{id}/register',
-			'tournaments.single.replace'       => 'tournaments/{id}/replace',
+		static $routes;
 
-			'tournament.clear'                 => 'report/?&mode=clear&match_id={match_id}',
+		if ( is_null( $routes ) ) {
+			$routes_map = array(
+				'challenges'         => array(
+					'archive' => '',
+					'single'  => array(
+						''       => '{id}',
+						'create' => 'create',
+					),
+				),
+				'games'              => array(
+					'archive' => '',
+				),
+				'ladders'            => array(
+					'archive' => '',
+					'single'  => array(
+						''          => '{id}',
+						'matches'   => '{id}#matches',
+						'rules'     => '{id}#rules',
+						'standings' => '{id}#standings',
+						'join'      => '{id}/join',
+					),
+				),
+				'ladder-competitors' => array(
+					'single.edit' => '{id}/edit',
+				),
+				'matches'            => array(
+					'archive' => '',
+					'single'  => array(
+						''        => '{id}',
+						'create'  => 'create',
+						'confirm' => '{id}/confirm',
+						'report'  => '{id}/report',
+					),
+				),
+				'players'            => array(
+					'archive' => '',
+					'single'  => array(
+						''          => '{id}',
+						'edit'      => '{id}/edit',
+						'dashboard' => 'dashboard',
+					),
+				),
+				'report'             => array(
+					'page' => '',
+				),
+				'teams'              => array(
+					'archive' => '',
+					'single'  => array(
+						''       => '{id}',
+						'create' => 'create',
+						'edit'   => '{id}/edit',
+					),
+				),
+				'tournaments'        => array(
+					'archive' => '',
+					'single'  => array(
+						''           => '{id}',
+						'brackets'   => '{id}#brackets',
+						'matches'    => '{id}#matches',
+						'registered' => '{id}#registered',
+						'rules'      => '{id}#rules',
+						'seeding'    => '{id}#seeding',
+						'register'   => '{id}/register',
+						'replace'    => '{id}/replace',
+					),
+				),
+			);
 
-			// Magic email links.
-			'magic.accept-team-invitation'     => 'teams/accept/{join_code}',
-			'magic.match-confirm-result'       => 'confirm/{reference_id}',
+			$route_roots = trn_get_route_roots();
 
-			// Begin admin routes.
-			'admin.games'                      => 'admin.php?page=trn-games',
-			'admin.upload-game-image'          => 'admin.php?page=games',
-			'admin.games.edit'                 => 'admin.php?page=trn-games&id={id}&action=edit',
-			'admin.games.delete'               => 'admin.php?page=trn-games&id={id}&action=delete',
-			'admin.games.delete-confirm'       => 'admin.php?page=trn-games&id={id}&action=delete-confirm',
+			$routes = array();
+			foreach ( $routes_map as $route_key => $route_value ) {
+				if ( array_key_exists( $route_key, $route_roots ) ) {
+					$routes = array_merge( $routes, trn_build_routes_from_array( $route_roots[ $route_key ], $route_key, $route_value ) );
+				}
+			}
 
-			'admin.ranks'                      => 'admin.php?page=ranks',
-			'admin.save-rank'                  => 'admin.php?page=ranks&id={id}',
+			$routes = array_merge(
+				$routes,
+				array(
+					'tournament.clear'                 => 'report/?&mode=clear&match_id={match_id}',
 
-			'admin.tournaments'                => 'admin.php?page=trn-tournaments',
-			'admin.tournaments.create'         => 'admin.php?page=trn-tournaments-new',
-			'admin.tournaments.seed'           => 'admin.php?page=trn-tournaments&id={id}&action=seed',
-			'admin.tournaments.start'          => 'admin.php?page=trn-tournaments&id={id}&action=start',
-			'admin.tournaments.edit'           => 'admin.php?page=trn-tournaments&id={id}&action=edit',
-			'admin.tournaments.clone'          => 'admin.php?page=trn-tournaments&id={id}&action=clone',
-			'admin.tournaments.delete'         => 'admin.php?page=trn-tournaments&id={id}&action=delete',
-			'admin.tournaments.delete-confirm' => 'admin.php?page=trn-tournaments&id={id}&action=delete-confirm',
-			'admin.tournaments.finish'         => 'admin.php?page=trn-tournaments&id={id}&action=finish',
-			'admin.tournaments.reset'          => 'admin.php?page=trn-tournaments&id={id}&action=reset',
-			'admin.tournaments.reset-confirm'  => 'admin.php?page=trn-tournaments&id={id}&action=reset-confirm',
-			'admin.tournaments.registration'   => 'admin.php?page=trn-tournaments&id={id}&action=registration',
-			'admin.tournaments.remove-entry'   => 'admin.php?page=trn-tournaments&tournament_entry_id={tournament_entry_id}&action=remove-entry',
+					// Magic email links.
+					'magic.accept-team-invitation'     => 'teams/accept/{join_code}',
+					'magic.match-confirm-result'       => 'confirm/{reference_id}',
 
-			'admin.ladders'                    => 'admin.php?page=trn-ladders',
-			'admin.ladders.create'             => 'admin.php?page=trn-ladders-new',
-			'admin.ladders.delete'             => 'admin.php?page=trn-ladders&id={id}&action=delete',
-			'admin.ladders.delete-confirm'     => 'admin.php?page=trn-ladders&id={id}&action=delete-confirm',
-			'admin.ladders.edit'               => 'admin.php?page=trn-ladders&id={id}&action=edit',
-			'admin.ladders.clone'              => 'admin.php?page=trn-ladders&id={id}&action=clone',
+					// Begin admin routes.
+					'admin.games'                      => 'admin.php?page=trn-games',
+					'admin.upload-game-image'          => 'admin.php?page=games',
+					'admin.games.edit'                 => 'admin.php?page=trn-games&id={id}&action=edit',
+					'admin.games.delete'               => 'admin.php?page=trn-games&id={id}&action=delete',
+					'admin.games.delete-confirm'       => 'admin.php?page=trn-games&id={id}&action=delete-confirm',
 
-			'admin.ladders.matches'            => 'admin.php?page=trn-ladders-matches',
-			'admin.ladders.report-match'       => 'admin.php?page=trn-ladders-matches',
-			'admin.ladders.edit-match'         => 'admin.php?page=trn-ladders-matches&action=edit-match&id={id}',
-			'admin.ladders.save-match'         => 'admin-post.php?action=trn-update-match&id={id}',
-			'admin.ladders.confirm-match'      => 'admin.php?page=trn-ladders-matches&action=confirm&id={id}',
-			'admin.ladders.delete-match'       => 'admin.php?page=trn-ladders-matches&action=delete&id={id}',
-			'admin.ladders.resolve-match'      => 'admin.php?page=trn-ladders-matches&action=resolve&id={id}&winner_id={winner_id}',
-			'admin.matches.select-competitors' => 'admin.php?page=trn-ladders-matches&action=select-competitors',
+					'admin.ranks'                      => 'admin.php?page=ranks',
+					'admin.save-rank'                  => 'admin.php?page=ranks&id={id}',
 
-			'admin.tournaments.matches'        => 'admin.php?page=trn-tournaments-matches',
-			'admin.tournaments.clear-match'    => 'admin.php?page=trn-tournaments-matches&action=clear&id={id}',
-			'admin.tournaments.confirm-match'  => 'admin.php?page=trn-tournaments-matches&action=confirm&id={id}',
-			'admin.tournaments.advance-match'  => 'admin.php?page=trn-tournaments-matches&action=advance&id={id}&winner_id={winner_id}',
+					'admin.tournaments'                => 'admin.php?page=trn-tournaments',
+					'admin.tournaments.create'         => 'admin.php?page=trn-tournaments-new',
+					'admin.tournaments.seed'           => 'admin.php?page=trn-tournaments&id={id}&action=seed',
+					'admin.tournaments.start'          => 'admin.php?page=trn-tournaments&id={id}&action=start',
+					'admin.tournaments.edit'           => 'admin.php?page=trn-tournaments&id={id}&action=edit',
+					'admin.tournaments.clone'          => 'admin.php?page=trn-tournaments&id={id}&action=clone',
+					'admin.tournaments.delete'         => 'admin.php?page=trn-tournaments&id={id}&action=delete',
+					'admin.tournaments.delete-confirm' => 'admin.php?page=trn-tournaments&id={id}&action=delete-confirm',
+					'admin.tournaments.finish'         => 'admin.php?page=trn-tournaments&id={id}&action=finish',
+					'admin.tournaments.reset'          => 'admin.php?page=trn-tournaments&id={id}&action=reset',
+					'admin.tournaments.reset-confirm'  => 'admin.php?page=trn-tournaments&id={id}&action=reset-confirm',
+					'admin.tournaments.registration'   => 'admin.php?page=trn-tournaments&id={id}&action=registration',
+					'admin.tournaments.remove-entry'   => 'admin.php?page=trn-tournaments&tournament_entry_id={tournament_entry_id}&action=remove-entry',
 
-			'admin.tournamatch.settings'       => 'admin.php?page=trn-settings',
-			'admin.tournamatch.save-settings'  => 'admin-post.php?action=trn-save-settings',
-			'admin.tools'                      => 'admin.php?page=tools',
-			'admin.clear-data'                 => 'admin.php?page=trn-tools&action=clear-data',
-			'admin.purge-data'                 => 'admin.php?page=tools&action=purge-data',
-		];
+					'admin.ladders'                    => 'admin.php?page=trn-ladders',
+					'admin.ladders.create'             => 'admin.php?page=trn-ladders-new',
+					'admin.ladders.delete'             => 'admin.php?page=trn-ladders&id={id}&action=delete',
+					'admin.ladders.delete-confirm'     => 'admin.php?page=trn-ladders&id={id}&action=delete-confirm',
+					'admin.ladders.edit'               => 'admin.php?page=trn-ladders&id={id}&action=edit',
+					'admin.ladders.clone'              => 'admin.php?page=trn-ladders&id={id}&action=clone',
+
+					'admin.ladders.matches'            => 'admin.php?page=trn-ladders-matches',
+					'admin.ladders.report-match'       => 'admin.php?page=trn-ladders-matches',
+					'admin.ladders.edit-match'         => 'admin.php?page=trn-ladders-matches&action=edit-match&id={id}',
+					'admin.ladders.save-match'         => 'admin-post.php?action=trn-update-match&id={id}',
+					'admin.ladders.confirm-match'      => 'admin.php?page=trn-ladders-matches&action=confirm&id={id}',
+					'admin.ladders.delete-match'       => 'admin.php?page=trn-ladders-matches&action=delete&id={id}',
+					'admin.ladders.resolve-match'      => 'admin.php?page=trn-ladders-matches&action=resolve&id={id}&winner_id={winner_id}',
+					'admin.matches.select-competitors' => 'admin.php?page=trn-ladders-matches&action=select-competitors',
+
+					'admin.tournaments.matches'        => 'admin.php?page=trn-tournaments-matches',
+					'admin.tournaments.clear-match'    => 'admin.php?page=trn-tournaments-matches&action=clear&id={id}',
+					'admin.tournaments.confirm-match'  => 'admin.php?page=trn-tournaments-matches&action=confirm&id={id}',
+					'admin.tournaments.advance-match'  => 'admin.php?page=trn-tournaments-matches&action=advance&id={id}&winner_id={winner_id}',
+
+					'admin.tournamatch.settings'       => 'admin.php?page=trn-settings',
+					'admin.tournamatch.save-settings'  => 'admin-post.php?action=trn-save-settings',
+					'admin.tools'                      => 'admin.php?page=tools',
+					'admin.clear-data'                 => 'admin.php?page=trn-tools&action=clear-data',
+					'admin.purge-data'                 => 'admin.php?page=tools&action=purge-data',
+				)
+			);
+
+			$routes = apply_filters( 'trn_route_list', $routes );
+		}
 
 		if ( ! array_key_exists( $name, $routes ) ) {
 			throw new InvalidArgumentException( "TRN route '$name' does not exist." );
@@ -1996,36 +2153,69 @@ if ( ! function_exists( 'trn_add_rewrite_rules' ) ) {
 	 * @since 4.0.0
 	 */
 	function trn_add_rewrite_rules() {
-		add_rewrite_rule( 'challenges[/]?$', 'index.php?pagename=trn_challenges_archive', 'top' );
-		add_rewrite_rule( 'challenges/create[/]?$', 'index.php?pagename=trn_challenges_single_create', 'top' );
-		add_rewrite_rule( 'challenges/([0-9]+)[/]?$', 'index.php?pagename=trn_challenges_single&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'games[/]?$', 'index.php?pagename=trn_games_archive', 'top' );
-		add_rewrite_rule( 'ladders[/]?$', 'index.php?pagename=trn_ladders_archive', 'top' );
-		add_rewrite_rule( 'ladders/([0-9]+)[/]?$', 'index.php?pagename=trn_ladders_single&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'ladders/([0-9]+)/join[/]?$', 'index.php?pagename=trn_ladders_single_join&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'ladder-competitors/([0-9]+)/edit[/]?$', 'index.php?pagename=trn_ladder_competitors_single_edit&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'matches[/]?$', 'index.php?pagename=trn_matches_archive', 'top' );
-		add_rewrite_rule( 'matches/create[/]?$', 'index.php?pagename=trn_matches_single_create', 'top' );
-		add_rewrite_rule( 'matches/([0-9]+)[/]?$', 'index.php?pagename=trn_matches_single&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'matches/([0-9]+)/report[/]?$', 'index.php?pagename=trn_matches_single_report&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'matches/([0-9]+)/confirm[/]?$', 'index.php?pagename=trn_matches_single_confirm&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'players[/]?$', 'index.php?pagename=trn_players_archive', 'top' );
-		add_rewrite_rule( 'players/([0-9]+)[/]?$', 'index.php?pagename=trn_players_single&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'players/edit[/]?$', 'index.php?pagename=trn_players_single_edit', 'top' );
-		add_rewrite_rule( 'players/([0-9]+)/edit[/]?$', 'index.php?pagename=trn_players_single_edit&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'players/dashboard[/]?$', 'index.php?pagename=trn_players_single_dashboard', 'top' );
-		add_rewrite_rule( 'teams[/]?$', 'index.php?pagename=trn_teams_archive', 'top' );
-		add_rewrite_rule( 'teams/create[/]?$', 'index.php?pagename=trn_teams_single_create', 'top' );
-		add_rewrite_rule( 'teams/([0-9]+)[/]?$', 'index.php?pagename=trn_teams_single&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'teams/([0-9]+)/edit[/]?', 'index.php?pagename=trn_teams_single_edit&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'teams/accept/([A-Za-z0-9]+)[/]?$', 'index.php?pagename=trn_magic_link_page&confirm_hash=$matches[1]', 'top' );
-		add_rewrite_rule( 'tournaments[/]?$', 'index.php?pagename=trn_tournaments_archive', 'top' );
-		add_rewrite_rule( 'tournaments/([0-9]+)[/]?$', 'index.php?pagename=trn_tournaments_single&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'tournaments/([0-9]+)/replace[/]?$', 'index.php?pagename=trn_tournaments_single_replace&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'tournaments/([0-9]+)/register[/]?$', 'index.php?pagename=trn_tournaments_single_register&id=$matches[1]', 'top' );
-		add_rewrite_rule( 'report[/]?$', 'index.php?pagename=trn_report_dashboard_page', 'top' );
-		add_rewrite_rule( 'confirm/([A-Za-z0-9]+)[/]?$', 'index.php?pagename=trn_magic_link_page&confirm_hash=$matches[1]', 'top' );
+		$rules = array(
+			'challenges'         => array(
+				'[/]?$'          => 'index.php?pagename=trn_challenges_archive',
+				'/create[/]?$'   => 'index.php?pagename=trn_challenges_single_create',
+				'/([0-9]+)[/]?$' => 'index.php?pagename=trn_challenges_single&id=$matches[1]',
+			),
+			'confirm'            => array(
+				'/([A-Za-z0-9]+)[/]?$' => 'index.php?pagename=trn_magic_link_page&confirm_hash=$matches[1]',
+			),
+			'games'              => array(
+				'[/]?$' => 'index.php?pagename=trn_games_archive',
+			),
+			'ladders'            => array(
+				'[/]?$'               => 'index.php?pagename=trn_ladders_archive',
+				'/([0-9]+)[/]?$'      => 'index.php?pagename=trn_ladders_single&id=$matches[1]',
+				'/([0-9]+)/join[/]?$' => 'index.php?pagename=trn_ladders_single_join&id=$matches[1]',
+			),
+			'ladder-competitors' => array(
+				'/([0-9]+)/edit[/]?$' => 'index.php?pagename=trn_ladder_competitors_single_edit&id=$matches[1]',
+			),
+			'matches'            => array(
+				'[/]?$'                  => 'index.php?pagename=trn_matches_archive',
+				'/create[/]?$'           => 'index.php?pagename=trn_matches_single_create',
+				'/([0-9]+)[/]?$'         => 'index.php?pagename=trn_matches_single&id=$matches[1]',
+				'/([0-9]+)/report[/]?$'  => 'index.php?pagename=trn_matches_single_report&id=$matches[1]',
+				'/([0-9]+)/confirm[/]?$' => 'index.php?pagename=trn_matches_single_confirm&id=$matches[1]',
+			),
+			'players'            => array(
+				'[/]?$'               => 'index.php?pagename=trn_players_archive',
+				'/([0-9]+)[/]?$'      => 'index.php?pagename=trn_players_single&id=$matches[1]',
+				'/edit[/]?$'          => 'index.php?pagename=trn_players_single_edit',
+				'/([0-9]+)/edit[/]?$' => 'index.php?pagename=trn_players_single_edit&id=$matches[1]',
+				'/dashboard[/]?$'     => 'index.php?pagename=trn_players_single_dashboard',
+			),
+			'report'             => array(
+				'[/]?$' => 'index.php?pagename=trn_report_dashboard_page',
+			),
+			'teams'              => array(
+				'[/]?$'                       => 'index.php?pagename=trn_teams_archive',
+				'/create[/]?$'                => 'index.php?pagename=trn_teams_single_create',
+				'/([0-9]+)[/]?$'              => 'index.php?pagename=trn_teams_single&id=$matches[1]',
+				'/([0-9]+)/edit[/]?'          => 'index.php?pagename=trn_teams_single_edit&id=$matches[1]',
+				'/accept/([A-Za-z0-9]+)[/]?$' => 'index.php?pagename=trn_magic_link_page&confirm_hash=$matches[1]',
+			),
+			'tournaments'        => array(
+				'[/]?$'                   => 'index.php?pagename=trn_tournaments_archive',
+				'/([0-9]+)[/]?$'          => 'index.php?pagename=trn_tournaments_single&id=$matches[1]',
+				'/([0-9]+)/replace[/]?$'  => 'index.php?pagename=trn_tournaments_single_replace&id=$matches[1]',
+				'/([0-9]+)/register[/]?$' => 'index.php?pagename=trn_tournaments_single_register&id=$matches[1]',
+			),
+		);
+
+		$route_roots = trn_get_route_roots();
+		foreach ( $rules as $root => $root_rules ) {
+			if ( array_key_exists( $root, $route_roots ) ) {
+				foreach ( $root_rules as $name => $rule ) {
+					$regex = $route_roots[ $root ] . $name;
+					add_rewrite_rule( $regex, $rule, 'top' );
+				}
+			}
+		}
 	}
+
 	add_action( 'init', 'trn_add_rewrite_rules' );
 }
 
@@ -2122,9 +2312,9 @@ if ( ! function_exists( 'trn_locate_template' ) ) {
 	 * @param string|array $template_names Template file(s) to search for, in order.
 	 * @param bool         $load If true the template file will be loaded if it is found.
 	 * @param bool         $require_once Whether to require_once or require. Default true.
-	 *                                                                                    Has no effect if $load is false.
+	 *                                                                                            Has no effect if $load is false.
 	 * @param array        $args Optional. Additional arguments passed to the template.
-	 *                                                                     Default empty array.
+	 *                                                                            Default empty array.
 	 *
 	 * @return string The template filename if one is located.
 	 */
@@ -2736,7 +2926,7 @@ if ( ! function_exists( 'trn_verify_plugin_dependencies' ) ) {
 			echo '<p>';
 			array_walk(
 				$errors,
-				function( $error ) {
+				function ( $error ) {
 					echo esc_html( $error ) . '<br>';
 				}
 			);
@@ -2863,13 +3053,15 @@ if ( ! function_exists( 'trn_user_form' ) ) {
 		 */
 		$fields = apply_filters( "trn_{$form_id}_fields", $fields, $context );
 		?>
-		<form action="<?php echo esc_url( $action ); ?>" method="<?php echo esc_attr( $method ); ?>" id="<?php echo esc_attr( $form_id ); ?>"
-		<?php
-		$remaining_attributes = array_diff( $attributes, array( 'action', 'method', 'id' ) );
-		foreach ( $remaining_attributes as $name => $value ) {
-			echo ' ' . esc_html( $name ) . '="' . esc_attr( $value ) . '"';
-		}
-		?>
+		<form action="<?php echo esc_url( $action ); ?>"
+				method="<?php echo esc_attr( $method ); ?>"
+				id="<?php echo esc_attr( $form_id ); ?>"
+			<?php
+			$remaining_attributes = array_diff( $attributes, array( 'action', 'method', 'id' ) );
+			foreach ( $remaining_attributes as $name => $value ) {
+				echo ' ' . esc_html( $name ) . '="' . esc_attr( $value ) . '"';
+			}
+			?>
 		>
 			<?php
 			foreach ( $fields as $field ) {
@@ -2883,141 +3075,142 @@ if ( ! function_exists( 'trn_user_form' ) ) {
 				$description = isset( $field['description'] ) ? $field['description'] : null;
 				?>
 				<div class="trn-form-group trn-row">
-					<label for="<?php echo esc_attr( $id ); ?>" class="trn-col-sm-3"><?php echo esc_html( $label ); ?></label>
-						<?php
+					<label for="<?php echo esc_attr( $id ); ?>"
+							class="trn-col-sm-3"><?php echo esc_html( $label ); ?></label>
+					<?php
 
-						switch ( $type ) {
-							case 'static':
-								echo '<div class="trn-col-sm-4">';
-								echo '<p class="trn-form-control-static">' . esc_html( $field['value'] ) . '</p>';
-								break;
-							case 'select':
-								echo '<div class="trn-col-sm-4">';
+					switch ( $type ) {
+						case 'static':
+							echo '<div class="trn-col-sm-4">';
+							echo '<p class="trn-form-control-static">' . esc_html( $field['value'] ) . '</p>';
+							break;
+						case 'select':
+							echo '<div class="trn-col-sm-4">';
 
-								$options = isset( $field['options'] ) ? $field['options'] : array();
-								$options = is_array( $options ) ? $options : array();
-								$options = array_map(
-									function( $option ) {
-											$default_option = array(
-												'content' => $option,
-												'value'   => $option,
-											);
+							$options = isset( $field['options'] ) ? $field['options'] : array();
+							$options = is_array( $options ) ? $options : array();
+							$options = array_map(
+								function ( $option ) {
+									$default_option = array(
+										'content' => $option,
+										'value'   => $option,
+									);
 
-										if ( is_array( $option ) ) {
-											return array_merge( $default_option, $option );
-										} else {
-											return $default_option;
-										}
-									},
-									$options
-								);
-
-								/**
-								 * Filters an array of options for a select drop down.
-								 *
-								 * The dynamic portion of the hook name, `$form_id`, refers to the client form's HTML id.
-								 * The dynamic portion of the hook name, `$id`, refers to the client form input's HTML id.
-								 *
-								 * Possible hook names include:
-								 *
-								 *  - `trn_trn_tournament_form_game_id_options`
-								 *  - `trn_trn_tournament_form_initial_seeding_options`
-								 *  - `trn_trn_ladder_form_ranking_method_options`
-								 *
-								 * @since 4.1.0
-								 *
-								 * @param stdClass $options An array of 'content' 'value' items to display.
-								 * @param stdClass $context The data context item we are rendering a form for.
-								 */
-								$options = apply_filters( "trn_{$form_id}_{$id}_options", $options, $context );
-
-								if ( 0 < count( $options ) ) {
-									echo '<select class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"';
-									if ( $required ) {
-										echo ' required';
+									if ( is_array( $option ) ) {
+										return array_merge( $default_option, $option );
+									} else {
+										return $default_option;
 									}
-									if ( $disabled ) {
-										echo ' disabled';
+								},
+								$options
+							);
+
+							/**
+							 * Filters an array of options for a select drop down.
+							 *
+							 * The dynamic portion of the hook name, `$form_id`, refers to the client form's HTML id.
+							 * The dynamic portion of the hook name, `$id`, refers to the client form input's HTML id.
+							 *
+							 * Possible hook names include:
+							 *
+							 *  - `trn_trn_tournament_form_game_id_options`
+							 *  - `trn_trn_tournament_form_initial_seeding_options`
+							 *  - `trn_trn_ladder_form_ranking_method_options`
+							 *
+							 * @since 4.1.0
+							 *
+							 * @param stdClass $options An array of 'content' 'value' items to display.
+							 * @param stdClass $context The data context item we are rendering a form for.
+							 */
+							$options = apply_filters( "trn_{$form_id}_{$id}_options", $options, $context );
+
+							if ( 0 < count( $options ) ) {
+								echo '<select class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"';
+								if ( $required ) {
+									echo ' required';
+								}
+								if ( $disabled ) {
+									echo ' disabled';
+								}
+								echo '>';
+								foreach ( $options as $option ) {
+									$option_value   = isset( $option['value'] ) ? $option['value'] : '';
+									$option_content = isset( $option['content'] ) ? $option['content'] : '';
+									echo '<option value="' . esc_attr( $option_value ) . '"';
+									if ( $value === $option_value ) {
+										echo ' selected';
 									}
-									echo '>';
-									foreach ( $options as $option ) {
-										$option_value   = isset( $option['value'] ) ? $option['value'] : '';
-										$option_content = isset( $option['content'] ) ? $option['content'] : '';
-										echo '<option value="' . esc_attr( $option_value ) . '"';
-										if ( $value === $option_value ) {
-											echo ' selected';
-										}
-										echo '>' . esc_html( $option_content ) . '</option>';
-									}
+									echo '>' . esc_html( $option_content ) . '</option>';
+								}
 
-									echo '</select>';
-								} else {
-									echo '<p>' . esc_html__( 'No items exist.', 'tournamatch' ) . '</p>';
-								}
-								break;
-							case 'thumbnail':
-								echo '<div class="trn-col-sm-9">';
-								echo '<input class="trn-form-control-file" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="file" value="' . intval( $value ) . '"';
-								if ( $required ) {
-									echo ' required';
-								}
-								if ( $disabled ) {
-									echo ' disabled';
-								}
-								echo '/>';
-								break;
-							case 'textarea':
-								echo '<div class="trn-col-sm-6">';
-								echo '<textarea class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="10"';
-								if ( $required ) {
-									echo ' required';
-								}
-								if ( $disabled ) {
-									echo ' disabled';
-								}
-								echo '>' . esc_textarea( $value ) . '</textarea>';
-								break;
-
-							case 'number':
-								echo '<div class="trn-col-sm-4">';
-								echo '<input class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="number" value="' . intval( $value ) . '"';
-								if ( $required ) {
-									echo ' required';
-								}
-								if ( $disabled ) {
-									echo ' disabled';
-								}
-								echo '/>';
-								break;
-
-							case 'text':
-							default:
-								echo '<div class="trn-col-sm-4">';
-								echo '<input class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="text" value="' . esc_attr( $value ) . '"';
-								if ( $required ) {
-									echo ' required';
-								}
-								if ( $disabled ) {
-									echo ' disabled';
-								}
-								if ( isset( $field['maxlength'] ) && ( 0 < intval( $field['maxlength'] ) ) ) {
-									echo ' maxlength="' . intval( $field['maxlength'] ) . '"';
-								}
-								echo '/>';
-								break;
-						}
-
-						if ( ! is_null( $description ) ) {
-							echo '<small class="trn-form-text trn-text-muted">' . esc_html( $description ) . '</small>';
-						}
-
-						if ( 'thumbnail' === $type ) {
-							if ( isset( $field['thumbnail'] ) && ( $field['thumbnail'] instanceof \Closure ) ) {
-								call_user_func( $field['thumbnail'], $context );
+								echo '</select>';
+							} else {
+								echo '<p>' . esc_html__( 'No items exist.', 'tournamatch' ) . '</p>';
 							}
+							break;
+						case 'thumbnail':
+							echo '<div class="trn-col-sm-9">';
+							echo '<input class="trn-form-control-file" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="file" value="' . intval( $value ) . '"';
+							if ( $required ) {
+								echo ' required';
+							}
+							if ( $disabled ) {
+								echo ' disabled';
+							}
+							echo '/>';
+							break;
+						case 'textarea':
+							echo '<div class="trn-col-sm-6">';
+							echo '<textarea class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="10"';
+							if ( $required ) {
+								echo ' required';
+							}
+							if ( $disabled ) {
+								echo ' disabled';
+							}
+							echo '>' . esc_textarea( $value ) . '</textarea>';
+							break;
+
+						case 'number':
+							echo '<div class="trn-col-sm-4">';
+							echo '<input class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="number" value="' . intval( $value ) . '"';
+							if ( $required ) {
+								echo ' required';
+							}
+							if ( $disabled ) {
+								echo ' disabled';
+							}
+							echo '/>';
+							break;
+
+						case 'text':
+						default:
+							echo '<div class="trn-col-sm-4">';
+							echo '<input class="trn-form-control" id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="text" value="' . esc_attr( $value ) . '"';
+							if ( $required ) {
+								echo ' required';
+							}
+							if ( $disabled ) {
+								echo ' disabled';
+							}
+							if ( isset( $field['maxlength'] ) && ( 0 < intval( $field['maxlength'] ) ) ) {
+								echo ' maxlength="' . intval( $field['maxlength'] ) . '"';
+							}
+							echo '/>';
+							break;
+					}
+
+					if ( ! is_null( $description ) ) {
+						echo '<small class="trn-form-text trn-text-muted">' . esc_html( $description ) . '</small>';
+					}
+
+					if ( 'thumbnail' === $type ) {
+						if ( isset( $field['thumbnail'] ) && ( $field['thumbnail'] instanceof \Closure ) ) {
+							call_user_func( $field['thumbnail'], $context );
 						}
-						?>
-					</div>
+					}
+					?>
+				</div>
 				</div>
 				<?php
 			}
@@ -3027,7 +3220,10 @@ if ( ! function_exists( 'trn_user_form' ) ) {
 			?>
 			<div class="trn-form-group trn-row">
 				<div class="trn-offset-sm-3 trn-col-sm-4">
-					<input id="<?php echo esc_attr( $submit_id ); ?>" class="trn-button" type="submit" value="<?php echo esc_attr( $submit_content ); ?>">
+					<input id="<?php echo esc_attr( $submit_id ); ?>"
+							class="trn-button"
+							type="submit"
+							value="<?php echo esc_attr( $submit_content ); ?>">
 				</div>
 			</div>
 		</form>
@@ -3071,7 +3267,9 @@ if ( ! function_exists( 'trn_admin_form' ) ) {
 		$submit_id      = isset( $form['submit']['id'] ) ? $form['submit']['id'] : '';
 		$submit_content = isset( $form['submit']['content'] ) ? $form['submit']['content'] : __( 'Submit', 'tournamatch' );
 		?>
-		<form action="<?php echo esc_url( $action ); ?>" method="<?php echo esc_attr( $method ); ?>" id="<?php echo esc_attr( $form_id ); ?>">
+		<form action="<?php echo esc_url( $action ); ?>"
+				method="<?php echo esc_attr( $method ); ?>"
+				id="<?php echo esc_attr( $form_id ); ?>">
 			<?php
 			foreach ( $sections as $section ) :
 				$section_id = isset( $section['id'] ) ? $section['id'] : null;
@@ -3102,96 +3300,42 @@ if ( ! function_exists( 'trn_admin_form' ) ) {
 				$fields = apply_filters( "trn_{$form_id}_{$section_id}_fields", $fields, $context );
 
 				?>
-			<h2 class="title"><?php echo esc_html( $content ); ?></h2>
-			<table class="form-table">
-				<?php
-				foreach ( $fields as $field ) :
-					$id          = isset( $field['id'] ) ? $field['id'] : '';
-					$label       = isset( $field['label'] ) ? $field['label'] : $field['label'];
-					$name        = isset( $field['name'] ) ? $field['name'] : $id;
-					$type        = isset( $field['type'] ) ? $field['type'] : 'text';
-					$required    = isset( $field['required'] ) ? $field['required'] : false;
-					$disabled    = isset( $field['disabled'] ) ? $field['disabled'] : false;
-					$value       = isset( $field['value'] ) ? $field['value'] : '';
-					$description = isset( $field['description'] ) ? $field['description'] : null;
+				<h2 class="title"><?php echo esc_html( $content ); ?></h2>
+				<table class="form-table">
+					<?php
+					foreach ( $fields as $field ) :
+						$id          = isset( $field['id'] ) ? $field['id'] : '';
+						$label       = isset( $field['label'] ) ? $field['label'] : $field['label'];
+						$name        = isset( $field['name'] ) ? $field['name'] : $id;
+						$type        = isset( $field['type'] ) ? $field['type'] : 'text';
+						$required    = isset( $field['required'] ) ? $field['required'] : false;
+						$disabled    = isset( $field['disabled'] ) ? $field['disabled'] : false;
+						$value       = isset( $field['value'] ) ? $field['value'] : '';
+						$description = isset( $field['description'] ) ? $field['description'] : null;
 
-					?>
-					<tr class="form-field <?php echo esc_attr( "trn_{$id}_row" ); ?>">
-						<th scope="row">
-							<label for="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $label ); ?>
-								<?php if ( $required ) : ?>
-									<span class="description"><?php esc_html_e( '(required)', 'tournamatch' ); ?></span>
-								<?php endif; ?>
-							</label>
-						</th>
-						<td>
-							<?php
+						?>
+						<tr class="form-field <?php echo esc_attr( "trn_{$id}_row" ); ?>">
+							<th scope="row">
+								<label for="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $label ); ?>
+									<?php if ( $required ) : ?>
+										<span class="description"><?php esc_html_e( '(required)', 'tournamatch' ); ?></span>
+									<?php endif; ?>
+								</label>
+							</th>
+							<td>
+								<?php
 
-							switch ( $type ) {
-								case 'datetime-local':
-									if ( 0 < strlen( $value ) ) {
-										$start_date = new \DateTime( $value . 'Z' );
-										$start_date->setTimezone( new \DateTimeZone( wp_timezone_string() ) );
-										$start_date = $start_date->format( 'Y-m-d\TH:i' );
-									} else {
-										$start_date = '';
-									}
+								switch ( $type ) {
+									case 'datetime-local':
+										if ( 0 < strlen( $value ) ) {
+											$start_date = new \DateTime( $value . 'Z' );
+											$start_date->setTimezone( new \DateTimeZone( wp_timezone_string() ) );
+											$start_date = $start_date->format( 'Y-m-d\TH:i' );
+										} else {
+											$start_date = '';
+										}
 
-									echo '<input id="' . esc_attr( $id ) . '_field" name="' . esc_attr( $name ) . '_field" type="datetime-local" value="' . esc_attr( $start_date ) . '"';
-									if ( $required ) {
-										echo ' required';
-									}
-									if ( $disabled ) {
-										echo ' disabled';
-									}
-									echo '>';
-									echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="hidden" value="' . esc_attr( $start_date ) . '"';
-									if ( $disabled ) {
-										echo ' disabled';
-									}
-									echo '>';
-									break;
-
-								case 'select':
-									$options = isset( $field['options'] ) ? $field['options'] : array();
-									$options = is_array( $options ) ? $options : array();
-									$options = array_map(
-										function( $option ) {
-												$default_option = array(
-													'content' => $option,
-													'value'   => $option,
-												);
-
-											if ( is_array( $option ) ) {
-												return array_merge( $default_option, $option );
-											} else {
-												return $default_option;
-											}
-										},
-										$options
-									);
-
-									/**
-									 * Filters an array of options for a select drop down.
-									 *
-									 * The dynamic portion of the hook name, `$form_id`, refers to the admin form's HTML id.
-									 * The dynamic portion of the hook name, `$id`, refers to the admin form input's HTML id.
-									 *
-									 * Possible hook names include:
-									 *
-									 *  - `trn_trn_tournament_form_game_id_options`
-									 *  - `trn_trn_tournament_form_initial_seeding_options`
-									 *  - `trn_trn_ladder_form_ranking_method_options`
-									 *
-									 * @since 4.1.0
-									 *
-									 * @param stdClass $options An array of 'content' 'value' items to display.
-									 * @param stdClass $context The data context item we are rendering a form for.
-									 */
-									$options = apply_filters( "trn_{$form_id}_{$id}_options", $options, $context );
-
-									if ( 0 < count( $options ) ) {
-										echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"';
+										echo '<input id="' . esc_attr( $id ) . '_field" name="' . esc_attr( $name ) . '_field" type="datetime-local" value="' . esc_attr( $start_date ) . '"';
 										if ( $required ) {
 											echo ' required';
 										}
@@ -3199,68 +3343,125 @@ if ( ! function_exists( 'trn_admin_form' ) ) {
 											echo ' disabled';
 										}
 										echo '>';
-										foreach ( $options as $option ) {
-											$option_value   = isset( $option['value'] ) ? $option['value'] : '';
-											$option_content = isset( $option['content'] ) ? $option['content'] : '';
-											echo '<option value="' . esc_attr( $option_value ) . '"';
-											if ( $value === $option_value ) {
-												echo ' selected';
-											}
-											echo '>' . esc_html( $option_content ) . '</option>';
+										echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="hidden" value="' . esc_attr( $start_date ) . '"';
+										if ( $disabled ) {
+											echo ' disabled';
 										}
+										echo '>';
+										break;
 
-										echo '</select>';
-									} else {
-										echo '<p>' . esc_html__( 'No items exist.', 'tournamatch' ) . '</p>';
-									}
-									break;
+									case 'select':
+										$options = isset( $field['options'] ) ? $field['options'] : array();
+										$options = is_array( $options ) ? $options : array();
+										$options = array_map(
+											function ( $option ) {
+												$default_option = array(
+													'content' => $option,
+													'value'   => $option,
+												);
 
-								case 'textarea':
-									echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="10"';
-									if ( $required ) {
-										echo ' required';
-									}
-									if ( $disabled ) {
-										echo ' disabled';
-									}
-									echo '>' . esc_textarea( $value ) . '</textarea>';
-									break;
+												if ( is_array( $option ) ) {
+													return array_merge( $default_option, $option );
+												} else {
+													return $default_option;
+												}
+											},
+											$options
+										);
 
-								case 'number':
-									echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="number" value="' . intval( $value ) . '"';
-									if ( $required ) {
-										echo ' required';
-									}
-									if ( $disabled ) {
-										echo ' disabled';
-									}
-									echo '/>';
-									break;
+										/**
+										 * Filters an array of options for a select drop down.
+										 *
+										 * The dynamic portion of the hook name, `$form_id`, refers to the admin form's HTML id.
+										 * The dynamic portion of the hook name, `$id`, refers to the admin form input's HTML id.
+										 *
+										 * Possible hook names include:
+										 *
+										 *  - `trn_trn_tournament_form_game_id_options`
+										 *  - `trn_trn_tournament_form_initial_seeding_options`
+										 *  - `trn_trn_ladder_form_ranking_method_options`
+										 *
+										 * @since 4.1.0
+										 *
+										 * @param stdClass $options An array of 'content' 'value' items to display.
+										 * @param stdClass $context The data context item we are rendering a form for.
+										 */
+										$options = apply_filters( "trn_{$form_id}_{$id}_options", $options, $context );
 
-								case 'text':
-								default:
-									echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="text" value="' . esc_attr( $value ) . '"';
-									if ( $required ) {
-										echo ' required';
-									}
-									if ( $disabled ) {
-										echo ' disabled';
-									}
-									echo '/>';
-									break;
-							}
+										if ( 0 < count( $options ) ) {
+											echo '<select id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '"';
+											if ( $required ) {
+												echo ' required';
+											}
+											if ( $disabled ) {
+												echo ' disabled';
+											}
+											echo '>';
+											foreach ( $options as $option ) {
+												$option_value   = isset( $option['value'] ) ? $option['value'] : '';
+												$option_content = isset( $option['content'] ) ? $option['content'] : '';
+												echo '<option value="' . esc_attr( $option_value ) . '"';
+												if ( $value === $option_value ) {
+													echo ' selected';
+												}
+												echo '>' . esc_html( $option_content ) . '</option>';
+											}
 
-							if ( ! is_null( $description ) ) {
-								echo '<p class="description">' . esc_html( $description ) . '</p>';
-							}
-							?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</table>
-		<?php endforeach; ?>
+											echo '</select>';
+										} else {
+											echo '<p>' . esc_html__( 'No items exist.', 'tournamatch' ) . '</p>';
+										}
+										break;
+
+									case 'textarea':
+										echo '<textarea id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" rows="10"';
+										if ( $required ) {
+											echo ' required';
+										}
+										if ( $disabled ) {
+											echo ' disabled';
+										}
+										echo '>' . esc_textarea( $value ) . '</textarea>';
+										break;
+
+									case 'number':
+										echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="number" value="' . intval( $value ) . '"';
+										if ( $required ) {
+											echo ' required';
+										}
+										if ( $disabled ) {
+											echo ' disabled';
+										}
+										echo '/>';
+										break;
+
+									case 'text':
+									default:
+										echo '<input id="' . esc_attr( $id ) . '" name="' . esc_attr( $name ) . '" type="text" value="' . esc_attr( $value ) . '"';
+										if ( $required ) {
+											echo ' required';
+										}
+										if ( $disabled ) {
+											echo ' disabled';
+										}
+										echo '/>';
+										break;
+								}
+
+								if ( ! is_null( $description ) ) {
+									echo '<p class="description">' . esc_html( $description ) . '</p>';
+								}
+								?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</table>
+			<?php endforeach; ?>
 			<p class="submit">
-				<input type="submit" id="<?php echo esc_attr( $submit_id ); ?>" value="<?php echo esc_attr( $submit_content ); ?>" class="button button-primary">
+				<input type="submit"
+						id="<?php echo esc_attr( $submit_id ); ?>"
+						value="<?php echo esc_attr( $submit_content ); ?>"
+						class="button button-primary">
 			</p>
 		</form>
 		<?php
@@ -3351,7 +3552,7 @@ if ( ! function_exists( 'trn_single_template_tab_views' ) ) {
 		?>
 		<ul class="trn-nav trn-mt-md">
 			<?php foreach ( $views as $view_id => $view ) : ?>
-				<li class="trn-nav-item" role="presentation" >
+				<li class="trn-nav-item" role="presentation">
 					<?php
 
 					if ( isset( $view['heading'] ) && is_object( $view['heading'] ) && ( $view['heading'] instanceof \Closure ) ) {
@@ -3382,7 +3583,10 @@ if ( ! function_exists( 'trn_single_template_tab_views' ) ) {
 
 		<div class="trn-tab-content">
 			<?php foreach ( $views as $view_id => $view ) : ?>
-				<div id="<?php echo esc_attr( $view_id ); ?>" class="trn-tab-pane" role="tabpanel" aria-labelledby="<?php echo esc_attr( $view_id ); ?>-tab">
+				<div id="<?php echo esc_attr( $view_id ); ?>"
+						class="trn-tab-pane"
+						role="tabpanel"
+						aria-labelledby="<?php echo esc_attr( $view_id ); ?>-tab">
 					<?php
 
 					if ( isset( $view['content'] ) && is_object( $view['content'] ) && ( $view['content'] instanceof \Closure ) ) {
@@ -3736,21 +3940,28 @@ if ( ! function_exists( 'trn_display_media_input' ) ) {
 		wp_enqueue_media();
 		?>
 		<div id="<?php echo esc_attr( $wrapper_id ); ?>" class="trn-upload-image-preview-wrapper">
-			<img id="<?php echo esc_attr( $preview_id ); ?>" class="trn-upload-image-preview<?php echo esc_attr( $img_class ); ?>" src="<?php echo esc_attr( $src ); ?>" width="<?php echo esc_attr( $width ); ?>" height="<?php echo esc_attr( $height ); ?>">
+			<img id="<?php echo esc_attr( $preview_id ); ?>"
+					class="trn-upload-image-preview<?php echo esc_attr( $img_class ); ?>"
+					src="<?php echo esc_attr( $src ); ?>"
+					width="<?php echo esc_attr( $width ); ?>"
+					height="<?php echo esc_attr( $height ); ?>">
 		</div>
 		<input
-			id="<?php echo esc_attr( $button_id ); ?>"
-			name="<?php echo esc_attr( $button_id ); ?>"
-			type="button"
-			class="button trn-media-upload-button"
-			value="<?php echo esc_attr( $button ); ?>"
-			data-post-id="<?php echo esc_attr( $value ); ?>"
-			data-preview-id="<?php echo esc_attr( $preview_id ); ?>"
-			data-input-id="<?php echo esc_attr( $id ); ?>"
-			data-title="<?php echo esc_attr__( 'Select image', 'tournamatch' ); ?>"
-			data-button-text="<?php echo esc_attr__( 'Select image', 'tournamatch' ); ?>"
+				id="<?php echo esc_attr( $button_id ); ?>"
+				name="<?php echo esc_attr( $button_id ); ?>"
+				type="button"
+				class="button trn-media-upload-button"
+				value="<?php echo esc_attr( $button ); ?>"
+				data-post-id="<?php echo esc_attr( $value ); ?>"
+				data-preview-id="<?php echo esc_attr( $preview_id ); ?>"
+				data-input-id="<?php echo esc_attr( $id ); ?>"
+				data-title="<?php echo esc_attr__( 'Select image', 'tournamatch' ); ?>"
+				data-button-text="<?php echo esc_attr__( 'Select image', 'tournamatch' ); ?>"
 		/>
-		<input id="<?php echo esc_attr( $id ); ?>" name="<?php echo esc_attr( $id ); ?>" type="hidden" value="<?php echo esc_attr( $value ); ?>">
+		<input id="<?php echo esc_attr( $id ); ?>"
+				name="<?php echo esc_attr( $id ); ?>"
+				type="hidden"
+				value="<?php echo esc_attr( $value ); ?>">
 		<?php
 
 		wp_register_script( 'trn-admin-media-upload', plugins_url( 'dist/js/media-upload.js', __FILE__ ), array( 'jquery' ), '4.3.0', true );
@@ -3868,14 +4079,14 @@ if ( ! function_exists( 'trn_competitor_header_banner_style' ) ) {
 
 add_action(
 	'tournamatch_after_header',
-	function() {
+	function () {
 		echo '<div class="trn-page"><div class="trn-container">';
 	}
 );
 
 add_action(
 	'tournamatch_before_footer',
-	function() {
+	function () {
 		echo '</div></div>';
 	}
 );
@@ -3895,5 +4106,108 @@ if ( ! function_exists( 'trn_migrate_users' ) ) {
 			$display_name = $row['display_name'];
 			$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_players_profiles` (`user_id`, `display_name`, `location`, `flag`, `profile`, `avatar`) VALUES (%d, %s, '', 'blank.gif', '', 'blank.gif')", $id, $display_name ) );
 		}
+	}
+}
+
+if ( ! function_exists( 'trn_get_rest_image_property' ) ) {
+	/**
+	 * Inserts a record into the Tournamatch player table for each WordPress user.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param int    $image_id The attachment id of the image.
+	 * @param string $size The size of the image.
+	 *
+	 * @return false|array False if the attachment is not found or an array.
+	 */
+	function trn_get_rest_image_property( $image_id, $size = 'thumbnail' ) {
+		$source = wp_get_attachment_image_src( $image_id, $size );
+
+		return ! $source ? null : array_combine( array( 'source', 'width', 'height', 'resized' ), $source );
+	}
+}
+
+if ( ! function_exists( 'trn_get_tournament_finish_places' ) ) {
+	/**
+	 * Retrieves the finish position of tournament competitors.
+	 *
+	 * @since 4.5.0
+	 *
+	 * @param integer $tournament_id Tournament id.
+	 *
+	 * @return mixed Array of places and competitor ids.
+	 */
+	function trn_get_tournament_finish_places( $tournament_id ) {
+		global $wpdb;
+
+		// Get final match.
+		$final_match = $wpdb->get_row(
+			$wpdb->prepare(
+				"
+SELECT * 
+FROM `{$wpdb->prefix}trn_matches`
+WHERE `competition_type` = 'tournaments'
+  AND `competition_id` = %d
+  AND `match_status` = 'confirmed'
+  AND `spot` IS NOT NULL
+ORDER BY `spot` DESC        
+LIMIT 1
+    ",
+				$tournament_id
+			)
+		);
+
+		// Get win totals.
+		$win_totals = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+SELECT DISTINCT `competitor_id`, SUM(`wins`) AS `wins`
+FROM (
+	SELECT `one_competitor_id` AS `competitor_id`, COUNT(DISTINCT `match_id`) AS `wins`
+	FROM `{$wpdb->prefix}trn_matches`
+	WHERE `competition_id` = %d
+  	  AND `competition_type` = 'tournaments'
+  	  AND `one_result` = 'won'
+	GROUP BY `one_competitor_id`
+	UNION
+	SELECT `two_competitor_id` AS `competitor_id`, COUNT(DISTINCT `match_id`) AS `wins`
+	FROM `{$wpdb->prefix}trn_matches`
+	WHERE `competition_id` = %d
+  	  AND `competition_type` = 'tournaments'
+  	  AND `two_result` = 'won'
+	GROUP BY `two_competitor_id`
+    ) AS `derived`
+GROUP BY `competitor_id`
+ORDER BY `wins` DESC",
+				$tournament_id,
+				$tournament_id
+			)
+		);
+
+		$remaining_win_totals = array_values(
+			array_filter(
+				$win_totals,
+				function ( $item ) use ( $final_match ) {
+					return ! in_array(
+						(int) $item->competitor_id,
+						array(
+							(int) $final_match->one_competitor_id,
+							(int) $final_match->two_competitor_id,
+						),
+						true
+					);
+				}
+			)
+		);
+
+		$places[1] = ( 'won' === $final_match->one_result ) ? $final_match->one_competitor_id : $final_match->two_competitor_id;
+		$places[2] = ( 'lost' === $final_match->one_result ) ? $final_match->one_competitor_id : $final_match->two_competitor_id;
+
+		$i = 3;
+		foreach ( $remaining_win_totals as $remaining_win_total ) {
+			$places[ $i ++ ] = $remaining_win_total->competitor_id;
+		}
+
+		return $places;
 	}
 }

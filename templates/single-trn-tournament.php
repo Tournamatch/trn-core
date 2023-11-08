@@ -59,6 +59,11 @@ trn_get_header();
 				<?php echo sprintf( esc_html__( 'Teams (%1$d vs %1$d)', 'tournamatch' ), intval( $tournament->team_size ) ); ?>
 			<?php endif; ?>
 		</li>
+		<?php if ( trn_is_plugin_active( 'trn-mycred' ) ) : ?>
+			<li class="trn-competition-list-item entry-fee">
+				<?php echo intval( $tournament->mycred_entry_fee ); ?>
+			</li>
+		<?php endif; ?>
 	</ul>
 </div>
 <div id="trn-unregister-response"></div>

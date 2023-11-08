@@ -165,21 +165,31 @@ class Challenge extends Controller {
 	public function create_item( $request ) {
 		global $wpdb;
 
-		$user_id        = get_current_user_id();
-		$ladder         = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders` WHERE `ladder_id` = %d", $request['ladder_id'] ) );
-		$challenge_type = ( '0' === $request['challengee_id'] ) ? 'blind' : 'direct';
+		$user_id                   = get_current_user_id();
+		$ladder                    = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders` WHERE `ladder_id` = %d", $request['ladder_id'] ) );
+		$request['challenge_type'] = ( '0' === $request['challengee_id'] ) ? 'blind' : 'direct';
 
 		$rules = array(
 			new Cannot_Challenge_Self( $request['ladder_id'], $request['challengee_id'], $user_id ),
 			new Direct_Challenge_Requires_Enabled( $request['ladder_id'], $request['challengee_id'] ),
 		);
+
+		$rules = apply_filters( 'trn_rest_create_challenge_rules', $rules, $request );
+
 		$this->verify_business_rules( $rules );
 
-		$wpdb->query( $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}trn_challenges` (`challenge_id`, `ladder_id`, `challenge_type`, `challenger_id`, `challengee_id`, `match_time`) VALUES (NULL, %d, %s, %d, %d, %s)", $request['ladder_id'], $challenge_type, $request['challenger_id'], $request['challengee_id'], $request['match_time'] ) );
+		$prepared_post = (array) $this->prepare_item_for_database( $request );
+
+		$wpdb->insert( $wpdb->prefix . 'trn_challenges', $prepared_post );
 
 		$challenge = $wpdb->get_row( $wpdb->prepare( "SELECT `{$wpdb->prefix}trn_challenges`.*, `{$wpdb->prefix}trn_ladders`.`competitor_type` FROM `{$wpdb->prefix}trn_challenges` LEFT JOIN `{$wpdb->prefix}trn_ladders` ON `{$wpdb->prefix}trn_ladders`.`ladder_id` = `{$wpdb->prefix}trn_challenges`.`ladder_id` WHERE `{$wpdb->prefix}trn_challenges`.`challenge_id` = %d", $wpdb->insert_id ) );
 
-		if ( 'direct' === $challenge_type ) {
+		/**
+		 * Fires when a challenges has been created.
+		 */
+		do_action( 'trn_rest_challenge_created', $challenge );
+
+		if ( 'direct' === $request['challenge_type'] ) {
 			$email_details = get_challenge_email_data( $challenge->challenge_id );
 			if ( 'players' === $ladder->competitor_type ) {
 				$challenger_link = trn_route( 'players.single', array( 'id' => $challenge->challenger_id ) );
@@ -232,7 +242,14 @@ class Challenge extends Controller {
 		$params = $request->get_params();
 		$id     = $params['id'];
 
+		$challenge = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_challenges` WHERE challenge_id = %d", $id ) );
+
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_challenges` WHERE `challenge_id` = %d LIMIT 1", $id ) );
+
+		/**
+		 * Fires when a challenges has been created.
+		 */
+		do_action( 'trn_rest_challenge_deleted', $challenge );
 
 		return new \WP_REST_Response(
 			array(
@@ -443,12 +460,14 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 		}
 
 		// to accept, challengee and challenger must be competing on ladder.
-		$this->verify_business_rules(
-			array(
-				new Must_Participate_On_Ladder( $challenge->ladder_id, $challenge->challenger_id ),
-				new Must_Participate_On_Ladder( $challenge->ladder_id, $challenge->challengee_id ),
-			)
+		$rules = array(
+			new Must_Participate_On_Ladder( $challenge->ladder_id, $challenge->challenger_id ),
+			new Must_Participate_On_Ladder( $challenge->ladder_id, $challenge->challengee_id ),
 		);
+
+		$rules = apply_filters( 'trn_rest_accept_challenge_rules', $rules, $request, $challenge );
+
+		$this->verify_business_rules( $rules );
 
 		// create scheduled match from challenge.
 		$insert = array(
@@ -476,6 +495,13 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 		} else {
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}trn_challenges SET challengee_id = %d, match_id = %d, accepted_state='accepted', accepted_at = UTC_TIMESTAMP() WHERE challenge_id = %d", $challenge->challengee_id, $match_id, $id ) );
 		}
+
+		$challenge = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_challenges` WHERE challenge_id = %d", $id ) );
+
+		/**
+		 * Fires when a challenges has been created.
+		 */
+		do_action( 'trn_rest_challenge_accepted', $challenge );
 
 		// Send accept email here to challenger.
 		$email_details = get_challenge_email_data( $id );
@@ -560,6 +586,13 @@ WHERE ((`c`.`accepted_state` = %s ) OR (`c`.`match_time` > UTC_TIMESTAMP() AND `
 		$id     = $params['id'];
 
 		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}trn_challenges SET accepted_state='declined', accepted_at = UTC_TIMESTAMP() WHERE challenge_id = %d", $id ) );
+
+		$challenge = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_challenges` WHERE challenge_id = %d", $id ) );
+
+		/**
+		 * Fires when a challenges has been created.
+		 */
+		do_action( 'trn_rest_challenge_declined', $challenge );
 
 		// Send decline email here to challenger.
 		$email_details = get_challenge_email_data( $id );

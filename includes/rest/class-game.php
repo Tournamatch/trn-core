@@ -363,22 +363,37 @@ class Game extends Controller {
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),
+				'thumbnail_id' => array(
+					'description' => esc_html__( 'The image thumbnail id for the game.', 'tournamatch' ),
+					'type'        => 'integer',
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'default'     => 0,
+				),
 				'thumbnail'    => array(
 					'description' => esc_html__( 'The image thumbnail for the game.', 'tournamatch' ),
 					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $game ) {
+						return trn_get_rest_image_property( $game->thumbnail_id );
+					},
 					'context'     => array( 'view', 'edit', 'embed' ),
-				),
-				'thumbnail_id' => array(
-					'description' => esc_html__( 'The image thumbnail for the game.', 'tournamatch' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit', 'embed' ),
-					'default'     => 0,
+					'readonly'    => true,
 				),
 				'banner_id'    => array(
-					'description' => esc_html__( 'The image banner for the game.', 'tournamatch' ),
+					'description' => esc_html__( 'The image banner id for the game.', 'tournamatch' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'default'     => 0,
+				),
+				'banner'       => array(
+					'description' => esc_html__( 'The image banner for the game.', 'tournamatch' ),
+					'type'        => 'string',
+					'trn-subtype' => 'callable',
+					'trn-get'     => function( $game ) {
+						return trn_get_rest_image_property( $game->banner_id, 'full' );
+					},
+					'context'     => array( 'view', 'edit', 'embed' ),
+					'readonly'    => true,
 				),
 			),
 		);

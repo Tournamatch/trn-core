@@ -44,6 +44,7 @@ trn_get_header();
 				<div class="trn-col-sm-4">
 					<?php if ( isset( $ladder ) ) : ?>
 						<p class="trn-form-control-static"><?php echo esc_html( $ladder->name ); ?></p>
+						<input type="hidden" name="ladder_id" value="<?php echo intval( $ladder_id ); ?>">
 					<?php else : ?>
 						<select id="ladder_id" name="ladder_id" class="trn-form-control">
 							<?php foreach ( $ladders as $ladder_option ) : ?>
@@ -70,8 +71,17 @@ trn_get_header();
 					<input id="match_time" name="match_time" type="hidden" >
 				</div>
 			</div>
+			<?php if ( trn_is_plugin_active( 'trn-mycred' ) ) : ?>
+				<div class="trn-form-group d-none" id="trn-challenge-form-mycred-wager-group">
+					<label for="mycred_wager_amount" class="trn-col-sm-3"><?php esc_html_e( 'Wager', 'tournamatch' ); ?>:</label>
+					<div class="trn-col-sm-4">
+						<input id="mycred_wager_amount" name="mycred_wager_amount" type="number" required class="trn-form-control" autocomplete="off" disabled min="0">
+					</div>
+				</div>
+			<?php endif; ?>
 			<div class="trn-form-group">
 				<div class="trn-col-sm-offset-3 trn-col-sm-9">
+					<div id="trn-create-challenge-form-response"></div>
 					<input type="submit" class="trn-button" id="trn-challenge-button" value="<?php esc_html_e( 'Challenge', 'tournamatch' ); ?>">
 				</div>
 			</div>
@@ -79,7 +89,6 @@ trn_get_header();
 	<?php else : ?>
 		<p><?php esc_html_e( 'You are not participating on any ladders with challenges enabled.', 'tournamatch' ); ?></p>
 	<?php endif; ?>
-
 <?php
 
 if ( 0 < count( $ladders ) ) {

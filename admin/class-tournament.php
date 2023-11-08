@@ -482,9 +482,16 @@ class Tournament {
 				if ( current_user_can( 'manage_tournamatch' ) ) {
 					$id = isset( $_REQUEST['tournament_entry_id'] ) ? intval( $_REQUEST['tournament_entry_id'] ) : 0;
 					if ( 0 !== intval( $id ) ) {
-						$tournament_id = $wpdb->get_var( $wpdb->prepare( "SELECT `tournament_id` FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_entry_id` = %d LIMIT 1", $id ) );
+						$registration = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_entry_id` = %d", $id ) );
+
 						$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_tournaments_entries` WHERE `tournament_entry_id` = %d LIMIT 1", $id ) );
-						wp_safe_redirect( trn_route( 'tournaments.single.registered', [ 'id' => $tournament_id ] ) );
+
+						/**
+						 * Fires when a tournament competitor has been removed (a tournament registration).
+						 */
+						do_action( 'trn_rest_tournament_registration_deleted', $registration );
+
+						wp_safe_redirect( trn_route( 'tournaments.single.registered', [ 'id' => $registration->tournament_id ] ) );
 						exit;
 					}
 				}

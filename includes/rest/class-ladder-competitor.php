@@ -123,9 +123,7 @@ class Ladder_Competitor extends Controller {
 					'permission_callback' => function ( \WP_REST_Request $request ) {
 						global $wpdb;
 
-						$can_manage_tournamatch = current_user_can( 'manage_tournamatch' );
-
-						if ( $can_manage_tournamatch ) {
+						if ( $request->has_param( 'admin' ) && current_user_can( 'manage_tournamatch' ) ) {
 							return true;
 						} else {
 							if ( '1' === trn_get_option( 'can_leave_ladder' ) ) {
@@ -186,6 +184,8 @@ class Ladder_Competitor extends Controller {
 			$rules[] = new Requires_Minimum_Members( $request['competitor_id'], $request['ladder_id'], 'ladder' );
 		}
 
+		$rules = apply_filters( 'trn_rest_create_ladder_competitor_rules', $rules, $request );
+
 		$this->verify_business_rules( $rules );
 
 		$prepared_post = (array) $this->prepare_item_for_database( $request );
@@ -211,6 +211,11 @@ WHERE `le1`.`ladder_entry_id` = %d",
 				$wpdb->insert_id
 			)
 		);
+
+		/**
+		 * Fires when a ladder competitor has been created (a ladder registration).
+		 */
+		do_action( 'trn_rest_ladder_competitor_created', $competitor );
 
 		$request->set_param( 'context', 'edit' );
 
@@ -490,12 +495,17 @@ WHERE `le1`.`ladder_entry_id` = %d",
 		$params = $request->get_params();
 		$id     = $params['id'];
 
-		$competitor = $wpdb->get_row( $wpdb->prepare( "SELECT `le`.`competitor_id`, `l`.`ladder_id` FROM `{$wpdb->prefix}trn_ladders_entries` AS `le` LEFT JOIN `{$wpdb->prefix}trn_ladders` AS `l` ON `le`.`ladder_id` = `l`.`ladder_id` WHERE `le`.`ladder_entry_id` = %d", $id ) );
+		$competitor = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_ladders_entries` AS `le` WHERE `le`.`ladder_entry_id` = %d", $id ) );
 
 		// Delete entry, challenges, pending match results, and petitions.
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_ladders_entries` WHERE `ladder_entry_id` = %d LIMIT 1", $id ) );
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_challenges` WHERE `ladder_id` = %d AND (`challenger_id` = %d OR `challengee_id` = %d) AND `accepted_state` = %s", $competitor->ladder_id, $competitor->competitor_id, $competitor->competitor_id, 'pending' ) );
 		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$wpdb->prefix}trn_matches` WHERE `competition_id` = %d AND `competition_type` = %s AND (`one_competitor_id` = %d OR `two_competitor_id` = %d) AND `match_status` != %s", $competitor->ladder_id, 'ladders', $competitor->competitor_id, $competitor->competitor_id, 'confirmed' ) );
+
+		/**
+		 * Fires when a ladder competitor has been removed (a tournament registration).
+		 */
+		do_action( 'trn_rest_ladder_competitor_deleted', $competitor );
 
 		return new \WP_REST_Response(
 			array(

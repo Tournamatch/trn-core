@@ -76,8 +76,15 @@ import { trn } from './tournamatch.js';
                 p.classList.add('trn-form-control-static');
                 while (challengerField.firstChild) {challengerField.removeChild(challengerField.firstChild); }
                 challengerField.appendChild(p);
+
+                const input = document.createElement('input');
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", "challenger_id");
+                input.setAttribute("value", challenger[0].competitor_id);
+                challengerField.appendChild(input);
             } else {
                 const challengerSelect = document.createElement('select');
+                challengerSelect.setAttribute("name", "challenger_id");
                 challenger.forEach((challenger) => {
                     const opt = document.createElement('option');
                     opt.value = challenger.competitor_id;
@@ -90,6 +97,7 @@ import { trn } from './tournamatch.js';
                     challengerField.setAttribute('data-competitor-id', event.target.value);
                 });
                 challengerField.setAttribute('data-competitor-id', challenger[0].competitor_id);
+                challengerField.setAttribute('value', challenger[0].competitor_id);
             }
         }
 
@@ -102,6 +110,7 @@ import { trn } from './tournamatch.js';
                 challengeeField.appendChild(p);
             } else {
                 const challengeeSelect = document.createElement('select');
+                challengeeSelect.setAttribute("name", "challengee_id");
                 challengees.forEach((challengee) => {
                     const opt = document.createElement('option');
                     opt.value = challengee.competitor_id;
@@ -118,8 +127,10 @@ import { trn } from './tournamatch.js';
                 });
                 if ('0' !== challengeeId) {
                     challengeeField.setAttribute('data-competitor-id', challengeeId);
+                    challengeeField.setAttribute('value', challengeeId);
                 } else {
                     challengeeField.setAttribute('data-competitor-id', challengees[0].competitor_id);
+                    challengeeField.setAttribute('value', challengees[0].competitor_id);
                 }
             }
         }
@@ -140,13 +151,14 @@ import { trn } from './tournamatch.js';
         challengeForm.addEventListener('submit', function (event) {
             event.preventDefault();
 
+            document.getElementById('trn-create-challenge-form-response').innerHTML = ``;
+
             let d = new Date(`${matchTimeInput.value}`);
             let matchTime = document.getElementById(`match_time`);
             matchTime.value = d.toISOString().slice(0, 19).replace('T', ' ');
 
             let xhr = new XMLHttpRequest();
             xhr.open('POST', `${options.api_url}challenges`);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader('X-WP-Nonce', options.rest_nonce);
             xhr.onload = function () {
                 console.log(xhr.response);
@@ -154,16 +166,12 @@ import { trn } from './tournamatch.js';
                     const response = JSON.parse(xhr.response);
                     window.location.href = response.link;
                 } else {
-                    $.event('challenge').dispatchEvent(new CustomEvent('error', { detail: xhr.response } ));
+                    let response = JSON.parse(xhr.response);
+                    document.getElementById('trn-create-challenge-form-response').innerHTML = `<div class="trn-alert trn-alert-danger"><strong>${options.language.failure}</strong>: ${response.message}</div>`;
                 }
             };
 
-            xhr.send($.param({
-                ladder_id: ladderId,
-                challenger_id: challengerField.getAttribute('data-competitor-id'),
-                challengee_id: challengeeField.getAttribute('data-competitor-id'),
-                match_time: matchTime.value,
-            }));
+            xhr.send(new FormData(challengeForm));
         });
     }, false);
 })(trn);
