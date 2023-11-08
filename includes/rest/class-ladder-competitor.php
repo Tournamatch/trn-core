@@ -175,13 +175,21 @@ class Ladder_Competitor extends Controller {
 			return new \WP_Error( 'rest_custom_error', esc_html__( 'Ladder does not exist.', 'tournamatch' ), array( 'status' => 404 ) );
 		}
 
-		$rules = array(
-			new One_Competitor_Per_Ladder( $ladder->ladder_id, get_current_user_id() ),
-		);
+		if ( $request->has_param( 'admin' ) && current_user_can( 'manage_tournamatch' ) ) {
+			$rules = array();
+		} else {
+			if ( ! trn_is_user_or_team_owner( $request['competitor_id'], $request['competitor_type'] ) ) {
+				return new \WP_Error( 'rest_custom_error', esc_html__( 'Insufficient privileges.', 'tournamatch' ), array( 'status' => 403 ) );
+			}
 
-		$enforce_team_minimum = trn_get_option( 'enforce_team_minimum' );
-		if ( ( 1 === (int) $enforce_team_minimum ) && ( 'teams' === $ladder->competitor_type ) ) {
-			$rules[] = new Requires_Minimum_Members( $request['competitor_id'], $request['ladder_id'], 'ladder' );
+			$rules = array(
+				new One_Competitor_Per_Ladder( $ladder->ladder_id, get_current_user_id() ),
+			);
+
+			$enforce_team_minimum = trn_get_option( 'enforce_team_minimum' );
+			if ( ( 1 === (int) $enforce_team_minimum ) && ( 'teams' === $ladder->competitor_type ) ) {
+				$rules[] = new Requires_Minimum_Members( $request['competitor_id'], $request['ladder_id'], 'ladder' );
+			}
 		}
 
 		$rules = apply_filters( 'trn_rest_create_ladder_competitor_rules', $rules, $request );

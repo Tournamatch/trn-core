@@ -129,6 +129,10 @@ class Ladder {
 				<?php
 				break;
 
+			case 'competitors':
+				include __TRNPATH . 'admin/ladder-competitors.php';
+				break;
+
 			default:
 				$list_table = new \Tournamatch_Ladder_List_Table();
 				$list_table->prepare_items();
