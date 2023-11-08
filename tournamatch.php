@@ -342,6 +342,35 @@ if ( ! function_exists( 'trn_get_current_user_team_rank' ) ) {
 	}
 }
 
+if ( ! function_exists( 'trn_is_user_or_team_owner' ) ) {
+	/**
+	 * Determines if current user or team owner.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param integer $competitor_id The id to evaluate.
+	 * @param string  $competitor_type The type to evaluate.
+	 *
+	 * @return bool
+	 */
+	function trn_is_user_or_team_owner( $competitor_id, $competitor_type ) {
+		global $wpdb;
+
+		if ( is_user_logged_in() ) {
+			if ( 'players' === $competitor_type ) {
+				return ( $competitor_id === get_current_user_id() );
+			} else {
+				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->prefix}trn_teams_members` AS `tm` WHERE `tm`.`team_id` = %d AND `tm`.`team_rank_id` = %d AND `tm`.`user_id` = %d", $competitor_id, 1, get_current_user_id() ) );
+
+				return ( 1 <= intval( $count ) );
+			}
+		}
+
+		return false;
+	}
+}
+
+
 if ( ! function_exists( 'email_eliminated' ) ) {
 	/**
 	 * Emails a tournament competitor when they have been eliminated.
@@ -1175,6 +1204,9 @@ if ( ! function_exists( 'trn_register_admin_scripts' ) ) {
 	 * @since 4.0.0
 	 */
 	function trn_register_admin_scripts() {
+		wp_register_style( 'trn-admin-css', __TRNPATH .  '/dist/css/admin.css', array(), '4.6.0' );
+		wp_enqueue_style( 'trn-admin-css' );
+
 		wp_register_script( 'tournamatch', plugins_url( '/dist/js/tournamatch.js', __FILE__ ), array(), '3.25.0', true );
 	}
 
@@ -1802,6 +1834,7 @@ if ( ! function_exists( 'trn_get_route_roots' ) ) {
 		if ( is_null( $route_roots ) ) {
 			$required = array(
 				'challenges',
+				'confirm',
 				'games',
 				'ladders',
 				'ladder-competitors',
@@ -1993,6 +2026,7 @@ if ( ! function_exists( 'trn_route' ) ) {
 					'admin.ladders.delete-confirm'     => 'admin.php?page=trn-ladders&id={id}&action=delete-confirm',
 					'admin.ladders.edit'               => 'admin.php?page=trn-ladders&id={id}&action=edit',
 					'admin.ladders.clone'              => 'admin.php?page=trn-ladders&id={id}&action=clone',
+					'admin.ladders.competitors'        => 'admin.php?page=trn-ladders&id={id}&action=competitors',
 
 					'admin.ladders.matches'            => 'admin.php?page=trn-ladders-matches',
 					'admin.ladders.report-match'       => 'admin.php?page=trn-ladders-matches',
