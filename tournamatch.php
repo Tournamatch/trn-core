@@ -358,7 +358,7 @@ if ( ! function_exists( 'trn_is_user_or_team_owner' ) ) {
 
 		if ( is_user_logged_in() ) {
 			if ( 'players' === $competitor_type ) {
-				return ( $competitor_id === get_current_user_id() );
+				return ( get_current_user_id() === $competitor_id );
 			} else {
 				$count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM `{$wpdb->prefix}trn_teams_members` AS `tm` WHERE `tm`.`team_id` = %d AND `tm`.`team_rank_id` = %d AND `tm`.`user_id` = %d", $competitor_id, 1, get_current_user_id() ) );
 
@@ -1204,7 +1204,7 @@ if ( ! function_exists( 'trn_register_admin_scripts' ) ) {
 	 * @since 4.0.0
 	 */
 	function trn_register_admin_scripts() {
-		wp_register_style( 'trn-admin-css', __TRNPATH .  '/dist/css/admin.css', array(), '4.6.0' );
+		wp_register_style( 'trn-admin-css', __TRNPATH . '/dist/css/admin.css', array(), '4.6.0' );
 		wp_enqueue_style( 'trn-admin-css' );
 
 		wp_register_script( 'tournamatch', plugins_url( '/dist/js/tournamatch.js', __FILE__ ), array(), '3.25.0', true );

@@ -266,7 +266,7 @@ class Tournamatch_Ladder_List_Table extends WP_List_Table {
 					),
 					esc_html__( 'Competitors', 'tournamatch' )
 				),
-				'edit'   => sprintf(
+				'edit'         => sprintf(
 					'<a href="%s">%s</a>',
 					esc_url(
 						trn_route(
@@ -279,7 +279,7 @@ class Tournamatch_Ladder_List_Table extends WP_List_Table {
 					),
 					esc_html__( 'Edit', 'tournamatch' )
 				),
-				'clone'  => sprintf(
+				'clone'        => sprintf(
 					'<a href="%s" title="%s">%s</a>',
 					esc_url(
 						trn_route(
@@ -293,7 +293,7 @@ class Tournamatch_Ladder_List_Table extends WP_List_Table {
 					esc_html__( 'Clone this ladder.', 'tournamatch' ),
 					esc_html__( 'Clone', 'tournamatch' )
 				),
-				'delete' => sprintf(
+				'delete'       => sprintf(
 					'<a href="%s">%s</a>',
 					esc_url(
 						trn_route(
@@ -306,7 +306,7 @@ class Tournamatch_Ladder_List_Table extends WP_List_Table {
 					),
 					esc_html__( 'Delete', 'tournamatch' )
 				),
-				'view'   => sprintf(
+				'view'         => sprintf(
 					'<a href="%s">%s</a>',
 					trn_route(
 						'ladders.single',

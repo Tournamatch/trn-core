@@ -132,11 +132,11 @@ $ladder = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn_lad
 <?php
 
 $options = [
-	'api_url'       => site_url( 'wp-json/tournamatch/v1/' ),
-	'rest_nonce'    => wp_create_nonce( 'wp_rest' ),
-	'ladder_id'     => $ladder_id,
-	'competition'   => ( 'players' === $ladder->competitor_type ) ? 'players' : 'teams',
-	'language'      => array(
+	'api_url'     => site_url( 'wp-json/tournamatch/v1/' ),
+	'rest_nonce'  => wp_create_nonce( 'wp_rest' ),
+	'ladder_id'   => $ladder_id,
+	'competition' => ( 'players' === $ladder->competitor_type ) ? 'players' : 'teams',
+	'language'    => array(
 		'failure'         => esc_html__( 'Error', 'tournamatch' ),
 		'success'         => esc_html__( 'Success', 'tournamatch' ),
 		'success_message' => esc_html__( 'Competitor was added to the ladder.', 'tournamatch' ),
