@@ -62,7 +62,7 @@ msgstr ""
 msgid "Players"
 msgstr ""
 
-#: admin/class-admin.php:216, admin/class-ladder.php:324, admin/class-tournament.php:301, includes/shortcodes/class-table-shortcodes.php:141, templates/archive-trn-team.php:26, templates/single-trn-player.php:74
+#: admin/class-admin.php:216, admin/class-ladder.php:328, admin/class-tournament.php:301, includes/shortcodes/class-table-shortcodes.php:141, templates/archive-trn-team.php:26, templates/single-trn-player.php:74
 msgid "Teams"
 msgstr ""
 
@@ -70,7 +70,7 @@ msgstr ""
 msgid "Matches"
 msgstr ""
 
-#: admin/class-admin.php:224, admin/class-ladder.php:59, admin/class-ladder.php:60, admin/class-ladder.php:138, templates/archive-trn-ladder.php:27, templates/single-trn-player.php:80, templates/single-trn-team.php:142
+#: admin/class-admin.php:224, admin/class-ladder.php:59, admin/class-ladder.php:60, admin/class-ladder.php:142, templates/archive-trn-ladder.php:27, templates/single-trn-player.php:80, templates/single-trn-team.php:142
 msgid "Ladders"
 msgstr ""
 
@@ -161,11 +161,11 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: admin/class-admin.php:491, includes/shortcodes/class-table-shortcodes.php:213, includes/shortcodes/class-table-shortcodes.php:681, templates/single-trn-challenge-create.php:43, templates/single-trn-challenge.php:39, templates/single-trn-ladder-join.php:52, templates/single-trn-match-confirm.php:30, templates/single-trn-player-dashboard.php:82
+#: admin/class-admin.php:491, admin/ladder-competitors.php:75, includes/shortcodes/class-table-shortcodes.php:213, includes/shortcodes/class-table-shortcodes.php:681, templates/single-trn-challenge-create.php:43, templates/single-trn-challenge.php:39, templates/single-trn-ladder-join.php:52, templates/single-trn-match-confirm.php:30, templates/single-trn-player-dashboard.php:82
 msgid "Ladder"
 msgstr ""
 
-#: admin/class-admin.php:493, admin/tournament-registrations.php:76, includes/shortcodes/class-table-shortcodes.php:772, templates/single-trn-match-confirm.php:33, templates/single-trn-tournament-register.php:44, templates/single-trn-tournament-replace.php:44
+#: admin/class-admin.php:493, admin/tournament-registrations.php:75, includes/shortcodes/class-table-shortcodes.php:772, templates/single-trn-match-confirm.php:33, templates/single-trn-tournament-register.php:44, templates/single-trn-tournament-replace.php:44
 msgid "Tournament"
 msgstr ""
 
@@ -189,11 +189,11 @@ msgstr ""
 msgid "Draw Results"
 msgstr ""
 
-#: admin/class-admin.php:514, admin/class-admin.php:530, admin/class-admin.php:549, admin/class-admin.php:592, admin/class-admin.php:625, admin/class-admin.php:641, admin/class-admin.php:671, admin/class-admin.php:687, admin/class-ladder.php:354
+#: admin/class-admin.php:514, admin/class-admin.php:530, admin/class-admin.php:549, admin/class-admin.php:592, admin/class-admin.php:625, admin/class-admin.php:641, admin/class-admin.php:671, admin/class-admin.php:687, admin/class-ladder.php:358
 msgid "Disabled"
 msgstr ""
 
-#: admin/class-admin.php:517, admin/class-admin.php:533, admin/class-admin.php:546, admin/class-admin.php:589, admin/class-admin.php:622, admin/class-admin.php:638, admin/class-admin.php:668, admin/class-admin.php:684, admin/class-ladder.php:350
+#: admin/class-admin.php:517, admin/class-admin.php:533, admin/class-admin.php:546, admin/class-admin.php:589, admin/class-admin.php:622, admin/class-admin.php:638, admin/class-admin.php:668, admin/class-admin.php:684, admin/class-ladder.php:354
 msgid "Enabled"
 msgstr ""
 
@@ -301,7 +301,7 @@ msgstr ""
 msgid "Activate"
 msgstr ""
 
-#: admin/class-admin.php:734, admin/class-ladder.php:390, includes/classes/class-tournamatch-match-list-table.php:57, includes/classes/class-tournamatch-tournament-list-table.php:35, includes/shortcodes/class-table-shortcodes.php:217, templates/single-trn-challenge.php:68, templates/single-trn-match.php:137, templates/single-trn-player-dashboard.php:86
+#: admin/class-admin.php:734, admin/class-ladder.php:394, includes/classes/class-tournamatch-match-list-table.php:57, includes/classes/class-tournamatch-tournament-list-table.php:35, includes/shortcodes/class-table-shortcodes.php:217, templates/single-trn-challenge.php:68, templates/single-trn-match.php:137, templates/single-trn-player-dashboard.php:86
 msgid "Status"
 msgstr ""
 
@@ -317,7 +317,7 @@ msgstr ""
 msgid "Delete?"
 msgstr ""
 
-#: admin/class-game.php:84, admin/class-ladder.php:106, admin/class-tournament.php:107, tournamatch.php:1115
+#: admin/class-game.php:84, admin/class-ladder.php:106, admin/class-tournament.php:107, tournamatch.php:1144
 msgid "Yes"
 msgstr ""
 
@@ -325,7 +325,7 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: admin/class-game.php:84, admin/class-ladder.php:106, admin/class-tournament.php:107, tournamatch.php:1116
+#: admin/class-game.php:84, admin/class-ladder.php:106, admin/class-tournament.php:107, tournamatch.php:1145
 msgid "No"
 msgstr ""
 
@@ -337,11 +337,11 @@ msgstr ""
 msgid "Edit Game"
 msgstr ""
 
-#: admin/class-game.php:114, admin/class-game.php:255, admin/class-ladder.php:271, admin/class-tournament.php:243, includes/classes/class-tournamatch-game-list-table.php:34, includes/classes/class-tournamatch-ladder-list-table.php:34, includes/classes/class-tournamatch-tournament-list-table.php:34, includes/shortcodes/class-table-shortcodes.php:64, includes/shortcodes/class-table-shortcodes.php:138, includes/shortcodes/class-table-shortcodes.php:289, includes/shortcodes/class-table-shortcodes.php:480, includes/shortcodes/class-table-shortcodes.php:848, includes/shortcodes/class-table-shortcodes.php:926, includes/shortcodes/class-table-shortcodes.php:1005, templates/page-trn-report-dashboard.php:58, templates/page-trn-report-dashboard.php:126, templates/partials/scheduled-matches-table.php:18, templates/single-trn-player-dashboard.php:141, tournamatch.php:1460
+#: admin/class-game.php:114, admin/class-game.php:255, admin/class-ladder.php:275, admin/class-tournament.php:243, includes/classes/class-tournamatch-game-list-table.php:34, includes/classes/class-tournamatch-ladder-list-table.php:34, includes/classes/class-tournamatch-tournament-list-table.php:34, includes/shortcodes/class-table-shortcodes.php:64, includes/shortcodes/class-table-shortcodes.php:138, includes/shortcodes/class-table-shortcodes.php:289, includes/shortcodes/class-table-shortcodes.php:480, includes/shortcodes/class-table-shortcodes.php:848, includes/shortcodes/class-table-shortcodes.php:926, includes/shortcodes/class-table-shortcodes.php:1005, templates/page-trn-report-dashboard.php:58, templates/page-trn-report-dashboard.php:126, templates/partials/scheduled-matches-table.php:18, templates/single-trn-player-dashboard.php:141, tournamatch.php:1492
 msgid "Name"
 msgstr ""
 
-#: admin/class-game.php:115, tournamatch.php:3321
+#: admin/class-game.php:115, tournamatch.php:3355
 msgid "(required)"
 msgstr ""
 
@@ -377,15 +377,15 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: admin/class-game.php:182, includes/classes/class-tournamatch-game-list-table.php:52, includes/classes/class-tournamatch-game-list-table.php:194, includes/classes/class-tournamatch-ladder-list-table.php:50, includes/classes/class-tournamatch-ladder-list-table.php:296, includes/classes/class-tournamatch-match-list-table.php:515, includes/classes/class-tournamatch-tournament-list-table.php:51, includes/classes/class-tournamatch-tournament-list-table.php:335, includes/shortcodes/class-challenge-shortcodes.php:146, templates/page-trn-report-dashboard.php:178, templates/single-trn-match.php:101
+#: admin/class-game.php:182, includes/classes/class-tournamatch-game-list-table.php:52, includes/classes/class-tournamatch-game-list-table.php:194, includes/classes/class-tournamatch-ladder-list-table.php:50, includes/classes/class-tournamatch-ladder-list-table.php:307, includes/classes/class-tournamatch-match-list-table.php:515, includes/classes/class-tournamatch-tournament-list-table.php:51, includes/classes/class-tournamatch-tournament-list-table.php:335, includes/shortcodes/class-challenge-shortcodes.php:146, templates/page-trn-report-dashboard.php:178, templates/single-trn-match.php:101
 msgid "Delete"
 msgstr ""
 
-#: admin/class-game.php:194, admin/class-game.php:310, admin/class-ladder.php:439, admin/class-tournament.php:378, admin/tournament-registrations.php:141, includes/shortcodes/class-shortcodes.php:68, includes/shortcodes/class-shortcodes.php:104, includes/shortcodes/class-shortcodes.php:147, includes/shortcodes/class-shortcodes.php:337, includes/shortcodes/class-shortcodes.php:387, includes/shortcodes/class-table-shortcodes.php:106, includes/shortcodes/class-table-shortcodes.php:181, includes/shortcodes/class-table-shortcodes.php:253, includes/shortcodes/class-table-shortcodes.php:329, includes/shortcodes/class-table-shortcodes.php:414, includes/shortcodes/class-table-shortcodes.php:530, includes/shortcodes/class-table-shortcodes.php:633, includes/shortcodes/class-table-shortcodes.php:1050, templates/page-trn-report-dashboard.php:249, templates/single-trn-challenge-create.php:103, templates/single-trn-challenge.php:94, templates/single-trn-ladder-competitor-edit.php:109, templates/single-trn-ladder-join.php:117, templates/single-trn-ladder.php:178, templates/single-trn-match-confirm.php:117, templates/single-trn-match-confirm.php:118, templates/single-trn-player-edit.php:121, templates/single-trn-team-edit.php:112, templates/single-trn-team.php:90, templates/single-trn-tournament-register.php:109, templates/single-trn-tournament.php:198, tournamatch.php:1125, tournamatch.php:2803
+#: admin/class-game.php:194, admin/class-game.php:310, admin/class-ladder.php:443, admin/class-tournament.php:378, admin/ladder-competitors.php:140, admin/tournament-registrations.php:140, includes/shortcodes/class-shortcodes.php:68, includes/shortcodes/class-shortcodes.php:104, includes/shortcodes/class-shortcodes.php:147, includes/shortcodes/class-shortcodes.php:337, includes/shortcodes/class-shortcodes.php:387, includes/shortcodes/class-table-shortcodes.php:106, includes/shortcodes/class-table-shortcodes.php:181, includes/shortcodes/class-table-shortcodes.php:253, includes/shortcodes/class-table-shortcodes.php:329, includes/shortcodes/class-table-shortcodes.php:414, includes/shortcodes/class-table-shortcodes.php:530, includes/shortcodes/class-table-shortcodes.php:633, includes/shortcodes/class-table-shortcodes.php:1050, templates/page-trn-report-dashboard.php:249, templates/single-trn-challenge-create.php:103, templates/single-trn-challenge.php:94, templates/single-trn-ladder-competitor-edit.php:109, templates/single-trn-ladder-join.php:117, templates/single-trn-ladder.php:178, templates/single-trn-match-confirm.php:117, templates/single-trn-match-confirm.php:118, templates/single-trn-player-edit.php:121, templates/single-trn-team-edit.php:112, templates/single-trn-team.php:90, templates/single-trn-tournament-register.php:109, templates/single-trn-tournament.php:198, tournamatch.php:1154, tournamatch.php:2837
 msgid "Error"
 msgstr ""
 
-#: admin/class-game.php:195, admin/class-game.php:311, admin/class-ladder.php:440, admin/class-tournament.php:379, admin/tournament-registrations.php:142, admin/tournament-registrations.php:145, includes/shortcodes/class-shortcodes.php:336, includes/shortcodes/class-shortcodes.php:386, includes/shortcodes/class-table-shortcodes.php:107, includes/shortcodes/class-table-shortcodes.php:182, includes/shortcodes/class-table-shortcodes.php:254, includes/shortcodes/class-table-shortcodes.php:330, includes/shortcodes/class-table-shortcodes.php:415, includes/shortcodes/class-table-shortcodes.php:531, includes/shortcodes/class-table-shortcodes.php:634, templates/page-trn-report-dashboard.php:40, templates/page-trn-report-dashboard.php:48, templates/single-trn-challenge-create.php:104, templates/single-trn-challenge.php:95, templates/single-trn-ladder-competitor-edit.php:110, templates/single-trn-ladder-join.php:116, templates/single-trn-player-edit.php:123, templates/single-trn-team-edit.php:114, templates/single-trn-team.php:88, templates/single-trn-tournament-register.php:108, templates/single-trn-tournament.php:199
+#: admin/class-game.php:195, admin/class-game.php:311, admin/class-ladder.php:444, admin/class-tournament.php:379, admin/ladder-competitors.php:141, admin/ladder-competitors.php:144, admin/tournament-registrations.php:141, admin/tournament-registrations.php:144, includes/shortcodes/class-shortcodes.php:336, includes/shortcodes/class-shortcodes.php:386, includes/shortcodes/class-table-shortcodes.php:107, includes/shortcodes/class-table-shortcodes.php:182, includes/shortcodes/class-table-shortcodes.php:254, includes/shortcodes/class-table-shortcodes.php:330, includes/shortcodes/class-table-shortcodes.php:415, includes/shortcodes/class-table-shortcodes.php:531, includes/shortcodes/class-table-shortcodes.php:634, templates/page-trn-report-dashboard.php:40, templates/page-trn-report-dashboard.php:48, templates/single-trn-challenge-create.php:104, templates/single-trn-challenge.php:95, templates/single-trn-ladder-competitor-edit.php:110, templates/single-trn-ladder-join.php:116, templates/single-trn-player-edit.php:123, templates/single-trn-team-edit.php:114, templates/single-trn-team.php:88, templates/single-trn-tournament-register.php:108, templates/single-trn-tournament.php:199
 msgid "Success"
 msgstr ""
 
@@ -398,7 +398,7 @@ msgstr ""
 #. translators: %s: Search query.
 #. translators: %s: Search query.
 #. translators: %s: Search query.
-#: admin/class-game.php:231, admin/class-ladder.php:149, admin/class-matche.php:560, admin/class-matche.php:606, admin/class-tournament.php:170
+#: admin/class-game.php:231, admin/class-ladder.php:153, admin/class-matche.php:560, admin/class-matche.php:606, admin/class-tournament.php:170
 msgid "Search results for: %s"
 msgstr ""
 
@@ -442,7 +442,7 @@ msgstr ""
 msgid "All Ladders"
 msgstr ""
 
-#: admin/class-ladder.php:76, admin/class-ladder.php:77, admin/class-ladder.php:140, admin/class-tournament.php:76, admin/class-tournament.php:77, admin/class-tournament.php:161
+#: admin/class-ladder.php:76, admin/class-ladder.php:77, admin/class-ladder.php:144, admin/class-tournament.php:76, admin/class-tournament.php:77, admin/class-tournament.php:161
 msgid "Add New"
 msgstr ""
 
@@ -462,131 +462,131 @@ msgstr ""
 msgid "Numerous fields are disabled for any ladder that already has participants."
 msgstr ""
 
-#: admin/class-ladder.php:160
+#: admin/class-ladder.php:164
 msgid "Search Ladders"
 msgstr ""
 
-#: admin/class-ladder.php:234
+#: admin/class-ladder.php:238
 msgid "Add New Ladder"
 msgstr ""
 
-#: admin/class-ladder.php:267
+#: admin/class-ladder.php:271
 msgid "General Ladder Info"
 msgstr ""
 
-#: admin/class-ladder.php:274
+#: admin/class-ladder.php:278
 msgid "The name displayed to users for the ladder."
 msgstr ""
 
-#: admin/class-ladder.php:279, admin/class-tournament.php:251, templates/single-trn-player-dashboard.php:142
+#: admin/class-ladder.php:283, admin/class-tournament.php:251, templates/single-trn-player-dashboard.php:142
 msgid "Game"
 msgstr ""
 
-#: admin/class-ladder.php:281, admin/class-tournament.php:253
+#: admin/class-ladder.php:285, admin/class-tournament.php:253
 msgid "Choose corresponding game (e.g. Madden, AoE, etc.)"
 msgstr ""
 
-#: admin/class-ladder.php:287
+#: admin/class-ladder.php:291
 msgid "Win"
 msgstr ""
 
-#: admin/class-ladder.php:293
+#: admin/class-ladder.php:297
 msgid "Loss"
 msgstr ""
 
-#: admin/class-ladder.php:299, admin/class-matche.php:266, admin/class-matche.php:308, templates/single-trn-match-confirm.php:69, templates/single-trn-match.php:55, templates/single-trn-match.php:74, templates/single-trn-match.php:162
+#: admin/class-ladder.php:303, admin/class-matche.php:266, admin/class-matche.php:308, templates/single-trn-match-confirm.php:69, templates/single-trn-match.php:55, templates/single-trn-match.php:74, templates/single-trn-match.php:162
 msgid "Draw"
 msgstr ""
 
-#: admin/class-ladder.php:300
+#: admin/class-ladder.php:304
 msgid "Points awarded for wins, losses and draws."
 msgstr ""
 
-#: admin/class-ladder.php:308, admin/class-tournament.php:285
+#: admin/class-ladder.php:312, admin/class-tournament.php:285
 msgid "Match Settings"
 msgstr ""
 
-#: admin/class-ladder.php:312, admin/class-tournament.php:289, includes/classes/class-tournamatch-match-list-table.php:54
+#: admin/class-ladder.php:316, admin/class-tournament.php:289, includes/classes/class-tournamatch-match-list-table.php:54
 msgid "Competition"
 msgstr ""
 
-#: admin/class-ladder.php:314, admin/class-tournament.php:291
+#: admin/class-ladder.php:318, admin/class-tournament.php:291
 msgid "Player vs player or team vs team."
 msgstr ""
 
-#: admin/class-ladder.php:320, admin/class-tournament.php:297, templates/archive-trn-ladder.php:53, templates/archive-trn-tournament.php:86, templates/single-trn-ladder.php:65, templates/single-trn-tournament.php:56
+#: admin/class-ladder.php:324, admin/class-tournament.php:297, templates/archive-trn-ladder.php:53, templates/archive-trn-tournament.php:86, templates/single-trn-ladder.php:65, templates/single-trn-tournament.php:56
 msgid "Singles"
 msgstr ""
 
-#: admin/class-ladder.php:330, admin/class-tournament.php:307
+#: admin/class-ladder.php:334, admin/class-tournament.php:307
 msgid "Players per Team"
 msgstr ""
 
-#: admin/class-ladder.php:332, admin/class-tournament.php:309
+#: admin/class-ladder.php:336, admin/class-tournament.php:309
 msgid "Number of players per team."
 msgstr ""
 
-#: admin/class-ladder.php:339
+#: admin/class-ladder.php:343
 msgid "Challenge Settings"
 msgstr ""
 
-#: admin/class-ladder.php:343
+#: admin/class-ladder.php:347
 msgid "Direct Challenges"
 msgstr ""
 
-#: admin/class-ladder.php:345
+#: admin/class-ladder.php:349
 msgid "Enable or disable direct challenges (challenger directly to challengee)."
 msgstr ""
 
-#: admin/class-ladder.php:362, admin/class-tournament.php:316
+#: admin/class-ladder.php:366, admin/class-tournament.php:316
 msgid "Other Settings"
 msgstr ""
 
-#: admin/class-ladder.php:366, admin/class-tournament.php:320, templates/single-trn-ladder-join.php:92, templates/single-trn-ladder.php:92, templates/single-trn-player-dashboard.php:168, templates/single-trn-tournament-register.php:84, templates/single-trn-tournament.php:74
+#: admin/class-ladder.php:370, admin/class-tournament.php:320, templates/single-trn-ladder-join.php:92, templates/single-trn-ladder.php:92, templates/single-trn-player-dashboard.php:168, templates/single-trn-tournament-register.php:84, templates/single-trn-tournament.php:74
 msgid "Rules"
 msgstr ""
 
-#: admin/class-ladder.php:367
+#: admin/class-ladder.php:371
 msgid "The rules for the ladder. HTML is allowed."
 msgstr ""
 
-#: admin/class-ladder.php:373, admin/class-tournament.php:327
+#: admin/class-ladder.php:377, admin/class-tournament.php:327
 msgid "Visibility"
 msgstr ""
 
-#: admin/class-ladder.php:374
+#: admin/class-ladder.php:378
 msgid "Toggle display of this ladder outside Admin."
 msgstr ""
 
-#: admin/class-ladder.php:380, admin/class-tournament.php:334
+#: admin/class-ladder.php:384, admin/class-tournament.php:334
 msgid "Visible"
 msgstr ""
 
-#: admin/class-ladder.php:384, admin/class-tournament.php:338
+#: admin/class-ladder.php:388, admin/class-tournament.php:338
 msgid "Hidden"
 msgstr ""
 
-#: admin/class-ladder.php:391
+#: admin/class-ladder.php:395
 msgid "Toggle activity such as reporting, confirming, joining, etc."
 msgstr ""
 
-#: admin/class-ladder.php:397
+#: admin/class-ladder.php:401
 msgid "Active"
 msgstr ""
 
-#: admin/class-ladder.php:401
+#: admin/class-ladder.php:405
 msgid "Inactive"
 msgstr ""
 
-#: admin/class-ladder.php:414
+#: admin/class-ladder.php:418
 msgid "Create Ladder"
 msgstr ""
 
-#: admin/class-ladder.php:414, admin/class-tournament.php:351
+#: admin/class-ladder.php:418, admin/class-tournament.php:351
 msgid "Save Changes"
 msgstr ""
 
-#: admin/class-ladder.php:441
+#: admin/class-ladder.php:445
 msgid "The ladder has been updated."
 msgstr ""
 
@@ -610,7 +610,7 @@ msgstr ""
 msgid "Comment:"
 msgstr ""
 
-#: admin/class-matche.php:298, admin/class-matche.php:418, templates/page-trn-report-dashboard.php:231, templates/partials/scheduled-matches-table.php:43, templates/single-trn-ladder.php:132, templates/single-trn-match.php:91, templates/single-trn-player-dashboard.php:158, templates/single-trn-tournament.php:160, tournamatch.php:1494, tournamatch.php:2791
+#: admin/class-matche.php:298, admin/class-matche.php:418, templates/page-trn-report-dashboard.php:231, templates/partials/scheduled-matches-table.php:43, templates/single-trn-ladder.php:132, templates/single-trn-match.php:91, templates/single-trn-player-dashboard.php:158, templates/single-trn-tournament.php:160, tournamatch.php:1526, tournamatch.php:2825
 msgid "Report"
 msgstr ""
 
@@ -779,56 +779,72 @@ msgstr ""
 msgid "The tournament has been updated."
 msgstr ""
 
-#: admin/tournament-registrations.php:68
-msgid "Tournament Registration"
+#: admin/ladder-competitors.php:67
+msgid "Ladder Competitors"
 msgstr ""
 
-#: admin/tournament-registrations.php:84, templates/single-trn-team.php:113
+#: admin/ladder-competitors.php:83, admin/tournament-registrations.php:83, templates/single-trn-team.php:113
 msgid "Player Name"
 msgstr ""
 
-#: admin/tournament-registrations.php:93
+#: admin/ladder-competitors.php:92, admin/tournament-registrations.php:92
 msgid "New or Existing Team?"
 msgstr ""
 
-#: admin/tournament-registrations.php:97
+#: admin/ladder-competitors.php:96, admin/tournament-registrations.php:96
 msgid "New Team"
 msgstr ""
 
-#: admin/tournament-registrations.php:98
+#: admin/ladder-competitors.php:97, admin/tournament-registrations.php:97
 msgid "Existing Team"
 msgstr ""
 
-#: admin/tournament-registrations.php:104
+#: admin/ladder-competitors.php:103, admin/tournament-registrations.php:103
 msgid "Select Existing Team"
 msgstr ""
 
-#: admin/tournament-registrations.php:112, templates/single-trn-team-create.php:48, templates/single-trn-team-edit.php:45
+#: admin/ladder-competitors.php:111, admin/tournament-registrations.php:111, templates/single-trn-team-create.php:48, templates/single-trn-team-edit.php:45
 msgid "Team Tag"
 msgstr ""
 
-#: admin/tournament-registrations.php:120, templates/single-trn-team-create.php:41, templates/single-trn-team-edit.php:38
+#: admin/ladder-competitors.php:119, admin/tournament-registrations.php:119, templates/single-trn-team-create.php:41, templates/single-trn-team-edit.php:38
 msgid "Team Name"
 msgstr ""
 
-#: admin/tournament-registrations.php:129, includes/shortcodes/class-shortcodes.php:305, includes/shortcodes/class-shortcodes.php:341, templates/single-trn-tournament-register.php:35, templates/single-trn-tournament-register.php:96
-msgid "Register"
+#: admin/ladder-competitors.php:128
+msgid "Add"
 msgstr ""
 
-#: admin/tournament-registrations.php:143
-msgid "Competitor was added to the tournament."
+#: admin/ladder-competitors.php:142
+msgid "Competitor was added to the ladder."
 msgstr ""
 
-#: admin/tournament-registrations.php:144
+#: admin/ladder-competitors.php:143, admin/tournament-registrations.php:143
 msgid "Competitor was not found."
 msgstr ""
 
-#: admin/tournament-registrations.php:146
-msgid "Competitors remaining in the Email Addresses input could not be found. Competitors on the right have been registered."
+#: admin/ladder-competitors.php:145
+msgid "Competitors remaining in the Email Addresses input could not be found. Competitors on the right have been added."
 msgstr ""
 
-#: admin/tournament-registrations.php:147
+#: admin/ladder-competitors.php:146, admin/tournament-registrations.php:146
 msgid "No existing teams"
+msgstr ""
+
+#: admin/tournament-registrations.php:67
+msgid "Tournament Registration"
+msgstr ""
+
+#: admin/tournament-registrations.php:128, includes/shortcodes/class-shortcodes.php:305, includes/shortcodes/class-shortcodes.php:341, templates/single-trn-tournament-register.php:35, templates/single-trn-tournament-register.php:96
+msgid "Register"
+msgstr ""
+
+#: admin/tournament-registrations.php:142
+msgid "Competitor was added to the tournament."
+msgstr ""
+
+#: admin/tournament-registrations.php:145
+msgid "Competitors remaining in the Email Addresses input could not be found. Competitors on the right have been registered."
 msgstr ""
 
 #: includes/classes/class-tournamatch-email.php:120
@@ -1067,7 +1083,7 @@ msgstr ""
 msgid "No games to display."
 msgstr ""
 
-#: includes/classes/class-tournamatch-game-list-table.php:181, includes/classes/class-tournamatch-ladder-list-table.php:269, includes/classes/class-tournamatch-match-list-table.php:501, includes/classes/class-tournamatch-tournament-list-table.php:312
+#: includes/classes/class-tournamatch-game-list-table.php:181, includes/classes/class-tournamatch-ladder-list-table.php:280, includes/classes/class-tournamatch-match-list-table.php:501, includes/classes/class-tournamatch-tournament-list-table.php:312
 msgid "Edit"
 msgstr ""
 
@@ -1096,15 +1112,19 @@ msgstr ""
 msgid "No ladders to display."
 msgstr ""
 
-#: includes/classes/class-tournamatch-ladder-list-table.php:282
+#: includes/classes/class-tournamatch-ladder-list-table.php:267, includes/shortcodes/class-table-shortcodes.php:592, templates/partials/scheduled-matches-table.php:19, tournamatch.php:1493
+msgid "Competitors"
+msgstr ""
+
+#: includes/classes/class-tournamatch-ladder-list-table.php:293
 msgid "Clone this ladder."
 msgstr ""
 
-#: includes/classes/class-tournamatch-ladder-list-table.php:283, includes/classes/class-tournamatch-tournament-list-table.php:324
+#: includes/classes/class-tournamatch-ladder-list-table.php:294, includes/classes/class-tournamatch-tournament-list-table.php:324
 msgid "Clone"
 msgstr ""
 
-#: includes/classes/class-tournamatch-ladder-list-table.php:306, includes/classes/class-tournamatch-tournament-list-table.php:345
+#: includes/classes/class-tournamatch-ladder-list-table.php:317, includes/classes/class-tournamatch-tournament-list-table.php:345
 msgid "View"
 msgstr ""
 
@@ -1164,7 +1184,7 @@ msgstr ""
 #. translators: A competitor name.
 #. translators: A competitor name.
 #. translators: This is a call-to-action that displays the player or team to be advanced. Keep it short and concise because this is displayed within a dropdown menu on the brackets page.
-#: includes/classes/class-tournamatch-match-list-table.php:446, includes/classes/class-tournamatch-match-list-table.php:460, tournamatch.php:2551
+#: includes/classes/class-tournamatch-match-list-table.php:446, includes/classes/class-tournamatch-match-list-table.php:460, tournamatch.php:2585
 msgid "Advance %s"
 msgstr ""
 
@@ -1395,87 +1415,91 @@ msgstr ""
 msgid "The image banner for the game."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:410
+#: includes/rest/class-ladder-competitor.php:182
+msgid "Insufficient privileges."
+msgstr ""
+
+#: includes/rest/class-ladder-competitor.php:418
 msgid "Ladder competitor does not exist."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:474
+#: includes/rest/class-ladder-competitor.php:482
 msgid "The ladder competitor was promoted."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:512
+#: includes/rest/class-ladder-competitor.php:520
 msgid "The ladder competitor was removed."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:570
+#: includes/rest/class-ladder-competitor.php:578
 msgid "The id for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:576
+#: includes/rest/class-ladder-competitor.php:584
 msgid "The ladder id for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:582
+#: includes/rest/class-ladder-competitor.php:590
 msgid "The competitor id for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:588
+#: includes/rest/class-ladder-competitor.php:596
 msgid "The competitor type for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:595
+#: includes/rest/class-ladder-competitor.php:603
 msgid "The datetime the ladder competitor joined the ladder."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:601
+#: includes/rest/class-ladder-competitor.php:609
 msgid "The datetime the ladder competitor joined the ladder, as it exists in the database."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:607
+#: includes/rest/class-ladder-competitor.php:615
 msgid "The datetime the ladder competitor joined the ladder, transformed for display."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:615
+#: includes/rest/class-ladder-competitor.php:623
 msgid "The number of points earned according to Points ranking for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:621
+#: includes/rest/class-ladder-competitor.php:629
 msgid "The numeric rank for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:627
+#: includes/rest/class-ladder-competitor.php:635
 msgid "The number of wins for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:633
+#: includes/rest/class-ladder-competitor.php:641
 msgid "The number of losses for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:639
+#: includes/rest/class-ladder-competitor.php:647
 msgid "The number of draws for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:645
+#: includes/rest/class-ladder-competitor.php:653
 msgid "The total number of games played for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:651
+#: includes/rest/class-ladder-competitor.php:659
 msgid "The win percentage for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:657
+#: includes/rest/class-ladder-competitor.php:665
 msgid "The number of consecutive wins for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:663
+#: includes/rest/class-ladder-competitor.php:671
 msgid "The most number of consecutive wins ever for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:669
+#: includes/rest/class-ladder-competitor.php:677
 msgid "The the worst number of consecutive losses ever for the ladder competitor."
 msgstr ""
 
-#: includes/rest/class-ladder-competitor.php:675
+#: includes/rest/class-ladder-competitor.php:683
 msgid "The total number of days since the last match for the ladder competitor."
 msgstr ""
 
@@ -2511,11 +2535,11 @@ msgstr ""
 msgid "(hidden)"
 msgstr ""
 
-#: includes/shortcodes/class-table-shortcodes.php:288, includes/shortcodes/class-table-shortcodes.php:925, templates/page-trn-report-dashboard.php:57, templates/page-trn-report-dashboard.php:125, templates/partials/scheduled-matches-table.php:17, templates/single-trn-player-dashboard.php:140, tournamatch.php:1459
+#: includes/shortcodes/class-table-shortcodes.php:288, includes/shortcodes/class-table-shortcodes.php:925, templates/page-trn-report-dashboard.php:57, templates/page-trn-report-dashboard.php:125, templates/partials/scheduled-matches-table.php:17, templates/single-trn-player-dashboard.php:140, tournamatch.php:1491
 msgid "Event"
 msgstr ""
 
-#: includes/shortcodes/class-table-shortcodes.php:290, includes/shortcodes/class-table-shortcodes.php:375, includes/shortcodes/class-table-shortcodes.php:593, includes/shortcodes/class-table-shortcodes.php:927, templates/single-trn-match-confirm.php:67, templates/single-trn-match.php:161, tournamatch.php:2759
+#: includes/shortcodes/class-table-shortcodes.php:290, includes/shortcodes/class-table-shortcodes.php:375, includes/shortcodes/class-table-shortcodes.php:593, includes/shortcodes/class-table-shortcodes.php:927, templates/single-trn-match-confirm.php:67, templates/single-trn-match.php:161, tournamatch.php:2793
 msgid "Result"
 msgstr ""
 
@@ -2669,10 +2693,6 @@ msgstr ""
 
 #: includes/shortcodes/class-table-shortcodes.php:537
 msgid "Move this competitor up one rank."
-msgstr ""
-
-#: includes/shortcodes/class-table-shortcodes.php:592, templates/partials/scheduled-matches-table.php:19, tournamatch.php:1461
-msgid "Competitors"
 msgstr ""
 
 #: includes/shortcodes/class-table-shortcodes.php:603, includes/shortcodes/class-table-shortcodes.php:613
@@ -2941,7 +2961,7 @@ msgstr ""
 msgid "The match dispute has been logged and an admin notified."
 msgstr ""
 
-#: templates/page-trn-report-dashboard.php:49, tournamatch.php:2449
+#: templates/page-trn-report-dashboard.php:49, tournamatch.php:2483
 msgid "The match has been confirmed."
 msgstr ""
 
@@ -3044,7 +3064,7 @@ msgstr ""
 msgid "You are not participating in any active ladders."
 msgstr ""
 
-#: templates/partials/scheduled-matches-table.php:20, tournamatch.php:1462
+#: templates/partials/scheduled-matches-table.php:20, tournamatch.php:1494
 msgid "Scheduled"
 msgstr ""
 
@@ -3160,7 +3180,7 @@ msgstr ""
 msgid "Leave"
 msgstr ""
 
-#: templates/single-trn-match-confirm.php:57, tournamatch.php:2434
+#: templates/single-trn-match-confirm.php:57, tournamatch.php:2468
 msgid "Confirm Match"
 msgstr ""
 
@@ -3168,7 +3188,7 @@ msgstr ""
 msgid "Loser"
 msgstr ""
 
-#: templates/single-trn-match-confirm.php:87, tournamatch.php:2773
+#: templates/single-trn-match-confirm.php:87, tournamatch.php:2807
 msgid "Comment"
 msgstr ""
 
@@ -3320,7 +3340,7 @@ msgstr ""
 msgid "Leave Team"
 msgstr ""
 
-#: templates/single-trn-team.php:60, tournamatch.php:2464
+#: templates/single-trn-team.php:60, tournamatch.php:2498
 msgid "Join Team"
 msgstr ""
 
@@ -3368,7 +3388,7 @@ msgstr ""
 msgid "Select New Competitor"
 msgstr ""
 
-#: templates/single-trn-tournament-replace.php:50, tournamatch.php:2741
+#: templates/single-trn-tournament-replace.php:50, tournamatch.php:2775
 msgid "Opponent"
 msgstr ""
 
@@ -3400,210 +3420,210 @@ msgstr ""
 msgid "Go Back"
 msgstr ""
 
-#: tournamatch.php:385
+#: tournamatch.php:414
 msgid "Eliminated from Tournament"
 msgstr ""
 
-#: tournamatch.php:426, tournamatch.php:437
+#: tournamatch.php:455, tournamatch.php:466
 msgid "Tournament Match Set"
 msgstr ""
 
 #. translators: Competitor name and opponent name tied.
-#: tournamatch.php:505
+#: tournamatch.php:534
 msgid "%1$s and %2$s tied."
 msgstr ""
 
-#: tournamatch.php:502, tournamatch.php:499
+#: tournamatch.php:531, tournamatch.php:528
 msgid "%1$s defeated %2$s."
 msgstr ""
 
-#: tournamatch.php:496
+#: tournamatch.php:525
 msgid "Reported match result is disputed."
 msgstr ""
 
-#: tournamatch.php:494
+#: tournamatch.php:523
 msgid "Match result is pending."
 msgstr ""
 
-#: tournamatch.php:492
+#: tournamatch.php:521
 msgid "Match opponents have not been decided."
 msgstr ""
 
-#: tournamatch.php:490
+#: tournamatch.php:519
 msgid "Match result has not been reported."
 msgstr ""
 
-#: tournamatch.php:534
+#: tournamatch.php:563
 msgid "Extension is not allowed."
 msgstr ""
 
-#: tournamatch.php:538
+#: tournamatch.php:567
 msgid "File with given name already exists."
 msgstr ""
 
-#: tournamatch.php:543
+#: tournamatch.php:572
 msgid "Could not store file."
 msgstr ""
 
-#: tournamatch.php:742
+#: tournamatch.php:771
 msgid "Result parameter is missing arguments."
 msgstr ""
 
 #. translators: A number indicating the required number of competitors.
-#: tournamatch.php:821
+#: tournamatch.php:850
 msgid "Cannot seed tournament: Fewer ladder participants than bracket size. This tournament requires %d competitors to seed."
 msgstr ""
 
-#: tournamatch.php:874
+#: tournamatch.php:903
 msgid "Tournament Started"
 msgstr ""
 
-#: tournamatch.php:2451
+#: tournamatch.php:2485
 msgid "Contest has already been confirmed."
 msgstr ""
 
-#: tournamatch.php:2443
+#: tournamatch.php:2477
 msgid "Confirmed via email."
 msgstr ""
 
-#: tournamatch.php:2436
+#: tournamatch.php:2470
 msgid "The given match is not valid."
 msgstr ""
 
-#: tournamatch.php:2490
+#: tournamatch.php:2524
 msgid "The invitation no longer exists. The team owner either deleted it or this code has already been used."
 msgstr ""
 
-#: tournamatch.php:2486
+#: tournamatch.php:2520
 msgid "You are already a member of this team."
 msgstr ""
 
-#: tournamatch.php:2484
+#: tournamatch.php:2518
 msgid "You have been added to the team. %1$sClick here%2$s to view the team profile."
 msgstr ""
 
-#: tournamatch.php:2470
+#: tournamatch.php:2504
 msgid "You must %1$slogin%2$s or %3$screate an account%4$s before accepting an invitation to join a team."
 msgstr ""
 
-#: tournamatch.php:2523
+#: tournamatch.php:2557
 msgid "Match result pending confirmation."
 msgstr ""
 
-#: tournamatch.php:2526
+#: tournamatch.php:2560
 msgid "Match result has been disputed."
 msgstr ""
 
-#: tournamatch.php:2556
+#: tournamatch.php:2590
 msgid "Confirm Result"
 msgstr ""
 
 #. translators: This is a call-to-action that display a player or team name to be replaced. Keep it short and concise because this is displayed within a dropdown menu on the brackets page.
-#: tournamatch.php:2573
+#: tournamatch.php:2607
 msgid "Replace %s"
 msgstr ""
 
-#: tournamatch.php:2576
+#: tournamatch.php:2610
 msgid "Manage Disputes"
 msgstr ""
 
-#: tournamatch.php:2593
+#: tournamatch.php:2627
 msgid "Confirm Clear"
 msgstr ""
 
-#: tournamatch.php:2594
+#: tournamatch.php:2628
 msgid "Are you sure you want to clear the result? All pending reports and disputes will be erased."
 msgstr ""
 
-#: tournamatch.php:2596
+#: tournamatch.php:2630
 msgid "Clear Result"
 msgstr ""
 
-#: tournamatch.php:2599
+#: tournamatch.php:2633
 msgid "Match Details"
 msgstr ""
 
-#: tournamatch.php:2635
+#: tournamatch.php:2669
 msgid "DELETED"
 msgstr ""
 
-#: tournamatch.php:2728
+#: tournamatch.php:2762
 msgid "My Team"
 msgstr ""
 
-#: tournamatch.php:2763
+#: tournamatch.php:2797
 msgid "You Won"
 msgstr ""
 
-#: tournamatch.php:2764
+#: tournamatch.php:2798
 msgid "You Lost"
 msgstr ""
 
-#: tournamatch.php:2766
+#: tournamatch.php:2800
 msgid "A Draw"
 msgstr ""
 
 #. translators: Plugin Name, a semantic version, another plugin name. Another plugin name and the actual version.
-#: tournamatch.php:2919
+#: tournamatch.php:2953
 msgid "Plugin \"%1$s\" requires a minimum version \"%2$s\" of \"%3$s\". \"%4$s\" is version \"%5$s\" and the minimum was not met."
 msgstr ""
 
-#: tournamatch.php:2925, tournamatch.php:2936
+#: tournamatch.php:2959, tournamatch.php:2970
 msgid "Please update all Tournamatch plugins before activating."
 msgstr ""
 
-#: tournamatch.php:2925
+#: tournamatch.php:2959
 msgid "The minimum version was not met for one or more plugins."
 msgstr ""
 
-#: tournamatch.php:3148, tournamatch.php:3412
+#: tournamatch.php:3182, tournamatch.php:3446
 msgid "No items exist."
 msgstr ""
 
-#: tournamatch.php:3219, tournamatch.php:3268
+#: tournamatch.php:3253, tournamatch.php:3302
 msgid "Submit"
 msgstr ""
 
-#: tournamatch.php:3895
+#: tournamatch.php:3929
 msgid "There is no error, the file uploaded with success"
 msgstr ""
 
-#: tournamatch.php:3896
+#: tournamatch.php:3930
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini"
 msgstr ""
 
-#: tournamatch.php:3897
+#: tournamatch.php:3931
 msgid "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"
 msgstr ""
 
-#: tournamatch.php:3898
+#: tournamatch.php:3932
 msgid "The uploaded file was only partially uploaded"
 msgstr ""
 
-#: tournamatch.php:3899
+#: tournamatch.php:3933
 msgid "No file was uploaded"
 msgstr ""
 
-#: tournamatch.php:3900
+#: tournamatch.php:3934
 msgid "Missing a temporary folder"
 msgstr ""
 
-#: tournamatch.php:3901
+#: tournamatch.php:3935
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: tournamatch.php:3902
+#: tournamatch.php:3936
 msgid "A PHP extension stopped the file upload."
 msgstr ""
 
-#: tournamatch.php:3889
+#: tournamatch.php:3923
 msgid "The file extension is not allowed. Please submit an avatar with one of the following extensions: %s"
 msgstr ""
 
-#: tournamatch.php:3924
+#: tournamatch.php:3958
 msgid "Upload Image"
 msgstr ""
 
-#: tournamatch.php:3958, tournamatch.php:3959
+#: tournamatch.php:3992, tournamatch.php:3993
 msgid "Select image"
 msgstr ""

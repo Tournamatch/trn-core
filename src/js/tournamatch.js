@@ -271,7 +271,7 @@ class Tournamatch_Autocomplete {
         console.log("close all lists");
         /*close all autocomplete lists in the document,
          except the one passed as an argument:*/
-        let x = document.getElementsByClassName("auto-complete-items");
+        let x = document.getElementsByClassName("trn-auto-complete-items");
         for (let i = 0; i < x.length; i++) {
             if (element !== x[i] && element !== this.nameInput) {
                 x[i].parentNode.removeChild(x[i]);
