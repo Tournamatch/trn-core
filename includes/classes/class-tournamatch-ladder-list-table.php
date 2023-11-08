@@ -255,6 +255,17 @@ class Tournamatch_Ladder_List_Table extends WP_List_Table {
 		$actions = array_merge(
 			$actions,
 			array(
+				'registration' => sprintf(
+					'<a href="%s">%s</a>',
+					trn_route(
+						'admin.ladders.competitors',
+						array(
+							'id'       => $item->ladder_id,
+							'_wpnonce' => $nonce,
+						)
+					),
+					esc_html__( 'Competitors', 'tournamatch' )
+				),
 				'edit'   => sprintf(
 					'<a href="%s">%s</a>',
 					esc_url(
