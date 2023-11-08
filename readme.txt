@@ -2,8 +2,8 @@
 Contributors: tournamatch
 Tags: tournament, ladder, standings, bracket, leaderboard, bracket-generator, esports
 Requires at least: 4.7
-Tested up to: 6.2.2
-Stable tag: 4.5.0
+Tested up to: 6.4.0
+Stable tag: 4.6.0
 Requires PHP: 5.6.20
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -51,6 +51,11 @@ You should add links to your menu for the following pages (replace example.com w
 7. The WordPress backend **Manage Games** page. You can upload game thumbnails, create new games, edit existing games, and delete games on this page.
 
 == Changelog ==
+
+= 4.6.0 =
+* New: Added support for admins to add competitors to ladder events.
+* Fix: Match confirmation links 404 after 4.5 update.
+* Fix: The competitor dropdown select for tournament registrations is not styled correctly.
 
 = 4.5.0 =
 * New: Added a filter to rename or move routes to a sub-directory.
