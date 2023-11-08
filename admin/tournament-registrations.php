@@ -34,35 +34,34 @@ $tournament = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn
 			}
 		}
 
-		.autocomplete {
+		.trn-auto-complete {
 			/*the container must be positioned relative:*/
 			position: relative;
-			display: inline-block;
-		}
-		.autocomplete-items {
+			display: inline-block; }
+
+		.trn-auto-complete-items {
 			position: absolute;
 			border: 1px solid #ced4da;
 			border-radius: 0.25rem;
 			z-index: 99;
-			/*position the autocomplete items to be the same width as the container:*/
+			/*position the auto complete items to be the same width as the container:*/
 			top: 100%;
 			left: 0;
-			right: 0;
-		}
-		.autocomplete-items div {
+			right: 0; }
+
+		.trn-auto-complete-items div {
 			padding: 10px;
 			cursor: pointer;
-			background-color: #fff;
-		}
-		.autocomplete-items div:hover {
+			background-color: #fff; }
+
+		.trn-auto-complete-items div:hover {
 			/*when hovering an item:*/
-			background-color: #e9e9e9;
-		}
-		.autocomplete-active {
+			background-color: #e9e9e9; }
+
+		.trn-auto-complete-active {
 			/*when navigating through the items using the arrow keys:*/
 			background-color: DodgerBlue !important;
-			color: #ffffff;
-		}
+			color: #ffffff; }
 	</style>
 	<div class="wrap">
 		<h1 class="wp-heading-inline"><?php esc_html_e( 'Tournament Registration', 'tournamatch' ); ?></h1>
@@ -83,7 +82,7 @@ $tournament = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM `{$wpdb->prefix}trn
 					<th scope="row">
 						<label for="competitor_id"><?php esc_html_e( 'Player Name', 'tournamatch' ); ?></label>
 					</th>
-					<td class="autocomplete">
+					<td class="trn-auto-complete">
 						<input type="text" id="competitor_id" name="competitor_id" class="form-control" required>
 					</td>
 				</tr>
